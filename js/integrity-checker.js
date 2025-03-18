@@ -51,7 +51,8 @@ async function verifyFiles() {
                 // >>>> Display tampering message <<<<<
 
 
-                document.body.innerHTML = `<h1>Security Warning: Webpage tampered with!</h1>`;
+                document.body.innerHTML = `<h1>Security Warning: Webpage tampered with!
+                ¡Advertencia de seguridad: Página web manipulada!</h1>`;
                 document.getElementById('integrity-message').style.display = 'block'; 
                 return;
             }
