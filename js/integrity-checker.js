@@ -5,6 +5,8 @@ async function verifyFiles() {
 
         const integrityData = await response.json();
 
+        // >>>> Function to get the hash of a file <<<<<
+
         async function getFileHash(url) {
             const fileResponse = await fetch(url);
             const content = await fileResponse.text();
@@ -16,20 +18,50 @@ async function verifyFiles() {
                 .join('');
         }
 
-        for (const [file, expectedHash] of Object.entries(integrityData)) {
-            if (file.startsWith('./')) continue; // Remove leading "./" from paths
+        // >>>> List of all files in your structure to check (HTML, CSS, JS) <<<<<
+
+
+        const filesToCheck = [
+            'ops/index.html',
+            'ops/business-operations.html',
+            'ops/contact-center.html',
+            'ops/it-support.html',
+            'ops/professionals.html',
+            'ops/css/global.css',
+            'ops/css/small-screen.css',
+            'ops/js/main.js',
+            'ops/js/worker.js'
+        ];
+
+        // >>>> Verify each file against the expected hash <<<<<
+
+
+        for (const file of filesToCheck) {
+            const expectedHash = integrityData[file];
+
+            if (!expectedHash) {
+                console.error(`No hash found for ${file}`);
+                continue;
+            }
 
             const actualHash = await getFileHash(file);
             if (actualHash !== expectedHash) {
                 console.error(`🚨 Integrity check failed for ${file}`);
-                document.body.innerHTML = `<h1>Security Warning: File tampered with!</h1>`;
+                
+                // >>>> Display tampering message <<<<<
+
+
+                document.body.innerHTML = `<h1>Security Warning: Webpage tampered with!</h1>`;
+                document.getElementById('integrity-message').style.display = 'block'; 
                 return;
             }
         }
 
         console.log("✅ All files passed integrity check.");
 
-        // Dynamically load CSS & JS after verification
+        // >>>> Dynamically load CSS & JS after verification <<<<<
+
+
         loadResources();
 
     } catch (error) {
@@ -38,9 +70,10 @@ async function verifyFiles() {
     }
 }
 
+// >>>> Function to load CSS & JS dynamically after the integrity check passes
 function loadResources() {
-    const cssFiles = ["css/global.css", "css/small-screen.css"];
-    const jsFiles = ["js/main.js", "js/worker.js"];
+    const cssFiles = ["ops/css/global.css", "ops/css/small-screen.css"];
+    const jsFiles = ["ops/js/main.js", "ops/js/worker.js"];
 
     cssFiles.forEach(css => {
         const link = document.createElement("link");
@@ -56,5 +89,5 @@ function loadResources() {
     });
 }
 
-// Run verification on page load
+// >>>> Run the integrity check on page load
 verifyFiles();
