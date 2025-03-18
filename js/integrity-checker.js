@@ -1,26 +1,28 @@
+// Function to compute SHA-512 hash of a file
+async function getFileHash(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to fetch ${url}`);
+
+        const content = await response.text();
+        const hashBuffer = await crypto.subtle.digest('SHA-512', new TextEncoder().encode(content));
+
+        return Array.from(new Uint8Array(hashBuffer))
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join('');
+    } catch (error) {
+        console.error(`Error hashing ${url}:`, error);
+        return null; // Returning null ensures we can handle failure in verification
+    }
+}
+
+// Function to verify file integrity
 async function verifyFiles() {
     try {
         const response = await fetch('/integrity.json');
         if (!response.ok) throw new Error("Failed to load integrity file.");
-
+        
         const integrityData = await response.json();
-
-        // >>>> Function to get the hash of a file <<<<<
-
-        async function getFileHash(url) {
-            const fileResponse = await fetch(url);
-            const content = await fileResponse.text();
-            const encoder = new TextEncoder();
-            const data = encoder.encode(content);
-            const hashBuffer = await crypto.subtle.digest('SHA-512', data);
-            return Array.from(new Uint8Array(hashBuffer))
-                .map(b => b.toString(16).padStart(2, '0'))
-                .join('');
-        }
-
-        // >>>> List of all files in your structure to check (HTML, CSS, JS) <<<<<
-
-
         const filesToCheck = [
             'ops/index.html',
             'ops/business-operations.html',
@@ -33,62 +35,71 @@ async function verifyFiles() {
             'ops/js/worker.js'
         ];
 
-        // >>>> Verify each file against the expected hash <<<<<
-
-
-        for (const file of filesToCheck) {
+        // Verify all files in parallel
+        const verificationResults = await Promise.all(filesToCheck.map(async (file) => {
             const expectedHash = integrityData[file];
-
             if (!expectedHash) {
-                console.error(`No hash found for ${file}`);
-                continue;
+                console.warn(`No hash found for ${file}`);
+                return true; // Ignore check if no hash is defined
             }
 
             const actualHash = await getFileHash(file);
-            if (actualHash !== expectedHash) {
+            if (!actualHash || actualHash !== expectedHash) {
                 console.error(`🚨 Integrity check failed for ${file}`);
-                
-                // >>>> Display tampering message <<<<<
-
-
-                document.body.innerHTML = `<h1>Security Warning: Webpage tampered with!
-                ¡Advertencia de seguridad: Página web manipulada!</h1>`;
-                document.getElementById('integrity-message').style.display = 'block'; 
-                return;
+                return false;
             }
+            return true;
+        }));
+
+        // If any file fails, trigger lockdown
+        if (verificationResults.includes(false)) {
+            securityLockdown();
+            throw new Error("Integrity verification failed. Execution halted.");
         }
 
         console.log("✅ All files passed integrity check.");
-
-        // >>>> Dynamically load CSS & JS after verification <<<<<
-
-
-        loadResources();
+        loadResources(); // Load assets only if all files pass verification
 
     } catch (error) {
         console.error("Integrity check error:", error);
-        document.body.innerHTML = "<h1>Security Error: Unable to verify integrity.</h1>";
+        securityLockdown(); // Call lockdown in case of an error
     }
 }
 
-// >>>> Function to load CSS & JS dynamically after the integrity check passes
-function loadResources() {
-    const cssFiles = ["ops/css/global.css", "ops/css/small-screen.css"];
-    const jsFiles = ["ops/js/main.js", "ops/js/worker.js"];
+// Function to halt execution and lock down the page
+function securityLockdown() {
+    document.body.innerHTML = `
+        <h1 style="color: red; text-align: center;">
+            🚨 Security Alert: Webpage has been tampered with! 🚨<br>
+            ⚠️ Advertencia de seguridad: Página web manipulada ⚠️
+        </h1>`;
+    throw new Error("Critical Security Failure: Execution stopped.");
+}
 
-    cssFiles.forEach(css => {
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = css;
-        document.head.appendChild(link);
+// Function to dynamically load CSS & JS (only if integrity check passes)
+function loadResources() {
+    const resources = {
+        css: ["ops/css/global.css", "ops/css/small-screen.css"],
+        js: ["ops/js/main.js", "ops/js/worker.js"]
+    };
+
+    resources.css.forEach(href => {
+        if (!document.querySelector(`link[href="${href}"]`)) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = href;
+            document.head.appendChild(link);
+        }
     });
 
-    jsFiles.forEach(js => {
-        const script = document.createElement("script");
-        script.src = js;
-        document.body.appendChild(script);
+    resources.js.forEach(src => {
+        if (!document.querySelector(`script[src="${src}"]`)) {
+            const script = document.createElement("script");
+            script.src = src;
+            document.body.appendChild(script);
+        }
     });
 }
 
-// >>>> Run the integrity check on page load
+// Run the integrity check on page load
 verifyFiles();
