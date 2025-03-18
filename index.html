@@ -19,6 +19,36 @@
 </head>
 
 <body>
+<script>
+async function verifyIntegrity() {
+  try {
+    const response = await fetch('/integrity.json');
+    const storedHashes = await response.json();
+
+    const filesToCheck = Object.keys(storedHashes);
+    const encoder = new TextEncoder();
+    const subtle = window.crypto.subtle;
+
+    for (let file of filesToCheck) {
+      const fileResponse = await fetch(file);
+      if (!fileResponse.ok) continue; // Skip missing files
+
+      const content = await fileResponse.arrayBuffer();
+      const hashBuffer = await subtle.digest('SHA-512', content);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const computedHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      if (computedHash !== storedHashes[file]) {
+        console.error(`🚨 Integrity warning: ${file} has been modified!`);
+      }
+    }
+  } catch (error) {
+    console.error("Integrity check failed:", error);
+  }
+}
+
+verifyIntegrity();
+</script>
   <!-- ==================================================================
        Header Section: Navigation & Toggle Buttons (Desktop Only)
        ================================================================== -->
