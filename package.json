@@ -1,0 +1,14 @@
+{
+  "name": "secure-forms",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "openpgp": "^5.11.2"
+  },
+  "devDependencies": {
+    "vite": "^5.4.8"
+  }
+}
