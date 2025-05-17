@@ -2,26 +2,32 @@
 <html lang="en">
 <head>
   <script src="js/integrity-checker.js" defer></script>
-   <!-- ==================================================================
-                         Hardened CSP via Meta Tag
-       ================================================================== -->
-<meta http-equiv="Content-Security-Policy" content="
-  default-src 'self';
-  script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
-  style-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
-  img-src 'self' https://trusted-image-cdn.com;
-  font-src 'self' https://cdnjs.cloudflare.com;
-  connect-src 'self';
-  frame-ancestors 'none';
-  object-src 'none';
-  base-uri 'self';
-">
-     <!-- ==================================================================
-                     Document Metadata & External Resources
-       ================================================================== -->
+  <!-- ==================================================================
+       Hardened CSP via Meta Tag
+  ================================================================== -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
+    style-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
+    img-src 'self' https://trusted-image-cdn.com;
+    font-src 'self' https://cdnjs.cloudflare.com;
+    connect-src 'self';
+    frame-ancestors 'none';
+    object-src 'none';
+    base-uri 'self';
+  ">
+  <!-- ==================================================================
+       Document Metadata & External Resources
+  ================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IT Support - OPS Solutions Services</title>
+  <title>Business Operations - OPS Solutions Services</title>
+  <meta name="description" content="Streamline your business operations with OPS: Secure, AI-powered, real-time support for logistics, automation, HR, finance, and more.">
+  <meta name="keywords" content="Business Operations, Logistics, Automation, Remote Services, OPS Solutions, AI Operations, Process Optimization">
+  <meta property="og:title" content="Business Operations | OPS Solutions Services">
+  <meta property="og:description" content="Unlock the power of secure, AI-driven business operations—where efficiency meets resilience.">
+  <meta property="og:image" content="assets/images/hero-image.jpg">
+  <meta property="og:url" content="https://www.opsonlinesupport.com/business-operations.html">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
@@ -29,20 +35,20 @@
   <link rel="icon" href="assets/favicon.ico">
 </head>
 <body>
-     <!-- ==================================================================
-           Header Section: Navigation & Toggle Buttons (Desktop Only)
-        ================================================================== -->
+  <!-- ==================================================================
+       Header Section: Navigation & Toggle Buttons (Desktop Only)
+  ================================================================== -->
   <header>
     <nav>
       <ul>
         <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-        <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+        <li><a href="business-operations.html" data-en="Business Operations" data-es="Gestion">Business Operations</a></li>
         <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
         <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
         <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+        <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
       </ul>
     </nav>
-  
     <!-- Theme and Language Toggle for Desktop -->
     <div class="toggle-container">
       <button id="theme-toggle-desktop">Light</button>
@@ -51,24 +57,87 @@
   </header>
 
   <!-- ==================================================================
-       Hero Section
-       ================================================================== -->
-  <section class="hero">
-    <h2 data-en="Welcome to Ops Solutions Services" data-es="Bienvenido a OPS Solutions Services">
-      Welcome to Ops Solutions Services
-    </h2>
-    <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
-      Empowering remote solutions with cutting-edge strategies.
+       Hero Section: Business Operations
+  ================================================================== -->
+  <section class="hero" id="business-hero">
+    <h2 data-en="Business Operations, Reinvented" data-es="Gestion, Reinventadas">Business Operations, Reinvented</h2>
+    <p data-en="OPS transforms chaos into clarity—streamlining your processes, securing your data, and empowering your team to achieve more with less friction.">
+      OPS transforms chaos into clarity—streamlining your processes, securing your data, and empowering your team to achieve more with less friction.
     </p>
-    <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image">
+    <img src="assets/images/hero-image.jpg" alt="Operations in Action" class="hero-image">
   </section>
 
   <!-- ==================================================================
-       Services Preview Section
-       ================================================================== -->
+       Value Proposition: Why OPS for Business Operations?
+  ================================================================== -->
+  <section id="ops-value" class="ops-value-section">
+    <h3 data-en="Why Choose OPS?" data-es="¿Por qué Elegir OPS?">Why Choose OPS?</h3>
+    <ul>
+      <li>
+        <strong>Process Automation</strong>: Say goodbye to busywork. Let bots handle the repetitive stuff so your team can focus on what matters.
+      </li>
+      <li>
+        <strong>Secure Workflows</strong>: NIST-aligned security, audit trails, and compliance built in—not bolted on.
+      </li>
+      <li>
+        <strong>Real-Time Visibility</strong>: Track, monitor, and optimize every moving part of your business, 24/7.
+      </li>
+      <li>
+        <strong>Smart Integrations</strong>: Connect finance, HR, CRM, logistics, and IT support—one dashboard, zero chaos.
+      </li>
+      <li>
+        <strong>Human + AI</strong>: Your people, leveled up with next-gen automation, actionable insights, and Riley-level AI support.
+      </li>
+    </ul>
+  </section>
+
+  <!-- ==================================================================
+       Our Operations Journey (Timeline or Milestones)
+  ================================================================== -->
+  <section id="operations-journey" class="timeline-section">
+    <h3 data-en="Our Operations Journey" data-es="Nuestra Trayectoria Operativa">Our Operations Journey</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-year">2022</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>Automated Invoicing Launched</h4>
+          <p>First clients see 3x faster billing and zero missed payments, thanks to OPS’s automated financial workflows.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-year">2023</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>Barcode, QR, and Signature Verification</h4>
+          <p>Physical and digital operations unite—securely. OPS brings traceability and proof-of-delivery into the future.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-year">2024</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>AI-Driven Behavioral Security</h4>
+          <p>From threat detection to insider risk—OPS uses behavioral analysis to keep your business a step ahead.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-year">2025</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>Zero-Touch Integrations</h4>
+          <p>No more siloed tools. OPS links your apps, automates onboarding, and syncs everything for you—without breaking a sweat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Services Preview Section (quick jump nav)
+  ================================================================== -->
   <section id="services-preview" class="services">
     <div class="service-item">
-      <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
+      <h3 data-en="Business Operations" data-es="Gestion">Business Operations</h3>
       <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">
         Discover how we optimize your business processes.
       </p>
@@ -99,15 +168,17 @@
 
   <!-- ==================================================================
        Footer Section
-       ================================================================== -->
-<footer>
-  <p>&copy; 2025 OPS Solutions Services. All rights reserved.
-    <a href="security.html" style="font-size:0.8em; color:#9b87f5; margin-left:1em;">Security</a>
-  </p>
-</footer>
- <!-- ==================================================================
+  ================================================================== -->
+  <footer>
+    <p>
+      &copy; 2025 OPS Solutions Services. All rights reserved.
+      <a href="security.html" style="font-size:0.8em; color:#9b87f5; margin-left:1em;">Security</a>
+    </p>
+  </footer>
+
+  <!-- ==================================================================
        Floating Icons (Triggers for Modals)
-       ================================================================== -->
+  ================================================================== -->
   <div class="floating-icons">
     <button class="floating-icon" data-modal="join-modal" aria-label="Join Us" tabindex="0">
       <i class="fas fa-user-plus"></i>
@@ -116,247 +187,165 @@
       <i class="fas fa-envelope-open-text"></i>
     </button>
   </div>
+
   <!-- ==================================================================
        Join Modal
-       ================================================================== -->
-  <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
-    <div class="modal-content">
-      <!-- Modal Header: Title & Close Button -->
-      <div class="modal-header">
-        <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h3>
-        <button class="close-modal" data-close aria-label="Close">&times;</button>
-      </div>
-      <!-- Modal Body: Form with Grid (Table-like) Layout -->
-      <div class="modal-body">
-        <form id="join-form">
-          <!-- Row 1 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
-              <input 
-                type="text" 
-                id="join-name" 
-                placeholder="Enter your name / Ingrese su Nombre" 
-                required
-              >
+  ================================================================== -->
+<div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h3>
+                    <button class="close-modal" data-close aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="join-form">
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
+                                <input type="text" id="join-name" placeholder="Enter your name / Ingrese su Nombre" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+                                <input type="email" id="join-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
+                                <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
+                                <input type="date" id="join-date" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-time" data-en="Time" data-es="Hora">Time</label>
+                                <input type="time" id="join-time" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
+                                <input type="file" id="join-resume" accept=".pdf,.doc,.docx" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
+                                <input type="file" id="join-cover" accept=".pdf,.doc,.docx" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
+                                <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="join-form" class="submit-button" data-en="Submit" data-es="Enviar">Submit</button>
+                </div>
             </div>
-            <div class="form-cell">
-              <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-              <input 
-                type="email" 
-                id="join-email" 
-                placeholder="Enter your email / Ingrese su correo electrónico" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 2 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-              <input 
-                type="tel" 
-                id="join-contact" 
-                placeholder="Enter your contact number / Ingrese su número" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
-              <input 
-                type="date" 
-                id="join-date" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 3 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="join-time" data-en="Time" data-es="Hora">Time</label>
-              <input 
-                type="time" 
-                id="join-time" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
-              <input 
-                type="file" 
-                id="join-resume" 
-                accept=".pdf,.doc,.docx" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 4 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
-              <input 
-                type="file" 
-                id="join-cover" 
-                accept=".pdf,.doc,.docx" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
-              <textarea 
-                id="join-comment" 
-                rows="4" 
-                placeholder="Tell us about yourself" 
-                required
-              ></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <!-- Modal Footer: Submit Button -->
-      <div class="modal-footer">
-        <button 
-          type="submit" 
-          form="join-form" 
-          class="submit-button" 
-          data-en="Submit" 
-          data-es="Enviar"
-        >Submit</button>
-      </div>
-    </div>
-  </div>
+        </div>
 
   <!-- ==================================================================
        Contact Modal
-       ================================================================== -->
-  <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
-    <div class="modal-content">
-      <!-- Modal Header: Title & Close Button -->
-      <div class="modal-header">
-        <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
-        <button class="close-modal" data-close aria-label="Close">&times;</button>
-      </div>
-      <!-- Modal Body: Form with Grid (Table-like) Layout -->
-      <div class="modal-body">
-        <form id="contact-form">
-          <!-- Row 1 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
-              <input 
-                type="text" 
-                id="contact-name" 
-                placeholder="Enter your name / Ingrese su Nombre" 
-                required
-              >
+  ================================================================== -->
+
+<div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
+                    <button class="close-modal" data-close aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="contact-form">
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
+                                <input type="text" id="contact-name" placeholder="Enter your name / Ingrese su Nombre" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+                                <input type="email" id="contact-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
+                                <input type="tel" id="contact-number" placeholder="Enter your contact number / Ingrese su número" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
+                                <input type="date" id="contact-date" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
+                                <input type="time" id="contact-time" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
+                                <textarea id="contact-comments" rows="4" placeholder="What service are you interested in? / En qué servicio está interesado?" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
+                </div>
             </div>
-            <div class="form-cell">
-              <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-              <input 
-                type="email" 
-                id="contact-email" 
-                placeholder="Enter your email / Ingrese su correo electrónico" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 2 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-              <input 
-                type="tel" 
-                id="contact-number" 
-                placeholder="Enter your contact number / Ingrese su número" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
-              <input 
-                type="date" 
-                id="contact-date" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 3 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
-              <input 
-                type="time" 
-                id="contact-time" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
-              <textarea 
-                id="contact-comments" 
-                rows="4" 
-                placeholder="What service are you interested in? / En qué servicio está interesado?" 
-                required
-              ></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <!-- Modal Footer: Submit Button -->
-      <div class="modal-footer">
-        <button 
-          type="submit" 
-          form="contact-form" 
-          class="submit-button" 
-          data-en="Send" 
-          data-es="Enviar"
-        >Send</button>
-      </div>
-    </div>
-  </div>
+        </div>
+
 
   <!-- ==================================================================
        Mobile Bottom Navigation & Services Menu (Small Screens)
-       ================================================================== -->
-  <!-- Mobile Bottom Navigation Bar -->
-  <nav class="mobile-nav">
-    <a href="index.html" class="mobile-nav-item">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
-    </a>
+  ================================================================== -->
 
-    <!-- Services Hamburger / Toggle -->
-    <button class="mobile-nav-item" id="mobile-services-toggle">
-      <i class="fas fa-bars"></i>
-      <span>Services</span>
-    </button>
+ <!-- Mobile Bottom Navigation Bar -->
+        <nav class="mobile-nav">
+            <a href="index.html" class="mobile-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
 
-    <!-- Language Toggle (Mobile) -->
-    <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
+            <!-- Services Hamburger / Toggle -->
+            <button class="mobile-nav-item" id="mobile-services-toggle">
+                <i class="fas fa-bars"></i>
+                <span>Services</span>
+            </button>
 
-    <!-- Theme Toggle (Mobile) -->
-    <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
+            <!-- Language Toggle (Mobile) -->
+            <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
 
-    <!-- Chat Link -->
-    <a href="#" class="mobile-nav-item">
-      <i class="fas fa-comment-alt"></i>
-      <span>Chat</span>
-    </a>
-  </nav>
+            <!-- Theme Toggle (Mobile) -->
+            <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
 
-  <!-- Hidden Mobile Services Menu -->
-  <div class="mobile-services-menu" id="mobile-services-menu">
-    <ul>
-      <li><a href="business-operations.html">Business Operations</a></li>
-      <li><a href="contact-center.html">Contact Center</a></li>
-      <li><a href="it-support.html">IT Support</a></li>
-      <li><a href="professionals.html">Professionals</a></li>
-    </ul>
-  </div>
+            <!-- Chat Link -->
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-comment-alt"></i>
+                <span>Chat</span>
+            </a>
+        </nav>
+
+
+  <!-- ==================================================================
+       		Hidden Mobile Services Menu(Small Screens)
+  ================================================================== -->
+        
+        <div class="mobile-services-menu" id="mobile-services-menu">
+            <ul>
+                <li><a href="business-operations.html">Business Operations</a></li>
+                <li><a href="contact-center.html">Contact Center</a></li>
+                <li><a href="it-support.html">IT Support</a></li>
+                <li><a href="professionals.html">Professionals</a></li>
+            </ul>
+        </div>
+
 
   <!-- ==================================================================
        JavaScript: Main Functionality & Mobile Menu Toggle
-       ================================================================== -->
+  ================================================================== -->
   <script src="js/main.js" defer></script>
   <script src="js/service-worker.js" defer></script>
 </body>
