@@ -2,26 +2,32 @@
 <html lang="en">
 <head>
   <script src="js/integrity-checker.js" defer></script>
-   <!-- ==================================================================
-                         Hardened CSP via Meta Tag
-       ================================================================== -->
-<meta http-equiv="Content-Security-Policy" content="
-  default-src 'self';
-  script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
-  style-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
-  img-src 'self' https://trusted-image-cdn.com;
-  font-src 'self' https://cdnjs.cloudflare.com;
-  connect-src 'self';
-  frame-ancestors 'none';
-  object-src 'none';
-  base-uri 'self';
-">
-     <!-- ==================================================================
-                     Document Metadata & External Resources
-       ================================================================== -->
+  <!-- ==================================================================
+       Hardened CSP via Meta Tag
+  ================================================================== -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
+    style-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
+    img-src 'self' https://trusted-image-cdn.com;
+    font-src 'self' https://cdnjs.cloudflare.com;
+    connect-src 'self';
+    frame-ancestors 'none';
+    object-src 'none';
+    base-uri 'self';
+  ">
+  <!-- ==================================================================
+       Document Metadata & External Resources
+  ================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IT Support - OPS Solutions Services</title>
+  <title>OPS Solutions Services - Secure IT, Business, and Professional Support</title>
+  <meta name="description" content="OPS Solutions Services delivers secure IT support, business operations, contact center solutions, and elite professionals—empowering your company for the future.">
+  <meta name="keywords" content="IT Support, Remote Solutions, Business Operations, Contact Center, Professional Services, OPS Solutions, Secure IT">
+  <meta property="og:title" content="OPS Solutions Services - Secure IT, Business, and Professional Support">
+  <meta property="og:description" content="OPS Solutions Services delivers secure IT support, business operations, contact center solutions, and elite professionals—empowering your company for the future.">
+  <meta property="og:image" content="assets/images/hero-image.jpg">
+  <meta property="og:url" content="https://www.opsonlinesupport.com/">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
@@ -29,26 +35,21 @@
   <link rel="icon" href="assets/favicon.ico">
 </head>
 <body>
-      <!-- Integrity Message -->
-  <!-- Security Warning will be dynamically inserted -->
-    <div id="integrity-message" style="display: none; color: red; font-weight: bold;">
-        🚨 Integrity check failed! Possible unauthorized changes.
-    </div>
+
   <!-- ==================================================================
        Header Section: Navigation & Toggle Buttons (Desktop Only)
-       ================================================================== -->
+  ================================================================== -->
   <header>
     <nav>
       <ul>
         <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-        <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+        <li><a href="business-operations.html" data-en="Business Operations" data-es="Gestion">Business Operations</a></li>
         <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
         <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
         <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-        <li><a href="it-support.html" data-en="Security" data-es="Seguridad">Security</a></li>
+        <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
       </ul>
     </nav>
-  
     <!-- Theme and Language Toggle for Desktop -->
     <div class="toggle-container">
       <button id="theme-toggle-desktop">Light</button>
@@ -58,10 +59,10 @@
 
   <!-- ==================================================================
        Hero Section
-       ================================================================== -->
+  ================================================================== -->
   <section class="hero">
-    <h2 data-en="Welcome to Ops Solutions Services" data-es="Bienvenido a OPS Solutions Services">
-      Welcome to Ops Solutions Services
+    <h2 data-en="Welcome to OPS Solutions Services" data-es="Bienvenido a OPS Solutions Services">
+      Welcome to OPS Solutions Services
     </h2>
     <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
       Empowering remote solutions with cutting-edge strategies.
@@ -70,11 +71,31 @@
   </section>
 
   <!-- ==================================================================
+       What We Do / Value Proposition (Add Riley Spark)
+  ================================================================== -->
+  <section class="value-prop">
+    <h3 data-en="Your One-Stop Partner for Efficiency, Security, and Growth" data-es="Tu socio integral para eficiencia, seguridad y crecimiento">
+      Your One-Stop Partner for Efficiency, Security, and Growth
+    </h3>
+    <ul class="home-value-list">
+      <li><strong>Secure IT Support:</strong> Reliable, proactive, and always there when you need it.</li>
+      <li><strong>Business Operations:</strong> Streamline, automate, and scale—minus the chaos.</li>
+      <li><strong>Contact Center:</strong> Multilingual, omnichannel, and driven by AI and empathy.</li>
+      <li><strong>Elite Professionals:</strong> The top 1% of talent, handpicked for your mission.</li>
+      <li><strong>OPS Security:</strong> Hardened by design—privacy, compliance, and peace of mind.</li>
+    </ul>
+    <div style="margin-top:1em;">
+      <a href="about-us.html" class="btn" data-en="About OPS" data-es="Sobre OPS">About OPS</a>
+      <a href="security.html" class="btn" data-en="Our Security" data-es="Nuestra Seguridad">Our Security</a>
+    </div>
+  </section>
+
+  <!-- ==================================================================
        Services Preview Section
-       ================================================================== -->
+  ================================================================== -->
   <section id="services-preview" class="services">
     <div class="service-item">
-      <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
+      <h3 data-en="Business Operations" data-es="Gestion">Business Operations</h3>
       <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">
         Discover how we optimize your business processes.
       </p>
@@ -105,14 +126,17 @@
 
   <!-- ==================================================================
        Footer Section
-       ================================================================== -->
+  ================================================================== -->
   <footer>
-    <p>&copy; 2025 OPS Solutions Services. All rights reserved.</p>
+    <p>
+      &copy; 2025 OPS Solutions Services. All rights reserved.
+      <a href="security.html" style="font-size:0.8em; color:#9b87f5; margin-left:1em;">Security</a>
+    </p>
   </footer>
 
   <!-- ==================================================================
        Floating Icons (Triggers for Modals)
-       ================================================================== -->
+  ================================================================== -->
   <div class="floating-icons">
     <button class="floating-icon" data-modal="join-modal" aria-label="Join Us" tabindex="0">
       <i class="fas fa-user-plus"></i>
@@ -123,246 +147,158 @@
   </div>
   <!-- ==================================================================
        Join Modal
-       ================================================================== -->
-  <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
-    <div class="modal-content">
-      <!-- Modal Header: Title & Close Button -->
-      <div class="modal-header">
-        <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h3>
-        <button class="close-modal" data-close aria-label="Close">&times;</button>
-      </div>
-      <!-- Modal Body: Form with Grid (Table-like) Layout -->
-      <div class="modal-body">
-        <form id="join-form">
-          <!-- Row 1 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
-              <input 
-                type="text" 
-                id="join-name" 
-                placeholder="Enter your name / Ingrese su Nombre" 
-                required
-              >
+  ================================================================== -->
+ <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h3>
+                    <button class="close-modal" data-close aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="join-form">
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
+                                <input type="text" id="join-name" placeholder="Enter your name / Ingrese su Nombre" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+                                <input type="email" id="join-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
+                                <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
+                                <input type="date" id="join-date" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-time" data-en="Time" data-es="Hora">Time</label>
+                                <input type="time" id="join-time" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
+                                <input type="file" id="join-resume" accept=".pdf,.doc,.docx" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
+                                <input type="file" id="join-cover" accept=".pdf,.doc,.docx" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
+                                <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="join-form" class="submit-button" data-en="Submit" data-es="Enviar">Submit</button>
+                </div>
             </div>
-            <div class="form-cell">
-              <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-              <input 
-                type="email" 
-                id="join-email" 
-                placeholder="Enter your email / Ingrese su correo electrónico" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 2 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-              <input 
-                type="tel" 
-                id="join-contact" 
-                placeholder="Enter your contact number / Ingrese su número" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
-              <input 
-                type="date" 
-                id="join-date" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 3 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="join-time" data-en="Time" data-es="Hora">Time</label>
-              <input 
-                type="time" 
-                id="join-time" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
-              <input 
-                type="file" 
-                id="join-resume" 
-                accept=".pdf,.doc,.docx" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 4 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
-              <input 
-                type="file" 
-                id="join-cover" 
-                accept=".pdf,.doc,.docx" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
-              <textarea 
-                id="join-comment" 
-                rows="4" 
-                placeholder="Tell us about yourself" 
-                required
-              ></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <!-- Modal Footer: Submit Button -->
-      <div class="modal-footer">
-        <button 
-          type="submit" 
-          form="join-form" 
-          class="submit-button" 
-          data-en="Submit" 
-          data-es="Enviar"
-        >Submit</button>
-      </div>
-    </div>
-  </div>
+        </div>
 
   <!-- ==================================================================
        Contact Modal
-       ================================================================== -->
-  <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
-    <div class="modal-content">
-      <!-- Modal Header: Title & Close Button -->
-      <div class="modal-header">
-        <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
-        <button class="close-modal" data-close aria-label="Close">&times;</button>
-      </div>
-      <!-- Modal Body: Form with Grid (Table-like) Layout -->
-      <div class="modal-body">
-        <form id="contact-form">
-          <!-- Row 1 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
-              <input 
-                type="text" 
-                id="contact-name" 
-                placeholder="Enter your name / Ingrese su Nombre" 
-                required
-              >
+  ================================================================== -->
+<div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
+                    <button class="close-modal" data-close aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="contact-form">
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
+                                <input type="text" id="contact-name" placeholder="Enter your name / Ingrese su Nombre" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+                                <input type="email" id="contact-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
+                                <input type="tel" id="contact-number" placeholder="Enter your contact number / Ingrese su número" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
+                                <input type="date" id="contact-date" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
+                                <input type="time" id="contact-time" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
+                                <textarea id="contact-comments" rows="4" placeholder="What service are you interested in? / En qué servicio está interesado?" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
+                </div>
             </div>
-            <div class="form-cell">
-              <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-              <input 
-                type="email" 
-                id="contact-email" 
-                placeholder="Enter your email / Ingrese su correo electrónico" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 2 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-              <input 
-                type="tel" 
-                id="contact-number" 
-                placeholder="Enter your contact number / Ingrese su número" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
-              <input 
-                type="date" 
-                id="contact-date" 
-                required
-              >
-            </div>
-          </div>
-          <!-- Row 3 -->
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
-              <input 
-                type="time" 
-                id="contact-time" 
-                required
-              >
-            </div>
-            <div class="form-cell">
-              <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
-              <textarea 
-                id="contact-comments" 
-                rows="4" 
-                placeholder="What service are you interested in? / En qué servicio está interesado?" 
-                required
-              ></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <!-- Modal Footer: Submit Button -->
-      <div class="modal-footer">
-        <button 
-          type="submit" 
-          form="contact-form" 
-          class="submit-button" 
-          data-en="Send" 
-          data-es="Enviar"
-        >Send</button>
-      </div>
-    </div>
-  </div>
+        </div>
 
   <!-- ==================================================================
        Mobile Bottom Navigation & Services Menu (Small Screens)
-       ================================================================== -->
-  <!-- Mobile Bottom Navigation Bar -->
-  <nav class="mobile-nav">
-    <a href="index.html" class="mobile-nav-item">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
-    </a>
+  ================================================================== -->
+ <!-- Mobile Bottom Navigation Bar -->
+        <nav class="mobile-nav">
+            <a href="index.html" class="mobile-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
 
-    <!-- Services Hamburger / Toggle -->
-    <button class="mobile-nav-item" id="mobile-services-toggle">
-      <i class="fas fa-bars"></i>
-      <span>Services</span>
-    </button>
+            <!-- Services Hamburger / Toggle -->
+            <button class="mobile-nav-item" id="mobile-services-toggle">
+                <i class="fas fa-bars"></i>
+                <span>Services</span>
+            </button>
 
-    <!-- Language Toggle (Mobile) -->
-    <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
+            <!-- Language Toggle (Mobile) -->
+            <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
 
-    <!-- Theme Toggle (Mobile) -->
-    <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
+            <!-- Theme Toggle (Mobile) -->
+            <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
 
-    <!-- Chat Link -->
-    <a href="#" class="mobile-nav-item">
-      <i class="fas fa-comment-alt"></i>
-      <span>Chat</span>
-    </a>
-  </nav>
+            <!-- Chat Link -->
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-comment-alt"></i>
+                <span>Chat</span>
+            </a>
+        </nav>
 
-  <!-- Hidden Mobile Services Menu -->
-  <div class="mobile-services-menu" id="mobile-services-menu">
-    <ul>
-      <li><a href="business-operations.html">Business Operations</a></li>
-      <li><a href="contact-center.html">Contact Center</a></li>
-      <li><a href="it-support.html">IT Support</a></li>
-      <li><a href="professionals.html">Professionals</a></li>
-    </ul>
-  </div>
+
+  <!-- ==================================================================
+       		Hidden Mobile Services Menu(Small Screens)
+  ================================================================== -->
+        
+        <div class="mobile-services-menu" id="mobile-services-menu">
+            <ul>
+                <li><a href="business-operations.html">Business Operations</a></li>
+                <li><a href="contact-center.html">Contact Center</a></li>
+                <li><a href="it-support.html">IT Support</a></li>
+                <li><a href="professionals.html">Professionals</a></li>
+            </ul>
+        </div>
 
   <!-- ==================================================================
        JavaScript: Main Functionality & Mobile Menu Toggle
-       ================================================================== -->
-   <script src="js/sanitize.js" defer></script>
+  ================================================================== -->
   <script src="js/main.js" defer></script>
   <script src="js/service-worker.js" defer></script>
 </body>
