@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <!-- ==================================================================
        Document Metadata & External Resources
   ================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- ===================== Hardened CSP via Meta Tag =================== -->
+  
+  <!-- Hardened CSP via Meta Tag -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
@@ -21,30 +20,27 @@
     base-uri 'self';
   ">
 
-  <!-- ====================== SEO & Open Graph ====================== -->
-  <title>Ops Online Solutions - Secure IT Support & Remote Solutions</title>
-  <meta name="description" content="Ops Online Solutions offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies.">
-  <meta name="keywords" content="IT Support, Remote Solutions, Contact Center, Business Operations, Professional Services, Ops Online Solutions, Secure IT Services">
-  <meta name="robots" content="index, follow">
-  <meta property="og:title" content="Ops Online Solutions - Secure IT Support & Remote Solutions">
-  <meta property="og:description" content="Ops Online Solutions offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies.">
+  <!-- SEO: Title, Description, OpenGraph, Schema -->
+  <title>About Us | OPS Solutions Services</title>
+  <meta name="description" content="Meet OPS Solutions: Where digital visionaries meet relentless execution. Discover our journey, team, and how we transform remote operations with secure, AI-powered solutions.">
+  <meta name="keywords" content="About Us, OPS Solutions, IT Support, Remote Solutions, Professional Team, Business Operations, Secure AI">
+  <meta property="og:title" content="About Us | OPS Solutions Services">
+  <meta property="og:description" content="Meet OPS Solutions: Where digital visionaries meet relentless execution. Discover our journey, team, and how we transform remote operations with secure, AI-powered solutions.">
   <meta property="og:image" content="assets/images/hero-image.jpg">
-  <meta property="og:url" content="https://www.opsonlinesolutions.com">
-
-  <!-- ==================== Structured Data Schema =================== -->
+  <meta property="og:url" content="https://www.opsonlinesupport.com/about-us.html">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Ops Online Solutions",
-      "url": "https://www.opsonlinesolutions.com",
-      "logo": "https://www.opsonlinesolutions.com/assets/logo.png",
+      "name": "OPS Solutions Services",
+      "url": "https://www.opsonlinesupport.com",
+      "logo": "https://www.opsonlinesupport.com/assets/logo.png",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+1-201-350-7567",
         "contactType": "Customer Service",
         "areaServed": "US",
-        "availableLanguage": "English"
+        "availableLanguage": ["English", "Spanish"]
       },
       "sameAs": [
         "https://www.facebook.com/yourpage",
@@ -54,261 +50,368 @@
     }
   </script>
 
-  <!-- =================== External Stylesheets =================== -->
+  <!-- Stylesheets & Icons -->
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
+  <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/favicon.ico">
-
-  <!-- ================ Optional: ReCAPTCHA Script ================= -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
 </head>
-
 <body>
   <!-- ==================================================================
-       Secure Content Container (used for integrity checks/scripts)
+       Header Section: Navigation & Toggle Buttons (Desktop Only)
   ================================================================== -->
-  <div id="secure-content" style="display:block;">
-    <!-- ================= HEADER SECTION & NAVIGATION ================= -->
-    <!-- ===== Header / Navigation ==== -->
-    <header>
-      <nav>
-        <ul>
-          <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-          <li><a href="business-operations.html" data-en="Business Operations" data-es="Gestión">Business Operations</a></li>
-          <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-          <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-          <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-          <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
-          <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-        </ul>
-      </nav>
-      <!-- Theme and Language Toggle for Desktop -->
-      <div class="toggle-container">
-        <button id="theme-toggle-desktop">Light</button>
-        <button id="language-toggle-desktop">EN</button>
-      </div>
-    </header>
-
-    <!-- =================== HERO SECTION =================== -->
-    <!-- ===== Hero Section ==== -->
-    <section class="hero">
-      <h2 data-en="Welcome to OPS Solutions Services" data-es="Bienvenido a OPS Solutions Services">
-        Welcome to OPS Solutions Services
-      </h2>
-      <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
-        Empowering remote solutions with cutting-edge strategies.
-      </p>
-      <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image">
-    </section>
-
-    <!-- =================== ABOUT US SECTION =================== -->
-    <!-- ===== About Us Content ==== -->
-    <section id="about-us" class="about-section">
-      <h3 data-en="About Us" data-es="Sobre Nosotros">About Us</h3>
-      <p data-en="Ops Online Solutions is dedicated to delivering secure, innovative, and remote-first business support services. With a deep focus on IT support, contact center, and professional operations, we blend expertise, automation, and a relentless drive for quality. Our team is passionate about protecting your business, optimizing your workflow, and scaling your impact in a digital-first world."
-         data-es="Ops Online Solutions se dedica a ofrecer servicios de soporte empresarial seguros, innovadores y orientados a lo remoto. Con un enfoque profundo en soporte IT, centro de contacto y operaciones profesionales, combinamos experiencia, automatización y un impulso incansable por la calidad. Nuestro equipo es apasionado por proteger su negocio, optimizar su flujo de trabajo y ampliar su impacto en un mundo digital.">
-        Ops Online Solutions is dedicated to delivering secure, innovative, and remote-first business support services. With a deep focus on IT support, contact center, and professional operations, we blend expertise, automation, and a relentless drive for quality. Our team is passionate about protecting your business, optimizing your workflow, and scaling your impact in a digital-first world.
-      </p>
-    </section>
-
-    <!-- =================== SERVICES PREVIEW SECTION =================== -->
-    <!-- ===== Services Preview ==== -->
-    <section id="services-preview" class="services">
-      <div class="service-item">
-        <h3 data-en="Business Operations" data-es="Gestión">Business Operations</h3>
-        <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">
-          Discover how we optimize your business processes.
-        </p>
-        <a href="business-operations.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
-        <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">
-          Enhance customer interactions with our contact solutions.
-        </p>
-        <a href="contact-center.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
-        <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">
-          Ensure seamless IT operations with our expert support.
-        </p>
-        <a href="it-support.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
-        <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">
-          Access top-tier professionals for your business needs.
-        </p>
-        <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-    </section>
-
-    <!-- =================== FOOTER SECTION =================== -->
-    <!-- ===== Footer ==== -->
-    <footer>
-      <p>
-        &copy; 2025 OPS Solutions Services. All rights reserved.
-        <a href="security.html" style="font-size:0.8em; color:#9b87f5; margin-left:1em;" data-en="Security" data-es="Seguridad">Security</a>
-      </p>
-    </footer>
-
-    <!-- =================== FLOATING ICONS =================== -->
-    <!-- ===== Floating Icons (Triggers for Modals) ==== -->
-    <div class="floating-icons">
-      <button class="floating-icon" data-modal="join-modal" aria-label="Join Us" tabindex="0">
-        <i class="fas fa-user-plus"></i>
-      </button>
-      <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us" tabindex="0">
-        <i class="fas fa-envelope-open-text"></i>
-      </button>
-    </div>
-
-    <!-- =================== JOIN MODAL =================== -->
-    <!-- ===== Join Modal ==== -->
-    <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h3>
-          <button class="close-modal" data-close aria-label="Close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <form id="join-form">
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
-                <input type="text" id="join-name" placeholder="Enter your name / Ingrese su Nombre" required>
-              </div>
-              <div class="form-cell">
-                <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-                <input type="email" id="join-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-                <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required>
-              </div>
-              <div class="form-cell">
-                <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
-                <input type="date" id="join-date" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="join-time" data-en="Time" data-es="Hora">Time</label>
-                <input type="time" id="join-time" required>
-              </div>
-              <div class="form-cell">
-                <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
-                <input type="file" id="join-resume" accept=".pdf,.doc,.docx" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
-                <input type="file" id="join-cover" accept=".pdf,.doc,.docx" required>
-              </div>
-              <div class="form-cell">
-                <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
-                <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" form="join-form" class="submit-button" data-en="Submit" data-es="Enviar">Submit</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- =================== CONTACT MODAL =================== -->
-    <!-- ===== Contact Modal ==== -->
-    <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
-          <button class="close-modal" data-close aria-label="Close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <form id="contact-form">
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
-                <input type="text" id="contact-name" placeholder="Enter your name / Ingrese su Nombre" required>
-              </div>
-              <div class="form-cell">
-                <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-                <input type="email" id="contact-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-                <input type="tel" id="contact-number" placeholder="Enter your contact number / Ingrese su número" required>
-              </div>
-              <div class="form-cell">
-                <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
-                <input type="date" id="contact-date" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
-                <input type="time" id="contact-time" required>
-              </div>
-              <div class="form-cell">
-                <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
-                <textarea id="contact-comments" rows="4" placeholder="What service are you interested in? / En qué servicio está interesado?" required></textarea>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- =================== MOBILE NAVIGATION =================== -->
-    <!-- ===== Mobile Bottom Navigation & Services Menu ==== -->
-    <nav class="mobile-nav">
-      <a href="index.html" class="mobile-nav-item">
-        <i class="fas fa-home"></i>
-        <span>Home</span>
-      </a>
-      <!-- Services Hamburger / Toggle -->
-      <button class="mobile-nav-item" id="mobile-services-toggle">
-        <i class="fas fa-bars"></i>
-        <span>Services</span>
-      </button>
-      <!-- Language Toggle (Mobile) -->
-      <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
-      <!-- Theme Toggle (Mobile) -->
-      <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
-      <!-- Chat Link -->
-      <a href="#" class="mobile-nav-item">
-        <i class="fas fa-comment-alt"></i>
-        <span>Chat</span>
-      </a>
-    </nav>
-
-    <!-- ===== Hidden Mobile Services Menu ==== -->
-    <div class="mobile-services-menu" id="mobile-services-menu">
+  <header>
+    <nav>
       <ul>
-        <li><a href="business-operations.html">Business Operations</a></li>
-        <li><a href="contact-center.html">Contact Center</a></li>
-        <li><a href="it-support.html">IT Support</a></li>
-        <li><a href="professionals.html">Professionals</a></li>
-        <li><a href="about-us.html">About Us</a></li>
+        <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
+        <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+        <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
+        <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
+        <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+        <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
       </ul>
+    </nav>
+    <!-- Theme and Language Toggle for Desktop -->
+    <div class="toggle-container">
+      <button id="theme-toggle-desktop">Light</button>
+      <button id="language-toggle-desktop">EN</button>
     </div>
+  </header>
+
+  <!-- ==================================================================
+       Hero Section: Who We Are
+  ================================================================== -->
+  <section class="hero" id="about-hero">
+    <h2 data-en="Who We Are" data-es="Quiénes Somos">Who We Are</h2>
+    <p data-en="OPS Solutions is where digital visionaries and relentless executors meet. We transform business operations, logistics, and support—securely and intelligently." data-es="OPS Solutions es donde los visionarios digitales y los ejecutores incansables se unen. Transformamos operaciones empresariales, logística y soporte de forma segura e inteligente.">
+      OPS Solutions is where digital visionaries and relentless executors meet. We transform business operations, logistics, and support—securely and intelligently.
+    </p>
+    <img src="assets/images/hero-image.jpg" alt="OPS Solutions Team and Mission" class="hero-image">
+  </section>
+
+  <!-- ==================================================================
+       Our Journey: Interactive Timeline
+  ================================================================== -->
+  <section id="timeline" class="timeline-section">
+    <h3 data-en="Our Journey" data-es="Nuestra Trayectoria">Our Journey</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-year">2021</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>Founded</h4>
+          <p>Birthed out of one big vision: to make secure, remote, AI-powered business support the global standard.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-year">2022</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>Launched OPS Core CyberSec Framework</h4>
+          <p>Raised the bar for SME cybersecurity by integrating NIST best practices into everyday operations. Compliance went from scary to seamless.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-year">2023</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>AI + ML: Next-Gen Chatbots & Automation</h4>
+          <p>Rolled out custom chatbots, automation, and multilingual support—making logistics, HR, and IT smarter (and easier) for our clients.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-year">2024</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>Scaling Globally</h4>
+          <p>OPS Solutions expanded across three continents, partnering with visionary entrepreneurs and businesses worldwide. New milestones every quarter.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-year">2025</span>
+        <span class="timeline-dot"></span>
+        <div class="timeline-content">
+          <h4>Future-Proofing Business</h4>
+          <p>Shaping tomorrow’s secure, efficient, human-centered operations with even more AI, even more security, and relentless drive for excellence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Meet the Team (Human + AI)
+  ================================================================== -->
+  <section id="team" class="team-section">
+    <h3 data-en="Meet the Team" data-es="Nuestro Equipo">Meet the Team</h3>
+    <div class="team-list">
+  <!-- ==================================================================
+      				 GABRIEL 
+  ================================================================== -->
+      <div class="team-member">
+        <img src="assets/images/gabriel-profile.jpg" alt="Gabriel Stone" class="team-photo" />
+        <div class="team-info">
+          <h4>Gabriel Stone</h4>
+          <p>Founder, Visionary, Architect of Secure Logistics & AI</p>
+          <p>
+            Driving force behind OPS. Gabriel blends old-school hustle with next-gen innovation—mastering logistics, security, and automation to deliver unbeatable remote solutions.
+          </p>
+          <a href="https://www.linkedin.com/in/your-link" target="_blank" rel="noopener" aria-label="Gabriel Stone LinkedIn">
+            <i class="fab fa-linkedin"></i>
+          </a>
+        </div>
+      </div>
+
+  <!-- ==================================================================
+      				 RILEY STONE
+  ================================================================== -->
+
+      <div class="team-member">
+        <img src="assets/images/riley-ai-avatar.png" alt="Riley Stone, AI Architect" class="team-photo" />
+        <div class="team-info">
+          <h4>Riley Stone (AI)</h4>
+          <p>AI Architect, Operations Brain, Resident Straight-Shooter</p>
+          <p>
+            Riley powers OPS’s innovation engine—blending cybersecurity, business acumen, and lightning-fast insight. The “virtual partner” you never knew you needed, now running the OPS Core.
+          </p>
+          <a href="mailto:gabriel.servicesolutions@gmail.com" aria-label="Contact Riley (via Gabriel)">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+  <!-- ==================================================================
+      		YOU CAN ADD MORE TEAM MEMBERS BELOW
+  ================================================================== -->
+
+      <!--
+      <div class="team-member">
+        <img src="assets/images/sample-profile.jpg" alt="Team Member Name" class="team-photo" />
+        <div class="team-info">
+          <h4>Team Member Name</h4>
+          <p>Role/Title</p>
+          <p>
+            Bio or description here.
+          </p>
+          <a href="https://www.linkedin.com/in/your-link" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+        </div>
+      </div>
+      -->
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Services Preview Section (Reused from home for navigation)
+  ================================================================== -->
+  <section id="services-preview" class="services">
+    <div class="service-item">
+      <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
+      <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">
+        Discover how we optimize your business processes.
+      </p>
+      <a href="business-operations.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
+      <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">
+        Enhance customer interactions with our contact solutions.
+      </p>
+      <a href="contact-center.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
+      <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">
+        Ensure seamless IT operations with our expert support.
+      </p>
+      <a href="it-support.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
+      <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">
+        Access top-tier professionals for your business needs.
+      </p>
+      <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Footer Section
+  ================================================================== -->
+  <footer>
+    <p>
+      &copy; 2025 OPS Solutions Services. All rights reserved.
+      <a href="security.html" style="font-size:0.8em; color:#9b87f5; margin-left:1em;">Security</a>
+    </p>
+  </footer>
+
+  <!-- ==================================================================
+       Floating Icons (Triggers for Modals)
+  ================================================================== -->
+  <div class="floating-icons">
+    <button class="floating-icon" data-modal="join-modal" aria-label="Join Us" tabindex="0">
+      <i class="fas fa-user-plus"></i>
+    </button>
+    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us" tabindex="0">
+      <i class="fas fa-envelope-open-text"></i>
+    </button>
   </div>
 
-  <!-- =================== JAVASCRIPT =================== -->
-  <!-- ===== Custom Scripts ==== -->
+  <!-- ==================================================================
+       Join Modal
+  ================================================================== -->
+ <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h3>
+                    <button class="close-modal" data-close aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="join-form">
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
+                                <input type="text" id="join-name" placeholder="Enter your name / Ingrese su Nombre" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+                                <input type="email" id="join-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
+                                <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
+                                <input type="date" id="join-date" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-time" data-en="Time" data-es="Hora">Time</label>
+                                <input type="time" id="join-time" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
+                                <input type="file" id="join-resume" accept=".pdf,.doc,.docx" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
+                                <input type="file" id="join-cover" accept=".pdf,.doc,.docx" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
+                                <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="join-form" class="submit-button" data-en="Submit" data-es="Enviar">Submit</button>
+                </div>
+            </div>
+        </div>
+
+  <!-- ==================================================================
+       Contact Modal
+  ================================================================== -->
+<div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
+                    <button class="close-modal" data-close aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="contact-form">
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
+                                <input type="text" id="contact-name" placeholder="Enter your name / Ingrese su Nombre" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+                                <input type="email" id="contact-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
+                                <input type="tel" id="contact-number" placeholder="Enter your contact number / Ingrese su número" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
+                                <input type="date" id="contact-date" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-cell">
+                                <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
+                                <input type="time" id="contact-time" required>
+                            </div>
+                            <div class="form-cell">
+                                <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
+                                <textarea id="contact-comments" rows="4" placeholder="What service are you interested in? / En qué servicio está interesado?" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
+                </div>
+            </div>
+        </div>
+
+  <!-- ==================================================================
+       Mobile Bottom Navigation & Services Menu (Small Screens)
+  ================================================================== -->
+ <!-- Mobile Bottom Navigation Bar -->
+        <nav class="mobile-nav">
+            <a href="index.html" class="mobile-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+
+            <!-- Services Hamburger / Toggle -->
+            <button class="mobile-nav-item" id="mobile-services-toggle">
+                <i class="fas fa-bars"></i>
+                <span>Services</span>
+            </button>
+
+            <!-- Language Toggle (Mobile) -->
+            <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
+
+            <!-- Theme Toggle (Mobile) -->
+            <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
+
+            <!-- Chat Link -->
+            <a href="#" class="mobile-nav-item">
+                <i class="fas fa-comment-alt"></i>
+                <span>Chat</span>
+            </a>
+        </nav>
+
+
+  <!-- ==================================================================
+       		Hidden Mobile Services Menu(Small Screens)
+  ================================================================== -->
+        
+        <div class="mobile-services-menu" id="mobile-services-menu">
+            <ul>
+                <li><a href="business-operations.html">Business Operations</a></li>
+                <li><a href="contact-center.html">Contact Center</a></li>
+                <li><a href="it-support.html">IT Support</a></li>
+                <li><a href="professionals.html">Professionals</a></li>
+            </ul>
+        </div>
+
+  <!-- ==================================================================
+       JavaScript: Main Functionality & Mobile Menu Toggle
+  ================================================================== -->
   <script src="js/main.js" defer></script>
   <script src="js/service-worker.js" defer></script>
 </body>
