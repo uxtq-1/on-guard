@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // =================================================================
 
   let currentLanguage = localStorage.getItem("language") || "en";
-  const langToggleDesktop = document.getElementById("language-toggle-desktop");
-  const langToggleMobile  = document.getElementById("language-toggle-mobile");
+const langToggleMobile = document.getElementById("language-toggle-mobile");
+const themeToggleMobile = document.getElementById("theme-toggle-mobile");
 
   // Helper: set text to either data-en or data-es
   function updateLanguage(lang) {
