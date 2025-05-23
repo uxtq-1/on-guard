@@ -336,10 +336,6 @@ body[data-theme="dark"] .modal-content {
   color: #e0e0e0;
 }
 
-body[data-theme="dark"] .modal-content form {
-  background-color: rgba(0,0,0,0.85);
-}
-
 body[data-theme="dark"] .form-cell input:focus,
 body[data-theme="dark"] .form-cell textarea:focus {
   border-color: #bb86fc; /* lighter purple glow */
