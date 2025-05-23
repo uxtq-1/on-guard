@@ -342,24 +342,24 @@ body[data-theme="dark"] .modal-content {
 
 body[data-theme="dark"] .form-cell input,
 body[data-theme="dark"] .form-cell textarea {
-  background-color: #7e69ab;      /* Darker purple */
+  background-color: #7e69ab;      /* Dark purple background */
   color: #e0e0e0;                 /* Soft light text */
-  border: 1px solid #5a4580;      /* Even darker purple border */
+  border: 1px solid #5a4580;      /* Darker purple border */
   font-size: 0.9rem;              /* Slightly smaller text */
 }
 
 body[data-theme="dark"] .form-cell input::placeholder,
 body[data-theme="dark"] .form-cell textarea::placeholder {
-  color: #b8a9d9;                /* Lighter purple placeholder */
+  color: #ffffff;                 /* White placeholder text */
 }
 
 body[data-theme="dark"] .form-cell input:focus,
 body[data-theme="dark"] .form-cell textarea:focus {
   border-color: #bb86fc;          /* Bright purple border on focus */
   outline: none;
-  box-shadow: 0 0 8px 2px #bb86fc; /* Glow effect */
+  box-shadow: 0 0 8px 2px #bb86fc; /* Purple glow */
 }
 
 body[data-theme="dark"] .form-cell label {
-  color: #000000 !important; /* force black labels in dark mode */
+  color: #000000 !important;      /* Force black labels */
 }
