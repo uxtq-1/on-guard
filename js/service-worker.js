@@ -1,3 +1,17 @@
+const CACHE_NAME = 'ops-solutions-cache-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/css/global.css',
+  '/css/small-screens.css',
+  '/js/main.js',
+   '/js/service-worker.js',
+  '/assets/logo.png',
+  '/assets/hero-image.jpg',
+  '/assets/favicon.ico',
+  '/assets/images/hero-image.jpg',
+];
+
 document.addEventListener('DOMContentLoaded', function() {
 
   // ============================
