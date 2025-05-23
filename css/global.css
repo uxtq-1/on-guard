@@ -359,4 +359,6 @@ body[data-theme="dark"] .form-cell textarea:focus {
   outline: none;
   box-shadow: 0 0 8px 2px #bb86fc; /* Glow effect */
 }
-
+body[data-theme="dark"] .form-cell label {
+  color: #000000 !important; /* force black labels in dark mode */
+}
