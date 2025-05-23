@@ -350,7 +350,7 @@ body[data-theme="dark"] .form-cell textarea {
 
 body[data-theme="dark"] .form-cell input::placeholder,
 body[data-theme="dark"] .form-cell textarea::placeholder {
-  color: #000000;                /* Lighter purple placeholder */
+  color: #7575a3;                /* Lighter purple placeholder */
 }
 
 body[data-theme="dark"] .form-cell input:focus,
