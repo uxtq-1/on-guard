@@ -343,6 +343,7 @@ body[data-theme="dark"] .modal-content {
 body[data-theme="dark"] .form-cell input,
 body[data-theme="dark"] .form-cell textarea {
   background-color: #7e69ab;      /* Dark purple background */
+  opacity: 50%;                   /* transparent = 50% */ 
   color: #e0e0e0;                 /* Soft light text */
   border: 1px solid #5a4580;      /* Darker purple border */
   font-size: 0.9rem;              /* Slightly smaller text */
