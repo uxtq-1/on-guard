@@ -107,6 +107,14 @@ header nav a {
   justify-content: space-between;
 }
 
+.services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-direction: row; /* explicitly horizontal */
+}
+
 .service-item {
   background: transparent;
   border: 2px solid currentColor;
