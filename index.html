@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Hardened CSP -->
+ <!-- ======================================================================
+  Hardened CSP
+  ====================================================================== -->
   <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
       script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>' https://api.openai.com https://<YOUR_WORKER>.workers.dev https://script.google.com/macros/;
@@ -48,7 +49,9 @@
     ]
   }
   </script>
-
+ <!-- ======================================================================
+                      Links to Pages
+    ====================================================================== -->
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" media="(max-width:768px)" href="css/small-screens.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
@@ -73,7 +76,10 @@
         <button id="language-toggle-desktop">EN</button>
       </div>
     </header>
-
+ <!-- ======================================================================
+                              Hero Section
+    ====================================================================== -->
+    
     <section class="hero">
       <h2 data-en="Welcome to Ops Solutions Services" data-es="Bienvenido a OPS Solutions Services">
         Welcome to Ops Solutions Services
@@ -83,6 +89,10 @@
       </p>
       <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image" />
     </section>
+
+     <!-- ======================================================================
+                              Services-Preview  Section
+    ====================================================================== -->
 
     <section id="services-preview" class="services">
       <div class="service-item">
@@ -115,9 +125,18 @@
       </div>
     </section>
 
+     <!-- ======================================================================
+                              Footer Section
+    ====================================================================== -->
+
+
     <footer>
       <p>&copy; 2025 OPS Solutions Services. All rights reserved.</p>
     </footer>
+    
+     <!-- ======================================================================
+                        Join Us Floating-Icons Section
+    ====================================================================== -->
 
     <div class="floating-icons">
       <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
@@ -180,6 +199,10 @@
       </div>
     </div>
 
+     <!-- ======================================================================
+                        Contact Us Floating-Icons Section
+    ====================================================================== -->
+    
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true">
       <div class="modal-content">
         <div class="modal-header">
@@ -219,13 +242,18 @@
               </div>
             </div>
           </form>
+     <!-- ======================================================================
+                        Submit Button Floating-Icons Section
+    ====================================================================== -->
         </div>
         <div class="modal-footer">
           <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
         </div>
       </div>
     </div>
-
+     <!-- ======================================================================
+                              Mobile-Nav Section
+    ====================================================================== -->
     <nav class="mobile-nav">
       <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
       <button id="mobile-services-toggle" class="mobile-nav-item"><i class="fas fa-bars"></i><span>Services</span></button>
@@ -243,7 +271,9 @@
       </ul>
     </div>
   </div>
-
+     <!-- ======================================================================
+                           Reference Section
+    ====================================================================== -->
   <script src="js/main.js" defer></script>
   <script src="js/service-worker.js" defer></script>
 </body>
