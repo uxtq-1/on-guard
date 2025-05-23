@@ -342,16 +342,15 @@ body[data-theme="dark"] .modal-content {
 
 body[data-theme="dark"] .form-cell input,
 body[data-theme="dark"] .form-cell textarea {
-  background-color: #7e69ab;      /* Dark purple background */
-  opacity: 75%;                   /* transparent = 50% */ 
-  color: #e0e0e0;                 /* Soft light text */
+  background-color: #ffffff;      /* Dark purple background */
+  color: #8c8c8c;                 /* Soft light text */
   border: 1px solid #5a4580;      /* Darker purple border */
   font-size: 0.9rem;              /* Slightly smaller text */
 }
 
 body[data-theme="dark"] .form-cell input::placeholder,
 body[data-theme="dark"] .form-cell textarea::placeholder {
-  color: #ffffff;                 /* White placeholder text */
+  color: #c79cfc;                 /* White placeholder text */
 }
 
 body[data-theme="dark"] .form-cell input:focus,
