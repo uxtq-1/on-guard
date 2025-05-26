@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const sanitizeInput = input => input.replace(/<[^>]*>/g, "").trim();
 
+  // Validate allowed file MIME types for resume and cover
   const isValidFile = file => {
     const allowedTypes = [
       "application/pdf",
@@ -17,15 +18,36 @@ document.addEventListener("DOMContentLoaded", () => {
     return file && allowedTypes.includes(file.type);
   };
 
-  const generateNonce = () => {
+  // Generate cryptographically secure UUID v4
+  function generateSecureUUID() {
+    const cryptoObj = window.crypto || window.msCrypto;
+    const bytes = new Uint8Array(16);
+    cryptoObj.getRandomValues(bytes);
+
+    bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
+    bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant
+
+    const hexBytes = [...bytes].map(b => b.toString(16).padStart(2, "0"));
+
+    return [
+      hexBytes.slice(0, 4).join(""),
+      hexBytes.slice(4, 6).join(""),
+      hexBytes.slice(6, 8).join(""),
+      hexBytes.slice(8, 10).join(""),
+      hexBytes.slice(10, 16).join("")
+    ].join("-");
+  }
+
+  // Generate 16-byte random nonce in hex
+  function generateNonce() {
     const array = new Uint8Array(16);
     window.crypto.getRandomValues(array);
     return Array.from(array).map(b => b.toString(16).padStart(2, "0")).join("");
-  };
+  }
 
   const generateTimestamp = () => new Date().toISOString();
 
-  const generateHMAC = async (data, secretKey) => {
+  async function generateHMAC(data, secretKey) {
     const enc = new TextEncoder();
     const key = await crypto.subtle.importKey(
       "raw",
@@ -38,53 +60,35 @@ document.addEventListener("DOMContentLoaded", () => {
     return Array.from(new Uint8Array(signature))
       .map(b => b.toString(16).padStart(2, "0"))
       .join("");
-  };
+  }
 
   joinForm?.addEventListener("submit", async e => {
     e.preventDefault();
 
+    // Honeypot check
+    const honeypot = document.getElementById("join-hidden-field")?.value || "";
+    if (honeypot) {
+      alert("Bot detected. Submission blocked.");
+      return;
+    }
+
+    // Sanitize inputs
     const name = sanitizeInput(document.getElementById("name").value);
     const email = sanitizeInput(document.getElementById("email").value);
     const phone = sanitizeInput(document.getElementById("phone").value);
     const comment = sanitizeInput(document.getElementById("comment").value);
 
+    // Validate files
     const resumeFile = document.getElementById("resume").files[0];
     const coverFile = document.getElementById("cover").files[0];
 
     if (!isValidFile(resumeFile) || !isValidFile(coverFile)) {
-      alert("Only PDF or Word documents are allowed.");
+      alert("Only PDF or Word documents are allowed for resume and cover letter.");
       return;
     }
 
-    // Placeholder: Malware scan would happen here via WASM, sandbox, or AV API
+    // Asset ID from hidden input or generate new
+    let assetIdInput = document.getElementById("asset-id");
+    let assetId = assetIdInput?.value || generateSecureUUID();
 
-    const nonce = generateNonce();
-    const timestamp = generateTimestamp();
-
-    const metadata = {
-      name,
-      email,
-      phone,
-      comment,
-      nonce,
-      timestamp,
-      fileName: resumeFile.name,
-      contentType: resumeFile.type
-    };
-
-    const secretKey = "your-very-secret-client-key"; // 🔒 Replace in production
-    const hmacInput = JSON.stringify(metadata);
-    const hmac = await generateHMAC(hmacInput, secretKey);
-
-    // At this stage, you can POST to Cloudflare Worker or Apps Script API
-    console.log("📦 Payload ready to send:", {
-      metadata,
-      hmac,
-      resumeFile,
-      coverFile
-    });
-
-    alert("✅ Your information has been secured and is ready for transmission.");
-    joinForm.reset();
-  });
-});
+    if (!as
