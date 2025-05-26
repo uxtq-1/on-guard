@@ -1,8 +1,14 @@
+/*****************************************************
+ * join-handler.js
+ * Secure Join Us form handler for OPS Solutions
+ *****************************************************/
+
 document.addEventListener("DOMContentLoaded", () => {
   const joinForm = document.getElementById("join-form");
 
   const sanitizeInput = input => input.replace(/<[^>]*>/g, "").trim();
 
+  // Validate allowed file MIME types for resume and cover letter
   const isValidFile = file => {
     const allowedTypes = [
       "application/pdf",
@@ -12,13 +18,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return file && allowedTypes.includes(file.type);
   };
 
+  // Generate cryptographically secure UUID v4
   function generateSecureUUID() {
     const cryptoObj = window.crypto || window.msCrypto;
     const bytes = new Uint8Array(16);
     cryptoObj.getRandomValues(bytes);
-    bytes[6] = (bytes[6] & 0x0f) | 0x40;
-    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
+    bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
+    bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant
+
     const hexBytes = [...bytes].map(b => b.toString(16).padStart(2, "0"));
+
     return [
       hexBytes.slice(0, 4).join(""),
       hexBytes.slice(4, 6).join(""),
@@ -28,12 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
     ].join("-");
   }
 
+  // Generate 12-byte random nonce for AES-GCM
   const generateNonce = () => {
-    const array = new Uint8Array(12); // AES-GCM IV recommended size is 12 bytes
+    const array = new Uint8Array(12);
     window.crypto.getRandomValues(array);
     return array;
   };
 
+  // Convert ArrayBuffer to Base64 string
   const arrayBufferToBase64 = buffer => {
     let binary = '';
     const bytes = new Uint8Array(buffer);
@@ -43,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return btoa(binary);
   };
 
+  // Encrypt file using AES-GCM
   async function encryptFile(file, key) {
     const iv = generateNonce();
     const data = await file.arrayBuffer();
@@ -54,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return { encryptedData: encrypted, iv };
   }
 
+  // Generate AES-GCM 256-bit key
   async function generateAESKey() {
     return window.crypto.subtle.generateKey(
       { name: "AES-GCM", length: 256 },
@@ -62,11 +76,13 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // Export raw AES key as Base64 for transmission
   async function exportCryptoKey(key) {
     const raw = await window.crypto.subtle.exportKey("raw", key);
     return arrayBufferToBase64(raw);
   }
 
+  // Generate HMAC SHA-512 signature
   async function generateHMAC(data, secretKey) {
     const enc = new TextEncoder();
     const key = await crypto.subtle.importKey(
@@ -85,25 +101,29 @@ document.addEventListener("DOMContentLoaded", () => {
   joinForm?.addEventListener("submit", async e => {
     e.preventDefault();
 
+    // Honeypot check
     const honeypot = document.getElementById("join-hidden-field")?.value || "";
     if (honeypot) {
       alert("Bot detected. Submission blocked.");
       return;
     }
 
+    // Sanitize inputs
     const name = sanitizeInput(document.getElementById("name").value);
     const email = sanitizeInput(document.getElementById("email").value);
     const phone = sanitizeInput(document.getElementById("phone").value);
     const comment = sanitizeInput(document.getElementById("comment").value);
 
+    // Validate files
     const resumeFile = document.getElementById("resume").files[0];
     const coverFile = document.getElementById("cover").files[0];
 
     if (!isValidFile(resumeFile) || !isValidFile(coverFile)) {
-      alert("Only PDF or Word documents are allowed.");
+      alert("Only PDF or Word documents are allowed for resume and cover letter.");
       return;
     }
 
+    // Asset ID from hidden input or generate new
     let assetIdInput = document.getElementById("asset-id");
     let assetId = assetIdInput?.value || generateSecureUUID();
 
@@ -111,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
       assetIdInput.value = assetId;
     }
 
-    // Generate AES key and export it as base64 for transmission to backend (securely!)
+    // Generate AES key and export it as base64 for backend (wrap/encrypt key in production)
     const aesKey = await generateAESKey();
     const exportedAesKey = await exportCryptoKey(aesKey);
 
@@ -125,7 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const ivResumeBase64 = arrayBufferToBase64(ivResume);
     const ivCoverBase64 = arrayBufferToBase64(ivCover);
 
-    const nonce = generateNonce(); // Another nonce for form submission metadata, optional but recommended
+    // Generate nonce and timestamp for metadata
+    const nonceArray = generateNonce();
+    const nonceBase64 = arrayBufferToBase64(nonceArray);
     const timestamp = new Date().toISOString();
 
     const metadata = {
@@ -134,38 +156,41 @@ document.addEventListener("DOMContentLoaded", () => {
       email,
       phone,
       comment,
-      nonce: arrayBufferToBase64(nonce),
+      nonce: nonceBase64,
       timestamp,
-      exportedAesKey, // Send key wrapped or encrypted in production!
+      exportedAesKey,  // In prod, encrypt/wrap this key before sending
       ivResume: ivResumeBase64,
       ivCover: ivCoverBase64,
       resumeFileName: resumeFile.name,
       coverFileName: coverFile.name
     };
 
+    // HMAC secret key — replace with secure environment management in prod
     const secretKey = "your-very-secret-client-key";
+
+    // Generate HMAC signature for integrity/authentication
     const hmacInput = JSON.stringify(metadata);
     const hmac = await generateHMAC(hmacInput, secretKey);
 
-    // Build FormData for transmission
+    // Prepare form data for transmission
     const formData = new FormData();
     formData.append("metadata", JSON.stringify(metadata));
     formData.append("hmac", hmac);
     formData.append("encryptedResume", new Blob([encryptedResume], { type: "application/octet-stream" }), resumeFile.name);
     formData.append("encryptedCover", new Blob([encryptedCover], { type: "application/octet-stream" }), coverFile.name);
 
-    // Send securely (adjust URL to your Worker or backend endpoint)
+    // Submit to backend endpoint — change URL to your Worker or API
     try {
       const response = await fetch("https://your-cloudflare-worker-or-api/submitJoin", {
         method: "POST",
         body: formData,
-        credentials: "omit" // no cookies, better security
+        credentials: "omit"
       });
       if (!response.ok) throw new Error(`Server error: ${response.status}`);
       alert("✅ Your application has been securely submitted!");
       joinForm.reset();
-    } catch (err) {
-      console.error("Upload failed:", err);
+    } catch (error) {
+      console.error("Upload failed:", error);
       alert("⚠️ Upload failed, please try again later.");
     }
   });
