@@ -6,19 +6,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const contactForm = document.getElementById("contact-form");
 
-  // Sanitize input against simple XSS
   const sanitizeInput = input => input.replace(/<[^>]*>/g, "").trim();
 
-  // Generate a cryptographically secure UUID v4
+  // Generate cryptographically secure UUID v4
   function generateSecureUUID() {
-    // returns uuid format string: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
     const cryptoObj = window.crypto || window.msCrypto;
     const bytes = new Uint8Array(16);
     cryptoObj.getRandomValues(bytes);
 
-    // Set version bits (4) and variant bits (8,9,A,B)
-    bytes[6] = (bytes[6] & 0x0f) | 0x40;
-    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
+    bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant
 
     const hexBytes = [...bytes].map(b => b.toString(16).padStart(2, "0"));
 
@@ -60,8 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
   contactForm?.addEventListener("submit", async e => {
     e.preventDefault();
 
-    // Honeypot check: if filled, block submission immediately
-    const honeypot = document.getElementById("contact-address").value;
+    // Honeypot check
+    const honeypot = document.getElementById("contact-address")?.value || "";
     if (honeypot) {
       alert("Bot detected. Submission blocked.");
       return;
@@ -79,16 +76,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let assetIdInput = document.getElementById("asset-id");
     let assetId = assetIdInput?.value || generateSecureUUID();
 
-    // If the hidden field is empty (unlikely), fill it dynamically
-    if (!assetIdInput?.value) {
-      if (assetIdInput) assetIdInput.value = assetId;
+    if (!assetIdInput?.value && assetIdInput) {
+      assetIdInput.value = assetId;
     }
 
-    // Generate nonce and timestamp for this submission
     const nonce = generateNonce();
     const timestamp = generateTimestamp();
 
-    // Package metadata to sign
     const metadata = {
       assetId,
       name,
@@ -101,21 +95,35 @@ document.addEventListener("DOMContentLoaded", () => {
       timestamp
     };
 
-    // Secret key for HMAC - replace with secure env var or secret manager in prod
-    const secretKey = "your-very-secret-client-key";
+    const secretKey = "your-very-secret-client-key"; // Replace in production
 
     const hmacInput = JSON.stringify(metadata);
     const hmac = await generateHMAC(hmacInput, secretKey);
 
-    // Prepare payload for secure transmission (encryption TBD in next phase)
     const payload = {
       metadata,
       hmac
     };
 
-    console.log("📨 Secure Contact payload ready:", payload);
-    alert("✅ Your message has been secured and is ready for transmission.");
+    // Replace below URL with your Cloudflare Worker endpoint
+    try {
+      const response = await fetch("https://your-cloudflare-worker-or-api/submitContact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+          // Include CSP nonce headers or auth tokens here if needed
+        },
+        body: JSON.stringify(payload),
+        credentials: "omit"
+      });
 
-    contactForm.reset();
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
+
+      alert("✅ Your message has been securely submitted!");
+      contactForm.reset();
+    } catch (err) {
+      console.error("Submission failed:", err);
+      alert("⚠️ Submission failed, please try again later.");
+    }
   });
 });
