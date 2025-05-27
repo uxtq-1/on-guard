@@ -1,65 +1,366 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- SEO Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Join Us - OPS Online Solutions</title>
+
+  <!-- SEO & Social -->
   <meta name="description" content="Join OPS Online Solutions and be part of a secure, innovative team driving next-gen IT and business services." />
-  <meta name="robots" content="index, follow" />
   <meta property="og:title" content="Join OPS Online Solutions" />
   <meta property="og:description" content="Apply securely to OPS Solutions. Upload your resume and join the mission." />
-  <meta property="og:image" content="assets/images/hero-image.jpg" />
   <meta property="og:url" content="https://www.opsonlinesolutions.com/join.html" />
 
-  <!-- CSP & Hardening -->
+  <!-- CSP -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'nonce-xyz123' https://cdnjs.cloudflare.com;
-    style-src 'self' 'nonce-xyz123' https://cdnjs.cloudflare.com;
+    script-src 'self' 'nonce-abc123' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline';
+    style-src 'self' 'nonce-abc123';
     img-src 'self' https://trusted-cdn.com;
-    connect-src 'self' https://api.opsonlinesolutions.com;
-    object-src 'none';
+    connect-src 'self' https://YOUR_CLOUDFLARE_WORKER_ENDPOINT;
     frame-ancestors 'none';
+    object-src 'none';
     base-uri 'self';
     form-action 'self';
   " />
 
-  <link rel="stylesheet" href="css/join.css" nonce="xyz123" />
-  <link rel="icon" href="assets/favicon.ico" />
+  <style nonce="abc123">
+    /* Basic container styling, no background override */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 1rem; background: transparent; }
+    main { max-width: 720px; margin: auto; }
+    h1 { text-align: center; }
+    form { background: #fff; border-radius: 8px; padding: 1rem 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    label { display: block; margin: 1rem 0 0.5rem; }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea { width: 100%; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; }
+    textarea { resize: vertical; min-height: 80px; }
+    button { margin-top: 1.5rem; padding: 0.75rem 1.5rem; font-size: 1.1rem; border: none; background-color: #007ACC; color: white; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #005fa3; }
+
+    .expandable-section {
+      margin-bottom: 1rem;
+    }
+
+    .expandable-section button {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      background: transparent;
+      color: #007ACC;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .field-group {
+      margin-top: 0.5rem;
+    }
+
+    .field-group input {
+      margin-top: 0.3rem;
+    }
+
+    #popup {
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      padding: 1rem 2rem;
+      max-width: 600px;
+      z-index: 9999;
+      border-radius: 8px;
+    }
+    #popup p {
+      margin-bottom: 1rem;
+    }
+    #popup a {
+      color: #007ACC;
+      text-decoration: underline;
+    }
+    #popup button {
+      background: #007ACC;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
   <main>
-    <section class="join-section">
-      <h1>Join Us</h1>
-      <p>Please fill out the form below to submit your application securely.</p>
+    <h1>Join Us at OPS Online Solutions</h1>
+    <p>Please copy-paste your information into the fields below to apply securely.</p>
 
-      <form id="join-form" enctype="multipart/form-data" autocomplete="off" novalidate>
-        <label for="name">Full Name</label>
-        <input type="text" id="name" required placeholder="Your name" />
+    <form id="join-form" autocomplete="off" novalidate>
+      <!-- Identity Fields -->
+      <label for="firstName">First Name *</label>
+      <input type="text" id="firstName" name="firstName" required placeholder="Your first name" />
 
-        <label for="email">Email</label>
-        <input type="email" id="email" required placeholder="your@email.com" />
+      <label for="lastName">Last Name *</label>
+      <input type="text" id="lastName" name="lastName" required placeholder="Your last name" />
 
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" required placeholder="+1 234 567 8901" />
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address" placeholder="Your address" />
+      
+      <label for="zipCode">Zip Code</label>
+      <input type="text" id="zipCode" name="zipCode" placeholder="Zip or postal code" />
 
-        <label for="resume">Upload Resume (PDF/DOC only)</label>
-        <input type="file" id="resume" accept=".pdf,.doc,.docx" required />
+      <label for="contactNumber">Contact Number *</label>
+      <input type="tel" id="contactNumber" name="contactNumber" required placeholder="+1 234 567 8901" />
 
-        <label for="cover">Upload Cover Letter (PDF/DOC only)</label>
-        <input type="file" id="cover" accept=".pdf,.doc,.docx" required />
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required placeholder="your@email.com" />
 
-        <label for="comment">Tell us about yourself</label>
-        <textarea id="comment" rows="4" required placeholder="Why do you want to join us?"></textarea>
+      <!-- Expandable Experience -->
+      <div class="expandable-section" id="experience-section">
+        <label>Experience</label>
+        <div class="field-group" id="experience-group">
+          <input type="text" name="experience[]" placeholder="Experience detail" />
+        </div>
+        <button type="button" id="add-experience">+ Add Experience</button>
+      </div>
 
-        <button type="submit">Submit</button>
-      </form>
-    </section>
+      <!-- Expandable Certification -->
+      <div class="expandable-section" id="certification-section">
+        <label>Certification</label>
+        <div class="field-group" id="certification-group">
+          <input type="text" name="certification[]" placeholder="Certification detail" />
+        </div>
+        <button type="button" id="add-certification">+ Add Certification</button>
+      </div>
+
+      <!-- Expandable Education -->
+      <div class="expandable-section" id="education-section">
+        <label>Education</label>
+        <div class="field-group" id="education-group">
+          <input type="text" name="education[]" placeholder="Education detail" />
+        </div>
+        <button type="button" id="add-education">+ Add Education</button>
+      </div>
+
+      <!-- Expandable Skills -->
+      <div class="expandable-section" id="skills-section">
+        <label>Skills</label>
+        <div class="field-group" id="skills-group">
+          <input type="text" name="skills[]" placeholder="Skill detail" />
+        </div>
+        <button type="button" id="add-skills">+ Add Skill</button>
+      </div>
+
+      <button type="submit">Submit Application</button>
+    </form>
   </main>
 
-  <script src="js/join-handler.js" nonce="xyz123" defer></script>
+  <!-- Popup security notice -->
+  <div id="popup" role="alertdialog" aria-modal="true" aria-labelledby="popupTitle" style="display:none;">
+    <p><strong>Security Notice:</strong> Due to high risks of malware in file uploads, we require you to copy-paste your resume information in plain text only.</p>
+    <p>Please review these recent reports on cyber threats:</p>
+    <ul>
+      <li><a href="https://tech.co/news/data-breaches-updated-list" target="_blank" rel="noopener">Tech.co: Data Breaches Updated List</a></li>
+      <li><a href="https://www.forbes.com/sites/daveywinder/2025/05/22/microsoft-attacks-windows-password-hackers-in-global-counter-strike" target="_blank" rel="noopener">Forbes: Microsoft Counterstrike</a></li>
+      <li><a href="https://www.forbes.com/sites/thomasbrewster/2024/03/26/hackers-breach-hundreds-of-ai-compute-servers-researchers-say" target="_blank" rel="noopener">Forbes: AI Compute Servers Breach</a></li>
+      <li><a href="https://www.forbes.com/sites/chuckbrooks/2025/05/18/growing-cyberthreats-to-the-internet-of-things" target="_blank" rel="noopener">Forbes: Cyberthreats IoT</a></li>
+    </ul>
+    <button id="popup-close-btn">I Understand, Continue</button>
+  </div>
+
+  <script nonce="abc123" type="module">
+    // Show popup on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const popup = document.getElementById('popup');
+      const closeBtn = document.getElementById('popup-close-btn');
+      popup.style.display = 'block';
+      closeBtn.addEventListener('click', () => {
+        popup.style.display = 'none';
+      });
+    });
+
+    // Add expandable fields logic
+    function setupExpandable(sectionId, groupId) {
+      const addBtn = document.getElementById(`add-${sectionId}`);
+      const group = document.getElementById(`${groupId}-group`);
+      addBtn.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = `${sectionId}[]`;
+        input.placeholder = `${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)} detail`;
+        input.style.marginTop = '0.3rem';
+        group.appendChild(input);
+      });
+    }
+    setupExpandable('experience', 'experience');
+    setupExpandable('certification', 'certification');
+    setupExpandable('education', 'education');
+    setupExpandable('skills', 'skills');
+
+    // Utilities for Web Crypto API
+
+    // Generate UUID v4 for asset ID or nonce if needed
+    function generateUUID() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    }
+
+    // Generate random nonce string
+    function generateNonce(length = 16) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      for(let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+
+    // Convert string to ArrayBuffer
+    function str2ab(str) {
+      const encoder = new TextEncoder();
+      return encoder.encode(str);
+    }
+
+    // Convert ArrayBuffer to Hex string
+    function ab2hex(buffer) {
+      return [...new Uint8Array(buffer)].map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    // Import key for HMAC
+    async function importKey(secret) {
+      const enc = new TextEncoder();
+      return crypto.subtle.importKey(
+        "raw",
+        enc.encode(secret),
+        { name: "HMAC", hash: "SHA-256" },
+        false,
+        ["sign", "verify"]
+      );
+    }
+
+    // Compute HMAC
+    async function computeHmac(key, message) {
+      const signature = await crypto.subtle.sign(
+        "HMAC",
+        key,
+        str2ab(message)
+      );
+      return ab2hex(signature);
+    }
+
+    // Encrypt data with AES-GCM using Web Crypto
+    async function encryptData(key, plaintext) {
+      const iv = crypto.getRandomValues(new Uint8Array(12)); // 96-bit IV
+      const enc = new TextEncoder();
+      const encrypted = await crypto.subtle.encrypt(
+        {
+          name: "AES-GCM",
+          iv: iv
+        },
+        key,
+        enc.encode(plaintext)
+      );
+      // Return base64 iv + encrypted concatenated
+      const ivStr = btoa(String.fromCharCode(...iv));
+      const encryptedStr = btoa(String.fromCharCode(...new Uint8Array(encrypted)));
+      return ivStr + ":" + encryptedStr;
+    }
+
+    // Import AES key from secret string
+    async function importAesKey(secret) {
+      const enc = new TextEncoder();
+      return crypto.subtle.importKey(
+        "raw",
+        enc.encode(secret),
+        "AES-GCM",
+        false,
+        ["encrypt", "decrypt"]
+      );
+    }
+
+    // Main submit handler
+    document.getElementById('join-form').addEventListener('submit', async function(event){
+      event.preventDefault();
+
+      // Collect form data
+      const form = event.target;
+
+      const metadata = {
+        assetId: generateUUID(),
+        firstName: form.firstName.value.trim(),
+        lastName: form.lastName.value.trim(),
+        address: form.address.value.trim(),
+        zipCode: form.zipCode.value.trim(),
+        contactNumber: form.contactNumber.value.trim(),
+        email: form.email.value.trim(),
+        experience: Array.from(form.querySelectorAll('input[name="experience[]"]')).map(i => i.value.trim()).filter(v => v),
+        certification: Array.from(form.querySelectorAll('input[name="certification[]"]')).map(i => i.value.trim()).filter(v => v),
+        education: Array.from(form.querySelectorAll('input[name="education[]"]')).map(i => i.value.trim()).filter(v => v),
+        skills: Array.from(form.querySelectorAll('input[name="skills[]"]')).map(i => i.value.trim()).filter(v => v)
+      };
+
+      // Basic validation
+      if(!metadata.firstName || !metadata.lastName || !metadata.contactNumber || !metadata.email) {
+        alert('Please fill in all required fields (*)');
+        return;
+      }
+
+      const secretKey = "YOUR_SECRET_KEY"; // Must match your Cloudflare Worker secret - NEVER expose this in real app! Use worker to do signing/encryption.
+      const authToken = "YOUR_AUTH_TOKEN"; // For simple API token auth on backend
+
+      try {
+        // Import keys
+        const hmacKey = await importKey(secretKey);
+        const aesKey = await importAesKey(secretKey);
+
+        const nonce = generateNonce();
+        const timestamp = new Date().toISOString();
+
+        // Prepare message for HMAC: JSON + nonce + timestamp
+        const message = JSON.stringify(metadata) + nonce + timestamp;
+
+        // Compute HMAC
+        const signature = await computeHmac(hmacKey, message);
+
+        // Encrypt metadata JSON
+        const encryptedMetadata = await encryptData(aesKey, JSON.stringify(metadata));
+
+        // Prepare payload
+        const payload = {
+          encryptedMetadata,
+          nonce,
+          timestamp,
+          signature,
+          authToken
+        };
+
+        // Send to Cloudflare Worker (replace with your Worker URL)
+        const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_ENDPOINT', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if(result.status === "success"){
+          alert("Your application has been submitted securely. Thank you!");
+          form.reset();
+        } else {
+          alert("Error submitting your application: " + result.message);
+        }
+
+      } catch(e) {
+        console.error(e);
+        alert("An unexpected error occurred during submission.");
+      }
+
+    });
+
+  </script>
 </body>
 </html>
