@@ -25,136 +25,249 @@
   " />
 
   <style nonce="abc123">
-    /* Basic container styling, no background override */
-    body { font-family: Arial, sans-serif; margin: 0; padding: 1rem; background: transparent; }
-    main { max-width: 720px; margin: auto; }
-    h1 { text-align: center; }
-    form { background: #fff; border-radius: 8px; padding: 1rem 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    label { display: block; margin: 1rem 0 0.5rem; }
+    /* Clean modern base */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f5f8fa;
+      color: #222;
+      padding: 2rem 1rem;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      padding: 2rem 3rem 3rem;
+      transition: box-shadow 0.3s ease;
+    }
+    main:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.16);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+      color: #007ACC;
+      letter-spacing: 0.03em;
+    }
+    p.description {
+      text-align: center;
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+      color: #555;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin: 1rem 0 0.5rem;
+      color: #333;
+    }
     input[type="text"],
     input[type="email"],
     input[type="tel"],
-    textarea { width: 100%; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; }
-    textarea { resize: vertical; min-height: 80px; }
-    button { margin-top: 1.5rem; padding: 0.75rem 1.5rem; font-size: 1.1rem; border: none; background-color: #007ACC; color: white; border-radius: 4px; cursor: pointer; }
-    button:hover { background-color: #005fa3; }
-
-    .expandable-section {
-      margin-bottom: 1rem;
+    textarea {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1.5px solid #ccc;
+      transition: border-color 0.3s ease;
+      font-weight: 400;
+      outline-offset: 2px;
     }
-
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    textarea:focus {
+      border-color: #007ACC;
+      box-shadow: 0 0 6px rgba(0,122,204,0.3);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      font-family: inherit;
+    }
+    button, .expandable-section button {
+      margin-top: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      display: inline-block;
+      padding: 0.6rem 1.4rem;
+      background-color: #007ACC;
+      color: white;
+      user-select: none;
+      letter-spacing: 0.02em;
+    }
+    button:hover, .expandable-section button:hover {
+      background-color: #005fa3;
+    }
+    .expandable-section {
+      margin-bottom: 2rem;
+      border-left: 3px solid #007ACC;
+      padding-left: 1rem;
+      background: #f0f7ff;
+      border-radius: 6px;
+    }
     .expandable-section button {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
       background: transparent;
       color: #007ACC;
-      border: none;
-      cursor: pointer;
       text-decoration: underline;
+      font-weight: 600;
+      margin-top: 0.4rem;
       padding: 0;
+      font-size: 0.95rem;
+      border-radius: 0;
     }
-
-    .field-group {
-      margin-top: 0.5rem;
-    }
-
     .field-group input {
-      margin-top: 0.3rem;
+      margin-top: 0.4rem;
+      font-weight: 400;
     }
-
+    /* Popup style */
     #popup {
       position: fixed;
-      top: 10%;
+      top: 12%;
       left: 50%;
       transform: translateX(-50%);
-      background: #f9f9f9;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      padding: 1rem 2rem;
-      max-width: 600px;
-      z-index: 9999;
-      border-radius: 8px;
+      max-width: 650px;
+      background: white;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      padding: 1.5rem 2rem;
+      border-radius: 10px;
+      z-index: 11000;
+      font-size: 1rem;
+      color: #333;
+      font-weight: 500;
+      line-height: 1.5;
+      user-select: text;
     }
-    #popup p {
+    #popup ul {
+      padding-left: 1.2rem;
+      margin-top: 0.8rem;
       margin-bottom: 1rem;
     }
     #popup a {
       color: #007ACC;
-      text-decoration: underline;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    #popup a:hover, #popup a:focus {
+      color: #005fa3;
+      outline: none;
     }
     #popup button {
-      background: #007ACC;
+      display: block;
+      margin-left: auto;
+      margin-top: 1rem;
+      background-color: #007ACC;
       color: white;
+      padding: 0.6rem 1.3rem;
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 6px;
       border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
       cursor: pointer;
+      transition: background-color 0.25s ease;
+      user-select: none;
+    }
+    #popup button:hover {
+      background-color: #005fa3;
+    }
+    /* Language toggle */
+    .lang-toggle {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1.8rem;
+    }
+    .lang-toggle label {
+      margin-right: 0.5rem;
+      font-weight: 600;
+      color: #444;
+      user-select: none;
+      align-self: center;
+    }
+    .lang-toggle select {
+      padding: 0.3rem 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-weight: 600;
+      outline-offset: 2px;
     }
   </style>
 </head>
 
 <body>
-  <main>
-    <h1>Join Us at OPS Online Solutions</h1>
-    <p>Please copy-paste your information into the fields below to apply securely.</p>
+  <main role="main" aria-labelledby="pageTitle">
+    <div class="lang-toggle" aria-label="Language selector">
+      <label for="language-select">Language / Idioma:</label>
+      <select id="language-select" aria-describedby="language-select-desc">
+        <option value="en" selected>English</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+
+    <h1 id="pageTitle">Join Us at OPS Online Solutions</h1>
+    <p id="description" class="description">Please copy-paste your information into the fields below to apply securely.</p>
 
     <form id="join-form" autocomplete="off" novalidate>
-      <!-- Identity Fields -->
-      <label for="firstName">First Name *</label>
-      <input type="text" id="firstName" name="firstName" required placeholder="Your first name" />
+      <label for="firstName" id="label-firstName">First Name *</label>
+      <input type="text" id="firstName" name="firstName" required placeholder="Your first name" autocomplete="given-name" />
 
-      <label for="lastName">Last Name *</label>
-      <input type="text" id="lastName" name="lastName" required placeholder="Your last name" />
+      <label for="lastName" id="label-lastName">Last Name *</label>
+      <input type="text" id="lastName" name="lastName" required placeholder="Your last name" autocomplete="family-name" />
 
-      <label for="address">Address</label>
-      <input type="text" id="address" name="address" placeholder="Your address" />
+      <label for="address" id="label-address">Address</label>
+      <input type="text" id="address" name="address" placeholder="Your address" autocomplete="street-address" />
       
-      <label for="zipCode">Zip Code</label>
-      <input type="text" id="zipCode" name="zipCode" placeholder="Zip or postal code" />
+      <label for="zipCode" id="label-zipCode">Zip Code</label>
+      <input type="text" id="zipCode" name="zipCode" placeholder="Zip or postal code" autocomplete="postal-code" />
 
-      <label for="contactNumber">Contact Number *</label>
-      <input type="tel" id="contactNumber" name="contactNumber" required placeholder="+1 234 567 8901" />
+      <label for="contactNumber" id="label-contactNumber">Contact Number *</label>
+      <input type="tel" id="contactNumber" name="contactNumber" required placeholder="+1 234 567 8901" autocomplete="tel" />
 
-      <label for="email">Email *</label>
-      <input type="email" id="email" name="email" required placeholder="your@email.com" />
+      <label for="email" id="label-email">Email *</label>
+      <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email" />
 
-      <!-- Expandable Experience -->
-      <div class="expandable-section" id="experience-section">
-        <label>Experience</label>
+      <!-- Expandable sections -->
+      <section class="expandable-section" id="experience-section" aria-label="Experience">
+        <label id="label-experience">Experience</label>
         <div class="field-group" id="experience-group">
           <input type="text" name="experience[]" placeholder="Experience detail" />
         </div>
-        <button type="button" id="add-experience">+ Add Experience</button>
-      </div>
+        <button type="button" id="add-experience" aria-controls="experience-group" aria-expanded="false" class="expand-btn">+ Add Experience</button>
+      </section>
 
-      <!-- Expandable Certification -->
-      <div class="expandable-section" id="certification-section">
-        <label>Certification</label>
+      <section class="expandable-section" id="certification-section" aria-label="Certification">
+        <label id="label-certification">Certification</label>
         <div class="field-group" id="certification-group">
           <input type="text" name="certification[]" placeholder="Certification detail" />
         </div>
-        <button type="button" id="add-certification">+ Add Certification</button>
-      </div>
+        <button type="button" id="add-certification" aria-controls="certification-group" aria-expanded="false" class="expand-btn">+ Add Certification</button>
+      </section>
 
-      <!-- Expandable Education -->
-      <div class="expandable-section" id="education-section">
-        <label>Education</label>
+      <section class="expandable-section" id="education-section" aria-label="Education">
+        <label id="label-education">Education</label>
         <div class="field-group" id="education-group">
           <input type="text" name="education[]" placeholder="Education detail" />
         </div>
-        <button type="button" id="add-education">+ Add Education</button>
-      </div>
+        <button type="button" id="add-education" aria-controls="education-group" aria-expanded="false" class="expand-btn">+ Add Education</button>
+      </section>
 
-      <!-- Expandable Skills -->
-      <div class="expandable-section" id="skills-section">
-        <label>Skills</label>
+      <section class="expandable-section" id="skills-section" aria-label="Skills">
+        <label id="label-skills">Skills</label>
         <div class="field-group" id="skills-group">
           <input type="text" name="skills[]" placeholder="Skill detail" />
         </div>
-        <button type="button" id="add-skills">+ Add Skill</button>
-      </div>
+        <button type="button" id="add-skills" aria-controls="skills-group" aria-expanded="false" class="expand-btn">+ Add Skill</button>
+      </section>
 
-      <button type="submit">Submit Application</button>
+      <button type="submit" id="submit-btn">Submit Application</button>
     </form>
   </main>
 
@@ -172,44 +285,125 @@
   </div>
 
   <script nonce="abc123" type="module">
-    // Show popup on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      const popup = document.getElementById('popup');
-      const closeBtn = document.getElementById('popup-close-btn');
-      popup.style.display = 'block';
-      closeBtn.addEventListener('click', () => {
-        popup.style.display = 'none';
-      });
+    // Language toggle
+    const langSelect = document.getElementById('language-select');
+    const textMap = {
+      en: {
+        title: 'Join Us at OPS Online Solutions',
+        description: 'Please copy-paste your information into the fields below to apply securely.',
+        labels: {
+          firstName: 'First Name *',
+          lastName: 'Last Name *',
+          address: 'Address',
+          zipCode: 'Zip Code',
+          contactNumber: 'Contact Number *',
+          email: 'Email *',
+          experience: 'Experience',
+          certification: 'Certification',
+          education: 'Education',
+          skills: 'Skills',
+          submitBtn: 'Submit Application',
+          addExp: '+ Add Experience',
+          addCert: '+ Add Certification',
+          addEdu: '+ Add Education',
+          addSkill: '+ Add Skill'
+        },
+        popupText: {
+          en: true,
+          es: false
+        }
+      },
+      es: {
+        title: 'Únete a OPS Online Solutions',
+        description: 'Por favor, copie y pegue su información en los campos a continuación para aplicar de forma segura.',
+        labels: {
+          firstName: 'Nombre *',
+          lastName: 'Apellido *',
+          address: 'Dirección',
+          zipCode: 'Código Postal',
+          contactNumber: 'Número de Contacto *',
+          email: 'Correo Electrónico *',
+          experience: 'Experiencia',
+          certification: 'Certificación',
+          education: 'Educación',
+          skills: 'Habilidades',
+          submitBtn: 'Enviar Aplicación',
+          addExp: '+ Agregar Experiencia',
+          addCert: '+ Agregar Certificación',
+          addEdu: '+ Agregar Educación',
+          addSkill: '+ Agregar Habilidad'
+        },
+        popupText: {
+          en: false,
+          es: true
+        }
+      }
+    };
+
+    function setLanguage(lang) {
+      const t = textMap[lang];
+      document.getElementById('pageTitle').textContent = t.title;
+      document.getElementById('description').textContent = t.description;
+      document.getElementById('label-firstName').textContent = t.labels.firstName;
+      document.getElementById('label-lastName').textContent = t.labels.lastName;
+      document.getElementById('label-address').textContent = t.labels.address;
+      document.getElementById('label-zipCode').textContent = t.labels.zipCode;
+      document.getElementById('label-contactNumber').textContent = t.labels.contactNumber;
+      document.getElementById('label-email').textContent = t.labels.email;
+      document.getElementById('label-experience').textContent = t.labels.experience;
+      document.getElementById('label-certification').textContent = t.labels.certification;
+      document.getElementById('label-education').textContent = t.labels.education;
+      document.getElementById('label-skills').textContent = t.labels.skills;
+      document.getElementById('submit-btn').textContent = t.labels.submitBtn;
+      document.getElementById('add-experience').textContent = t.labels.addExp;
+      document.getElementById('add-certification').textContent = t.labels.addCert;
+      document.getElementById('add-education').textContent = t.labels.addEdu;
+      document.getElementById('add-skills').textContent = t.labels.addSkill;
+      document.getElementById('popup-text-en').style.display = t.popupText.en ? 'block' : 'none';
+      document.getElementById('popup-text-es').style.display = t.popupText.es ? 'block' : 'none';
+    }
+
+    langSelect.addEventListener('change', (e) => {
+      setLanguage(e.target.value);
     });
 
-    // Add expandable fields logic
-    function setupExpandable(sectionId, groupId) {
+    setLanguage('en'); // default language
+
+    // Popup logic
+    const popup = document.getElementById('popup');
+    const popupCloseBtn = document.getElementById('popup-close-btn');
+    popup.style.display = 'block';
+    popupCloseBtn.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+
+    // Expandable fields logic
+    function setupExpandable(sectionId) {
       const addBtn = document.getElementById(`add-${sectionId}`);
-      const group = document.getElementById(`${groupId}-group`);
+      const group = document.getElementById(`${sectionId}-group`);
       addBtn.addEventListener('click', () => {
         const input = document.createElement('input');
         input.type = 'text';
         input.name = `${sectionId}[]`;
-        input.placeholder = `${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)} detail`;
+        input.placeholder = langSelect.value === 'en'
+          ? `${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)} detail`
+          : `Detalle de ${sectionId}`;
         input.style.marginTop = '0.3rem';
         group.appendChild(input);
       });
     }
-    setupExpandable('experience', 'experience');
-    setupExpandable('certification', 'certification');
-    setupExpandable('education', 'education');
-    setupExpandable('skills', 'skills');
+    setupExpandable('experience');
+    setupExpandable('certification');
+    setupExpandable('education');
+    setupExpandable('skills');
 
-    // Utilities for Web Crypto API
-
-    // Generate UUID v4 for asset ID or nonce if needed
+    // Web Crypto helpers
     function generateUUID() {
       return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       );
     }
 
-    // Generate random nonce string
     function generateNonce(length = 16) {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       let result = '';
@@ -219,18 +413,6 @@
       return result;
     }
 
-    // Convert string to ArrayBuffer
-    function str2ab(str) {
-      const encoder = new TextEncoder();
-      return encoder.encode(str);
-    }
-
-    // Convert ArrayBuffer to Hex string
-    function ab2hex(buffer) {
-      return [...new Uint8Array(buffer)].map(b => b.toString(16).padStart(2,'0')).join('');
-    }
-
-    // Import key for HMAC
     async function importKey(secret) {
       const enc = new TextEncoder();
       return crypto.subtle.importKey(
@@ -238,21 +420,19 @@
         enc.encode(secret),
         { name: "HMAC", hash: "SHA-256" },
         false,
-        ["sign", "verify"]
+        ["sign"]
       );
     }
 
-    // Compute HMAC
     async function computeHmac(key, message) {
       const signature = await crypto.subtle.sign(
         "HMAC",
         key,
-        str2ab(message)
+        new TextEncoder().encode(message)
       );
-      return ab2hex(signature);
+      return [...new Uint8Array(signature)].map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // Encrypt data with AES-GCM using Web Crypto
     async function encryptData(key, plaintext) {
       const iv = crypto.getRandomValues(new Uint8Array(12)); // 96-bit IV
       const enc = new TextEncoder();
@@ -264,13 +444,11 @@
         key,
         enc.encode(plaintext)
       );
-      // Return base64 iv + encrypted concatenated
       const ivStr = btoa(String.fromCharCode(...iv));
       const encryptedStr = btoa(String.fromCharCode(...new Uint8Array(encrypted)));
       return ivStr + ":" + encryptedStr;
     }
 
-    // Import AES key from secret string
     async function importAesKey(secret) {
       const enc = new TextEncoder();
       return crypto.subtle.importKey(
@@ -282,13 +460,11 @@
       );
     }
 
-    // Main submit handler
-    document.getElementById('join-form').addEventListener('submit', async function(event){
+    // Form submit handler
+    document.getElementById('join-form').addEventListener('submit', async function(event) {
       event.preventDefault();
 
-      // Collect form data
       const form = event.target;
-
       const metadata = {
         assetId: generateUUID(),
         firstName: form.firstName.value.trim(),
@@ -297,48 +473,49 @@
         zipCode: form.zipCode.value.trim(),
         contactNumber: form.contactNumber.value.trim(),
         email: form.email.value.trim(),
-        experience: Array.from(form.querySelectorAll('input[name="experience[]"]')).map(i => i.value.trim()).filter(v => v),
-        certification: Array.from(form.querySelectorAll('input[name="certification[]"]')).map(i => i.value.trim()).filter(v => v),
-        education: Array.from(form.querySelectorAll('input[name="education[]"]')).map(i => i.value.trim()).filter(v => v),
-        skills: Array.from(form.querySelectorAll('input[name="skills[]"]')).map(i => i.value.trim()).filter(v => v)
+        experience: Array.from(form.querySelectorAll('input[name="experience[]"]'))
+                         .map(i => i.value.trim())
+                         .filter(v => v),
+        certification: Array.from(form.querySelectorAll('input[name="certification[]"]'))
+                            .map(i => i.value.trim())
+                            .filter(v => v),
+        education: Array.from(form.querySelectorAll('input[name="education[]"]'))
+                        .map(i => i.value.trim())
+                        .filter(v => v),
+        skills: Array.from(form.querySelectorAll('input[name="skills[]"]'))
+                     .map(i => i.value.trim())
+                     .filter(v => v)
       };
 
-      // Basic validation
-      if(!metadata.firstName || !metadata.lastName || !metadata.contactNumber || !metadata.email) {
-        alert('Please fill in all required fields (*)');
+      // Validation
+      if (!metadata.firstName || !metadata.lastName || !metadata.contactNumber || !metadata.email) {
+        alert(langSelect.value === 'en'
+          ? 'Please fill in all required fields (*)'
+          : 'Por favor complete todos los campos obligatorios (*)');
         return;
       }
 
-      const secretKey = "YOUR_SECRET_KEY"; // Must match your Cloudflare Worker secret - NEVER expose this in real app! Use worker to do signing/encryption.
-      const authToken = "YOUR_AUTH_TOKEN"; // For simple API token auth on backend
+      const SECRET_KEY = "YOUR_SECRET_KEY"; // NEVER expose on client in production! This is demo only.
+      const AUTH_TOKEN = "YOUR_AUTH_TOKEN";
 
       try {
-        // Import keys
-        const hmacKey = await importKey(secretKey);
-        const aesKey = await importAesKey(secretKey);
-
+        const hmacKey = await importKey(SECRET_KEY);
+        const aesKey = await importAesKey(SECRET_KEY);
         const nonce = generateNonce();
         const timestamp = new Date().toISOString();
 
-        // Prepare message for HMAC: JSON + nonce + timestamp
         const message = JSON.stringify(metadata) + nonce + timestamp;
-
-        // Compute HMAC
         const signature = await computeHmac(hmacKey, message);
-
-        // Encrypt metadata JSON
         const encryptedMetadata = await encryptData(aesKey, JSON.stringify(metadata));
 
-        // Prepare payload
         const payload = {
           encryptedMetadata,
           nonce,
           timestamp,
           signature,
-          authToken
+          authToken: AUTH_TOKEN
         };
 
-        // Send to Cloudflare Worker (replace with your Worker URL)
         const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_ENDPOINT', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -346,21 +523,23 @@
         });
 
         const result = await response.json();
-
-        if(result.status === "success"){
-          alert("Your application has been submitted securely. Thank you!");
+        if (result.status === 'success') {
+          alert(langSelect.value === 'en'
+            ? 'Your application has been submitted securely. Thank you!'
+            : 'Su solicitud ha sido enviada de forma segura. ¡Gracias!');
           form.reset();
         } else {
-          alert("Error submitting your application: " + result.message);
+          alert((langSelect.value === 'en'
+            ? 'Error submitting your application: '
+            : 'Error al enviar su solicitud: ') + result.message);
         }
-
-      } catch(e) {
-        console.error(e);
-        alert("An unexpected error occurred during submission.");
+      } catch (err) {
+        console.error(err);
+        alert(langSelect.value === 'en'
+          ? 'An unexpected error occurred during submission.'
+          : 'Ocurrió un error inesperado durante el envío.');
       }
-
     });
-
   </script>
 </body>
 </html>
