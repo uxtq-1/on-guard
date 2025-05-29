@@ -50,8 +50,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style nonce="{{CSP_NONCE}}">
-    body, html {
-      margin: 0; padding: 0; height: 100%;
+    html, body {
+      margin: 0; 
+      padding: 0; 
+      height: 100%;
       background: var(--bg-color, #121212);
       color: var(--text-color, #eee);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -71,11 +73,15 @@
       box-shadow: 0 0 20px rgba(162, 89, 255, 0.3);
       border: 2px solid transparent;
       transition: border 0.4s ease;
-      margin: 1rem auto;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      box-sizing: border-box;
+      min-height: 80vh;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     #secure-content.focused {
       border-image: linear-gradient(45deg, #a259ff 0%, transparent 30%, transparent 70%, #a259ff 100%) 1;
@@ -104,6 +110,7 @@
       gap: 1.25rem;
       width: 100%;
       max-width: 480px;
+      box-sizing: border-box;
     }
     .form-group {
       position: relative;
@@ -256,6 +263,8 @@
       #secure-content {
         max-width: 90vw;
         padding: 1.5rem 1rem;
+        min-height: auto;
+        max-height: none;
       }
       input[type="text"],
       input[type="email"],
@@ -352,7 +361,7 @@
         <div class="form-group email-group" style="position:relative;">
           <input type="email" name="contact-email[]" placeholder=" " required />
           <label data-en="Place your email" data-es="Ingrese su correo">Place your email</label>
-          <button type="button" class="remove-email" aria-label="Remove email field" title="Remove email field" style="position:absolute; top: 8px; right: 8 chillingpx; background:none; border:none; color:#a259ff; font-size:1.2rem; cursor:pointer;">×</button>
+          <button type="button" class="remove-email" aria-label="Remove email field" title="Remove email field" style="position:absolute; top: 8px; right: 8px; background:none; border:none; color:#a259ff; font-size:1.2rem; cursor:pointer;">×</button>
         </div>
       </div>
       <button type="button" id="add-email" style="color:#a259ff; background:none; border:none; font-weight:700; margin-bottom: 1rem; cursor:pointer;">+ Add another email</button>
