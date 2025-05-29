@@ -29,7 +29,6 @@
   <meta name="twitter:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
 
   <!-- Content Security Policy -->
-  <!-- CSP Note: Nonce placeholders included for dynamic insertion at server-side -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' 'nonce-{{CSP_NONCE}}' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
@@ -50,8 +49,19 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE}}" />
   <link rel="stylesheet" href="css/small-screens.css" media="(max-width:768px)" nonce="{{CSP_NONCE}}" />
+  <link rel="stylesheet" href="css/contact.css" nonce="{{CSP_NONCE}}" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-p6Oa8BHLDRkN3xHv+6kQflYJyPL5pNQdSFDY1yz0Y3GMrV+kX12oGmBzHO9Ll+FKwtmCIXVWvCqKZ+voLhWTDQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- Inline Styles: Form Layout & Floating Labels -->
   <style nonce="{{CSP_NONCE}}">
-    /* ----- Form Container & Positioning ----- */
     body, html {
       margin: 0; padding: 0; height: 100%;
       background: #121212;
@@ -75,20 +85,15 @@
       outline-offset: 0;
       margin: 1rem;
     }
-    /* Two running lines shine on focus */
+    /* Running shine lines on focus */
     #secure-content.focused {
       border-image: linear-gradient(45deg, #a259ff 0%, transparent 30%, transparent 70%, #a259ff 100%) 1;
       animation: shineRun 1.5s linear infinite;
     }
     @keyframes shineRun {
-      0% {
-        border-image: linear-gradient(45deg, #a259ff 0%, transparent 30%, transparent 70%, #a259ff 100%) 1;
-      }
-      100% {
-        border-image: linear-gradient(45deg, transparent 0%, #a259ff 30%, #a259ff 70%, transparent 100%) 1;
-      }
+      0% { border-image: linear-gradient(45deg, #a259ff 0%, transparent 30%, transparent 70%, #a259ff 100%) 1; }
+      100% { border-image: linear-gradient(45deg, transparent 0%, #a259ff 30%, #a259ff 70%, transparent 100%) 1; }
     }
-    /* ----- Heading & Paragraph ----- */
     h1 {
       text-align: center;
       margin-bottom: 0.2rem;
@@ -102,7 +107,6 @@
       color: #aaa;
       font-size: 1.05rem;
     }
-    /* ----- Floating Labels & Inputs ----- */
     form {
       display: flex;
       flex-direction: column;
@@ -119,6 +123,7 @@
     input[type="tel"],
     input[type="date"],
     input[type="time"],
+    select,
     textarea {
       width: 100%;
       padding: 14px 14px 14px 14px;
@@ -139,7 +144,7 @@
       max-height: 500px;
       font-size: 1rem;
     }
-    input:focus, textarea:focus {
+    input:focus, textarea:focus, select:focus {
       border-color: #a259ff;
       box-shadow: 0 0 8px 2px rgba(162, 89, 255, 0.8);
       background: rgba(162, 89, 255, 0.15);
@@ -157,11 +162,13 @@
       user-select: none;
       border-radius: 4px;
     }
-    /* Move label up when input has value or is focused */
+    /* Move label up when input/select/textarea has value or is focused */
     input:focus + label,
     input:not(:placeholder-shown) + label,
     textarea:focus + label,
-    textarea:not(:placeholder-shown) + label {
+    textarea:not(:placeholder-shown) + label,
+    select:focus + label,
+    select:not([value=""]) + label {
       top: -12px;
       left: 12px;
       font-size: 0.85rem;
@@ -250,6 +257,7 @@
       input[type="tel"],
       input[type="date"],
       input[type="time"],
+      select,
       textarea {
         font-size: 0.95rem;
       }
@@ -261,77 +269,89 @@
   </style>
 </head>
 <body>
-  <div id="secure-content" role="main" aria-labelledby="pageTitle" tabindex="-1" aria-live="polite" aria-atomic="true" aria-relevant="all">
+  <main id="secure-content" role="main" aria-labelledby="pageTitle" tabindex="-1" aria-live="polite" aria-atomic="true" aria-relevant="all">
     <h1 id="pageTitle" data-en="Contact Us at OPS Online Solutions" data-es="Contáctenos en OPS Online Solutions">Contact Us at OPS Online Solutions</h1>
     <p id="description" data-en="Securely contact us with your questions or service requests." data-es="Contáctenos de forma segura con sus preguntas o solicitudes de servicio.">Securely contact us with your questions or service requests.</p>
 
     <form id="contact-form" method="POST" action="https://api.opsonlinesolutions.com/submitContact" autocomplete="off" novalidate>
-      <!-- Honeypot -->
+      <!-- Honeypot (hidden bot trap) -->
       <div style="position:absolute; left:-9999px;" aria-hidden="true">
         <input type="text" id="contact-hp" name="contact-hp" autocomplete="off" tabindex="-1" />
       </div>
-      <!-- Country code dropdown + phone input group -->
+
+      <!-- Country code + phone -->
       <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
-        <select id="country-code" name="country-code" aria-label="Country Code" required style="flex: 1; min-width: 90px; border-radius: 12px; background: rgba(128,0,255,0.1); color: #eee; border: 2px solid transparent; padding: 12px;">
+        <select id="country-code" name="country-code" aria-label="Country Code" required style="flex: 1;">
           <option value="" disabled selected data-en="Select" data-es="Seleccione">Select</option>
           <option value="+1" data-en="USA +1" data-es="EEUU +1">USA +1</option>
           <option value="+44" data-en="UK +44" data-es="Reino Unido +44">UK +44</option>
           <option value="+593" data-en="Ecuador +593" data-es="Ecuador +593">Ecuador +593</option>
           <option value="+52" data-en="Mexico +52" data-es="México +52">Mexico +52</option>
-          <!-- Add more country codes as needed -->
         </select>
-        <input type="tel" id="contact-phone" name="contact-phone" placeholder=" " required style="flex: 2; border-radius: 12px; background: rgba(128,0,255,0.1); color: #eee; border: 2px solid transparent; padding: 12px;" />
+        <input type="tel" id="contact-phone" name="contact-phone" placeholder=" " required style="flex: 2;" />
         <label for="contact-phone" data-en="Enter your phone number" data-es="Ingrese su número de teléfono" style="position: absolute; left: -9999px;">Enter your phone number</label>
       </div>
 
-      <!-- Other fields -->
+      <!-- Name -->
       <div class="form-group">
         <input type="text" id="contact-name" name="contact-name" placeholder=" " required />
         <label for="contact-name" data-en="Place your name" data-es="Ingrese su nombre">Place your name</label>
       </div>
+      <!-- Last Name -->
       <div class="form-group">
         <input type="text" id="contact-lastname" name="contact-lastname" placeholder=" " required />
         <label for="contact-lastname" data-en="Place your last name" data-es="Ingrese su apellido">Place your last name</label>
       </div>
+
+      <!-- Address fields with add/remove -->
       <div id="address-container">
-        <div class="form-group address-group">
+        <div class="form-group address-group" style="position:relative;">
           <input type="text" name="contact-address[]" placeholder=" " required />
           <label data-en="Place your address" data-es="Ingrese su dirección">Place your address</label>
           <button type="button" class="remove-address" aria-label="Remove address field" title="Remove address field" style="position:absolute; top: 8px; right: 8px; background:none; border:none; color:#a259ff; font-size:1.2rem; cursor:pointer;">×</button>
         </div>
       </div>
       <button type="button" id="add-address" style="color:#a259ff; background:none; border:none; font-weight:700; margin-bottom: 1rem; cursor:pointer;">+ Add another address</button>
+
+      <!-- State + Zip -->
       <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
         <input type="text" id="contact-state" name="contact-state" placeholder=" " required style="flex:1" />
         <label for="contact-state" data-en="State" data-es="Estado">State</label>
         <input type="text" id="contact-zip" name="contact-zip" placeholder=" " required style="flex:1" />
         <label for="contact-zip" data-en="Zip Code" data-es="Código Postal">Zip Code</label>
       </div>
+
+      <!-- Email fields with add/remove -->
       <div id="email-container">
-        <div class="form-group email-group">
+        <div class="form-group email-group" style="position:relative;">
           <input type="email" name="contact-email[]" placeholder=" " required />
           <label data-en="Place your email" data-es="Ingrese su correo">Place your email</label>
           <button type="button" class="remove-email" aria-label="Remove email field" title="Remove email field" style="position:absolute; top: 8px; right: 8px; background:none; border:none; color:#a259ff; font-size:1.2rem; cursor:pointer;">×</button>
         </div>
       </div>
       <button type="button" id="add-email" style="color:#a259ff; background:none; border:none; font-weight:700; margin-bottom: 1rem; cursor:pointer;">+ Add another email</button>
+
+      <!-- Comments -->
       <div class="form-group">
         <textarea id="contact-comments" name="contact-comments" rows="6" placeholder=" " maxlength="5000" required></textarea>
         <label for="contact-comments" data-en="Place your comments" data-es="Ingrese sus comentarios">Place your comments</label>
       </div>
+
       <!-- reCAPTCHA placeholder -->
       <div id="recaptcha-placeholder" style="margin: 1rem 0; min-height: 78px;">
         <!-- reCAPTCHA widget will be loaded here -->
       </div>
+
       <button type="submit" class="submit-button" data-en="Send Message" data-es="Enviar Mensaje">Send Message</button>
     </form>
 
-    <div id="feedback-message" aria-live="polite" aria-atomic="true"></div>
+    <div id="feedback-message" aria-live="polite" aria-atomic="true" role="alert" style="min-height: 30px;"></div>
+
     <div id="encrypting-msg" aria-live="polite" aria-atomic="true" role="status" aria-hidden="true">
       <div id="spinner" aria-hidden="true"></div>
       <span data-en="Encrypting..." data-es="Encriptando...">Encrypting...</span>
     </div>
-  </div>
+  </main>
 
   <script nonce="{{CSP_NONCE}}">
     (() => {
@@ -347,26 +367,23 @@
       const addAddressBtn = document.getElementById('add-address');
       const addEmailBtn = document.getElementById('add-email');
 
-      // Utility: set text content for EN/ES toggling elements
+      // Language toggle support
       function setLanguageTexts(lang) {
         document.querySelectorAll('[data-en]').forEach(el => {
           el.textContent = lang === 'es' ? el.getAttribute('data-es') : el.getAttribute('data-en');
         });
       }
-      // Initial language state
       let currentLang = localStorage.getItem('language') || 'en';
       setLanguageTexts(currentLang);
-
-      // Language toggle
       langToggleBtn.addEventListener('click', () => {
         currentLang = currentLang === 'en' ? 'es' : 'en';
         localStorage.setItem('language', currentLang);
         setLanguageTexts(currentLang);
       });
 
-      // Floating label logic (for initial state on page load)
+      // Update floating labels on load and input
       function updateFloatingLabels() {
-        form.querySelectorAll('input, textarea').forEach(input => {
+        form.querySelectorAll('input, textarea, select').forEach(input => {
           if (input.value.trim() !== '') {
             input.classList.add('has-value');
           } else {
@@ -375,12 +392,15 @@
         });
       }
       updateFloatingLabels();
+      form.querySelectorAll('input, textarea, select').forEach(input => {
+        input.addEventListener('input', updateFloatingLabels);
+      });
 
-      // Add new address field dynamically
+      // Add address field dynamically
       addAddressBtn.addEventListener('click', () => {
-        const newAddressGroup = document.createElement('div');
-        newAddressGroup.className = 'form-group address-group';
-        newAddressGroup.style.position = 'relative';
+        const newGroup = document.createElement('div');
+        newGroup.className = 'form-group address-group';
+        newGroup.style.position = 'relative';
 
         const newInput = document.createElement('input');
         newInput.type = 'text';
@@ -388,13 +408,6 @@
         newInput.placeholder = ' ';
         newInput.required = true;
         newInput.style.width = '100%';
-        newInput.style.padding = '14px';
-        newInput.style.background = 'rgba(128,0,255,0.1)';
-        newInput.style.border = '2px solid transparent';
-        newInput.style.borderRadius = '12px';
-        newInput.style.color = '#eee';
-        newInput.style.fontSize = '1rem';
-        newInput.style.outline = 'none';
 
         const newLabel = document.createElement('label');
         newLabel.textContent = currentLang === 'es' ? 'Ingrese su dirección' : 'Place your address';
@@ -415,20 +428,20 @@
         removeBtn.textContent = '×';
 
         removeBtn.addEventListener('click', () => {
-          newAddressGroup.remove();
+          newGroup.remove();
         });
 
-        newAddressGroup.appendChild(newInput);
-        newAddressGroup.appendChild(newLabel);
-        newAddressGroup.appendChild(removeBtn);
-        addressContainer.appendChild(newAddressGroup);
+        newGroup.appendChild(newInput);
+        newGroup.appendChild(newLabel);
+        newGroup.appendChild(removeBtn);
+        addressContainer.appendChild(newGroup);
       });
 
-      // Add new email field dynamically
+      // Add email field dynamically
       addEmailBtn.addEventListener('click', () => {
-        const newEmailGroup = document.createElement('div');
-        newEmailGroup.className = 'form-group email-group';
-        newEmailGroup.style.position = 'relative';
+        const newGroup = document.createElement('div');
+        newGroup.className = 'form-group email-group';
+        newGroup.style.position = 'relative';
 
         const newInput = document.createElement('input');
         newInput.type = 'email';
@@ -436,13 +449,6 @@
         newInput.placeholder = ' ';
         newInput.required = true;
         newInput.style.width = '100%';
-        newInput.style.padding = '14px';
-        newInput.style.background = 'rgba(128,0,255,0.1)';
-        newInput.style.border = '2px solid transparent';
-        newInput.style.borderRadius = '12px';
-        newInput.style.color = '#eee';
-        newInput.style.fontSize = '1rem';
-        newInput.style.outline = 'none';
 
         const newLabel = document.createElement('label');
         newLabel.textContent = currentLang === 'es' ? 'Ingrese su correo' : 'Place your email';
@@ -463,42 +469,34 @@
         removeBtn.textContent = '×';
 
         removeBtn.addEventListener('click', () => {
-          newEmailGroup.remove();
+          newGroup.remove();
         });
 
-        newEmailGroup.appendChild(newInput);
-        newEmailGroup.appendChild(newLabel);
-        newEmailGroup.appendChild(removeBtn);
-        emailContainer.appendChild(newEmailGroup);
+        newGroup.appendChild(newInput);
+        newGroup.appendChild(newLabel);
+        newGroup.appendChild(removeBtn);
+        emailContainer.appendChild(newGroup);
       });
 
-      // Form validation & submission handler with feedback & loading
+      // Form submission handler with validations and feedback
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Simple client-side validation
         if (!form.checkValidity()) {
           showFeedback(currentLang === 'es' ? 'Por favor, complete todos los campos obligatorios correctamente.' : 'Please fill out all required fields correctly.', true);
           return;
         }
 
         // Honeypot check
-        if (form['contact-hp'].value) {
-          // Bot detected, silently fail
-          return;
-        }
+        if (form['contact-hp'].value) return; // Bot detected, silently fail
 
-        // Show loading spinner & encrypting message
         encryptingMsg.setAttribute('aria-hidden', 'false');
         encryptingMsg.classList.add('show');
 
-        // Disable form
         Array.from(form.elements).forEach(el => el.disabled = true);
 
-        // Gather form data
         const formData = new FormData(form);
 
-        // Send form data to backend API (Cloudflare Worker)
         try {
           const response = await fetch(form.action, {
             method: 'POST',
@@ -511,35 +509,29 @@
           const result = await response.json();
 
           if (result.success) {
-            showFeedback(currentLang === 'es' ? 
-              'Gracias por su consideración y tiempo. Nos pondremos en contacto con usted lo antes posible. Su solicitud y pregunta se tratan con urgencia. ¡Que tenga un día productivo pero excepcional!' : 
-              'Thank you for your consideration and time. We will contact you as soon as possible. Your request and question are treated with urgency. Have a productive but outstanding day!', false);
+            showFeedback(currentLang === 'es'
+              ? 'Gracias por su consideración y tiempo. Nos pondremos en contacto con usted lo antes posible. Su solicitud y pregunta se tratan con urgencia. ¡Que tenga un día productivo pero excepcional!'
+              : 'Thank you for your consideration and time. We will contact you as soon as possible. Your request and question are treated with urgency. Have a productive but outstanding day!', false);
 
             form.reset();
-            // Hide form after success
             form.style.display = 'none';
 
-            // Show encrypting msg briefly after fade out thank you msg
             setTimeout(() => {
               encryptingMsg.classList.remove('show');
               encryptingMsg.setAttribute('aria-hidden', 'true');
             }, 2500);
 
-            // Fade out feedback message after 5 seconds
             setTimeout(() => {
               feedbackMessage.classList.remove('show');
-              // Optionally, show the form again if you want users to send more
-              // form.style.display = 'block';
             }, 5000);
           } else {
             throw new Error(result.message || 'Submission failed');
           }
         } catch (error) {
-          showFeedback(currentLang === 'es' ? 
-            'Ocurrió un error durante el envío. Por favor, intente nuevamente más tarde.' : 
-            'An error occurred during submission. Please try again later.', true);
+          showFeedback(currentLang === 'es'
+            ? 'Ocurrió un error durante el envío. Por favor, intente nuevamente más tarde.'
+            : 'An error occurred during submission. Please try again later.', true);
 
-          // Re-enable form
           Array.from(form.elements).forEach(el => el.disabled = false);
           encryptingMsg.classList.remove('show');
           encryptingMsg.setAttribute('aria-hidden', 'true');
@@ -552,7 +544,6 @@
         feedbackMessage.style.color = isError ? '#e55353' : '#a259ff';
         feedbackMessage.classList.add('show');
       }
-
     })();
   </script>
 </body>
