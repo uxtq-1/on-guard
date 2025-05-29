@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Meta, SEO, CSP, links, etc. same as your last version (omitted for brevity) -->
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact Us - OPS Online Solutions</title>
+
+  <!-- SEO Meta Tags -->
   <meta name="description" content="Contact OPS Online Solutions securely for IT support, remote solutions, and professional services inquiries." />
   <meta name="keywords" content="Contact Us, OPS Online Solutions, IT Support, Remote Solutions, Business Inquiries" />
   <meta name="author" content="OPS Online Solutions" />
   <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph / Social Meta Tags -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Contact OPS Online Solutions" />
   <meta property="og:description" content="Contact OPS Online Solutions securely for IT support, remote solutions, and professional services inquiries." />
   <meta property="og:url" content="https://www.opsonlinesolutions.com/contact.html" />
   <meta property="og:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
+
+  <!-- Twitter Card Meta -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Contact OPS Online Solutions" />
   <meta name="twitter:description" content="Contact OPS Online Solutions securely for IT support, remote solutions, and professional services inquiries." />
@@ -34,13 +39,17 @@
     form-action https://api.opsonlinesolutions.com/submitContact;
   " />
 
+  <!-- Favicons -->
+  <link rel="icon" href="assets/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE}}" />
   <link rel="stylesheet" href="css/small-screens.css" media="(max-width:768px)" nonce="{{CSP_NONCE}}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="css/contact.css" nonce="{{CSP_NONCE}}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style nonce="{{CSP_NONCE}}">
-    /* [Your previous form styling here...] */
     body, html {
       margin: 0; padding: 0; height: 100%;
       background: var(--bg-color, #121212);
@@ -62,12 +71,206 @@
       box-shadow: 0 0 20px rgba(162, 89, 255, 0.3);
       border: 2px solid transparent;
       transition: border 0.4s ease;
-      outline-offset: 0;
-      margin: 1rem;
+      margin: 1rem auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    /* Add focus border shine etc ... (your previous CSS) */
-
-    /* Light Theme Overrides */
+    #secure-content.focused {
+      border-image: linear-gradient(45deg, #a259ff 0%, transparent 30%, transparent 70%, #a259ff 100%) 1;
+      animation: shineRun 1.5s linear infinite;
+    }
+    @keyframes shineRun {
+      0% { border-image: linear-gradient(45deg, #a259ff 0%, transparent 30%, transparent 70%, #a259ff 100%) 1; }
+      100% { border-image: linear-gradient(45deg, transparent 0%, #a259ff 30%, #a259ff 70%, transparent 100%) 1; }
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 0.2rem;
+      font-weight: 700;
+      font-size: 2rem;
+      user-select: none;
+    }
+    #description {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #aaa;
+      font-size: 1.05rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 480px;
+    }
+    .form-group {
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      background: rgba(128, 0, 255, 0.1);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: #eee;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      resize: vertical;
+      min-height: 44px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 120px;
+      max-height: 500px;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #a259ff;
+      box-shadow: 0 0 8px 2px rgba(162, 89, 255, 0.8);
+      background: rgba(162, 89, 255, 0.15);
+    }
+    label {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      color: #bbb;
+      font-size: 1rem;
+      pointer-events: none;
+      padding: 0 6px;
+      transition: all 0.3s ease;
+      user-select: none;
+      border-radius: 4px;
+    }
+    input:focus + label,
+    input:not(:placeholder-shown) + label,
+    textarea:focus + label,
+    textarea:not(:placeholder-shown) + label,
+    select:focus + label,
+    select:not([value=""]) + label {
+      top: -12px;
+      left: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #a259ff;
+      background: #121212;
+    }
+    .submit-button {
+      background-color: #a259ff;
+      color: white;
+      padding: 14px 28px;
+      font-weight: 700;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    .submit-button:hover,
+    .submit-button:focus {
+      background-color: #7e3ed0;
+      outline: none;
+    }
+    #feedback-message {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #a259ff;
+      min-height: 30px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    #feedback-message.show {
+      opacity: 1;
+    }
+    #encrypting-msg {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      color: #a259ff;
+      background: rgba(18,18,18,0.85);
+      border-radius: 12px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      z-index: 9999;
+    }
+    #encrypting-msg.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #spinner {
+      border: 3px solid #a259ff;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% {transform: rotate(0deg);}
+      100% {transform: rotate(360deg);}
+    }
+    .floating-icons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .floating-icon {
+      background: #a259ff;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(162, 89, 255, 0.5);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .floating-icon:hover {
+      background-color: #7e3ed0;
+      transform: scale(1.1);
+    }
+    @media (max-width: 600px) {
+      #secure-content {
+        max-width: 90vw;
+        padding: 1.5rem 1rem;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="date"],
+      input[type="time"],
+      select,
+      textarea {
+        font-size: 0.95rem;
+      }
+      .submit-button {
+        font-size: 1rem;
+        padding: 12px 22px;
+      }
+    }
     body.light-theme {
       --bg-color: #f4f4f4;
       --text-color: #222;
@@ -77,9 +280,6 @@
       box-shadow: 0 0 15px rgba(162, 89, 255, 0.3);
       color: #222;
     }
-    /* Your form styles ... with variables for colors for easier theme switching */
-
-    /* Add your floating label styles, inputs, buttons, feedback, spinner, etc. from previous code */
   </style>
 </head>
 <body>
@@ -106,17 +306,74 @@
     <h1 id="pageTitle" data-en="Contact Us at OPS Online Solutions" data-es="Contáctenos en OPS Online Solutions">Contact Us at OPS Online Solutions</h1>
     <p id="description" data-en="Securely contact us with your questions or service requests." data-es="Contáctenos de forma segura con sus preguntas o solicitudes de servicio.">Securely contact us with your questions or service requests.</p>
 
-    <!-- Your entire form markup here... (unchanged, floating labels etc.) -->
+    <form id="contact-form" method="POST" action="https://api.opsonlinesolutions.com/submitContact" autocomplete="off" novalidate>
+      <div style="position:absolute; left:-9999px;" aria-hidden="true">
+        <input type="text" id="contact-hp" name="contact-hp" autocomplete="off" tabindex="-1" />
+      </div>
 
-    <!-- Feedback and encrypting messages -->
-    <div id="feedback-message" aria-live="polite" aria-atomic="true"></div>
+      <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
+        <select id="country-code" name="country-code" aria-label="Country Code" required style="flex: 1;">
+          <option value="" disabled selected data-en="Select" data-es="Seleccione">Select</option>
+          <option value="+1" data-en="USA +1" data-es="EEUU +1">USA +1</option>
+          <option value="+44" data-en="UK +44" data-es="Reino Unido +44">UK +44</option>
+          <option value="+593" data-en="Ecuador +593" data-es="Ecuador +593">Ecuador +593</option>
+          <option value="+52" data-en="Mexico +52" data-es="México +52">Mexico +52</option>
+        </select>
+        <input type="tel" id="contact-phone" name="contact-phone" placeholder=" " required style="flex: 2;" />
+        <label for="contact-phone" data-en="Enter your phone number" data-es="Ingrese su número de teléfono">Enter your phone number</label>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="contact-name" name="contact-name" placeholder=" " required />
+        <label for="contact-name" data-en="Place your name" data-es="Ingrese su nombre">Place your name</label>
+      </div>
+      <div class="form-group">
+        <input type="text" id="contact-lastname" name="contact-lastname" placeholder=" " required />
+        <label for="contact-lastname" data-en="Place your last name" data-es="Ingrese su apellido">Place your last name</label>
+      </div>
+
+      <div id="address-container">
+        <div class="form-group address-group" style="position:relative;">
+          <input type="text" name="contact-address[]" placeholder=" " required />
+          <label data-en="Place your address" data-es="Ingrese su dirección">Place your address</label>
+          <button type="button" class="remove-address" aria-label="Remove address field" title="Remove address field" style="position:absolute; top: 8px; right: 8px; background:none; border:none; color:#a259ff; font-size:1.2rem; cursor:pointer;">×</button>
+        </div>
+      </div>
+      <button type="button" id="add-address" style="color:#a259ff; background:none; border:none; font-weight:700; margin-bottom: 1rem; cursor:pointer;">+ Add another address</button>
+
+      <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
+        <input type="text" id="contact-state" name="contact-state" placeholder=" " required style="flex:1" />
+        <label for="contact-state" data-en="State" data-es="Estado">State</label>
+        <input type="text" id="contact-zip" name="contact-zip" placeholder=" " required style="flex:1" />
+        <label for="contact-zip" data-en="Zip Code" data-es="Código Postal">Zip Code</label>
+      </div>
+
+      <div id="email-container">
+        <div class="form-group email-group" style="position:relative;">
+          <input type="email" name="contact-email[]" placeholder=" " required />
+          <label data-en="Place your email" data-es="Ingrese su correo">Place your email</label>
+          <button type="button" class="remove-email" aria-label="Remove email field" title="Remove email field" style="position:absolute; top: 8px; right: 8 chillingpx; background:none; border:none; color:#a259ff; font-size:1.2rem; cursor:pointer;">×</button>
+        </div>
+      </div>
+      <button type="button" id="add-email" style="color:#a259ff; background:none; border:none; font-weight:700; margin-bottom: 1rem; cursor:pointer;">+ Add another email</button>
+
+      <div class="form-group">
+        <textarea id="contact-comments" name="contact-comments" rows="6" placeholder=" " maxlength="5000" required></textarea>
+        <label for="contact-comments" data-en="Place your comments" data-es="Ingrese sus comentarios">Place your comments</label>
+      </div>
+
+      <div id="recaptcha-placeholder" style="margin: 1rem 0; min-height: 78px;"></div>
+
+      <button type="submit" class="submit-button" data-en="Send Message" data-es="Enviar Mensaje">Send Message</button>
+    </form>
+
+    <div id="feedback-message" aria-live="polite" aria-atomic="true" role="alert"></div>
     <div id="encrypting-msg" aria-live="polite" aria-atomic="true" role="status" aria-hidden="true">
       <div id="spinner" aria-hidden="true"></div>
       <span data-en="Encrypting..." data-es="Encriptando...">Encrypting...</span>
     </div>
   </main>
 
-  <!-- Floating Icons -->
   <div class="floating-icons" aria-label="Quick Access">
     <a href="join.html" class="floating-icon" aria-label="Join Us" tabindex="0">
       <i class="fas fa-user-plus" aria-hidden="true"></i>
@@ -126,7 +383,6 @@
     </a>
   </div>
 
-  <!-- Mobile Nav -->
   <nav class="mobile-nav" role="navigation" aria-label="Mobile Navigation">
     <a href="index.html" class="mobile-nav-item" aria-label="Home">
       <i class="fas fa-home" aria-hidden="true"></i>
@@ -157,9 +413,19 @@
     (() => {
       'use strict';
 
-      // Language toggles
       const langToggleDesktop = document.getElementById('language-toggle-desktop');
       const langToggleMobile = document.getElementById('language-toggle-mobile');
+      const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
+      const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+      const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+      const mobileServicesMenu = document.getElementById('mobile-services-menu');
+      const form = document.getElementById('contact-form');
+      const addressContainer = document.getElementById('address-container');
+      const emailContainer = document.getElementById('email-container');
+      const addAddressBtn = document.getElementById('add-address');
+      const addEmailBtn = document.getElementById('add-email');
+      const feedbackMessage = document.getElementById('feedback-message');
+      const encryptingMsg = document.getElementById('encrypting-msg');
 
       function setLanguageTexts(lang) {
         document.querySelectorAll('[data-en]').forEach(el => {
@@ -178,25 +444,6 @@
 
       langToggleDesktop.addEventListener('click', toggleLanguage);
       langToggleMobile.addEventListener('click', toggleLanguage);
-
-      // Mobile Services Menu Toggle
-      const mobileServicesToggle = document.getElementById('mobile-services-toggle');
-      const mobileServicesMenu = document.getElementById('mobile-services-menu');
-
-      mobileServicesToggle.addEventListener('click', () => {
-        const isExpanded = mobileServicesToggle.getAttribute('aria-expanded') === 'true';
-        mobileServicesToggle.setAttribute('aria-expanded', String(!isExpanded));
-        if (isExpanded) {
-          mobileServicesMenu.hidden = true;
-        } else {
-          mobileServicesMenu.hidden = false;
-        }
-      });
-
-      // Theme toggle
-      const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
-      const themeToggleMobile = document.getElementById('theme-toggle-mobile');
-      const root = document.documentElement;
 
       function setTheme(theme) {
         if (theme === 'light') {
@@ -225,10 +472,165 @@
         currentTheme = currentTheme === 'light' ? 'dark' : 'light';
       });
 
+      mobileServicesToggle.addEventListener('click', () => {
+        const isExpanded = mobileServicesToggle.getAttribute('aria-expanded') === 'true';
+        mobileServicesToggle.setAttribute('aria-expanded', String(!isExpanded));
+        mobileServicesMenu.hidden = isExpanded;
+      });
+
+      function updateFloatingLabels() {
+        form.querySelectorAll('input, textarea, select').forEach(input => {
+          if (input.value.trim() !== '') {
+            input.classList.add('has-value');
+          } else {
+            input.classList.remove('has-value');
+          }
+        });
+      }
+
+      updateFloatingLabels();
+      form.querySelectorAll('input, textarea, select').forEach(input => {
+        input.addEventListener('input', updateFloatingLabels);
+      });
+
+      addAddressBtn.addEventListener('click', () => {
+        const newGroup = document.createElement('div');
+        newGroup.className = 'form-group address-group';
+        newGroup.style.position = 'relative';
+
+        const newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.name = 'contact-address[]';
+        newInput.placeholder = ' ';
+        newInput.required = true;
+
+        const newLabel = document.createElement('label');
+        newLabel.textContent = currentLang === 'es' ? 'Ingrese su dirección' : 'Place your address';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove-address';
+        removeBtn.setAttribute('aria-label', currentLang === 'es' ? 'Eliminar campo de dirección' : 'Remove address field');
+        removeBtn.title = removeBtn.getAttribute('aria-label');
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.top = '8px';
+        removeBtn.style.right = '8px';
+        removeBtn.style.background = 'none';
+        removeBtn.style.border = 'none';
+        removeBtn.style.color = '#a259ff';
+        removeBtn.style.fontSize = '1.2rem';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.textContent = '×';
+
+        removeBtn.addEventListener('click', () => newGroup.remove());
+
+        newGroup.appendChild(newInput);
+        newGroup.appendChild(newLabel);
+        newGroup.appendChild(removeBtn);
+        addressContainer.appendChild(newGroup);
+      });
+
+      addEmailBtn.addEventListener('click', () => {
+        const newGroup = document.createElement('div');
+        newGroup.className = 'form-group email-group';
+        newGroup.style.position = 'relative';
+
+        const newInput = document.createElement('input');
+        newInput.type = 'email';
+        newInput.name = 'contact-email[]';
+        newInput.placeholder = ' ';
+        newInput.required = true;
+
+        const newLabel = document.createElement('label');
+        newLabel.textContent = currentLang === 'es' ? 'Ingrese su correo' : 'Place your email';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove-email';
+        removeBtn.setAttribute('aria-label', currentLang === 'es' ? 'Eliminar campo de correo' : 'Remove email field');
+        removeBtn.title = removeBtn.getAttribute('aria-label');
+        removeBtn.style.position = 'absolute';
+        removeBtn.style.top = '8px';
+        removeBtn.style.right = '8px';
+        removeBtn.style.background = 'none';
+        removeBtn.style.border = 'none';
+        removeBtn.style.color = '#a259ff';
+        removeBtn.style.fontSize = '1.2rem';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.textContent = '×';
+
+        removeBtn.addEventListener('click', () => newGroup.remove());
+
+        newGroup.appendChild(newInput);
+        newGroup.appendChild(newLabel);
+        newGroup.appendChild(removeBtn);
+        emailContainer.appendChild(newGroup);
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!form.checkValidity()) {
+          showFeedback(currentLang === 'es' ? 'Por favor, complete todos los campos obligatorios correctamente.' : 'Please fill out all required fields correctly.', true);
+          return;
+        }
+
+        if (form['contact-hp'].value) return;
+
+        encryptingMsg.setAttribute('aria-hidden', 'false');
+        encryptingMsg.classList.add('show');
+
+        Array.from(form.elements).forEach(el => el.disabled = true);
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (!response.ok) throw new Error('Network response not ok');
+
+          const result = await response.json();
+
+          if (result.success) {
+            showFeedback(currentLang === 'es'
+              ? 'Gracias por su consideración y tiempo. Nos pondremos en contacto con usted lo antes posible. Su solicitud y pregunta se tratan con urgencia. ¡Que tenga un día productivo pero excepcional!'
+              : 'Thank you for your consideration and time. We will contact you as soon as possible. Your request and question are treated with urgency. Have a productive but outstanding day!', false);
+
+            form.reset();
+            form.style.display = 'none';
+
+            setTimeout(() => {
+              encryptingMsg.classList.remove('show');
+              encryptingMsg.setAttribute('aria-hidden', 'true');
+            }, 2500);
+
+            setTimeout(() => {
+              feedbackMessage.classList.remove('show');
+            }, 5000);
+          } else {
+            throw new Error(result.message || 'Submission failed');
+          }
+        } catch (error) {
+          showFeedback(currentLang === 'es'
+            ? 'Ocurrió un error durante el envío. Por favor, intente nuevamente más tarde.'
+            : 'An error occurred during submission. Please try again later.', true);
+
+          Array.from(form.elements).forEach(el => el.disabled = false);
+          encryptingMsg.classList.remove('show');
+          encryptingMsg.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      function showFeedback(message, isError = false) {
+        feedbackMessage.textContent = message;
+        feedbackMessage.style.color = isError ? '#e55353' : '#a259ff';
+        feedbackMessage.classList.add('show');
+      }
     })();
   </script>
-
-  <script src="js/contact-handler.js" nonce="{{CSP_NONCE}}" defer></script>
-  <script src="js/shared.js" nonce="{{CSP_NONCE}}" defer></script>
 </body>
 </html>
