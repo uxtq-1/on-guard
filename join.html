@@ -23,6 +23,7 @@
     base-uri 'self';
     form-action 'self';
   " />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style nonce="abc123">
     /* Clean modern base */
@@ -216,6 +217,7 @@
     <p id="description" class="description">Please copy-paste your information into the fields below to apply securely.</p>
 
     <form id="join-form" autocomplete="off" novalidate>
+      <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
       <label for="firstName" id="label-firstName">First Name *</label>
       <input type="text" id="firstName" name="firstName" required placeholder="Your first name" autocomplete="given-name" />
 
@@ -541,5 +543,8 @@
       }
     });
   </script>
+  <script src="js/form-encryptor.js" defer></script>
+  <script src="js/join-handler.js" defer></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
