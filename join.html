@@ -236,6 +236,17 @@
       <label for="email" id="label-email">Email *</label>
       <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email" />
 
+      <div style="display: flex; justify-content: space-between; gap: 1rem;"> <!-- Using inline style for simplicity, can be moved to CSS -->
+        <div style="flex: 1;">
+            <label for="join-page-preferred-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+            <input type="date" id="join-page-preferred-date" name="preferred_date" required style="width: 100%; padding: 0.65rem 1rem; font-size: 1rem; border-radius: 6px; border: 1.5px solid #ccc;" />
+        </div>
+        <div style="flex: 1;">
+            <label for="join-page-preferred-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
+            <input type="time" id="join-page-preferred-time" name="preferred_time" required style="width: 100%; padding: 0.65rem 1rem; font-size: 1rem; border-radius: 6px; border: 1.5px solid #ccc;" />
+        </div>
+      </div>
+
       <!-- Expandable sections -->
       <section class="expandable-section" id="experience-section" aria-label="Experience">
         <label id="label-experience">Experience</label>

@@ -155,30 +155,21 @@
                 <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required />
               </div>
               <div class="form-cell">
-                <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
-                <input type="date" id="join-date" required />
+                <label for="join-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+                <input type="date" id="join-date" name="preferred_date" required />
               </div>
             </div>
             <div class="form-row">
               <div class="form-cell">
-                <label for="join-time" data-en="Time" data-es="Hora">Time</label>
-                <input type="time" id="join-time" required />
-              </div>
-              <div class="form-cell">
-                <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
-                <input type="file" id="join-resume" name="join-resume" accept=".pdf,.doc,.docx" required />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
-                <input type="file" id="join-cover" name="join-cover" accept=".pdf,.doc,.docx" required />
+                <label for="join-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
+                <input type="time" id="join-time" name="preferred_time" required />
               </div>
               <div class="form-cell">
                 <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
-                <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
+                <textarea id="join-comment" name="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
               </div>
             </div>
+            <!-- Removed file input form-row -->
           </form>
         </div>
         <div class="modal-footer">
@@ -216,14 +207,14 @@
                 <input type="tel" id="contact-number" placeholder="Enter your contact number / Ingrese su número" required />
               </div>
               <div class="form-cell">
-                <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
-                <input type="date" id="contact-date" required />
+                <label for="contact-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+                <input type="date" id="contact-date" name="preferred_date" required />
               </div>
             </div>
             <div class="form-row">
               <div class="form-cell">
-                <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
-                <input type="time" id="contact-time" required />
+                <label for="contact-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
+                <input type="time" id="contact-time" name="preferred_time" required />
               </div>
               <div class="form-cell">
                 <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>

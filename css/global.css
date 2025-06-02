@@ -161,11 +161,12 @@ footer {
 
 .floating-icons {
   position: fixed;
-  bottom: 110px;
-  right: 20px;
+  bottom: 20px; /* Adjusted bottom spacing */
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  flex-direction: row; /* Icons side-by-side */
+  gap: 1rem; /* Spacing between icons */
   z-index: 2000;
 }
 /* =========================================================
@@ -362,4 +363,120 @@ body[data-theme="dark"] .form-cell textarea:focus {
 
 body[data-theme="dark"] .form-cell label {
   color: #000000 !important;      /* Force black labels */
+}
+
+/* About Us Page Specific Styles */
+.journey-section {
+  padding: 2rem 1rem; /* Add some padding */
+}
+.journey-entry {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px; /* Add gap between left and right entries */
+}
+.journey-year-left, .journey-year-right {
+  width: 48%;
+  background-color: #f9f9f9; /* Light background for each entry */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+body[data-theme="dark"] .journey-year-left,
+body[data-theme="dark"] .journey-year-right {
+  background-color: #2a2a2a; /* Darker background for dark mode */
+  color: #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.journey-year-left h3, .journey-year-right h3 {
+  color: #9b87f5;
+  margin-bottom: 0.5rem;
+}
+body[data-theme="dark"] .journey-year-left h3,
+body[data-theme="dark"] .journey-year-right h3 {
+  color: #bb86fc;
+}
+
+.team-section {
+  padding: 2rem 1rem; /* Add some padding */
+  text-align: center;
+}
+.team-section .team-member {
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+body[data-theme="dark"] .team-section .team-member {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.team-member h3 {
+  color: #9b87f5;
+  margin-bottom: 0.5rem;
+}
+body[data-theme="dark"] .team-member h3 {
+  color: #bb86fc;
+}
+
+.contact-join-links {
+  padding: 2rem 1rem; /* Add some padding */
+  text-align: center;
+}
+.contact-join-links .link-pair {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 20px; /* Add gap between link items */
+}
+.contact-join-links .link-item {
+  text-align: center;
+  width: 45%;
+  min-width: 280px; /* Ensure items don't get too squished */
+  padding: 15px;
+  background-color: #f0eaff; /* Light purple background */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+body[data-theme="dark"] .contact-join-links .link-item {
+  background-color: #3a2c4d; /* Darker purple for dark mode */
+  color: #e0e0e0;
+   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.contact-join-links .link-item h3 a {
+  text-decoration: none;
+  /* class="btn" styling will be inherited if .btn is general enough,
+     otherwise, specific styling for these links might be needed here or by ensuring .btn applies */
+}
+.contact-join-links .link-item p {
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments for journey and links */
+@media screen and (max-width: 768px) {
+  .journey-entry {
+    flex-direction: column;
+    gap: 0; /* Remove gap when stacked */
+  }
+  .journey-year-left, .journey-year-right {
+    width: 100%;
+    margin-bottom: 20px; /* Add margin between stacked items */
+  }
+  .journey-year-right:last-child {
+    margin-bottom: 0; /* No margin for the very last item if it's alone */
+  }
+  .contact-join-links .link-pair {
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact-join-links .link-item {
+    width: 90%; /* Full width for stacked items */
+    margin-bottom: 20px;
+  }
+  .contact-join-links .link-item:last-child {
+    margin-bottom: 0;
+  }
 }
