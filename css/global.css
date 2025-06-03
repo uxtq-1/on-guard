@@ -161,7 +161,7 @@ footer {
 
 .floating-icons {
   position: fixed;
-  bottom: 20px; /* Adjusted bottom spacing */
+  bottom: 20px;
   right: 20px;
   transform: translateX(-50%);
   display: flex;
