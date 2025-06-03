@@ -255,8 +255,8 @@
      <!-- ======================================================================
                            Reference Section
     ====================================================================== -->
-  <script src="js/form-encryptor.js" defer></script>
-  <script src="js/main.js" defer></script>
-  <script src="js/service-worker.js" defer></script>
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
 </body>
 </html>
