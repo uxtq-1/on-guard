@@ -143,7 +143,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0j5R/K9R5XQJ4Y7Y0iZg
     }
 
     // --- Main Public Method ---
-    async function processForm(formElement, formType, siteKeyV3, backendUrl) {
+    async function processForm(formElement, formType, siteKeyV3, backendUrl, specificAssetId = null) {
         // 1. Get ReCaptcha token
         const recaptchaToken = await new Promise((resolve, reject) => {
             if (typeof grecaptcha === 'undefined' || !grecaptcha.ready || !grecaptcha.execute) {
@@ -182,7 +182,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0j5R/K9R5XQJ4Y7Y0iZg
         }
 
         // 3. Generate Crypto Materials
-        const assetId = generateSecureUUID();
+        const assetId = specificAssetId ? specificAssetId : generateSecureUUID();
         const timestamp = generateTimestamp();
         const sessionAESKey = await generateAESKey();
         const exportedKeyMaterial = await exportRawKey(sessionAESKey); // Raw AES key

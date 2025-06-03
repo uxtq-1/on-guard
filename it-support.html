@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="js/integrity-checker.js" defer></script>
+  <script src="js/integrity-checker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <!-- ==================================================================
                          Hardened CSP via Meta Tag
   ================================================================== -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
-    style-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
+    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
+    style-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
     img-src 'self' https://trusted-image-cdn.com;
     font-src 'self' https://cdnjs.cloudflare.com;
     connect-src 'self';
@@ -21,11 +21,28 @@
   ================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IT Support - OPS Solutions Services</title>
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css">
+  <title>IT Support Services | OPS Online Solutions</title>
+  <meta name="description" content="Reliable and secure IT support services by OPS Online Solutions. Ensure seamless IT operations and expert technical assistance for your business." />
+  <meta name="keywords" content="IT Support, Technical Support, Remote IT Assistance, Managed IT Services, OPS Online Solutions, Tech Help" />
+  <meta property="og:title" content="IT Support Services | OPS Online Solutions" />
+  <meta property="og:description" content="Reliable and secure IT support services by OPS Online Solutions. Ensure seamless IT operations and expert technical assistance for your business." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.opsonlinesolutions.com/it-support.html" />
+  <meta property="og:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
+  <meta property="og:site_name" content="OPS Online Solutions" />
+  <script type="application/ld+json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OPS Online Solutions",
+      "url": "https://www.opsonlinesolutions.com",
+      "logo": "https://www.opsonlinesolutions.com/assets/logo.png"
+    }
+  </script>
+  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+  <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="manifest.json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
   <link rel="icon" href="assets/favicon.ico">
 </head>
 <body>
@@ -55,7 +72,7 @@
     <p data-en="Keep your business moving with zero downtime. Proactive, responsive, and human-centered IT help." data-es="Mantén tu negocio en marcha sin interrupciones. Soporte IT proactivo, ágil y centrado en las personas.">
       Keep your business moving with zero downtime. Proactive, responsive, and human-centered IT help.
     </p>
-    <img src="assets/images/hero-image.jpg" alt="IT Support Hero Image" class="hero-image">
+    <img src="assets/images/hero-image.jpg" alt="IT Support Hero Image" class="hero-image" loading="lazy">
   </section>
   <!-- ===== Services Preview Section ===== -->
   <section id="services-preview" class="services">
@@ -229,7 +246,7 @@
     </ul>
   </div>
   <!-- ===== JS Scripts ===== -->
-  <script src="js/main.js" defer></script>
-  <script src="js/service-worker.js" defer></script>
+  <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
 </body>
 </html>

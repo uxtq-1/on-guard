@@ -5,34 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSP header should be configured server-side to include dynamic nonces for script and style elements. -->
+
+    <!-- CSP header should be configured server-side to include dynamic nonces (like 'nonce-{{CSP_NONCE_PLACEHOLDER}}') for script and style elements. -->
 
     <!-- SEO Title -->
-    <title>OPS Online Support - Secure IT Support & Remote Solutions</title>
+    <title>Security & Vulnerability Disclosure | OPS Online Solutions</title>
 
     <!-- Meta Description for SEO -->
-    <meta name="description" content="OPS Online Support offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies.">
+    <meta name="description" content="Report security vulnerabilities or learn about OPS Online Solutions' security practices. We are committed to maintaining the highest security standards." />
 
     <!-- Meta Keywords -->
-    <meta name="keywords" content="IT Support, Remote Solutions, Contact Center, Business Operations, Professional Services, OPS Online Support, Secure IT Services">
+    <meta name="keywords" content="Security, Vulnerability Reporting, Cybersecurity, Secure Practices, OPS Online Solutions, Data Protection" />
 
     <!-- Robots Meta Tag (SEO Enhancement) -->
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph for Social Media Sharing -->
-    <meta property="og:title" content="OPS Online Support - Secure IT Support & Remote Solutions">
-    <meta property="og:description" content="OPS Online Support offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies.">
+    <meta property="og:title" content="Security & Vulnerability Disclosure | OPS Online Solutions">
+    <meta property="og:description" content="Report security vulnerabilities or learn about OPS Online Solutions' security practices. We are committed to maintaining the highest security standards." />
     <meta property="og:image" content="assets/images/hero-image.jpg">
-    <meta property="og:url" content="https://www.opsonlinesupport.com">
+    <meta property="og:url" content="https://www.opsonlinesolutions.com/security.html">
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="OPS Online Solutions" />
 
     <!-- Structured Data (Schema Markup) - Organization Schema -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "OPS Online Support",
-        "url": "https://www.opsonlinesupport.com",
-        "logo": "https://www.opsonlinesupport.com/assets/logo.png",
+        "name": "OPS Online Solutions",
+        "url": "https://www.opsonlinesolutions.com",
+        "logo": "https://www.opsonlinesolutions.com/assets/logo.png",
         "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+1-201-350-7567",
@@ -49,8 +52,8 @@
     </script>
 
     <!-- External Stylesheets -->
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css">
+    <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+    <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
     <link rel="icon" href="assets/favicon.ico">
 
@@ -88,7 +91,7 @@
             <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
                 Empowering remote solutions with cutting-edge strategies.
             </p>
-            <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image">
+            <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image" loading="lazy">
         </section>
 
         <!-- Security Disclosure Form -->
@@ -109,17 +112,25 @@
     <!-- ======================================================================
                            Reference Section
     ====================================================================== -->
-  <script src="js/form-encryptor.js" defer></script>
-  <script src="js/main.js" defer></script> <!-- main.js might not be strictly needed if all page logic is self-contained -->
-  <script src="js/service-worker.js" defer></script>
 
-  <script>
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script> <!-- main.js might not be strictly needed if all page logic is self-contained -->
+  <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+
+  <script nonce="{{CSP_NONCE_PLACEHOLDER}}">
+
     document.addEventListener('DOMContentLoaded', () => {
         const securityForm = document.getElementById('securityForm');
 
         if (securityForm) {
             const RECAPTCHA_V3_SITE_KEY = 'YOUR_RECAPTCHA_V3_SITE_KEY_PLACEHOLDER'; // User should replace
+
+            // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+          
             const BACKEND_SUBMISSION_URL = 'YOUR_BACKEND_SUBMISSION_URL_PLACEHOLDER'; // User should replace
+          
+            // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+
 
             securityForm.addEventListener('submit', function(e) {
                 e.preventDefault();

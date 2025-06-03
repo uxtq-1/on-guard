@@ -7,15 +7,41 @@
 
   <!-- SEO & Social -->
   <meta name="description" content="Join OPS Online Solutions and be part of a secure, innovative team driving next-gen IT and business services." />
+  <meta name="keywords" content="Careers, Join Us, OPS Online Solutions, IT Jobs, Tech Careers, Secure Employment" />
   <meta property="og:title" content="Join OPS Online Solutions" />
-  <meta property="og:description" content="Apply securely to OPS Solutions. Upload your resume and join the mission." />
+  <meta property="og:description" content="Join OPS Online Solutions and be part of a secure, innovative team driving next-gen IT and business services." />
+  <meta property="og:image" content="assets/images/hero-image.jpg" />
   <meta property="og:url" content="https://www.opsonlinesolutions.com/join.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="OPS Online Solutions" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OPS Online Solutions",
+      "url": "https://www.opsonlinesolutions.com",
+      "logo": "https://www.opsonlinesolutions.com/assets/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-201-350-7567",
+        "contactType": "Customer Service",
+        "areaServed": "US",
+        "availableLanguage": ["English", "Spanish"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/yourpage",
+        "https://twitter.com/yourhandle",
+        "https://www.linkedin.com/company/yourcompany"
+      ]
+    }
+  </script>
 
   <!-- CSP -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'nonce-abc123' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline';
-    style-src 'self' 'nonce-abc123';
+    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
+    style-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}';
     img-src 'self' https://trusted-cdn.com;
     connect-src 'self' https://YOUR_CLOUDFLARE_WORKER_ENDPOINT;
     frame-ancestors 'none';
@@ -25,7 +51,7 @@
   " />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <style nonce="abc123">
+  <style nonce="{{CSP_NONCE_PLACEHOLDER}}">
     /* Clean modern base */
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -413,8 +439,10 @@
     // Form submission is now handled by js/join-handler.js which calls FormEncryptor.processForm.
     // Removed old Web Crypto helpers and form submit handler.
   </script>
-  <script src="js/form-encryptor.js" defer></script>
-  <script src="js/join-handler.js" defer></script>
+
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/join-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>

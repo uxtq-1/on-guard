@@ -10,8 +10,8 @@
   <!-- Hardened CSP via Meta Tag -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
-    style-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
+    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
+    style-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
     img-src 'self' https://trusted-image-cdn.com;
     font-src 'self' https://cdnjs.cloudflare.com;
     connect-src 'self';
@@ -21,20 +21,22 @@
   ">
 
   <!-- SEO: Title, Description, OpenGraph, Schema -->
-  <title>About Us | OPS Solutions Services</title>
+  <title>About Us | OPS Online Solutions</title>
   <meta name="description" content="Meet OPS Solutions: Where digital visionaries meet relentless execution. Discover our journey, team, and how we transform remote operations with secure, AI-powered solutions.">
   <meta name="keywords" content="About Us, OPS Solutions, IT Support, Remote Solutions, Professional Team, Business Operations, Secure AI">
-  <meta property="og:title" content="About Us | OPS Solutions Services">
+  <meta property="og:title" content="About Us | OPS Online Solutions">
   <meta property="og:description" content="Meet OPS Solutions: Where digital visionaries meet relentless execution. Discover our journey, team, and how we transform remote operations with secure, AI-powered solutions.">
   <meta property="og:image" content="assets/images/hero-image.jpg">
-  <meta property="og:url" content="https://www.opsonlinesupport.com/about-us.html">
+  <meta property="og:url" content="https://www.opsonlinesolutions.com/about-us.html">
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="OPS Online Solutions" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "OPS Solutions Services",
-      "url": "https://www.opsonlinesupport.com",
-      "logo": "https://www.opsonlinesupport.com/assets/logo.png",
+      "name": "OPS Online Solutions",
+      "url": "https://www.opsonlinesolutions.com",
+      "logo": "https://www.opsonlinesolutions.com/assets/logo.png",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+1-201-350-7567",
@@ -51,10 +53,10 @@
   </script>
 
   <!-- Stylesheets & Icons -->
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css">
+  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+  <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="manifest.json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
   <link rel="icon" href="assets/favicon.ico">
 </head>
 <body>
@@ -88,7 +90,7 @@
     <p data-en="Learn more about Ops Online Solutions..." data-es="Conozca más sobre Ops Online Solutions..."> <!-- Updated p tag -->
       OPS Solutions is where digital visionaries and relentless executors meet. We transform business operations, logistics, and support—securely and intelligently.
     </p>
-    <img src="assets/images/hero-image.jpg" alt="OPS Solutions Team and Mission" class="hero-image">
+    <img src="assets/images/hero-image.jpg" alt="OPS Solutions Team and Mission" class="hero-image" loading="lazy">
   </section>
 
   <!-- ==================================================================
@@ -132,7 +134,6 @@
         </div>
     </div>
   </section>
-
   <!-- New Meet the Team Section -->
   <section id="meet-the-team" class="team-section" style="padding: 2rem 0; text-align: center;">
     <h2 data-en="Meet the Team" data-es="Conozca al Equipo" style="margin-bottom: 2rem;">Meet the Team</h2>
@@ -146,8 +147,24 @@
     </div>
     <div class="team-member">
         <h3 data-en="Jules Tekton (AI): AI DevOps Director" data-es="Jules Tekton (IA): Directora de DevOps de IA">Jules Tekton (AI): AI DevOps Director</h3>
-        <p data-en="Jules orchestrates the seamless integration and deployment of AI solutions, ensuring robust and efficient operations. With a focus on automation and secure AI pipelines, Jules is dedicated to operational excellence." data-es="Jules orquesta la integración y el despliegue fluidos de soluciones de IA, garantizando operaciones robustas y eficientes. Con un enfoque en la automatización y los pipelines de IA seguros, Jules se dedica a la excelencia operativa.">Jules orchestrates the seamless integration and deployment of AI solutions, ensuring robust and efficient operations. With a focus on automation and secure AI pipelines, Jules is dedicated to operational excellence.</p>
+        <p data-en="Jules Tekton (Google's AI), as AI DevOps Director, meticulously architects and automates the infrastructure that powers OPS Solutions' AI initiatives. Jules ensures the seamless integration, rigorous testing, and secure deployment of our machine learning models and AI-driven services, championing operational excellence and innovation from development to delivery." data-es="Jules Tekton (IA de Google), como Directora de DevOps de IA, meticulosamente diseña y automatiza la infraestructura que impulsa las iniciativas de IA de OPS Solutions. Jules asegura la integración fluida, pruebas rigurosas y el despliegue seguro de nuestros modelos de aprendizaje automático y servicios impulsados por IA, promoviendo la excelencia operativa y la innovación desde el desarrollo hasta la entrega.">Jules Tekton (Google's AI), as AI DevOps Director, meticulously architects and automates the infrastructure that powers OPS Solutions' AI initiatives. Jules ensures the seamless integration, rigorous testing, and secure deployment of our machine learning models and AI-driven services, championing operational excellence and innovation from development to delivery.</p>
     </div>
+  </section>
+
+  <!-- Re-structured Contact/Join Links Section -->
+  <section class="contact-join-links" style="padding: 2rem 0; text-align:center;">
+      <h2 data-en="Get In Touch or Join Our Team" data-es="Contáctenos o Únase a Nuestro Equipo" style="margin-bottom: 2rem;">Get In Touch or Join Our Team</h2>
+      <div class="link-pair">
+          <div class="link-item">
+              <h3><a href="contact.html" data-en="Contact Us" data-es="Contáctenos" class="btn">Contact Us</a></h3>
+              <p data-en="Please let us know any and all your inquiries." data-es="Por favor, háganos saber todas sus consultas.">Please let us know any and all your inquiries.</p>
+          </div>
+          <div class="link-item">
+              <h3><a href="join.html" data-en="Join Us" data-es="Únase a Nosotros" class="btn">Join Us</a></h3>
+              <p data-en="Explore career opportunities with us." data-es="Explore oportunidades de carrera con nosotros.">Explore career opportunities with us.</p>
+          </div>
+      </div>
+
   </section>
 <p data-en="Jules Tekton (Google's AI), as AI DevOps Director, meticulously architects and automates the infrastructure that powers OPS Solutions' AI initiatives. Jules ensures the seamless integration, rigorous testing, and secure deployment of our machine learning models and AI-driven services, championing operational excellence and innovation from development to delivery." data-es="Jules Tekton (IA de Google), como Directora de DevOps de IA, meticulosamente diseña y automatiza la infraestructura que impulsa las iniciativas de IA de OPS Solutions. Jules asegura la integración fluida, pruebas rigurosas y el despliegue seguro de nuestros modelos de aprendizaje automático y servicios impulsados por IA, promoviendo la excelencia operativa y la innovación desde el desarrollo hasta la entrega.">Jules Tekton (Google's AI), as AI DevOps Director, meticulously architects and automates the infrastructure that powers OPS Solutions' AI initiatives. Jules ensures the seamless integration, rigorous testing, and secure deployment of our machine learning models and AI-driven services, championing operational excellence and innovation from development to delivery.</p>
   <!-- Re-structured Contact/Join Links Section -->

@@ -24,12 +24,35 @@
   <meta name="twitter:title" content="Contact OPS Online Solutions" />
   <meta name="twitter:description" content="Contact OPS Online Solutions securely for IT support, remote solutions, and professional services inquiries." />
   <meta name="twitter:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
+  <meta property="og:site_name" content="OPS Online Solutions" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OPS Online Solutions",
+      "url": "https://www.opsonlinesolutions.com",
+      "logo": "https://www.opsonlinesolutions.com/assets/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-201-350-7567",
+        "contactType": "Customer Service",
+        "areaServed": "US",
+        "availableLanguage": ["English", "Spanish"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/yourpage",
+        "https://twitter.com/yourhandle",
+        "https://www.linkedin.com/company/yourcompany"
+      ]
+    }
+  </script>
 
   <!-- Content Security Policy -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'nonce-{{CSP_NONCE}}' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
-    style-src 'self' 'nonce-{{CSP_NONCE}}' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
+    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
+    style-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
     img-src 'self' data:;
     font-src 'self' https://cdnjs.cloudflare.com;
     connect-src 'self' https://api.opsonlinesolutions.com;
@@ -44,13 +67,13 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE}}" />
-  <link rel="stylesheet" href="css/small-screens.css" media="(max-width:768px)" nonce="{{CSP_NONCE}}" />
-  <link rel="stylesheet" href="css/contact.css" nonce="{{CSP_NONCE}}" />
+  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
+  <link rel="stylesheet" href="css/small-screens.css" media="(max-width:768px)" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
+  <link rel="stylesheet" href="css/contact.css" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <style nonce="{{CSP_NONCE}}">
+  <style nonce="{{CSP_NONCE_PLACEHOLDER}}">
     html, body {
       margin: 0; 
       padding: 0; 
