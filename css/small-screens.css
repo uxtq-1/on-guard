@@ -88,11 +88,9 @@
                      floating-icons
    ========================================================= */
   .floating-icons {
-    /* It will inherit left: 50% and transform: translateX(-50%) from global if not overridden */
-    /* It will inherit flex-direction: row from global if not overridden */
-    bottom: 70px; /* Keep it above mobile nav bar */
-    /* If mobile nav is very tall, this might need to be higher */
-    /* No need to set right, left, transform if global ones are desired */
+    right: 20px; /* Ensure it's on the right */
+    bottom: 85px; /* Position above mobile nav bar */
+    /* flex-direction: column; will be inherited from global */
   }
 
   .floating-icon {
