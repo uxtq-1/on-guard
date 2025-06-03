@@ -88,8 +88,9 @@
                      floating-icons
    ========================================================= */
   .floating-icons {
-    bottom: 85px;
-    right: 20px;
+    right: 20px; /* Ensure it's on the right */
+    bottom: 85px; /* Position above mobile nav bar */
+    /* flex-direction: column; will be inherited from global */
   }
 
   .floating-icon {

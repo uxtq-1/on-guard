@@ -48,6 +48,7 @@
   <link rel="stylesheet" href="css/small-screens.css" media="(max-width:768px)" nonce="{{CSP_NONCE}}" />
   <link rel="stylesheet" href="css/contact.css" nonce="{{CSP_NONCE}}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style nonce="{{CSP_NONCE}}">
     html, body {
@@ -300,8 +301,7 @@
         <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
         <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
         <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-        <li><a href="contact.html" data-en="Contact Us" data-es="Enlázate">Contact Us</a></li>
-        <li><a href="join.html" data-en="Join Us" data-es="Únete">Join Us</a></li>
+        <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
         <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
       </ul>
     </nav>
@@ -316,8 +316,10 @@
     <p id="description" data-en="Securely contact us with your questions or service requests." data-es="Contáctenos de forma segura con sus preguntas o solicitudes de servicio.">Securely contact us with your questions or service requests.</p>
 
     <form id="contact-form" method="POST" action="https://api.opsonlinesolutions.com/submitContact" autocomplete="off" novalidate>
+      <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
       <div style="position:absolute; left:-9999px;" aria-hidden="true">
-        <input type="text" id="contact-hp" name="contact-hp" autocomplete="off" tabindex="-1" />
+        <!-- Old honeypot can be fully removed or left as an additional, differently named trap if desired, but the new one is primary. -->
+        <input type="text" id="contact-hp" name="contact-hp-old" autocomplete="off" tabindex="-1" />
       </div>
 
       <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
@@ -369,6 +371,13 @@
       <div class="form-group">
         <textarea id="contact-comments" name="contact-comments" rows="6" placeholder=" " maxlength="5000" required></textarea>
         <label for="contact-comments" data-en="Place your comments" data-es="Ingrese sus comentarios">Place your comments</label>
+      </div>
+
+      <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
+        <input type="date" id="contact-preferred-date" name="preferred_date" placeholder=" " required style="flex:1" />
+        <label for="contact-preferred-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+        <input type="time" id="contact-preferred-time" name="preferred_time" placeholder=" " required style="flex:1" />
+        <label for="contact-preferred-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
       </div>
 
       <div id="recaptcha-placeholder" style="margin: 1rem 0; min-height: 78px;"></div>
@@ -434,7 +443,7 @@
       const addAddressBtn = document.getElementById('add-address');
       const addEmailBtn = document.getElementById('add-email');
       const feedbackMessage = document.getElementById('feedback-message');
-      const encryptingMsg = document.getElementById('encrypting-msg');
+      // const encryptingMsg = document.getElementById('encrypting-msg'); // encryptingMsg is no longer directly managed here for submit
 
       function setLanguageTexts(lang) {
         document.querySelectorAll('[data-en]').forEach(el => {
@@ -576,70 +585,13 @@
         emailContainer.appendChild(newGroup);
       });
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (!form.checkValidity()) {
-          showFeedback(currentLang === 'es' ? 'Por favor, complete todos los campos obligatorios correctamente.' : 'Please fill out all required fields correctly.', true);
-          return;
-        }
-
-        if (form['contact-hp'].value) return;
-
-        encryptingMsg.setAttribute('aria-hidden', 'false');
-        encryptingMsg.classList.add('show');
-
-        Array.from(form.elements).forEach(el => el.disabled = true);
-
-        const formData = new FormData(form);
-
-        try {
-          const response = await fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-          });
-
-          if (!response.ok) throw new Error('Network response not ok');
-
-          const result = await response.json();
-
-          if (result.success) {
-            showFeedback(currentLang === 'es'
-              ? 'Gracias por su consideración y tiempo. Nos pondremos en contacto con usted lo antes posible. Su solicitud y pregunta se tratan con urgencia. ¡Que tenga un día productivo pero excepcional!'
-              : 'Thank you for your consideration and time. We will contact you as soon as possible. Your request and question are treated with urgency. Have a productive but outstanding day!', false);
-
-            form.reset();
-            form.style.display = 'none';
-
-            setTimeout(() => {
-              encryptingMsg.classList.remove('show');
-              encryptingMsg.setAttribute('aria-hidden', 'true');
-            }, 2500);
-
-            setTimeout(() => {
-              feedbackMessage.classList.remove('show');
-            }, 5000);
-          } else {
-            throw new Error(result.message || 'Submission failed');
-          }
-        } catch (error) {
-          showFeedback(currentLang === 'es'
-            ? 'Ocurrió un error durante el envío. Por favor, intente nuevamente más tarde.'
-            : 'An error occurred during submission. Please try again later.', true);
-
-          Array.from(form.elements).forEach(el => el.disabled = false);
-          encryptingMsg.classList.remove('show');
-          encryptingMsg.setAttribute('aria-hidden', 'true');
-        }
-      });
-
-      function showFeedback(message, isError = false) {
-        feedbackMessage.textContent = message;
-        feedbackMessage.style.color = isError ? '#e55353' : '#a259ff';
-        feedbackMessage.classList.add('show');
-      }
+      // The original form.addEventListener('submit', ...) and showFeedback() are removed.
+      // Form submission is now handled by js/contact-handler.js which calls FormEncryptor.processForm.
+      // The feedbackMessage element is still used by js/contact-handler.js.
     })();
   </script>
+  <script src="js/form-encryptor.js" defer></script>
+  <script src="js/contact-handler.js" defer></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>

@@ -23,6 +23,7 @@
     base-uri 'self';
     form-action 'self';
   " />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style nonce="abc123">
     /* Clean modern base */
@@ -216,6 +217,7 @@
     <p id="description" class="description">Please copy-paste your information into the fields below to apply securely.</p>
 
     <form id="join-form" autocomplete="off" novalidate>
+      <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
       <label for="firstName" id="label-firstName">First Name *</label>
       <input type="text" id="firstName" name="firstName" required placeholder="Your first name" autocomplete="given-name" />
 
@@ -233,6 +235,17 @@
 
       <label for="email" id="label-email">Email *</label>
       <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email" />
+
+      <div style="display: flex; justify-content: space-between; gap: 1rem;"> <!-- Using inline style for simplicity, can be moved to CSS -->
+        <div style="flex: 1;">
+            <label for="join-page-preferred-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+            <input type="date" id="join-page-preferred-date" name="preferred_date" required style="width: 100%; padding: 0.65rem 1rem; font-size: 1rem; border-radius: 6px; border: 1.5px solid #ccc;" />
+        </div>
+        <div style="flex: 1;">
+            <label for="join-page-preferred-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
+            <input type="time" id="join-page-preferred-time" name="preferred_time" required style="width: 100%; padding: 0.65rem 1rem; font-size: 1rem; border-radius: 6px; border: 1.5px solid #ccc;" />
+        </div>
+      </div>
 
       <!-- Expandable sections -->
       <section class="expandable-section" id="experience-section" aria-label="Experience">
@@ -397,149 +410,11 @@
     setupExpandable('education');
     setupExpandable('skills');
 
-    // Web Crypto helpers
-    function generateUUID() {
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
-    }
-
-    function generateNonce(length = 16) {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let result = '';
-      for(let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return result;
-    }
-
-    async function importKey(secret) {
-      const enc = new TextEncoder();
-      return crypto.subtle.importKey(
-        "raw",
-        enc.encode(secret),
-        { name: "HMAC", hash: "SHA-256" },
-        false,
-        ["sign"]
-      );
-    }
-
-    async function computeHmac(key, message) {
-      const signature = await crypto.subtle.sign(
-        "HMAC",
-        key,
-        new TextEncoder().encode(message)
-      );
-      return [...new Uint8Array(signature)].map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function encryptData(key, plaintext) {
-      const iv = crypto.getRandomValues(new Uint8Array(12)); // 96-bit IV
-      const enc = new TextEncoder();
-      const encrypted = await crypto.subtle.encrypt(
-        {
-          name: "AES-GCM",
-          iv: iv
-        },
-        key,
-        enc.encode(plaintext)
-      );
-      const ivStr = btoa(String.fromCharCode(...iv));
-      const encryptedStr = btoa(String.fromCharCode(...new Uint8Array(encrypted)));
-      return ivStr + ":" + encryptedStr;
-    }
-
-    async function importAesKey(secret) {
-      const enc = new TextEncoder();
-      return crypto.subtle.importKey(
-        "raw",
-        enc.encode(secret),
-        "AES-GCM",
-        false,
-        ["encrypt", "decrypt"]
-      );
-    }
-
-    // Form submit handler
-    document.getElementById('join-form').addEventListener('submit', async function(event) {
-      event.preventDefault();
-
-      const form = event.target;
-      const metadata = {
-        assetId: generateUUID(),
-        firstName: form.firstName.value.trim(),
-        lastName: form.lastName.value.trim(),
-        address: form.address.value.trim(),
-        zipCode: form.zipCode.value.trim(),
-        contactNumber: form.contactNumber.value.trim(),
-        email: form.email.value.trim(),
-        experience: Array.from(form.querySelectorAll('input[name="experience[]"]'))
-                         .map(i => i.value.trim())
-                         .filter(v => v),
-        certification: Array.from(form.querySelectorAll('input[name="certification[]"]'))
-                            .map(i => i.value.trim())
-                            .filter(v => v),
-        education: Array.from(form.querySelectorAll('input[name="education[]"]'))
-                        .map(i => i.value.trim())
-                        .filter(v => v),
-        skills: Array.from(form.querySelectorAll('input[name="skills[]"]'))
-                     .map(i => i.value.trim())
-                     .filter(v => v)
-      };
-
-      // Validation
-      if (!metadata.firstName || !metadata.lastName || !metadata.contactNumber || !metadata.email) {
-        alert(langSelect.value === 'en'
-          ? 'Please fill in all required fields (*)'
-          : 'Por favor complete todos los campos obligatorios (*)');
-        return;
-      }
-
-      const SECRET_KEY = "YOUR_SECRET_KEY"; // NEVER expose on client in production! This is demo only.
-      const AUTH_TOKEN = "YOUR_AUTH_TOKEN";
-
-      try {
-        const hmacKey = await importKey(SECRET_KEY);
-        const aesKey = await importAesKey(SECRET_KEY);
-        const nonce = generateNonce();
-        const timestamp = new Date().toISOString();
-
-        const message = JSON.stringify(metadata) + nonce + timestamp;
-        const signature = await computeHmac(hmacKey, message);
-        const encryptedMetadata = await encryptData(aesKey, JSON.stringify(metadata));
-
-        const payload = {
-          encryptedMetadata,
-          nonce,
-          timestamp,
-          signature,
-          authToken: AUTH_TOKEN
-        };
-
-        const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_ENDPOINT', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-        if (result.status === 'success') {
-          alert(langSelect.value === 'en'
-            ? 'Your application has been submitted securely. Thank you!'
-            : 'Su solicitud ha sido enviada de forma segura. ¡Gracias!');
-          form.reset();
-        } else {
-          alert((langSelect.value === 'en'
-            ? 'Error submitting your application: '
-            : 'Error al enviar su solicitud: ') + result.message);
-        }
-      } catch (err) {
-        console.error(err);
-        alert(langSelect.value === 'en'
-          ? 'An unexpected error occurred during submission.'
-          : 'Ocurrió un error inesperado durante el envío.');
-      }
-    });
+    // Form submission is now handled by js/join-handler.js which calls FormEncryptor.processForm.
+    // Removed old Web Crypto helpers and form submit handler.
   </script>
+  <script src="js/form-encryptor.js" defer></script>
+  <script src="js/join-handler.js" defer></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
