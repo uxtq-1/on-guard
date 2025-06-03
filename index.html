@@ -12,9 +12,11 @@
   <meta name="robots" content="index, follow" />
 
   <meta property="og:title" content="Ops Online Solutions - Secure IT Support & Remote Solutions" />
-  <meta property="og:description" content="Ops Online Solutions offers secure IT support, remote solutions, and professional services to optimize your business operations." />
+  <meta property="og:description" content="Ops Online Solutions offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies." />
   <meta property="og:image" content="assets/images/hero-image.jpg" />
-  <meta property="og:url" content="https://www.opsonlinesolutions.com" />
+  <meta property="og:url" content="https://www.opsonlinesolutions.com/index.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="OPS Online Solutions" />
 
   <script type="application/ld+json">
     {
@@ -40,11 +42,12 @@
  <!-- ======================================================================
                       Links to Pages
     ====================================================================== -->
-  <link rel="stylesheet" href="css/global.css" />
-  <link rel="stylesheet" media="(max-width:768px)" href="css/small-screens.css" />
+  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
+  <link rel="stylesheet" media="(max-width:768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
   <link rel="icon" href="assets/favicon.ico" />
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
   <div id="secure-content" style="display:none;">
@@ -56,8 +59,7 @@
           <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
           <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
           <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-          <li><a href="contact.html" data-en="Contact Us" data-es="Enlázate">Contact Us</a></li>
-          <li><a href="join.html" data-en="Join Us" data-es="Únete">Join Us</a></li>
+          <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
           <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
         </ul>
       </nav>
@@ -75,7 +77,7 @@
       <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
         Empowering remote solutions with cutting-edge strategies.
       </p>
-      <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image" />
+      <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image" loading="lazy" />
     </section>
 
      <!-- ======================================================================
@@ -138,6 +140,7 @@
         </div>
         <div class="modal-body">
           <form id="join-form">
+            <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
             <div class="form-row">
               <div class="form-cell">
                 <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
@@ -154,30 +157,21 @@
                 <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required />
               </div>
               <div class="form-cell">
-                <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
-                <input type="date" id="join-date" required />
+                <label for="join-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+                <input type="date" id="join-date" name="preferred_date" required />
               </div>
             </div>
             <div class="form-row">
               <div class="form-cell">
-                <label for="join-time" data-en="Time" data-es="Hora">Time</label>
-                <input type="time" id="join-time" required />
-              </div>
-              <div class="form-cell">
-                <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
-                <input type="file" id="join-resume" accept=".pdf,.doc,.docx" required />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
-                <input type="file" id="join-cover" accept=".pdf,.doc,.docx" required />
+                <label for="join-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
+                <input type="time" id="join-time" name="preferred_time" required />
               </div>
               <div class="form-cell">
                 <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
-                <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
+                <textarea id="join-comment" name="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
               </div>
             </div>
+            <!-- Removed file input form-row -->
           </form>
         </div>
         <div class="modal-footer">
@@ -198,6 +192,7 @@
         </div>
         <div class="modal-body">
           <form id="contact-form">
+            <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
             <div class="form-row">
               <div class="form-cell">
                 <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
@@ -214,14 +209,14 @@
                 <input type="tel" id="contact-number" placeholder="Enter your contact number / Ingrese su número" required />
               </div>
               <div class="form-cell">
-                <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
-                <input type="date" id="contact-date" required />
+                <label for="contact-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+                <input type="date" id="contact-date" name="preferred_date" required />
               </div>
             </div>
             <div class="form-row">
               <div class="form-cell">
-                <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
-                <input type="time" id="contact-time" required />
+                <label for="contact-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
+                <input type="time" id="contact-time" name="preferred_time" required />
               </div>
               <div class="form-cell">
                 <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
@@ -258,10 +253,12 @@
       </ul>
     </div>
   </div>
+    <!-- CHATBOT_PLACEHOLDER: Future chatbot integration point. Consider placement within or alongside the mobile-nav for global accessibility, or as a separate fixed element. -->
      <!-- ======================================================================
                            Reference Section
     ====================================================================== -->
-  <script src="js/main.js" defer></script>
-  <script src="js/service-worker.js" defer></script>
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
 </body>
 </html>
