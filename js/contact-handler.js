@@ -1,129 +1,64 @@
-/*****************************************************
- * contact-handler.js
- * Secure Contact Us form handler for OPS Solutions
- *****************************************************/
+document.addEventListener('DOMContentLoaded', () => {
+    const contactPageForm = document.getElementById('contact-form'); // Using the ID found in contact.html
 
-document.addEventListener("DOMContentLoaded", () => {
-  const contactForm = document.getElementById("contact-form");
+    if (contactPageForm) {
+        const RECAPTCHA_V3_SITE_KEY = 'YOUR_RECAPTCHA_V3_SITE_KEY_PLACEHOLDER'; // User should replace
+        // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+        const BACKEND_SUBMISSION_URL = 'YOUR_BACKEND_SUBMISSION_URL_PLACEHOLDER'; // User should replace
+        // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
 
-  const sanitizeInput = input => input.replace(/<[^>]*>/g, "").trim();
+        contactPageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formElement = e.target;
+            const formType = 'contact_page'; // Distinguish from modal contact
 
-  // Generate cryptographically secure UUID v4
-  function generateSecureUUID() {
-    const cryptoObj = window.crypto || window.msCrypto;
-    const bytes = new Uint8Array(16);
-    cryptoObj.getRandomValues(bytes);
+            const submitButton = formElement.querySelector('button[type="submit"]') || formElement.querySelector('input[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
 
-    bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
-    bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant
+            // Ensure FormEncryptor is loaded
+            if (typeof FormEncryptor === 'undefined' || !FormEncryptor.processForm) {
+                console.error('FormEncryptor is not loaded or processForm is not available.');
+                alert('A critical error occurred. Please try again later.');
+                if (submitButton) submitButton.disabled = false;
+                return;
+            }
 
-    const hexBytes = [...bytes].map(b => b.toString(16).padStart(2, "0"));
-
-    return [
-      hexBytes.slice(0, 4).join(""),
-      hexBytes.slice(4, 6).join(""),
-      hexBytes.slice(6, 8).join(""),
-      hexBytes.slice(8, 10).join(""),
-      hexBytes.slice(10, 16).join("")
-    ].join("-");
-  }
-
-  // Generate 16-byte random nonce in hex
-  function generateNonce() {
-    const array = new Uint8Array(16);
-    window.crypto.getRandomValues(array);
-    return Array.from(array).map(b => b.toString(16).padStart(2, "0")).join("");
-  }
-
-  // Timestamp ISO format
-  const generateTimestamp = () => new Date().toISOString();
-
-  // HMAC SHA-512 generation using Web Crypto API
-  async function generateHMAC(data, secretKey) {
-    const enc = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      "raw",
-      enc.encode(secretKey),
-      { name: "HMAC", hash: "SHA-512" },
-      false,
-      ["sign"]
-    );
-    const signature = await crypto.subtle.sign("HMAC", key, enc.encode(data));
-    return Array.from(new Uint8Array(signature))
-      .map(b => b.toString(16).padStart(2, "0"))
-      .join("");
-  }
-
-  contactForm?.addEventListener("submit", async e => {
-    e.preventDefault();
-
-    // Honeypot check
-    const honeypot = document.getElementById("contact-address")?.value || "";
-    if (honeypot) {
-      alert("Bot detected. Submission blocked.");
-      return;
+            FormEncryptor.processForm(formElement, formType, RECAPTCHA_V3_SITE_KEY, BACKEND_SUBMISSION_URL)
+                .then(response => {
+                    console.log('Contact page form submission response:', response);
+                    // Display feedback using the existing feedback mechanism if available
+                    const feedbackMessageEl = document.getElementById('feedback-message');
+                    if (feedbackMessageEl) {
+                        feedbackMessageEl.textContent = response.message || 'Message sent successfully! (Simulated)';
+                        feedbackMessageEl.style.color = response.success ? 'green' : 'red'; // Adjust based on actual response structure
+                        feedbackMessageEl.classList.add('show');
+                        setTimeout(() => feedbackMessageEl.classList.remove('show'), 5000);
+                    } else {
+                        alert(response.message || 'Message sent successfully! (Simulated)');
+                    }
+                    if (response.success) {
+                        formElement.reset();
+                        // Optionally hide the form or show a more permanent success message
+                        // formElement.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Contact page form submission error:', error);
+                    const feedbackMessageEl = document.getElementById('feedback-message');
+                    if (feedbackMessageEl) {
+                        feedbackMessageEl.textContent = 'An error occurred: ' + error.message;
+                        feedbackMessageEl.style.color = 'red';
+                        feedbackMessageEl.classList.add('show');
+                        setTimeout(() => feedbackMessageEl.classList.remove('show'), 5000);
+                    } else {
+                        alert('An error occurred during submission: ' + error.message);
+                    }
+                })
+                .finally(() => {
+                    if (submitButton) submitButton.disabled = false;
+                });
+        });
+    } else {
+        console.warn('Contact page form (id="contact-form") not found in contact.html.');
     }
-
-    // Sanitize inputs
-    const name = sanitizeInput(document.getElementById("contact-name").value);
-    const email = sanitizeInput(document.getElementById("contact-email").value);
-    const phone = sanitizeInput(document.getElementById("contact-number").value);
-    const date = document.getElementById("contact-date").value;
-    const time = document.getElementById("contact-time").value;
-    const message = sanitizeInput(document.getElementById("contact-comments").value);
-
-    // Generate or retrieve the asset ID from hidden input
-    let assetIdInput = document.getElementById("asset-id");
-    let assetId = assetIdInput?.value || generateSecureUUID();
-
-    if (!assetIdInput?.value && assetIdInput) {
-      assetIdInput.value = assetId;
-    }
-
-    const nonce = generateNonce();
-    const timestamp = generateTimestamp();
-
-    const metadata = {
-      assetId,
-      name,
-      email,
-      phone,
-      preferredDate: date,
-      preferredTime: time,
-      message,
-      nonce,
-      timestamp
-    };
-
-    const secretKey = "your-very-secret-client-key"; // Replace in production
-
-    const hmacInput = JSON.stringify(metadata);
-    const hmac = await generateHMAC(hmacInput, secretKey);
-
-    const payload = {
-      metadata,
-      hmac
-    };
-
-    // Replace below URL with your Cloudflare Worker endpoint
-    try {
-      const response = await fetch("https://your-cloudflare-worker-or-api/submitContact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-          // Include CSP nonce headers or auth tokens here if needed
-        },
-        body: JSON.stringify(payload),
-        credentials: "omit"
-      });
-
-      if (!response.ok) throw new Error(`Server error: ${response.status}`);
-
-      alert("✅ Your message has been securely submitted!");
-      contactForm.reset();
-    } catch (err) {
-      console.error("Submission failed:", err);
-      alert("⚠️ Submission failed, please try again later.");
-    }
-  });
 });

@@ -5,6 +5,11 @@
  * theme toggles (desktop & mobile).
  *****************************************************/
 
+const RECAPTCHA_V3_SITE_KEY = 'YOUR_RECAPTCHA_V3_SITE_KEY_PLACEHOLDER'; // User should replace this
+// ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+const BACKEND_SUBMISSION_URL = 'YOUR_BACKEND_SUBMISSION_URL_PLACEHOLDER'; // User should replace this
+// ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+
 document.addEventListener("DOMContentLoaded", () => {
   // Show secure content after load
   const secureContent = document.getElementById("secure-content");
@@ -104,30 +109,33 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 /*****************************************************
-  // Sanitize inputs to prevent XSS
-*****************************************************/
-
-  function sanitizeInput(input) {
-    return input.replace(/<[^>]*>/g, "").trim();
-  }
-  
-/*****************************************************
   // Join form
 *****************************************************/
   
   const joinForm = document.getElementById("join-form");
   joinForm?.addEventListener("submit", e => {
     e.preventDefault();
-    const data = {
-      name: sanitizeInput(document.getElementById("join-name").value),
-      email: sanitizeInput(document.getElementById("join-email").value),
-      contact: sanitizeInput(document.getElementById("join-contact").value),
-      comment: sanitizeInput(document.getElementById("join-comment").value),
-    };
-    console.log("Sanitized Join Form Submission →", data);
-    alert("Thank you for joining us! Your information has been safely received.");
-    joinForm.reset();
-    document.getElementById("join-modal").classList.remove("active");
+    const formElement = e.target;
+    const formType = 'join_modal';
+    const siteKey = RECAPTCHA_V3_SITE_KEY;
+    const backendUrl = BACKEND_SUBMISSION_URL;
+
+    formElement.querySelector('button[type="submit"]').disabled = true;
+
+    FormEncryptor.processForm(formElement, formType, siteKey, backendUrl, 'RCH385-Magnus_Maximus')
+        .then(response => {
+            console.log('Join form submission response:', response);
+            alert('Application submitted successfully! (Simulated)');
+            formElement.reset();
+            document.getElementById('join-modal').classList.remove('active');
+        })
+        .catch(error => {
+            console.error('Join form submission error:', error);
+            alert('An error occurred during submission: ' + error.message);
+        })
+        .finally(() => {
+            formElement.querySelector('button[type="submit"]').disabled = false;
+        });
   });
 
   /*****************************************************
@@ -137,14 +145,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const contactForm = document.getElementById("contact-form");
   contactForm?.addEventListener("submit", e => {
     e.preventDefault();
-    const data = {
-      contactName: sanitizeInput(document.getElementById("contact-name").value),
-      contactEmail: sanitizeInput(document.getElementById("contact-email").value),
-      contactMessage: sanitizeInput(document.getElementById("contact-comments").value),
-    };
-    console.log("Sanitized Contact Form Submission →", data);
-    alert("Thank you for contacting us! We will get back to you soon.");
-    contactForm.reset();
-    document.getElementById("contact-modal").classList.remove("active");
+    const formElement = e.target;
+    const formType = 'contact_modal';
+    const siteKey = RECAPTCHA_V3_SITE_KEY;
+    const backendUrl = BACKEND_SUBMISSION_URL;
+
+    formElement.querySelector('button[type="submit"]').disabled = true;
+
+    FormEncryptor.processForm(formElement, formType, siteKey, backendUrl, 'Magd@lena-Silv3r')
+        .then(response => {
+            console.log('Contact form submission response:', response);
+            alert('Message sent successfully! (Simulated)');
+            formElement.reset();
+            document.getElementById('contact-modal').classList.remove('active');
+        })
+        .catch(error => {
+            console.error('Contact form submission error:', error);
+            alert('An error occurred during submission: ' + error.message);
+        })
+        .finally(() => {
+            formElement.querySelector('button[type="submit"]').disabled = false;
+        });
   });
 });
