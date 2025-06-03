@@ -6,8 +6,11 @@
  *****************************************************/
 
 const RECAPTCHA_V3_SITE_KEY = 'YOUR_RECAPTCHA_V3_SITE_KEY_PLACEHOLDER'; // User should replace this
+
 // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+
 const BACKEND_SUBMISSION_URL = 'YOUR_BACKEND_SUBMISSION_URL_PLACEHOLDER'; // User should replace this
+
 // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -122,7 +125,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     formElement.querySelector('button[type="submit"]').disabled = true;
 
+
     FormEncryptor.processForm(formElement, formType, siteKey, backendUrl, 'RCH385-Magnus_Maximus')
+
         .then(response => {
             console.log('Join form submission response:', response);
             alert('Application submitted successfully! (Simulated)');
@@ -153,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formElement.querySelector('button[type="submit"]').disabled = true;
 
     FormEncryptor.processForm(formElement, formType, siteKey, backendUrl, 'Magd@lena-Silv3r')
+
         .then(response => {
             console.log('Contact form submission response:', response);
             alert('Message sent successfully! (Simulated)');
