@@ -26,7 +26,9 @@
   <meta name="twitter:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
   <meta property="og:site_name" content="OPS Online Solutions" />
 
-  <script type="application/ld+json">
+
+  <script type="application/ld+json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -341,59 +343,36 @@
     <form id="contact-form" method="POST" action="https://api.opsonlinesolutions.com/submitContact" autocomplete="off" novalidate>
       <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
       <div style="position:absolute; left:-9999px;" aria-hidden="true">
-        <!-- Old honeypot can be fully removed or left as an additional, differently named trap if desired, but the new one is primary. -->
-        <input type="text" id="contact-hp" name="contact-hp-old" autocomplete="off" tabindex="-1" />
-      </div>
 
-      <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
-        <select id="country-code" name="country-code" aria-label="Country Code" required style="flex: 1;">
-          <option value="" disabled selected data-en="Select" data-es="Seleccione">Select</option>
-          <option value="+1" data-en="USA +1" data-es="EEUU +1">USA +1</option>
-          <option value="+44" data-en="UK +44" data-es="Reino Unido +44">UK +44</option>
-          <option value="+593" data-en="Ecuador +593" data-es="Ecuador +593">Ecuador +593</option>
-          <option value="+52" data-en="Mexico +52" data-es="México +52">Mexico +52</option>
-        </select>
-        <input type="tel" id="contact-phone" name="contact-phone" placeholder=" " required style="flex: 2;" />
-        <label for="contact-phone" data-en="Enter your phone number" data-es="Ingrese su número de teléfono">Enter your phone number</label>
+        <input type="text" id="contact-hp-old" name="contact-hp-old" autocomplete="off" tabindex="-1" />
+
       </div>
 
       <div class="form-group">
         <input type="text" id="contact-name" name="contact-name" placeholder=" " required />
-        <label for="contact-name" data-en="Place your name" data-es="Ingrese su nombre">Place your name</label>
+        <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
       </div>
-      <div class="form-group">
-        <input type="text" id="contact-lastname" name="contact-lastname" placeholder=" " required />
-        <label for="contact-lastname" data-en="Place your last name" data-es="Ingrese su apellido">Place your last name</label>
-      </div>
-
-      <div id="address-container">
-        <div class="form-group address-group" style="position:relative;">
-          <input type="text" name="contact-address[]" placeholder=" " required />
-          <label data-en="Place your address" data-es="Ingrese su dirección">Place your address</label>
-          <button type="button" class="remove-address" aria-label="Remove address field" title="Remove address field" style="position:absolute; top: 8px; right: 8px; background:none; border:none; color:#a259ff; font-size:1.2rem; cursor:pointer;">×</button>
-        </div>
-      </div>
-      <button type="button" id="add-address" style="color:#a259ff; background:none; border:none; font-weight:700; margin-bottom: 1rem; cursor:pointer;">+ Add another address</button>
-
-      <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
-        <input type="text" id="contact-state" name="contact-state" placeholder=" " required style="flex:1" />
-        <label for="contact-state" data-en="State" data-es="Estado">State</label>
-        <input type="text" id="contact-zip" name="contact-zip" placeholder=" " required style="flex:1" />
-        <label for="contact-zip" data-en="Zip Code" data-es="Código Postal">Zip Code</label>
-      </div>
-
-      <div id="email-container">
-        <div class="form-group email-group" style="position:relative;">
-          <input type="email" name="contact-email[]" placeholder=" " required />
-          <label data-en="Place your email" data-es="Ingrese su correo">Place your email</label>
-          <button type="button" class="remove-email" aria-label="Remove email field" title="Remove email field" style="position:absolute; top: 8px; right: 8px; background:none; border:none; color:#a259ff; font-size:1.2rem; cursor:pointer;">×</button>
-        </div>
-      </div>
-      <button type="button" id="add-email" style="color:#a259ff; background:none; border:none; font-weight:700; margin-bottom: 1rem; cursor:pointer;">+ Add another email</button>
 
       <div class="form-group">
-        <textarea id="contact-comments" name="contact-comments" rows="6" placeholder=" " maxlength="5000" required></textarea>
-        <label for="contact-comments" data-en="Place your comments" data-es="Ingrese sus comentarios">Place your comments</label>
+        <input type="email" id="contact-email" name="contact_email" placeholder=" " required />
+        <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+      </div>
+
+      <div class="form-group">
+          <select id="service-inquiry" name="service_inquiry" required>
+              <option value="" disabled selected data-en="Select a service..." data-es="Seleccione un servicio...">Select a service...</option>
+              <option value="general_inquiry" data-en="General Inquiry" data-es="Consulta General">General Inquiry</option>
+              <option value="it_support" data-en="IT Support" data-es="Soporte IT">IT Support</option>
+              <option value="business_operations" data-en="Business Operations" data-es="Operaciones Comerciales">Business Operations</option>
+              <option value="contact_center" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</option>
+              <option value="professionals" data-en="Professional Services" data-es="Servicios Profesionales">Professional Services</option>
+          </select>
+          <label for="service-inquiry" data-en="Service Inquiry" data-es="Consulta de Servicio">Service Inquiry</label>
+      </div>
+
+      <div class="form-group">
+        <textarea id="contact-comments" name="message" rows="6" placeholder=" " maxlength="5000" required></textarea>
+        <label for="contact-comments" data-en="Message" data-es="Mensaje">Message</label>
       </div>
 
       <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
@@ -450,7 +429,7 @@
     </ul>
   </div>
 
-  <script nonce="{{CSP_NONCE}}">
+  <script nonce="{{CSP_NONCE_PLACEHOLDER}}">
     (() => {
       'use strict';
 
