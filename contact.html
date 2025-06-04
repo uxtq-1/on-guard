@@ -26,7 +26,9 @@
   <meta name="twitter:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
   <meta property="og:site_name" content="OPS Online Solutions" />
 
+
   <script type="application/ld+json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -341,7 +343,9 @@
     <form id="contact-form" method="POST" action="https://api.opsonlinesolutions.com/submitContact" autocomplete="off" novalidate>
       <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
       <div style="position:absolute; left:-9999px;" aria-hidden="true">
+
         <input type="text" id="contact-hp-old" name="contact-hp-old" autocomplete="off" tabindex="-1" />
+
       </div>
 
       <div class="form-group">
@@ -369,6 +373,13 @@
       <div class="form-group">
         <textarea id="contact-comments" name="message" rows="6" placeholder=" " maxlength="5000" required></textarea>
         <label for="contact-comments" data-en="Message" data-es="Mensaje">Message</label>
+      </div>
+
+      <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
+        <input type="date" id="contact-preferred-date" name="preferred_date" placeholder=" " required style="flex:1" />
+        <label for="contact-preferred-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+        <input type="time" id="contact-preferred-time" name="preferred_time" placeholder=" " required style="flex:1" />
+        <label for="contact-preferred-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
       </div>
 
       <div id="recaptcha-placeholder" style="margin: 1rem 0; min-height: 78px;"></div>
