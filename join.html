@@ -52,608 +52,364 @@
   " />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <style nonce="{{CSP_NONCE_PLACEHOLDER}}">
-    /* Clean modern base */
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background: #f5f8fa;
-      color: #222;
-      padding: 2rem 1rem;
-    }
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-      padding: 2rem 3rem 3rem;
-      transition: box-shadow 0.3s ease;
-    }
-    main:hover {
-      box-shadow: 0 10px 30px rgba(0,0,0,0.16);
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 0.6rem;
-      font-weight: 700;
-      color: #007ACC;
-      letter-spacing: 0.03em;
-    }
-    p.description {
-      text-align: center;
-      font-size: 1.05rem;
-      margin-bottom: 2rem;
-      color: #555;
-    }
-    label {
-      display: block;
-      font-weight: 600;
-      margin: 1rem 0 0.5rem;
-      color: #333;
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    textarea {
-      width: 100%;
-      padding: 0.65rem 1rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1.5px solid #ccc;
-      transition: border-color 0.3s ease;
-      font-weight: 400;
-      outline-offset: 2px;
-    }
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    input[type="tel"]:focus,
-    textarea:focus {
-      border-color: #007ACC;
-      box-shadow: 0 0 6px rgba(0,122,204,0.3);
-    }
-    textarea {
-      resize: vertical;
-      min-height: 100px;
-      font-family: inherit;
-    }
-    button, .expandable-section button {
-      margin-top: 1rem;
-      font-weight: 600;
-      font-size: 1rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-      display: inline-block;
-      padding: 0.6rem 1.4rem;
-      background-color: #007ACC;
-      color: white;
-      user-select: none;
-      letter-spacing: 0.02em;
-    }
-    button:hover, .expandable-section button:hover {
-      background-color: #005fa3;
-    }
-    .expandable-section {
-      margin-bottom: 2rem;
-      border-left: 3px solid #007ACC;
-      padding-left: 1rem;
-      background: #f0f7ff;
-      border-radius: 6px;
-    }
-    .expandable-section button {
-      background: transparent;
-      color: #007ACC;
-      text-decoration: underline;
-      font-weight: 600;
-      margin-top: 0.4rem;
-      padding: 0;
-      font-size: 0.95rem;
-      border-radius: 0;
-    }
-    .field-group input {
-      margin-top: 0.4rem;
-      font-weight: 400;
-    }
-    /* Popup style */
-    #popup {
-      position: fixed;
-      top: 12%;
-      left: 50%;
-      transform: translateX(-50%);
-      max-width: 650px;
-      background: white;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-      padding: 1.5rem 2rem;
-      border-radius: 10px;
-      z-index: 11000;
-      font-size: 1rem;
-      color: #333;
-      font-weight: 500;
-      line-height: 1.5;
-      user-select: text;
-    }
-    #popup ul {
-      padding-left: 1.2rem;
-      margin-top: 0.8rem;
-      margin-bottom: 1rem;
-    }
-    #popup a {
-      color: #007ACC;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    #popup a:hover, #popup a:focus {
-      color: #005fa3;
-      outline: none;
-    }
-    #popup button {
-      display: block;
-      margin-left: auto;
-      margin-top: 1rem;
-      background-color: #007ACC;
-      color: white;
-      padding: 0.6rem 1.3rem;
-      font-weight: 600;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-      user-select: none;
-    }
-    #popup button:hover {
-      background-color: #005fa3;
-    }
-    /* Language toggle */
-    .lang-toggle {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 1.8rem;
-    }
-    .lang-toggle label {
-      margin-right: 0.5rem;
-      font-weight: 600;
-      color: #444;
-      user-select: none;
-      align-self: center;
-    }
-    .lang-toggle select {
-      padding: 0.3rem 0.5rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-weight: 600;
-      outline-offset: 2px;
-    }
+ <!-- join.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    /* Form field enhancements for join.html */
-    #join-form input[type="text"],
-    #join-form input[type="email"],
-    #join-form input[type="tel"],
-    #join-form input[type="date"],
-    #join-form input[type="time"],
-    #join-form input[type="number"], /* Added for years-experience if type changes */
-    #join-form textarea,
-    #join-form select {
-        width: 100%;
-        padding: 0.75rem 1rem; /* Increased padding */
-        font-size: 1rem;
-        border-radius: 8px; /* Slightly more rounded */
-        border: 1.5px solid #ddd; /* Lighter border */
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        background-color: #fff; /* Ensure background for consistency */
-        color: #333; /* Ensure text color */
-        box-sizing: border-box; /* Add box-sizing */
-        margin-bottom: 0.5rem; /* Add some space below each field */
-    }
-    #join-form input[type="text"]:focus,
-    #join-form input[type="email"]:focus,
-    #join-form input[type="tel"]:focus,
-    #join-form input[type="date"]:focus,
-    #join-form input[type="time"]:focus,
-    #join-form input[type="number"]:focus,
-    #join-form textarea:focus,
-    #join-form select:focus {
-        border-color: #007ACC; /* Existing focus color */
-        box-shadow: 0 0 0 3px rgba(0,122,204,0.2); /* Softer focus shadow */
-    }
-    #join-form .form-group { /* Ensure form-group class is used on relevant divs */
-        margin-bottom: 1rem; /* Space between form groups */
-    }
-    #join-form .form-group label { /* Adjust if labels are not already styled this way */
-        margin-bottom: 0.5rem;
-        display: block;
-    }
+  <title>Join Us – Ops Online Solutions</title>
+  <meta name="description" content="Join Ops Online Solutions: secure IT, contact center, operations, and professional outsourcing under NIST, CISA, PCI DSS compliance.">
+  <meta name="keywords" content="Join, Secure IT, Outsourcing, Contact Center, NIST, PCI DSS">
+  <meta name="robots" content="index,follow">
 
+  <!-- JSON-LD Organization Schema (same as index) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"Ops Online Solutions",
+    "url":"https://www.opsonlinesolutions.com",
+    "logo":"https://www.opsonlinesolutions.com/assets/logo.png",
+    "contactPoint":[
+      {
+        "@type":"ContactPoint",
+        "telephone":"+1-201-350-7567",
+        "contactType":"customer service",
+        "areaServed":"US",
+        "availableLanguage":["English","Spanish"]
+      }
+    ]
+  }
+  </script>
 
-    /* Dynamic Field Sections */
-    .dynamic-field-section {
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        background-color: #f9f9f9;
-    }
-    .dynamic-field-section > label { /* Label for the whole section */
-        font-size: 1.1rem;
-        color: #007ACC;
-        margin-bottom: 0.75rem;
-        display: block; /* Ensure it's block for margin to take effect */
-    }
-    .dynamic-field-entry { /* Container for each field + remove button */
-      /* display: flex, align-items: center, margin-bottom: 0.5rem are set by JS */
-    }
-    .dynamic-field-entry input[type="text"],
-    .dynamic-field-entry textarea {
-        flex-grow: 1;
-        margin-bottom: 0 !important; /* Override general margin for inputs within an entry */
-    }
-    .add-field-btn { /* The '+' button */
-        display: inline-block;
-        margin-top: 0.5rem;
-        padding: 0.5rem 1rem;
-        font-weight: 600;
-        background-color: #e0e0e0;
-        color: #333;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-    .add-field-btn:hover {
-        background-color: #d0d0d0;
-    }
-    .remove-field-btn { /* The '-' button, styled by JS, but can be enhanced here */
-        /* Example: ensure consistent size with add button if desired */
-        height: auto; /* Let padding define height if text changes */
-        min-width: 28px; /* Ensure it's at least as wide as it is tall */
-        line-height: normal;
-    }
+  <!-- CSP (Cloudflare/_headers) – same strict policy as index.html -->
 
-    /* Responsive stacking for the date/time row in join.html */
-    .form-row-flex-stack-mobile {
-        display: flex;
-        gap: 1rem; /* Default gap for larger screens */
-        margin-bottom: 1rem; /* Space below this row */
-    }
-    @media screen and (max-width: 768px) {
-        .form-row-flex-stack-mobile {
-          flex-direction: column;
-          gap: 0;
-        }
-        .form-row-flex-stack-mobile > div {
-          width: 100%;
-          margin-bottom: 1rem;
-        }
-        .form-row-flex-stack-mobile > div:last-child {
-          margin-bottom: 0;
-        }
-    }
+   <!-- CSP comments (strict, same as index) -->
 
-  </style>
+  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE}}">
+  <link rel="stylesheet" href="css/join.css"   nonce="{{CSP_NONCE}}">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <!-- Font Awesome (latest) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pY1H4i9kqJ3lyE6N8Tq3khI1+7DxyG7xgHLRWofvFhYBDF3pKPt+UJ3Fd8YhrZ1F2Cfxt9hWvqn6wuK1QvAzHg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+/>
+
+  <!-- reCAPTCHA v3 -->
+  <script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY" async defer></script>
 </head>
 
 <body>
-  <main role="main" aria-labelledby="pageTitle">
-    <div class="lang-toggle" aria-label="Language selector">
-      <label for="language-select">Language / Idioma:</label>
-      <select id="language-select" aria-describedby="language-select-desc">
-        <option value="en" selected>English</option>
-        <option value="es">Español</option>
-      </select>
+  <!-- HEADER (same as index) -->
+  <header>
+    <a class="logo" href="index.html">OPS</a>
+    <nav id="desktop-nav">
+      <a href="index.html"               data-en="Home"          data-es="Inicio">Home</a>
+      <a href="business-operations.html" data-en="Operations"    data-es="Gestión">Operations</a>
+      <a href="contact-center.html"      data-en="Contact Center"data-es="Centro">Contact Center</a>
+      <a href="it-support.html"          data-en="IT Support"    data-es="Soporte IT">IT Support</a>
+      <a href="professionals.html"       data-en="Professionals" data-es="Profesionales">Professionals</a>
+      <a href="contact.html"             data-en="Contact"       data-es="Enlázate">Contact</a>
+      <a href="join.html"                data-en="Join"          data-es="Únete">Join</a>
+    </nav>
+    <div class="toggle-box">
+      <button id="lang-toggle"  aria-label="Toggle language">ES</button>
+      <button id="theme-toggle" aria-label="Toggle theme">Light</button>
+      <button id="menu-toggle"  aria-label="Open mobile menu" class="hamburger">☰</button>
     </div>
+  </header>
 
-    <h1 id="pageTitle">Join Us at OPS Online Solutions</h1>
-    <p id="description" class="description">Please copy-paste your information into the fields below to apply securely.</p>
+  <!-- MOBILE DRAWER (same as index) -->
+  <nav id="mobile-drawer" class="drawer" aria-hidden="true">
+    <button id="drawer-close" aria-label="Close">✕</button>
+    <a href="index.html"               data-en="Home"           data-es="Inicio">Home</a>
+    <a href="business-operations.html" data-en="Operations"     data-es="Gestión">Operations</a>
+    <a href="contact-center.html"      data-en="Contact Center" data-es="Centro">Contact Center</a>
+    <a href="it-support.html"          data-en="IT Support"     data-es="Soporte IT">IT Support</a>
+    <a href="professionals.html"       data-en="Professionals"  data-es="Profesionales">Professionals</a>
+    <a href="contact.html"             data-en="Contact"        data-es="Enlázate">Contact</a>
+    <a href="join.html"                data-en="Join"           data-es="Únete">Join</a>
+  </nav>
 
-    <form id="join-form" autocomplete="off" novalidate>
-      <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
-      <label for="firstName" id="label-firstName">First Name *</label>
-      <input type="text" id="firstName" name="firstName" required placeholder="Your first name" autocomplete="given-name" />
+  <main class="container">
+    <h1 class="title" data-en="Join Us" data-es="Únete">Join Us</h1>
 
-      <label for="lastName" id="label-lastName">Last Name *</label>
-      <input type="text" id="lastName" name="lastName" required placeholder="Your last name" autocomplete="family-name" />
+    <form id="join-form" novalidate>
+      <!-- Honeypot for bot protection -->
+      <input type="text" name="hp" style="display:none;" tabindex="-1">
 
-      <label for="address" id="label-address">Address</label>
-      <input type="text" id="address" name="address" placeholder="Your address" autocomplete="street-address" />
-      
-      <label for="zipCode" id="label-zipCode">Zip Code</label>
-      <input type="text" id="zipCode" name="zipCode" placeholder="Zip or postal code" autocomplete="postal-code" />
-
-      <label for="contactNumber" id="label-contactNumber">Contact Number *</label>
-      <input type="tel" id="contactNumber" name="contactNumber" required placeholder="+1 234 567 8901" autocomplete="tel" />
-
-      <label for="email" id="label-email">Email *</label>
-      <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email" />
-
-
-      <div class="form-row-flex-stack-mobile">
-        <div style="flex: 1;">
-            <label for="join-page-preferred-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
-            <input type="date" id="join-page-preferred-date" name="preferred_date" required />
-        </div>
-        <div style="flex: 1;">
-            <label for="join-page-preferred-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
-            <input type="time" id="join-page-preferred-time" name="preferred_time" required />
-        </div>
-      </div>
-
-      <!-- New "Would like to Join" Dropdown -->
+      <!-- First Name -->
       <div class="form-group">
-          <label for="join-position" data-en="Would like to Join" data-es="Posición a la que Postula">Would like to Join</label>
-          <select id="join-position" name="join_position" required>
-              <option value="" disabled selected data-en="-- Choose --" data-es="-- Elija --">-- Choose --</option>
-              <option value="it_support_role" data-en="IT Support Role" data-es="Rol de Soporte IT">IT Support Role</option>
-              <option value="contact_center_role" data-en="Contact Center Role" data-es="Rol de Centro de Contacto">Contact Center Role</option>
-              <option value="business_ops_role" data-en="Business Operations Role" data-es="Rol de Operaciones Comerciales">Business Operations Role</option>
-              <option value="professionals_role" data-en="Professional Services Role" data-es="Rol de Servicios Profesionales">Professional Services Role</option>
-              <option value="general_application" data-en="General Application" data-es="Aplicación General">General Application</option>
-          </select>
+        <label for="first-name" data-en="First Name" data-es="Nombre">First Name</label>
+        <input
+          type="text"
+          id="first-name"
+          name="first_name"
+          required
+          autocomplete="given-name"
+          placeholder=""
+          data-en="Enter your first name"
+          data-es="Introduce tu nombre"
+        >
       </div>
 
-      <!-- New "Years of Working Experience" Input -->
+      <!-- Last Name -->
       <div class="form-group">
-          <label for="years-experience" data-en="Years of Working Experience" data-es="Años de Experiencia Laboral">Years of Working Experience</label>
-          <input type="text" id="years-experience" name="years_experience" placeholder="e.g., 5" />
+        <label for="last-name" data-en="Last Name" data-es="Apellido">Last Name</label>
+        <input
+          type="text"
+          id="last-name"
+          name="last_name"
+          required
+          autocomplete="family-name"
+          placeholder=""
+          data-en="Enter your last name"
+          data-es="Introduce tu apellido"
+        >
       </div>
 
-      <!-- Dynamic Fields Sections -->
-      <div class="dynamic-field-section" id="job-titles-section">
-          <label data-en="Job Titles" data-es="Títulos de Trabajo">Job Titles</label>
-          <div id="job-titles-container">
-              <input type="text" name="job_titles[]" placeholder="e.g., Senior Developer">
-          </div>
-          <button type="button" class="add-field-btn" data-target-container="job-titles-container" data-field-type="text" data-field-name="job_titles[]" data-placeholder="Another Job Title">+</button>
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email" data-en="Email" data-es="Correo Electrónico">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          autocomplete="email"
+          placeholder=""
+          data-en="Enter your email"
+          data-es="Introduce tu correo"
+        >
       </div>
 
-      <div class="dynamic-field-section" id="professional-summary-section">
-          <label data-en="Professional Summary" data-es="Resumen Profesional">Professional Summary</label>
-          <div id="professional-summary-container">
-              <textarea name="professional_summary[]" placeholder="Briefly describe your professional background..."></textarea>
-          </div>
-          <button type="button" class="add-field-btn" data-target-container="professional-summary-container" data-field-type="textarea" data-field-name="professional_summary[]" data-placeholder="More summary...">+</button>
+      <!-- Would Like to Join (dropdown) -->
+      <div class="form-group">
+        <label for="join-department" data-en="Would like to Join" data-es="Deseo Unirme a">Would like to Join</label>
+        <select
+          id="join-department"
+          name="join_department"
+          required
+          data-en="Select an option"
+          data-es="Selecciona una opción"
+        >
+          <option value="" disabled selected data-en="-- Choose --" data-es="-- Elige --">-- Choose --</option>
+          <option value="business_operations" data-en="Business Operations" data-es="Gestión">Business Operations</option>
+          <option value="contact_center" data-en="Contact Center" data-es="Centro">Contact Center</option>
+          <option value="it_support" data-en="IT Support" data-es="Soporte IT">IT Support</option>
+          <option value="professionals" data-en="Professionals" data-es="Profesionales">Professionals</option>
+        </select>
       </div>
 
-      <div class="dynamic-field-section" id="experience-details-section">
-          <label data-en="Experience" data-es="Experiencia">Experience</label>
-          <div id="experience-details-container">
-              <textarea name="experience_details[]" placeholder="Describe your relevant experience..."></textarea>
-          </div>
-          <button type="button" class="add-field-btn" data-target-container="experience-details-container" data-field-type="textarea" data-field-name="experience_details[]" data-placeholder="More experience...">+</button>
+      <!-- Years of Working Experience -->
+      <div class="form-group">
+        <label for="years-exp" data-en="Years of Working Experience" data-es="Años de Experiencia Laboral">Years of Working Experience</label>
+        <input
+          type="number"
+          id="years-exp"
+          name="years_experience"
+          min="0"
+          step="1"
+          required
+          placeholder=""
+          data-en="e.g., 5"
+          data-es="ej., 5"
+        >
       </div>
 
-      <div class="dynamic-field-section" id="skills-details-section">
-          <label data-en="Skills" data-es="Habilidades">Skills</label>
-          <div id="skills-details-container">
-              <input type="text" name="skills_details[]" placeholder="e.g., JavaScript, Project Management">
-          </div>
-          <button type="button" class="add-field-btn" data-target-container="skills-details-container" data-field-type="text" data-field-name="skills_details[]" data-placeholder="Another skill">+</button>
+      <!-- Job Titles (multi-field) -->
+      <div class="form-group multi-field" data-field="job_titles">
+        <label data-en="Job Titles" data-es="Títulos del Puesto">Job Titles</label>
+        <div class="field-row">
+          <input
+            type="text"
+            name="job_titles[]"
+            required
+            placeholder=""
+            data-en="e.g., Senior Developer"
+            data-es="ej., Desarrollador Senior"
+          >
+          <button type="button" class="add-btn"    data-field="job_titles">＋</button>
+          <button type="button" class="remove-btn" data-field="job_titles">−</button>
+        </div>
       </div>
 
-      <div class="dynamic-field-section" id="education-details-section">
-          <label data-en="Education" data-es="Educación">Education</label>
-          <div id="education-details-container">
-              <input type="text" name="education_details[]" placeholder="e.g., B.S. Computer Science">
-          </div>
-          <button type="button" class="add-field-btn" data-target-container="education-details-container" data-field-type="text" data-field-name="education_details[]" data-placeholder="Another education entry">+</button>
+      <!-- Professional Summary (multi-field) -->
+      <div class="form-group multi-field" data-field="prof_summary">
+        <label data-en="Professional Summary" data-es="Resumen Profesional">Professional Summary</label>
+        <div class="field-row">
+          <textarea
+            name="prof_summary[]"
+            rows="3"
+            required
+            placeholder=""
+            data-en="You can copy-paste your summary"
+            data-es="Puedes copiar y pegar tu resumen"
+          ></textarea>
+          <button type="button" class="add-btn"    data-field="prof_summary">＋</button>
+          <button type="button" class="remove-btn" data-field="prof_summary">−</button>
+        </div>
       </div>
 
-      <div class="dynamic-field-section" id="certifications-details-section">
-          <label data-en="Certifications" data-es="Certificaciones">Certifications</label>
-          <div id="certifications-details-container">
-              <input type="text" name="certifications_details[]" placeholder="e.g., AWS Certified Developer">
-          </div>
-          <button type="button" class="add-field-btn" data-target-container="certifications-details-container" data-field-type="text" data-field-name="certifications_details[]" data-placeholder="Another certification">+</button>
+      <!-- Experience (multi-field) -->
+      <div class="form-group multi-field" data-field="experience">
+        <label data-en="Experience" data-es="Experiencia">Experience</label>
+        <div class="field-row">
+          <textarea
+            name="experience[]"
+            rows="3"
+            required
+            placeholder=""
+            data-en="You can copy-paste your experience"
+            data-es="Puedes copiar y pegar tu experiencia"
+          ></textarea>
+          <button type="button" class="add-btn"    data-field="experience">＋</button>
+          <button type="button" class="remove-btn" data-field="experience">−</button>
+        </div>
       </div>
 
-      <div class="dynamic-field-section" id="projects-section">
-          <label data-en="Projects" data-es="Proyectos">Projects</label>
-          <div id="projects-container">
-              <textarea name="projects[]" placeholder="Describe a project you're proud of..."></textarea>
-          </div>
-          <button type="button" class="add-field-btn" data-target-container="projects-container" data-field-type="textarea" data-field-name="projects[]" data-placeholder="Another project...">+</button>
+      <!-- Skills (multi-field) -->
+      <div class="form-group multi-field" data-field="skills">
+        <label data-en="Skills" data-es="Habilidades">Skills</label>
+        <div class="field-row">
+          <input
+            type="text"
+            name="skills[]"
+            required
+            placeholder=""
+            data-en="e.g., JavaScript, Python"
+            data-es="ej., JavaScript, Python"
+          >
+          <button type="button" class="add-btn"    data-field="skills">＋</button>
+          <button type="button" class="remove-btn" data-field="skills">−</button>
+        </div>
       </div>
 
-      <div class="dynamic-field-section" id="hobbies-section">
-          <label data-en="Hobbies" data-es="Pasatiempos">Hobbies</label>
-          <div id="hobbies-container">
-              <input type="text" name="hobbies[]" placeholder="e.g., Hiking, Reading">
-          </div>
-          <button type="button" class="add-field-btn" data-target-container="hobbies-container" data-field-type="text" data-field-name="hobbies[]" data-placeholder="Another hobby">+</button>
+      <!-- Education (multi-field: Date + Institution/Degree) -->
+      <div class="form-group multi-field" data-field="education">
+        <label data-en="Education" data-es="Educación">Education</label>
+        <div class="field-row">
+          <input
+            type="date"
+            name="education_date[]"
+            required
+          >
+          <input
+            type="text"
+            name="education_desc[]"
+            required
+            placeholder=""
+            data-en="e.g., B.S. in Computer Science"
+            data-es="ej., Licenciatura en Informática"
+          >
+          <button type="button" class="add-btn"    data-field="education">＋</button>
+          <button type="button" class="remove-btn" data-field="education">−</button>
+        </div>
       </div>
 
-      <button type="submit" id="submit-btn">Submit Application</button>
+      <!-- Certifications or Licenses (multi-field: Date + Name) -->
+      <div class="form-group multi-field" data-field="certifications">
+        <label data-en="Certifications or Licenses" data-es="Certificaciones o Licencias">Certifications or Licenses</label>
+        <div class="field-row">
+          <input
+            type="date"
+            name="certifications_date[]"
+            required
+          >
+          <input
+            type="text"
+            name="certifications_desc[]"
+            required
+            placeholder=""
+            data-en="e.g., A+, Network+"
+            data-es="ej., A+, Network+"
+          >
+          <button type="button" class="add-btn"    data-field="certifications">＋</button>
+          <button type="button" class="remove-btn" data-field="certifications">−</button>
+        </div>
+      </div>
+
+      <!-- Projects Ex/Internal (multi-field) -->
+      <div class="form-group multi-field" data-field="projects">
+        <label data-en="Projects (External/Internal)" data-es="Proyectos (Externos/Internos)">Projects Ex/Internal</label>
+        <div class="field-row">
+          <input
+            type="text"
+            name="projects[]"
+            required
+            placeholder=""
+            data-en="Describe a project"
+            data-es="Describe un proyecto"
+          >
+          <button type="button" class="add-btn"    data-field="projects">＋</button>
+          <button type="button" class="remove-btn" data-field="projects">−</button>
+        </div>
+      </div>
+
+      <!-- Hobbies (multi-field) -->
+      <div class="form-group multi-field" data-field="hobbies">
+        <label data-en="Hobbies" data-es="Pasatiempos">Hobbies</label>
+        <div class="field-row">
+          <input
+            type="text"
+            name="hobbies[]"
+            required
+            placeholder=""
+            data-en="e.g., Reading, Hiking"
+            data-es="ej., Lectura, Senderismo"
+          >
+          <button type="button" class="add-btn"    data-field="hobbies">＋</button>
+          <button type="button" class="remove-btn" data-field="hobbies">−</button>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group">
+        <button
+          type="submit"
+          id="submit-btn"
+          class="submit-btn"
+          data-en="Submit"
+          data-es="Enviar"
+        >Submit</button>
+      </div>
+
+      <!-- Progress / Thank You Message (hidden initially) -->
+      <div id="thank-you" class="thank-you" hidden
+           data-en="Thank you for your confidence in us. We will contact you as soon as we can. Your data is in transit and it is encrypting …"
+           data-es="Gracias por confiar en nosotros. Nos pondremos en contacto lo antes posible. Tus datos están en tránsito y se están encriptando …">
+        Thank you for your confidence in us. We will contact you as soon as we can. Your data is in transit and it is encrypting …
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
     </form>
   </main>
 
-  <!-- Popup security notice -->
-  <div id="popup" role="alertdialog" aria-modal="true" aria-labelledby="popupTitle" style="display:none;">
-    <p><strong>Security Notice:</strong> Due to high risks of malware in file uploads, we require you to copy-paste your resume information in plain text only.</p>
-    <p>Please review these recent reports on cyber threats:</p>
-    <ul>
-      <li><a href="https://tech.co/news/data-breaches-updated-list" target="_blank" rel="noopener">Tech.co: Data Breaches Updated List</a></li>
-      <li><a href="https://www.forbes.com/sites/daveywinder/2025/05/22/microsoft-attacks-windows-password-hackers-in-global-counter-strike" target="_blank" rel="noopener">Forbes: Microsoft Counterstrike</a></li>
-      <li><a href="https://www.forbes.com/sites/thomasbrewster/2024/03/26/hackers-breach-hundreds-of-ai-compute-servers-researchers-say" target="_blank" rel="noopener">Forbes: AI Compute Servers Breach</a></li>
-      <li><a href="https://www.forbes.com/sites/chuckbrooks/2025/05/18/growing-cyberthreats-to-the-internet-of-things" target="_blank" rel="noopener">Forbes: Cyberthreats IoT</a></li>
-    </ul>
-    <button id="popup-close-btn">I Understand, Continue</button>
+  <!-- FABs & Footer (same as index) -->
+  <div class="fab-box">
+    <button id="chat-fab"   class="fab" aria-label="Chatbot">💬</button>
+    <a      id="join-fab"   class="fab" href="join.html" aria-label="Join"></a>
+    <a      id="contact-fab"class="fab" href="contact.html" aria-label="Contact"></a>
   </div>
 
-  <script nonce="{{CSP_NONCE_PLACEHOLDER}}" type="module">
-    // Language toggle
-    const langSelect = document.getElementById('language-select');
-    const textMap = {
-      en: {
-        title: 'Join Us at OPS Online Solutions',
-        description: 'Please copy-paste your information into the fields below to apply securely.',
-        labels: {
-          firstName: 'First Name *',
-          lastName: 'Last Name *',
-          address: 'Address',
-          zipCode: 'Zip Code',
-          contactNumber: 'Contact Number *',
-          email: 'Email *',
-          experience: 'Experience',
-          certification: 'Certification',
-          education: 'Education',
-          skills: 'Skills',
-          submitBtn: 'Submit Application',
-          addExp: '+ Add Experience',
-          addCert: '+ Add Certification',
-          addEdu: '+ Add Education',
-          addSkill: '+ Add Skill'
-        },
-        popupText: {
-          en: true,
-          es: false
-        }
-      },
-      es: {
-        title: 'Únete a OPS Online Solutions',
-        description: 'Por favor, copie y pegue su información en los campos a continuación para aplicar de forma segura.',
-        labels: {
-          firstName: 'Nombre *',
-          lastName: 'Apellido *',
-          address: 'Dirección',
-          zipCode: 'Código Postal',
-          contactNumber: 'Número de Contacto *',
-          email: 'Correo Electrónico *',
-          experience: 'Experiencia',
-          certification: 'Certificación',
-          education: 'Educación',
-          skills: 'Habilidades',
-          submitBtn: 'Enviar Aplicación',
-          addExp: '+ Agregar Experiencia',
-          addCert: '+ Agregar Certificación',
-          addEdu: '+ Agregar Educación',
-          addSkill: '+ Agregar Habilidad'
-        },
-        popupText: {
-          en: false,
-          es: true
-        }
-      }
-    };
+  <footer>
+    <p>&copy; 2025 OPS Solutions Services. All rights reserved.</p>
+  </footer>
 
-    function setLanguage(lang) {
-      const t = textMap[lang];
-      document.getElementById('pageTitle').textContent = t.title;
-      document.getElementById('description').textContent = t.description;
-      document.getElementById('label-firstName').textContent = t.labels.firstName;
-      document.getElementById('label-lastName').textContent = t.labels.lastName;
-      document.getElementById('label-address').textContent = t.labels.address;
-      document.getElementById('label-zipCode').textContent = t.labels.zipCode;
-      document.getElementById('label-contactNumber').textContent = t.labels.contactNumber;
-      document.getElementById('label-email').textContent = t.labels.email;
-      document.getElementById('label-experience').textContent = t.labels.experience;
-      document.getElementById('label-certification').textContent = t.labels.certification;
-      document.getElementById('label-education').textContent = t.labels.education;
-      document.getElementById('label-skills').textContent = t.labels.skills;
-      document.getElementById('submit-btn').textContent = t.labels.submitBtn;
-      document.getElementById('add-experience').textContent = t.labels.addExp;
-      document.getElementById('add-certification').textContent = t.labels.addCert;
-      document.getElementById('add-education').textContent = t.labels.addEdu;
-      document.getElementById('add-skills').textContent = t.labels.addSkill;
-      document.getElementById('popup-text-en').style.display = t.popupText.en ? 'block' : 'none';
-      document.getElementById('popup-text-es').style.display = t.popupText.es ? 'block' : 'none';
-    }
-
-    langSelect.addEventListener('change', (e) => {
-      setLanguage(e.target.value);
-    });
-
-    setLanguage('en'); // default language
-
-    // Popup logic
-    const popup = document.getElementById('popup');
-    const popupCloseBtn = document.getElementById('popup-close-btn');
-    popup.style.display = 'block';
-    popupCloseBtn.addEventListener('click', () => {
-      popup.style.display = 'none';
-    });
-
-    // Popup logic
-    const popup = document.getElementById('popup');
-    const popupCloseBtn = document.getElementById('popup-close-btn');
-    popup.style.display = 'block';
-    popupCloseBtn.addEventListener('click', () => {
-      popup.style.display = 'none';
-    });
-
-    // New Dynamic Field Logic
-    function createDynamicFieldEntry(fieldType, fieldName, placeholderText, lang) {
-        const entryDiv = document.createElement('div');
-        entryDiv.className = 'dynamic-field-entry'; // For styling if needed
-        entryDiv.style.display = 'flex';
-        entryDiv.style.alignItems = 'center';
-        entryDiv.style.marginBottom = '0.5rem';
-
-        let field;
-        if (fieldType === 'textarea') {
-            field = document.createElement('textarea');
-            field.rows = 3; // Default rows for textarea
-        } else {
-            field = document.createElement('input');
-            field.type = 'text';
-        }
-        field.name = fieldName; // e.g., job_titles[]
-        field.placeholder = placeholderText || (lang === 'es' ? 'Nuevo valor' : 'New value');
-        field.style.flexGrow = '1';
-        // Basic styling to match existing inputs
-        field.style.width = '100%'; // Ensure it tries to fill container before flex adjustments
-        field.style.padding = '0.65rem 1rem';
-        field.style.fontSize = '1rem';
-        field.style.borderRadius = '6px';
-        field.style.border = '1.5px solid #ccc';
-
-
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.textContent = '−'; // Minus sign
-        removeBtn.className = 'remove-field-btn';
-        // Basic styling for remove button
-        removeBtn.style.marginLeft = '0.5rem';
-        removeBtn.style.padding = '0.3rem 0.6rem';
-        removeBtn.style.backgroundColor = '#ff6b6b'; // A contrasting color for remove
-        removeBtn.style.color = 'white';
-        removeBtn.style.border = 'none';
-        removeBtn.style.borderRadius = '4px';
-        removeBtn.style.cursor = 'pointer';
-
-
-        removeBtn.addEventListener('click', () => {
-            entryDiv.remove();
-        });
-
-        entryDiv.appendChild(field);
-        entryDiv.appendChild(removeBtn);
-        return entryDiv;
-    }
-
-    document.querySelectorAll('.add-field-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const targetContainerId = this.dataset.targetContainer;
-            const fieldType = this.dataset.fieldType;
-            const fieldName = this.dataset.fieldName;
-            const placeholder = this.dataset.placeholder || '';
-            const currentLang = document.getElementById('language-select')?.value || 'en';
-
-            const container = document.getElementById(targetContainerId);
-            if (container) {
-                const newFieldEntry = createDynamicFieldEntry(fieldType, fieldName, placeholder, currentLang);
-                container.appendChild(newFieldEntry);
-            } else {
-                console.warn('Target container for dynamic fields not found:', targetContainerId);
-            }
-        });
-    });
-
+</body>
+</html>
+    <!-- SHARED SCRIPTS -->
     // Form submission is now handled by js/join-handler.js which calls FormEncryptor.processForm.
-  </script>
-  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
-  <script src="js/join-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
-
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+     <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+    <script src="js/join-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>
