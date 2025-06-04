@@ -75,524 +75,146 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <style nonce="{{CSP_NONCE_PLACEHOLDER}}">
-    html, body {
-      margin: 0; 
-      padding: 0; 
-      height: 100%;
-      background: var(--bg-color, #121212);
-      color: var(--text-color, #eee);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow-x: hidden;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    #secure-content {
-      width: 100%;
-      max-width: 520px;
-      padding: 2rem 1.5rem;
-      background: rgba(18,18,18,0.95);
-      border-radius: 16px;
-      position: relative;
-      box-shadow: 0 0 20px rgba(162, 89, 255, 0.3);
-      border: 2px solid transparent;
-      transition: border 0.4s ease;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-      min-height: 80vh;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    #secure-content.focused {
-      border-image: linear-gradient(45deg, #a259ff 0%, transparent 30%, transparent 70%, #a259ff 100%) 1;
-      animation: shineRun 1.5s linear infinite;
-    }
-    @keyframes shineRun {
-      0% { border-image: linear-gradient(45deg, #a259ff 0%, transparent 30%, transparent 70%, #a259ff 100%) 1; }
-      100% { border-image: linear-gradient(45deg, transparent 0%, #a259ff 30%, #a259ff 70%, transparent 100%) 1; }
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 0.2rem;
-      font-weight: 700;
-      font-size: 2rem;
-      user-select: none;
-    }
-    #description {
-      text-align: center;
-      margin-bottom: 2rem;
-      color: #aaa;
-      font-size: 1.05rem;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-      width: 100%;
-      max-width: 480px;
-      box-sizing: border-box;
-    }
-    .form-group {
-      position: relative;
-      width: 100%;
-      margin: 0 auto;
-    }
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="date"],
-    input[type="time"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 14px;
-      background: rgba(128, 0, 255, 0.1);
-      border: 2px solid transparent;
-      border-radius: 12px;
-      font-size: 1rem;
-      color: #eee;
-      outline: none;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      resize: vertical;
-      min-height: 44px;
-      font-family: inherit;
-      box-sizing: border-box;
-    }
-    textarea {
-      min-height: 120px;
-      max-height: 500px;
-    }
-    input:focus, textarea:focus, select:focus {
-      border-color: #a259ff;
-      box-shadow: 0 0 8px 2px rgba(162, 89, 255, 0.8);
-      background: rgba(162, 89, 255, 0.15);
-    }
-    label {
-      position: absolute;
-      left: 14px;
-      top: 14px;
-      color: #bbb;
-      font-size: 1rem;
-      pointer-events: none;
-      padding: 0 6px;
-      transition: all 0.3s ease;
-      user-select: none;
-      border-radius: 4px;
-    }
-    input:focus + label,
-    input:not(:placeholder-shown) + label,
-    textarea:focus + label,
-    textarea:not(:placeholder-shown) + label,
-    select:focus + label,
-    select:not([value=""]) + label {
-      top: -12px;
-      left: 12px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #a259ff;
-      background: #121212;
-    }
-    .submit-button {
-      background-color: #a259ff;
-      color: white;
-      padding: 14px 28px;
-      font-weight: 700;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-    }
-    .submit-button:hover,
-    .submit-button:focus {
-      background-color: #7e3ed0;
-      outline: none;
-    }
-    #feedback-message {
-      margin-top: 1rem;
-      text-align: center;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #a259ff;
-      min-height: 30px;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    #feedback-message.show {
-      opacity: 1;
-    }
-    #encrypting-msg {
-      position: fixed;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.9rem;
-      color: #a259ff;
-      background: rgba(18,18,18,0.85);
-      border-radius: 12px;
-      padding: 6px 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-      z-index: 9999;
-    }
-    #encrypting-msg.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    #spinner {
-      border: 3px solid #a259ff;
-      border-top: 3px solid transparent;
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      0% {transform: rotate(0deg);}
-      100% {transform: rotate(360deg);}
-    }
-    .floating-icons {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .floating-icon {
-      background: #a259ff;
-      color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 10px rgba(162, 89, 255, 0.5);
-      transition: transform 0.3s ease, background-color 0.3s ease;
-    }
-    .floating-icon:hover {
-      background-color: #7e3ed0;
-      transform: scale(1.1);
-    }
-    @media (max-width: 600px) {
-      #secure-content {
-        max-width: 90vw;
-        padding: 1.5rem 1rem;
-        min-height: auto;
-        max-height: none;
-      }
-      input[type="text"],
-      input[type="email"],
-      input[type="tel"],
-      input[type="date"],
-      input[type="time"],
-      select,
-      textarea {
-        font-size: 0.95rem;
-      }
-      .submit-button {
-        font-size: 1rem;
-        padding: 12px 22px;
-      }
-    }
-    body.light-theme {
-      --bg-color: #f4f4f4;
-      --text-color: #222;
-    }
-    body.light-theme #secure-content {
-      background: #fff;
-      box-shadow: 0 0 15px rgba(162, 89, 255, 0.3);
-      color: #222;
-    }
-  </style>
+<link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE}}">
+  <link rel="stylesheet" href="css/join.css"   nonce="{{CSP_NONCE}}">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <!-- Font Awesome (latest) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-pY1H4i9kqJ3lyE6N8Tq3khI1+7DxyG7xgHLRWofvFhYBDF3pKPt+UJ3Fd8YhrZ1F2Cfxt9hWvqn6wuK1QvAzHg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+/>
+
+  <!-- reCAPTCHA v3 -->
+  <script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY" async defer></script>
 </head>
+
 <body>
-  <header role="banner">
-    <nav role="navigation" aria-label="Primary">
-      <ul>
-        <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-        <li><a href="business-operations.html" data-en="Business Operations" data-es="Gestión">Business Operations</a></li>
-        <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-        <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-        <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-        <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-        <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
-      </ul>
+  <!-- HEADER (same as others) -->
+  <header>
+    <a class="logo" href="index.html">OPS</a>
+    <nav id="desktop-nav">
+      <a href="index.html"               data-en="Home"          data-es="Inicio">Home</a>
+      <a href="business-operations.html" data-en="Operations"     data-es="Gestión">Operations</a>
+      <a href="contact-center.html"      data-en="Contact Center"data-es="Centro">Contact Center</a>
+      <a href="it-support.html"          data-en="IT Support"    data-es="Soporte IT">IT Support</a>
+      <a href="professionals.html"       data-en="Professionals" data-es="Profesionales">Professionals</a>
+      <a href="contact.html"             data-en="Contact"       data-es="Enlázate">Contact</a>
+      <a href="join.html"                data-en="Join"          data-es="Únete">Join</a>
     </nav>
-    <div class="toggle-container" role="region" aria-label="Theme and Language Toggles">
-      <button id="theme-toggle-desktop" aria-label="Toggle Light or Dark Theme">Light</button>
-      <button id="language-toggle-desktop" aria-label="Toggle Language English or Spanish">EN</button>
+    <div class="toggle-box">
+      <button id="lang-toggle"  aria-label="Toggle language">ES</button>
+      <button id="theme-toggle" aria-label="Toggle theme">Light</button>
+      <button id="menu-toggle"  aria-label="Open mobile menu" class="hamburger">☰</button>
     </div>
   </header>
 
-  <main id="secure-content" role="main" aria-labelledby="pageTitle" tabindex="-1" aria-live="polite" aria-atomic="true" aria-relevant="all">
-    <h1 id="pageTitle" data-en="Contact Us at OPS Online Solutions" data-es="Contáctenos en OPS Online Solutions">Contact Us at OPS Online Solutions</h1>
-    <p id="description" data-en="Securely contact us with your questions or service requests." data-es="Contáctenos de forma segura con sus preguntas o solicitudes de servicio.">Securely contact us with your questions or service requests.</p>
-
-    <form id="contact-form" method="POST" action="https://api.opsonlinesolutions.com/submitContact" autocomplete="off" novalidate>
-      <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
-      <div style="position:absolute; left:-9999px;" aria-hidden="true">
-
-        <input type="text" id="contact-hp-old" name="contact-hp-old" autocomplete="off" tabindex="-1" />
-
-      </div>
-
-      <div class="form-group">
-        <input type="text" id="contact-name" name="contact-name" placeholder=" " required />
-        <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
-      </div>
-
-      <div class="form-group">
-        <input type="email" id="contact-email" name="contact_email" placeholder=" " required />
-        <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-      </div>
-
-      <div class="form-group">
-          <select id="service-inquiry" name="service_inquiry" required>
-              <option value="" disabled selected data-en="Select a service..." data-es="Seleccione un servicio...">Select a service...</option>
-              <option value="general_inquiry" data-en="General Inquiry" data-es="Consulta General">General Inquiry</option>
-              <option value="it_support" data-en="IT Support" data-es="Soporte IT">IT Support</option>
-              <option value="business_operations" data-en="Business Operations" data-es="Operaciones Comerciales">Business Operations</option>
-              <option value="contact_center" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</option>
-              <option value="professionals" data-en="Professional Services" data-es="Servicios Profesionales">Professional Services</option>
-          </select>
-          <label for="service-inquiry" data-en="Service Inquiry" data-es="Consulta de Servicio">Service Inquiry</label>
-      </div>
-
-      <div class="form-group">
-        <textarea id="contact-comments" name="message" rows="6" placeholder=" " maxlength="5000" required></textarea>
-        <label for="contact-comments" data-en="Message" data-es="Mensaje">Message</label>
-      </div>
-
-      <div class="form-group" style="display:flex; gap:8px; max-width: 480px; margin: auto;">
-        <input type="date" id="contact-preferred-date" name="preferred_date" placeholder=" " required style="flex:1" />
-        <label for="contact-preferred-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
-        <input type="time" id="contact-preferred-time" name="preferred_time" placeholder=" " required style="flex:1" />
-        <label for="contact-preferred-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
-      </div>
-
-      <div id="recaptcha-placeholder" style="margin: 1rem 0; min-height: 78px;"></div>
-
-      <button type="submit" class="submit-button" data-en="Send Message" data-es="Enviar Mensaje">Send Message</button>
-    </form>
-
-    <div id="feedback-message" aria-live="polite" aria-atomic="true" role="alert"></div>
-    <div id="encrypting-msg" aria-live="polite" aria-atomic="true" role="status" aria-hidden="true">
-      <div id="spinner" aria-hidden="true"></div>
-      <span data-en="Encrypting..." data-es="Encriptando...">Encrypting...</span>
-    </div>
-  </main>
-
-  <div class="floating-icons" aria-label="Quick Access">
-    <a href="join.html" class="floating-icon" aria-label="Join Us" tabindex="0">
-      <i class="fas fa-user-plus" aria-hidden="true"></i>
-    </a>
-    <a href="contact.html" class="floating-icon" aria-label="Contact Us" tabindex="0">
-      <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
-    </a>
-  </div>
-
-  <nav class="mobile-nav" role="navigation" aria-label="Mobile Navigation">
-    <a href="index.html" class="mobile-nav-item" aria-label="Home">
-      <i class="fas fa-home" aria-hidden="true"></i>
-      <span data-en="Home" data-es="Inicio">Home</span>
-    </a>
-    <button class="mobile-nav-item" id="mobile-services-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="mobile-services-menu" aria-label="Toggle Services Menu">
-      <i class="fas fa-bars" aria-hidden="true"></i>
-      <span data-en="Services" data-es="Servicios">Services</span>
-    </button>
-    <button class="mobile-nav-item" id="language-toggle-mobile" aria-label="Toggle Language English or Spanish">EN</button>
-    <button class="mobile-nav-item" id="theme-toggle-mobile" aria-label="Toggle Light or Dark Theme">Light</button>
-    <a href="contact.html" class="mobile-nav-item" aria-label="Contact Us">
-      <i class="fas fa-comment-alt" aria-hidden="true"></i>
-      <span data-en="Contact" data-es="Contacto">Contact</span>
-    </a>
+  <!-- MOBILE DRAWER (same) -->
+  <nav id="mobile-drawer" class="drawer" aria-hidden="true">
+    <button id="drawer-close" aria-label="Close">✕</button>
+    <a href="index.html"               data-en="Home"           data-es="Inicio">Home</a>
+    <a href="business-operations.html" data-en="Operations"     data-es="Gestión">Operations</a>
+    <a href="contact-center.html"      data-en="Contact Center" data-es="Centro">Contact Center</a>
+    <a href="it-support.html"          data-en="IT Support"     data-es="Soporte IT">IT Support</a>
+    <a href="professionals.html"       data-en="Professionals"  data-es="Profesionales">Professionals</a>
+    <a href="contact.html"             data-en="Contact"        data-es="Enlázate">Contact</a>
+    <a href="join.html"                data-en="Join"           data-es="Únete">Join</a>
   </nav>
 
-  <div class="mobile-services-menu" id="mobile-services-menu" hidden aria-label="Services Menu">
-    <ul>
-      <li><a href="business-operations.html" data-en="Business Operations" data-es="Gestión">Business Operations</a></li>
-      <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-      <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-      <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-    </ul>
+  <main id="main">
+    <h1 data-en="Contact Us" data-es="Enlázate">Contact Us</h1>
+
+    <form id="contact-form" novalidate>
+      <!-- Honeypot field -->
+      <input type="text" name="hp" style="display:none;" tabindex="-1">
+
+      <!-- Name -->
+      <div class="field">
+        <label for="name" data-en="Name" data-es="Nombre">Name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          autocomplete="name"
+          placeholder="John Doe"
+          data-en="John Doe"
+          data-es="Juan Pérez"
+        >
+      </div>
+
+      <!-- Email -->
+      <div class="field">
+        <label for="email" data-en="Email" data-es="Correo">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder="john@example.com"
+          data-en="john@example.com"
+          data-es="juan@ejemplo.com"
+        >
+      </div>
+
+      <!-- Service Inquiry -->
+      <div class="field">
+        <label for="service" data-en="Service Inquiry" data-es="Consultas de Servicio">Service Inquiry</label>
+        <select
+          id="service"
+          name="service"
+          required
+          data-en="Select a service"
+          data-es="Seleccione un servicio"
+        >
+          <option value="" disabled selected data-en="Select a service" data-es="Seleccione un servicio">
+            Select a service
+          </option>
+          <option value="business-operations" data-en="Business Operations" data-es="Gestión">Business Operations</option>
+          <option value="contact-center"      data-en="Contact Center"      data-es="Centro de Servicio">Contact Center</option>
+          <option value="it-support"          data-en="IT Support"          data-es="Soporte IT">IT Support</option>
+          <option value="professionals"       data-en="Professionals"       data-es="Profesionales">Professionals</option>
+        </select>
+      </div>
+
+      <!-- Message -->
+      <div class="field">
+        <label for="message" data-en="Message" data-es="Mensaje">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required
+          placeholder="Type your message here..."
+          data-en="Type your message here..."
+          data-es="Escribe tu mensaje aquí..."
+        ></textarea>
+      </div>
+
+      <p id="encrypting-msg" class="status hide" data-en="Encrypting…" data-es="Encriptando…">Encrypting…</p>
+      <p id="feedback-msg" class="status"></p>
+
+      <button type="submit" class="btn" data-en="Send" data-es="Enviar">Send</button>
+    </form>
+  </main>
+
+  <!-- FABs & Footer (same) -->
+  <div class="fab-box">
+    <button id="chat-fab"   class="fab" aria-label="Chatbot">💬</button>
+    <a      id="join-fab"   class="fab" href="join.html" aria-label="Join">➕</a>
+    <a      id="contact-fab"class="fab" href="contact.html" aria-label="Contact">✉</a>
   </div>
 
-  <script nonce="{{CSP_NONCE_PLACEHOLDER}}">
-    (() => {
-      'use strict';
+  <footer>
+    <p>&copy; 2025 OPS Solutions Services. All rights reserved.</p>
+  </footer>
 
-      const langToggleDesktop = document.getElementById('language-toggle-desktop');
-      const langToggleMobile = document.getElementById('language-toggle-mobile');
-      const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
-      const themeToggleMobile = document.getElementById('theme-toggle-mobile');
-      const mobileServicesToggle = document.getElementById('mobile-services-toggle');
-      const mobileServicesMenu = document.getElementById('mobile-services-menu');
-      const form = document.getElementById('contact-form');
-      const addressContainer = document.getElementById('address-container');
-      const emailContainer = document.getElementById('email-container');
-      const addAddressBtn = document.getElementById('add-address');
-      const addEmailBtn = document.getElementById('add-email');
-      const feedbackMessage = document.getElementById('feedback-message');
-      // const encryptingMsg = document.getElementById('encrypting-msg'); // encryptingMsg is no longer directly managed here for submit
-
-      function setLanguageTexts(lang) {
-        document.querySelectorAll('[data-en]').forEach(el => {
-          el.textContent = lang === 'es' ? el.getAttribute('data-es') : el.getAttribute('data-en');
-        });
-      }
-
-      let currentLang = localStorage.getItem('language') || 'en';
-      setLanguageTexts(currentLang);
-
-      function toggleLanguage() {
-        currentLang = currentLang === 'en' ? 'es' : 'en';
-        localStorage.setItem('language', currentLang);
-        setLanguageTexts(currentLang);
-      }
-
-      langToggleDesktop.addEventListener('click', toggleLanguage);
-      langToggleMobile.addEventListener('click', toggleLanguage);
-
-      function setTheme(theme) {
-        if (theme === 'light') {
-          document.body.classList.add('light-theme');
-          themeToggleDesktop.textContent = 'Dark';
-          themeToggleMobile.textContent = 'Dark';
-          localStorage.setItem('theme', 'light');
-        } else {
-          document.body.classList.remove('light-theme');
-          themeToggleDesktop.textContent = 'Light';
-          themeToggleMobile.textContent = 'Light';
-          localStorage.setItem('theme', 'dark');
-        }
-      }
-
-      let currentTheme = localStorage.getItem('theme') || 'dark';
-      setTheme(currentTheme);
-
-      themeToggleDesktop.addEventListener('click', () => {
-        setTheme(currentTheme === 'light' ? 'dark' : 'light');
-        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-      });
-
-      themeToggleMobile.addEventListener('click', () => {
-        setTheme(currentTheme === 'light' ? 'dark' : 'light');
-        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-      });
-
-      mobileServicesToggle.addEventListener('click', () => {
-        const isExpanded = mobileServicesToggle.getAttribute('aria-expanded') === 'true';
-        mobileServicesToggle.setAttribute('aria-expanded', String(!isExpanded));
-        mobileServicesMenu.hidden = isExpanded;
-      });
-
-      function updateFloatingLabels() {
-        form.querySelectorAll('input, textarea, select').forEach(input => {
-          if (input.value.trim() !== '') {
-            input.classList.add('has-value');
-          } else {
-            input.classList.remove('has-value');
-          }
-        });
-      }
-
-      updateFloatingLabels();
-      form.querySelectorAll('input, textarea, select').forEach(input => {
-        input.addEventListener('input', updateFloatingLabels);
-      });
-
-      addAddressBtn.addEventListener('click', () => {
-        const newGroup = document.createElement('div');
-        newGroup.className = 'form-group address-group';
-        newGroup.style.position = 'relative';
-
-        const newInput = document.createElement('input');
-        newInput.type = 'text';
-        newInput.name = 'contact-address[]';
-        newInput.placeholder = ' ';
-        newInput.required = true;
-
-        const newLabel = document.createElement('label');
-        newLabel.textContent = currentLang === 'es' ? 'Ingrese su dirección' : 'Place your address';
-
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'remove-address';
-        removeBtn.setAttribute('aria-label', currentLang === 'es' ? 'Eliminar campo de dirección' : 'Remove address field');
-        removeBtn.title = removeBtn.getAttribute('aria-label');
-        removeBtn.style.position = 'absolute';
-        removeBtn.style.top = '8px';
-        removeBtn.style.right = '8px';
-        removeBtn.style.background = 'none';
-        removeBtn.style.border = 'none';
-        removeBtn.style.color = '#a259ff';
-        removeBtn.style.fontSize = '1.2rem';
-        removeBtn.style.cursor = 'pointer';
-        removeBtn.textContent = '×';
-
-        removeBtn.addEventListener('click', () => newGroup.remove());
-
-        newGroup.appendChild(newInput);
-        newGroup.appendChild(newLabel);
-        newGroup.appendChild(removeBtn);
-        addressContainer.appendChild(newGroup);
-      });
-
-      addEmailBtn.addEventListener('click', () => {
-        const newGroup = document.createElement('div');
-        newGroup.className = 'form-group email-group';
-        newGroup.style.position = 'relative';
-
-        const newInput = document.createElement('input');
-        newInput.type = 'email';
-        newInput.name = 'contact-email[]';
-        newInput.placeholder = ' ';
-        newInput.required = true;
-
-        const newLabel = document.createElement('label');
-        newLabel.textContent = currentLang === 'es' ? 'Ingrese su correo' : 'Place your email';
-
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'remove-email';
-        removeBtn.setAttribute('aria-label', currentLang === 'es' ? 'Eliminar campo de correo' : 'Remove email field');
-        removeBtn.title = removeBtn.getAttribute('aria-label');
-        removeBtn.style.position = 'absolute';
-        removeBtn.style.top = '8px';
-        removeBtn.style.right = '8px';
-        removeBtn.style.background = 'none';
-        removeBtn.style.border = 'none';
-        removeBtn.style.color = '#a259ff';
-        removeBtn.style.fontSize = '1.2rem';
-        removeBtn.style.cursor = 'pointer';
-        removeBtn.textContent = '×';
-
-        removeBtn.addEventListener('click', () => newGroup.remove());
-
-        newGroup.appendChild(newInput);
-        newGroup.appendChild(newLabel);
-        newGroup.appendChild(removeBtn);
-        emailContainer.appendChild(newGroup);
-      });
-
-      // The original form.addEventListener('submit', ...) and showFeedback() are removed.
-      // Form submission is now handled by js/contact-handler.js which calls FormEncryptor.processForm.
-      // The feedbackMessage element is still used by js/contact-handler.js.
-    })();
-  </script>
+  <!-- SHARED SCRIPTS -->
   <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/main.js" defer nonce="{{CSP_NONCE}}" defer></script>
   <script src="js/contact-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
