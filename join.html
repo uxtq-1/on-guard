@@ -7,15 +7,41 @@
 
   <!-- SEO & Social -->
   <meta name="description" content="Join OPS Online Solutions and be part of a secure, innovative team driving next-gen IT and business services." />
+  <meta name="keywords" content="Careers, Join Us, OPS Online Solutions, IT Jobs, Tech Careers, Secure Employment" />
   <meta property="og:title" content="Join OPS Online Solutions" />
-  <meta property="og:description" content="Apply securely to OPS Solutions. Upload your resume and join the mission." />
+  <meta property="og:description" content="Join OPS Online Solutions and be part of a secure, innovative team driving next-gen IT and business services." />
+  <meta property="og:image" content="assets/images/hero-image.jpg" />
   <meta property="og:url" content="https://www.opsonlinesolutions.com/join.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="OPS Online Solutions" />
+
+  <script type="application/ld+json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OPS Online Solutions",
+      "url": "https://www.opsonlinesolutions.com",
+      "logo": "https://www.opsonlinesolutions.com/assets/logo.png",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-201-350-7567",
+        "contactType": "Customer Service",
+        "areaServed": "US",
+        "availableLanguage": ["English", "Spanish"]
+      },
+      "sameAs": [
+        "https://www.facebook.com/yourpage",
+        "https://twitter.com/yourhandle",
+        "https://www.linkedin.com/company/yourcompany"
+      ]
+    }
+  </script>
 
   <!-- CSP -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'nonce-abc123' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline';
-    style-src 'self' 'nonce-abc123';
+    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net;
+    style-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}';
     img-src 'self' https://trusted-cdn.com;
     connect-src 'self' https://YOUR_CLOUDFLARE_WORKER_ENDPOINT;
     frame-ancestors 'none';
@@ -23,8 +49,9 @@
     base-uri 'self';
     form-action 'self';
   " />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <style nonce="abc123">
+  <style nonce="{{CSP_NONCE_PLACEHOLDER}}">
     /* Clean modern base */
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -199,6 +226,110 @@
       font-weight: 600;
       outline-offset: 2px;
     }
+
+    /* Form field enhancements for join.html */
+    #join-form input[type="text"],
+    #join-form input[type="email"],
+    #join-form input[type="tel"],
+    #join-form input[type="date"],
+    #join-form input[type="time"],
+    #join-form input[type="number"], /* Added for years-experience if type changes */
+    #join-form textarea,
+    #join-form select {
+        width: 100%;
+        padding: 0.75rem 1rem; /* Increased padding */
+        font-size: 1rem;
+        border-radius: 8px; /* Slightly more rounded */
+        border: 1.5px solid #ddd; /* Lighter border */
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        background-color: #fff; /* Ensure background for consistency */
+        color: #333; /* Ensure text color */
+        box-sizing: border-box; /* Add box-sizing */
+        margin-bottom: 0.5rem; /* Add some space below each field */
+    }
+    #join-form input[type="text"]:focus,
+    #join-form input[type="email"]:focus,
+    #join-form input[type="tel"]:focus,
+    #join-form input[type="date"]:focus,
+    #join-form input[type="time"]:focus,
+    #join-form input[type="number"]:focus,
+    #join-form textarea:focus,
+    #join-form select:focus {
+        border-color: #007ACC; /* Existing focus color */
+        box-shadow: 0 0 0 3px rgba(0,122,204,0.2); /* Softer focus shadow */
+    }
+    #join-form .form-group { /* Ensure form-group class is used on relevant divs */
+        margin-bottom: 1rem; /* Space between form groups */
+    }
+    #join-form .form-group label { /* Adjust if labels are not already styled this way */
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+
+    /* Dynamic Field Sections */
+    .dynamic-field-section {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    .dynamic-field-section > label { /* Label for the whole section */
+        font-size: 1.1rem;
+        color: #007ACC;
+        margin-bottom: 0.75rem;
+        display: block; /* Ensure it's block for margin to take effect */
+    }
+    .dynamic-field-entry { /* Container for each field + remove button */
+      /* display: flex, align-items: center, margin-bottom: 0.5rem are set by JS */
+    }
+    .dynamic-field-entry input[type="text"],
+    .dynamic-field-entry textarea {
+        flex-grow: 1;
+        margin-bottom: 0 !important; /* Override general margin for inputs within an entry */
+    }
+    .add-field-btn { /* The '+' button */
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        background-color: #e0e0e0;
+        color: #333;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .add-field-btn:hover {
+        background-color: #d0d0d0;
+    }
+    .remove-field-btn { /* The '-' button, styled by JS, but can be enhanced here */
+        /* Example: ensure consistent size with add button if desired */
+        height: auto; /* Let padding define height if text changes */
+        min-width: 28px; /* Ensure it's at least as wide as it is tall */
+        line-height: normal;
+    }
+
+    /* Responsive stacking for the date/time row in join.html */
+    .form-row-flex-stack-mobile {
+        display: flex;
+        gap: 1rem; /* Default gap for larger screens */
+        margin-bottom: 1rem; /* Space below this row */
+    }
+    @media screen and (max-width: 768px) {
+        .form-row-flex-stack-mobile {
+          flex-direction: column;
+          gap: 0;
+        }
+        .form-row-flex-stack-mobile > div {
+          width: 100%;
+          margin-bottom: 1rem;
+        }
+        .form-row-flex-stack-mobile > div:last-child {
+          margin-bottom: 0;
+        }
+    }
+
   </style>
 </head>
 
@@ -216,6 +347,7 @@
     <p id="description" class="description">Please copy-paste your information into the fields below to apply securely.</p>
 
     <form id="join-form" autocomplete="off" novalidate>
+      <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
       <label for="firstName" id="label-firstName">First Name *</label>
       <input type="text" id="firstName" name="firstName" required placeholder="Your first name" autocomplete="given-name" />
 
@@ -234,38 +366,100 @@
       <label for="email" id="label-email">Email *</label>
       <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email" />
 
-      <!-- Expandable sections -->
-      <section class="expandable-section" id="experience-section" aria-label="Experience">
-        <label id="label-experience">Experience</label>
-        <div class="field-group" id="experience-group">
-          <input type="text" name="experience[]" placeholder="Experience detail" />
+      <div class="form-row-flex-stack-mobile">
+        <div style="flex: 1;">
+            <label for="join-page-preferred-date" data-en="Preferred Date to Contact You" data-es="Fecha Preferida para Contactarle">Preferred Date to Contact You</label>
+            <input type="date" id="join-page-preferred-date" name="preferred_date" required />
         </div>
-        <button type="button" id="add-experience" aria-controls="experience-group" aria-expanded="false" class="expand-btn">+ Add Experience</button>
-      </section>
+        <div style="flex: 1;">
+            <label for="join-page-preferred-time" data-en="Preferred Time to Contact You" data-es="Hora Preferida para Contactarle">Preferred Time to Contact You</label>
+            <input type="time" id="join-page-preferred-time" name="preferred_time" required />
+        </div>
+      </div>
 
-      <section class="expandable-section" id="certification-section" aria-label="Certification">
-        <label id="label-certification">Certification</label>
-        <div class="field-group" id="certification-group">
-          <input type="text" name="certification[]" placeholder="Certification detail" />
-        </div>
-        <button type="button" id="add-certification" aria-controls="certification-group" aria-expanded="false" class="expand-btn">+ Add Certification</button>
-      </section>
+      <!-- New "Would like to Join" Dropdown -->
+      <div class="form-group">
+          <label for="join-position" data-en="Would like to Join" data-es="Posición a la que Postula">Would like to Join</label>
+          <select id="join-position" name="join_position" required>
+              <option value="" disabled selected data-en="-- Choose --" data-es="-- Elija --">-- Choose --</option>
+              <option value="it_support_role" data-en="IT Support Role" data-es="Rol de Soporte IT">IT Support Role</option>
+              <option value="contact_center_role" data-en="Contact Center Role" data-es="Rol de Centro de Contacto">Contact Center Role</option>
+              <option value="business_ops_role" data-en="Business Operations Role" data-es="Rol de Operaciones Comerciales">Business Operations Role</option>
+              <option value="professionals_role" data-en="Professional Services Role" data-es="Rol de Servicios Profesionales">Professional Services Role</option>
+              <option value="general_application" data-en="General Application" data-es="Aplicación General">General Application</option>
+          </select>
+      </div>
 
-      <section class="expandable-section" id="education-section" aria-label="Education">
-        <label id="label-education">Education</label>
-        <div class="field-group" id="education-group">
-          <input type="text" name="education[]" placeholder="Education detail" />
-        </div>
-        <button type="button" id="add-education" aria-controls="education-group" aria-expanded="false" class="expand-btn">+ Add Education</button>
-      </section>
+      <!-- New "Years of Working Experience" Input -->
+      <div class="form-group">
+          <label for="years-experience" data-en="Years of Working Experience" data-es="Años de Experiencia Laboral">Years of Working Experience</label>
+          <input type="text" id="years-experience" name="years_experience" placeholder="e.g., 5" />
+      </div>
 
-      <section class="expandable-section" id="skills-section" aria-label="Skills">
-        <label id="label-skills">Skills</label>
-        <div class="field-group" id="skills-group">
-          <input type="text" name="skills[]" placeholder="Skill detail" />
-        </div>
-        <button type="button" id="add-skills" aria-controls="skills-group" aria-expanded="false" class="expand-btn">+ Add Skill</button>
-      </section>
+      <!-- Dynamic Fields Sections -->
+      <div class="dynamic-field-section" id="job-titles-section">
+          <label data-en="Job Titles" data-es="Títulos de Trabajo">Job Titles</label>
+          <div id="job-titles-container">
+              <input type="text" name="job_titles[]" placeholder="e.g., Senior Developer">
+          </div>
+          <button type="button" class="add-field-btn" data-target-container="job-titles-container" data-field-type="text" data-field-name="job_titles[]" data-placeholder="Another Job Title">+</button>
+      </div>
+
+      <div class="dynamic-field-section" id="professional-summary-section">
+          <label data-en="Professional Summary" data-es="Resumen Profesional">Professional Summary</label>
+          <div id="professional-summary-container">
+              <textarea name="professional_summary[]" placeholder="Briefly describe your professional background..."></textarea>
+          </div>
+          <button type="button" class="add-field-btn" data-target-container="professional-summary-container" data-field-type="textarea" data-field-name="professional_summary[]" data-placeholder="More summary...">+</button>
+      </div>
+
+      <div class="dynamic-field-section" id="experience-details-section">
+          <label data-en="Experience" data-es="Experiencia">Experience</label>
+          <div id="experience-details-container">
+              <textarea name="experience_details[]" placeholder="Describe your relevant experience..."></textarea>
+          </div>
+          <button type="button" class="add-field-btn" data-target-container="experience-details-container" data-field-type="textarea" data-field-name="experience_details[]" data-placeholder="More experience...">+</button>
+      </div>
+
+      <div class="dynamic-field-section" id="skills-details-section">
+          <label data-en="Skills" data-es="Habilidades">Skills</label>
+          <div id="skills-details-container">
+              <input type="text" name="skills_details[]" placeholder="e.g., JavaScript, Project Management">
+          </div>
+          <button type="button" class="add-field-btn" data-target-container="skills-details-container" data-field-type="text" data-field-name="skills_details[]" data-placeholder="Another skill">+</button>
+      </div>
+
+      <div class="dynamic-field-section" id="education-details-section">
+          <label data-en="Education" data-es="Educación">Education</label>
+          <div id="education-details-container">
+              <input type="text" name="education_details[]" placeholder="e.g., B.S. Computer Science">
+          </div>
+          <button type="button" class="add-field-btn" data-target-container="education-details-container" data-field-type="text" data-field-name="education_details[]" data-placeholder="Another education entry">+</button>
+      </div>
+
+      <div class="dynamic-field-section" id="certifications-details-section">
+          <label data-en="Certifications" data-es="Certificaciones">Certifications</label>
+          <div id="certifications-details-container">
+              <input type="text" name="certifications_details[]" placeholder="e.g., AWS Certified Developer">
+          </div>
+          <button type="button" class="add-field-btn" data-target-container="certifications-details-container" data-field-type="text" data-field-name="certifications_details[]" data-placeholder="Another certification">+</button>
+      </div>
+
+      <div class="dynamic-field-section" id="projects-section">
+          <label data-en="Projects" data-es="Proyectos">Projects</label>
+          <div id="projects-container">
+              <textarea name="projects[]" placeholder="Describe a project you're proud of..."></textarea>
+          </div>
+          <button type="button" class="add-field-btn" data-target-container="projects-container" data-field-type="textarea" data-field-name="projects[]" data-placeholder="Another project...">+</button>
+      </div>
+
+      <div class="dynamic-field-section" id="hobbies-section">
+          <label data-en="Hobbies" data-es="Pasatiempos">Hobbies</label>
+          <div id="hobbies-container">
+              <input type="text" name="hobbies[]" placeholder="e.g., Hiking, Reading">
+          </div>
+          <button type="button" class="add-field-btn" data-target-container="hobbies-container" data-field-type="text" data-field-name="hobbies[]" data-placeholder="Another hobby">+</button>
+      </div>
 
       <button type="submit" id="submit-btn">Submit Application</button>
     </form>
@@ -284,7 +478,7 @@
     <button id="popup-close-btn">I Understand, Continue</button>
   </div>
 
-  <script nonce="abc123" type="module">
+  <script nonce="{{CSP_NONCE_PLACEHOLDER}}" type="module">
     // Language toggle
     const langSelect = document.getElementById('language-select');
     const textMap = {
@@ -377,169 +571,86 @@
       popup.style.display = 'none';
     });
 
-    // Expandable fields logic
-    function setupExpandable(sectionId) {
-      const addBtn = document.getElementById(`add-${sectionId}`);
-      const group = document.getElementById(`${sectionId}-group`);
-      addBtn.addEventListener('click', () => {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = `${sectionId}[]`;
-        input.placeholder = langSelect.value === 'en'
-          ? `${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)} detail`
-          : `Detalle de ${sectionId}`;
-        input.style.marginTop = '0.3rem';
-        group.appendChild(input);
-      });
-    }
-    setupExpandable('experience');
-    setupExpandable('certification');
-    setupExpandable('education');
-    setupExpandable('skills');
+    // Popup logic
+    const popup = document.getElementById('popup');
+    const popupCloseBtn = document.getElementById('popup-close-btn');
+    popup.style.display = 'block';
+    popupCloseBtn.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
 
-    // Web Crypto helpers
-    function generateUUID() {
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-      );
-    }
+    // New Dynamic Field Logic
+    function createDynamicFieldEntry(fieldType, fieldName, placeholderText, lang) {
+        const entryDiv = document.createElement('div');
+        entryDiv.className = 'dynamic-field-entry'; // For styling if needed
+        entryDiv.style.display = 'flex';
+        entryDiv.style.alignItems = 'center';
+        entryDiv.style.marginBottom = '0.5rem';
 
-    function generateNonce(length = 16) {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let result = '';
-      for(let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return result;
-    }
+        let field;
+        if (fieldType === 'textarea') {
+            field = document.createElement('textarea');
+            field.rows = 3; // Default rows for textarea
+        } else {
+            field = document.createElement('input');
+            field.type = 'text';
+        }
+        field.name = fieldName; // e.g., job_titles[]
+        field.placeholder = placeholderText || (lang === 'es' ? 'Nuevo valor' : 'New value');
+        field.style.flexGrow = '1';
+        // Basic styling to match existing inputs
+        field.style.width = '100%'; // Ensure it tries to fill container before flex adjustments
+        field.style.padding = '0.65rem 1rem';
+        field.style.fontSize = '1rem';
+        field.style.borderRadius = '6px';
+        field.style.border = '1.5px solid #ccc';
 
-    async function importKey(secret) {
-      const enc = new TextEncoder();
-      return crypto.subtle.importKey(
-        "raw",
-        enc.encode(secret),
-        { name: "HMAC", hash: "SHA-256" },
-        false,
-        ["sign"]
-      );
-    }
 
-    async function computeHmac(key, message) {
-      const signature = await crypto.subtle.sign(
-        "HMAC",
-        key,
-        new TextEncoder().encode(message)
-      );
-      return [...new Uint8Array(signature)].map(b => b.toString(16).padStart(2, '0')).join('');
-    }
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.textContent = '−'; // Minus sign
+        removeBtn.className = 'remove-field-btn';
+        // Basic styling for remove button
+        removeBtn.style.marginLeft = '0.5rem';
+        removeBtn.style.padding = '0.3rem 0.6rem';
+        removeBtn.style.backgroundColor = '#ff6b6b'; // A contrasting color for remove
+        removeBtn.style.color = 'white';
+        removeBtn.style.border = 'none';
+        removeBtn.style.borderRadius = '4px';
+        removeBtn.style.cursor = 'pointer';
 
-    async function encryptData(key, plaintext) {
-      const iv = crypto.getRandomValues(new Uint8Array(12)); // 96-bit IV
-      const enc = new TextEncoder();
-      const encrypted = await crypto.subtle.encrypt(
-        {
-          name: "AES-GCM",
-          iv: iv
-        },
-        key,
-        enc.encode(plaintext)
-      );
-      const ivStr = btoa(String.fromCharCode(...iv));
-      const encryptedStr = btoa(String.fromCharCode(...new Uint8Array(encrypted)));
-      return ivStr + ":" + encryptedStr;
-    }
 
-    async function importAesKey(secret) {
-      const enc = new TextEncoder();
-      return crypto.subtle.importKey(
-        "raw",
-        enc.encode(secret),
-        "AES-GCM",
-        false,
-        ["encrypt", "decrypt"]
-      );
-    }
-
-    // Form submit handler
-    document.getElementById('join-form').addEventListener('submit', async function(event) {
-      event.preventDefault();
-
-      const form = event.target;
-      const metadata = {
-        assetId: generateUUID(),
-        firstName: form.firstName.value.trim(),
-        lastName: form.lastName.value.trim(),
-        address: form.address.value.trim(),
-        zipCode: form.zipCode.value.trim(),
-        contactNumber: form.contactNumber.value.trim(),
-        email: form.email.value.trim(),
-        experience: Array.from(form.querySelectorAll('input[name="experience[]"]'))
-                         .map(i => i.value.trim())
-                         .filter(v => v),
-        certification: Array.from(form.querySelectorAll('input[name="certification[]"]'))
-                            .map(i => i.value.trim())
-                            .filter(v => v),
-        education: Array.from(form.querySelectorAll('input[name="education[]"]'))
-                        .map(i => i.value.trim())
-                        .filter(v => v),
-        skills: Array.from(form.querySelectorAll('input[name="skills[]"]'))
-                     .map(i => i.value.trim())
-                     .filter(v => v)
-      };
-
-      // Validation
-      if (!metadata.firstName || !metadata.lastName || !metadata.contactNumber || !metadata.email) {
-        alert(langSelect.value === 'en'
-          ? 'Please fill in all required fields (*)'
-          : 'Por favor complete todos los campos obligatorios (*)');
-        return;
-      }
-
-      const SECRET_KEY = "YOUR_SECRET_KEY"; // NEVER expose on client in production! This is demo only.
-      const AUTH_TOKEN = "YOUR_AUTH_TOKEN";
-
-      try {
-        const hmacKey = await importKey(SECRET_KEY);
-        const aesKey = await importAesKey(SECRET_KEY);
-        const nonce = generateNonce();
-        const timestamp = new Date().toISOString();
-
-        const message = JSON.stringify(metadata) + nonce + timestamp;
-        const signature = await computeHmac(hmacKey, message);
-        const encryptedMetadata = await encryptData(aesKey, JSON.stringify(metadata));
-
-        const payload = {
-          encryptedMetadata,
-          nonce,
-          timestamp,
-          signature,
-          authToken: AUTH_TOKEN
-        };
-
-        const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_ENDPOINT', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+        removeBtn.addEventListener('click', () => {
+            entryDiv.remove();
         });
 
-        const result = await response.json();
-        if (result.status === 'success') {
-          alert(langSelect.value === 'en'
-            ? 'Your application has been submitted securely. Thank you!'
-            : 'Su solicitud ha sido enviada de forma segura. ¡Gracias!');
-          form.reset();
-        } else {
-          alert((langSelect.value === 'en'
-            ? 'Error submitting your application: '
-            : 'Error al enviar su solicitud: ') + result.message);
-        }
-      } catch (err) {
-        console.error(err);
-        alert(langSelect.value === 'en'
-          ? 'An unexpected error occurred during submission.'
-          : 'Ocurrió un error inesperado durante el envío.');
-      }
+        entryDiv.appendChild(field);
+        entryDiv.appendChild(removeBtn);
+        return entryDiv;
+    }
+
+    document.querySelectorAll('.add-field-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const targetContainerId = this.dataset.targetContainer;
+            const fieldType = this.dataset.fieldType;
+            const fieldName = this.dataset.fieldName;
+            const placeholder = this.dataset.placeholder || '';
+            const currentLang = document.getElementById('language-select')?.value || 'en';
+
+            const container = document.getElementById(targetContainerId);
+            if (container) {
+                const newFieldEntry = createDynamicFieldEntry(fieldType, fieldName, placeholder, currentLang);
+                container.appendChild(newFieldEntry);
+            } else {
+                console.warn('Target container for dynamic fields not found:', targetContainerId);
+            }
+        });
     });
+
+    // Form submission is now handled by js/join-handler.js which calls FormEncryptor.processForm.
   </script>
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/join-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
 </html>

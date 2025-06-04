@@ -5,45 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Hardened CSP via Meta Tag -->
-    <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
-    style-src 'self' https://cdnjs.cloudflare.com 'nonce-<random-value>';
-    img-src 'self' https://trusted-image-cdn.com;
-    font-src 'self' https://cdnjs.cloudflare.com;
-    connect-src 'self';
-    frame-ancestors 'none';
-    object-src 'none';
-    base-uri 'self';
-  ">
+    <!-- CSP header should be configured server-side to include dynamic nonces (like 'nonce-{{CSP_NONCE_PLACEHOLDER}}') for script and style elements. -->
 
     <!-- SEO Title -->
-    <title>OPS Online Support - Secure IT Support & Remote Solutions</title>
+    <title>Security & Vulnerability Disclosure | OPS Online Solutions</title>
 
     <!-- Meta Description for SEO -->
-    <meta name="description" content="OPS Online Support offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies.">
+    <meta name="description" content="Report security vulnerabilities or learn about OPS Online Solutions' security practices. We are committed to maintaining the highest security standards." />
 
     <!-- Meta Keywords -->
-    <meta name="keywords" content="IT Support, Remote Solutions, Contact Center, Business Operations, Professional Services, OPS Online Support, Secure IT Services">
+    <meta name="keywords" content="Security, Vulnerability Reporting, Cybersecurity, Secure Practices, OPS Online Solutions, Data Protection" />
 
     <!-- Robots Meta Tag (SEO Enhancement) -->
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph for Social Media Sharing -->
-    <meta property="og:title" content="OPS Online Support - Secure IT Support & Remote Solutions">
-    <meta property="og:description" content="OPS Online Support offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies.">
+    <meta property="og:title" content="Security & Vulnerability Disclosure | OPS Online Solutions">
+    <meta property="og:description" content="Report security vulnerabilities or learn about OPS Online Solutions' security practices. We are committed to maintaining the highest security standards." />
     <meta property="og:image" content="assets/images/hero-image.jpg">
-    <meta property="og:url" content="https://www.opsonlinesupport.com">
+    <meta property="og:url" content="https://www.opsonlinesolutions.com/security.html">
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="OPS Online Solutions" />
 
     <!-- Structured Data (Schema Markup) - Organization Schema -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "OPS Online Support",
-        "url": "https://www.opsonlinesupport.com",
-        "logo": "https://www.opsonlinesupport.com/assets/logo.png",
+        "name": "OPS Online Solutions",
+        "url": "https://www.opsonlinesolutions.com",
+        "logo": "https://www.opsonlinesolutions.com/assets/logo.png",
         "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+1-201-350-7567",
@@ -60,16 +51,15 @@
     </script>
 
     <!-- External Stylesheets -->
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css">
+    <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+    <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
     <link rel="icon" href="assets/favicon.ico">
 
     <!-- ReCAPTCHA Script -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-    <script src="https://unpkg.com/openpgp@5.5.0/dist/openpgp.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Removed OpenPGP script -->
 </head>
 
 <body>
@@ -82,6 +72,8 @@
                     <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
                     <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
                     <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+                    <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+                    <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
                 </ul>
             </nav>
 
@@ -98,105 +90,76 @@
             <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
                 Empowering remote solutions with cutting-edge strategies.
             </p>
-            <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image">
+            <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image" loading="lazy">
         </section>
 
         <!-- Security Disclosure Form -->
         <form id="securityForm" class="bg-white p-6 rounded-lg shadow-md mb-6">
             <h2 class="text-xl font-semibold mb-4">🔐 Vulnerability Disclosure</h2>
-            <input type="text" name="hidden_field" style="display:none">
-            <label class="block mb-2">Your Name or Alias</label>
-            <input type="text" id="reporter" class="w-full p-2 border rounded mb-4" required>
-            <label class="block mb-2">Vulnerability Details</label>
-            <textarea id="details" rows="6" class="w-full p-2 border rounded mb-4" required></textarea>
-            <div class="g-recaptcha mb-4" data-sitekey="YOUR_SITE_KEY"></div>
-            <input type="hidden" id="nonce">
-            <input type="hidden" id="timestamp">
-            <button type="button" onclick="encryptAndSend('security')" class="bg-blue-600 text-white px-4 py-2 rounded">Submit Securely</button>
+            <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
+            <label class="block mb-2" for="reporter">Your Name or Alias</label>
+            <input type="text" id="reporter" name="reporter" class="w-full p-2 border rounded mb-4" required>
+            <label class="block mb-2" for="details">Vulnerability Details</label>
+            <textarea id="details" name="details" rows="6" class="w-full p-2 border rounded mb-4" required></textarea>
+            <!-- Removed nonce and timestamp hidden inputs -->
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Submit Securely</button>
         </form>
 
-        <!-- Join Us / Contact Us Form -->
-        <form id="contactForm" class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-semibold mb-4">📨 Join Us / Contact Us</h2>
-            <input type="text" name="hidden_field" style="display:none">
-            <label class="block mb-2">Full Name</label>
-            <input type="text" id="fullname" class="w-full p-2 border rounded mb-4" required>
-            <label class="block mb-2">Email</label>
-            <input type="email" id="email" class="w-full p-2 border rounded mb-4" required>
-            <label class="block mb-2">Message / Background</label>
-            <textarea id="message" rows="5" class="w-full p-2 border rounded mb-4" required></textarea>
-            <label class="block mb-2">Upload (PDF, DOC, DOCX)</label>
-            <input type="file" accept=".pdf,.doc,.docx" class="mb-4">
-            <div class="g-recaptcha mb-4" data-sitekey="YOUR_SITE_KEY"></div>
-            <input type="hidden" id="nonce-contact">
-            <input type="hidden" id="timestamp-contact">
-            <button type="button" onclick="encryptAndSend('contact')" class="bg-green-600 text-white px-4 py-2 rounded">Send Securely</button>
-        </form>
+        <!-- Removed Join Us / Contact Us Form -->
 
-        <script>
-            function generateNonce() {
-                const array = new Uint32Array(8);
-                window.crypto.getRandomValues(array);
-                return Array.from(array).map(n => n.toString(16)).join('');
-            }
-
-            document.addEventListener("DOMContentLoaded", () => {
-                document.getElementById('nonce').value = generateNonce();
-                document.getElementById('timestamp').value = new Date().toISOString();
-                document.getElementById('nonce-contact').value = generateNonce();
-                document.getElementById('timestamp-contact').value = new Date().toISOString();
-            });
-
-            async function encryptAndSend(formType) {
-                const pubkeyArmored = `-----BEGIN PGP PUBLIC KEY BLOCK-----\n...YOUR PUBLIC KEY HERE...\n-----END PGP PUBLIC KEY BLOCK-----`;
-                const pubkey = await openpgp.readKey({ armoredKey: pubkeyArmored });
-
-                let message;
-                if (formType === 'security') {
-                    message = JSON.stringify({
-                        name: document.getElementById('reporter').value,
-                        details: document.getElementById('details').value,
-                        nonce: document.getElementById('nonce').value,
-                        timestamp: document.getElementById('timestamp').value
-                    });
-                } else {
-                    message = JSON.stringify({
-                        name: document.getElementById('fullname').value,
-                        email: document.getElementById('email').value,
-                        msg: document.getElementById('message').value,
-                        nonce: document.getElementById('nonce-contact').value,
-                        timestamp: document.getElementById('timestamp-contact').value
-                    });
-                }
-
-                const encrypted = await openpgp.encrypt({
-                    message: await openpgp.createMessage({ text: message }),
-                    encryptionKeys: pubkey
-                });
-
-                const payload = {
-                    encrypted: encrypted,
-                    timestamp: formType === 'security' ? document.getElementById('timestamp').value : document.getElementById('timestamp-contact').value,
-                    nonce: formType === 'security' ? document.getElementById('nonce').value : document.getElementById('nonce-contact').value,
-                    hidden_field: '',
-                    form: formType
-                };
-
-                const res = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                alert(await res.text());
-            }
-        </script>
     </div>
     <!-- ======================================================================
                            Reference Section
     ====================================================================== -->
-  <script src="js/main.js" defer></script>
-  <script src="js/service-worker.js" defer></script>
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script> <!-- main.js might not be strictly needed if all page logic is self-contained -->
+  <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+
+  <script nonce="{{CSP_NONCE_PLACEHOLDER}}">
+    document.addEventListener('DOMContentLoaded', () => {
+        const securityForm = document.getElementById('securityForm');
+
+        if (securityForm) {
+            const RECAPTCHA_V3_SITE_KEY = 'YOUR_RECAPTCHA_V3_SITE_KEY_PLACEHOLDER'; // User should replace
+            // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+            const BACKEND_SUBMISSION_URL = 'YOUR_BACKEND_SUBMISSION_URL_PLACEHOLDER'; // User should replace
+            // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+
+            securityForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formElement = e.target;
+                const formType = 'security_disclosure';
+
+                const submitButton = formElement.querySelector('button[type="submit"]');
+                if (submitButton) {
+                     submitButton.disabled = true;
+                }
+
+                if (typeof FormEncryptor === 'undefined' || typeof FormEncryptor.processForm !== 'function') {
+                    alert('Critical error: FormEncryptor module not loaded. Please try again later or contact support.');
+                    if (submitButton) submitButton.disabled = false;
+                    return;
+                }
+
+                FormEncryptor.processForm(formElement, formType, RECAPTCHA_V3_SITE_KEY, BACKEND_SUBMISSION_URL)
+                    .then(response => {
+                        console.log('Security disclosure form submission response:', response);
+                        alert('Vulnerability report submitted securely! (Simulated)');
+                        formElement.reset();
+                    })
+                    .catch(error => {
+                        console.error('Security disclosure form submission error:', error);
+                        alert('An error occurred during submission: ' + error.message);
+                    })
+                    .finally(() => {
+                        if (submitButton) submitButton.disabled = false;
+                    });
+            });
+        } else {
+            console.warn('Security disclosure form not found.');
+        }
+    });
+  </script>
 </body>
 
 </html>
