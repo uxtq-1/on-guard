@@ -1,67 +1,109 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const contactPageForm = document.getElementById('contact-form'); // Using the ID found in contact.html
+// js/contact-handler.js  – secure, lazy-crypto form submission
+// js/contact-handler.js  – secure, lazy-crypto Contact form submission
 
-    if (contactPageForm) {
-        const RECAPTCHA_V3_SITE_KEY = 'YOUR_RECAPTCHA_V3_SITE_KEY_PLACEHOLDER'; // User should replace
+(() => {
+  const form = document.getElementById("contact-form");
+  if (!form) return;
 
-        // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
-      
-        const BACKEND_SUBMISSION_URL = 'YOUR_BACKEND_SUBMISSION_URL_PLACEHOLDER'; // User should replace
-      
-        // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
+  const enc = new TextEncoder();
+  const toB64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+  const clean = s => s.replace(/<[^>]*>/g, "").trim();
+  const uuid = () => crypto.randomUUID();
+  const iso = () => new Date().toISOString();
 
-        contactPageForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formElement = e.target;
-            const formType = 'contact_page'; // Distinguish from modal contact
+  /* AES-GCM 256 */
+  const newKey = () => crypto.subtle.generateKey({ name: "AES-GCM", length: 256 }, true, ["encrypt"]);
+  const exportKey = k => crypto.subtle.exportKey("raw", k).then(toB64);
 
-            const submitButton = formElement.querySelector('button[type="submit"]') || formElement.querySelector('input[type="submit"]');
-            if (submitButton) submitButton.disabled = true;
+  /* HMAC-SHA-512 */
+  async function hmac(data, secret) {
+    const key = await crypto.subtle.importKey(
+      "raw",
+      enc.encode(secret),
+      { name: "HMAC", hash: "SHA-512" },
+      false,
+      ["sign"]
+    );
+    const sig = await crypto.subtle.sign("HMAC", key, enc.encode(data));
+    return Array.from(new Uint8Array(sig))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+  }
 
-            // Ensure FormEncryptor is loaded
-            if (typeof FormEncryptor === 'undefined' || !FormEncryptor.processForm) {
-                console.error('FormEncryptor is not loaded or processForm is not available.');
-                alert('A critical error occurred. Please try again later.');
-                if (submitButton) submitButton.disabled = false;
-                return;
-            }
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    if (!form.checkValidity()) return form.reportValidity();
+    if (form.hp && form.hp.value) return; // honeypot
 
-            FormEncryptor.processForm(formElement, formType, RECAPTCHA_V3_SITE_KEY, BACKEND_SUBMISSION_URL)
-                .then(response => {
-                    console.log('Contact page form submission response:', response);
-                    // Display feedback using the existing feedback mechanism if available
-                    const feedbackMessageEl = document.getElementById('feedback-message');
-                    if (feedbackMessageEl) {
-                        feedbackMessageEl.textContent = response.message || 'Message sent successfully! (Simulated)';
-                        feedbackMessageEl.style.color = response.success ? 'green' : 'red'; // Adjust based on actual response structure
-                        feedbackMessageEl.classList.add('show');
-                        setTimeout(() => feedbackMessageEl.classList.remove('show'), 5000);
-                    } else {
-                        alert(response.message || 'Message sent successfully! (Simulated)');
-                    }
-                    if (response.success) {
-                        formElement.reset();
-                        // Optionally hide the form or show a more permanent success message
-                        // formElement.style.display = 'none';
-                    }
-                })
-                .catch(error => {
-                    console.error('Contact page form submission error:', error);
-                    const feedbackMessageEl = document.getElementById('feedback-message');
-                    if (feedbackMessageEl) {
-                        feedbackMessageEl.textContent = 'An error occurred: ' + error.message;
-                        feedbackMessageEl.style.color = 'red';
-                        feedbackMessageEl.classList.add('show');
-                        setTimeout(() => feedbackMessageEl.classList.remove('show'), 5000);
-                    } else {
-                        alert('An error occurred during submission: ' + error.message);
-                    }
-                })
-                .finally(() => {
-                    if (submitButton) submitButton.disabled = false;
-                });
-        });
-    } else {
-        console.warn('Contact page form (id="contact-form") not found in contact.html.');
+    document.getElementById("encrypting-msg").classList.remove("hide");
+
+    // reCAPTCHA v3
+    let token = "";
+    try {
+      token = await grecaptcha.execute("YOUR_SITE_KEY", { action: "contact" });
+    } catch {
+      alert("reCAPTCHA error");
+      return;
     }
-});
+
+    const key = await newKey();
+    const keyB64 = await exportKey(key);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ivB64 = toB64(iv);
+
+    // Build plaintext object
+    const plain = {
+      id: uuid(),
+      ts: iso(),
+      name: clean(form.name.value),
+      email: clean(form.email.value),
+      service: clean(form.service.value),
+      msg: clean(form.message.value)
+    };
+
+    // Encrypt plaintext
+    const cipher = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(JSON.stringify(plain)));
+    const blobB64 = toB64(cipher);
+
+    // Metadata
+    const meta = { iv: ivB64, key: keyB64, recaptcha: token };
+    const sig = await hmac(JSON.stringify(meta) + blobB64, "CLIENT_SIDE_SECRET"); // replace
+
+    try {
+      const res = await fetch("https://script.google.com/macros/s/YOUR_ID/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify({ meta, blob: blobB64, hmac: sig })
+      });
+      const ok = res.ok;
+      document.getElementById("feedback-msg").textContent = ok
+        ? "Thank you – we’ll reply soon."
+        : "Error, please retry.";
+      if (ok) form.reset();
+    } catch (err) {
+      document.getElementById("feedback-msg").textContent = "Network error.";
+    } finally {
+      document.getElementById("encrypting-msg").classList.add("hide");
+    }
+  });
+
+  // ----- LANGUAGE HANDLER FOR CONTACT FORM -----
+  function updateTextByLang() {
+    const currentLang = document.documentElement.lang;
+    // placeholders
+    document.querySelectorAll("input[data-en][data-es], textarea[data-en][data-es]").forEach(el => {
+      el.placeholder = el.dataset[currentLang];
+    });
+    // text nodes (labels, buttons)
+    document.querySelectorAll("[data-en][data-es]").forEach(el => {
+      if (!["INPUT", "TEXTAREA", "SELECT", "OPTION"].includes(el.tagName)) {
+        el.textContent = el.dataset[currentLang];
+      }
+    });
+  }
+  updateTextByLang();
+  document.getElementById("lang-toggle")?.addEventListener("click", updateTextByLang);
+})();
