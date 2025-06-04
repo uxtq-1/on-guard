@@ -1,65 +1,141 @@
+// join.js
+
 document.addEventListener('DOMContentLoaded', () => {
-    const joinPageForm = document.getElementById('join-form'); // Using the ID found in join.html
+  const form = document.getElementById('join-form');
+  const thankYouContainer = document.getElementById('thank-you');
+  const progressFill = thankYouContainer.querySelector('.progress-fill');
 
-    if (joinPageForm) {
-        const RECAPTCHA_V3_SITE_KEY = 'YOUR_RECAPTCHA_V3_SITE_KEY_PLACEHOLDER'; // User should replace
+  // ----- LANGUAGE HANDLER -----
+  function updateTextByLang() {
+    const currentLang = document.documentElement.lang;
+    // Update placeholders for all inputs & textareas
+    document.querySelectorAll('input[data-en][data-es], textarea[data-en][data-es]').forEach((el) => {
+      const text = currentLang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-es');
+      el.placeholder = text;
+    });
+    // Update labels, buttons, title, and thank-you message
+    document.querySelectorAll('[data-en][data-es]').forEach((el) => {
+      if (
+        el.tagName.toLowerCase() === 'label' ||
+        el.tagName.toLowerCase() === 'button' ||
+        el.tagName.toLowerCase() === 'h1' ||
+        el.tagName.toLowerCase() === 'title'
+      ) {
+        const text = currentLang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-es');
+        el.textContent = text;
+      }
+      if (el.id === 'thank-you') {
+        const msg = currentLang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-es');
+        el.childNodes[0].nodeValue = msg;
+      }
+    });
+  }
 
-        // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
-        
-      const BACKEND_SUBMISSION_URL = 'YOUR_BACKEND_SUBMISSION_URL_PLACEHOLDER'; // User should replace
+  // Initial language setup
+  updateTextByLang();
+  document.getElementById('lang-toggle').addEventListener('click', updateTextByLang);
 
-        // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
-      
-        joinPageForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formElement = e.target;
-            // 'join_page' formType will trigger file handling in FormEncryptor.processForm
-            const formType = 'join_page';
 
-            const submitButton = formElement.querySelector('button[type="submit"]') || formElement.querySelector('input[type="submit"]');
-            if (submitButton) submitButton.disabled = true;
+  // ----- ADD / REMOVE FIELD LOGIC -----
+  function handleAddClick(fieldKey) {
+    // Find the multi-field container by data-field
+    const multiField = document.querySelector(`.multi-field[data-field="${fieldKey}"]`);
+    if (!multiField) return;
 
-            // Ensure FormEncryptor is loaded
-            if (typeof FormEncryptor === 'undefined' || typeof FormEncryptor.processForm !== 'function') {
-                alert('Critical error: FormEncryptor module not loaded. Please try again later or contact support.');
-                if (submitButton) submitButton.disabled = false;
-                return;
-            }
+    // Clone the first .field-row inside this container
+    const firstRow = multiField.querySelector('.field-row');
+    if (!firstRow) return;
 
-            FormEncryptor.processForm(formElement, formType, RECAPTCHA_V3_SITE_KEY, BACKEND_SUBMISSION_URL)
-                .then(response => {
-                    console.log('Join page form submission response:', response);
-                    // Display success message (e.g., in a dedicated div or alert)
-                    // Assuming join.html might have a general feedback area or use alerts
-                    const feedbackElement = document.getElementById('feedback-message'); // Generic ID, adjust if needed
-                    if (feedbackElement) {
-                        feedbackElement.textContent = response.message || 'Application submitted successfully! (Simulated)';
-                        feedbackElement.style.color = response.success ? 'green' : 'red';
-                        // Make it visible if it's hidden by default
-                        // feedbackElement.style.display = 'block';
-                    } else {
-                        alert(response.message || 'Application submitted successfully! (Simulated)');
-                    }
-                    if (response.success) {
-                       formElement.reset();
-                    }
-                })
-                .catch(error => {
-                    console.error('Join page form submission error:', error);
-                    const feedbackElement = document.getElementById('feedback-message');
-                    if (feedbackElement) {
-                        feedbackElement.textContent = 'An error occurred: ' + error.message;
-                        feedbackElement.style.color = 'red';
-                        // feedbackElement.style.display = 'block';
-                    } else {
-                        alert('An error occurred during submission: ' + error.message);
-                    }
-                })
-                .finally(() => {
-                    if (submitButton) submitButton.disabled = false;
-                });
-        });
-    } else {
-        console.warn('Join page form (id="join-form") not found in join.html.');
+    const newRow = firstRow.cloneNode(true);
+    // Clear values in cloned inputs/textareas
+    newRow.querySelectorAll('input, textarea').forEach((el) => {
+      el.value = '';
+    });
+
+    // Attach add/remove listeners on the cloned row
+    const newAddBtn = newRow.querySelector('.add-btn');
+    const newRemoveBtn = newRow.querySelector('.remove-btn');
+
+    newAddBtn.addEventListener('click', () => handleAddClick(fieldKey));
+    newRemoveBtn.addEventListener('click', () => handleRemoveClick(fieldKey, newRow));
+
+    // Insert the cloned row right after the last .field-row in this multi-field
+    const lastRow = multiField.querySelectorAll('.field-row');
+    lastRow[lastRow.length - 1].after(newRow);
+
+    // Update placeholders/labels in the newly added row for current language
+    updateTextByLang();
+  }
+
+  function handleRemoveClick(fieldKey, rowElement) {
+    const multiField = document.querySelector(`.multi-field[data-field="${fieldKey}"]`);
+    if (!multiField) return;
+
+    const allRows = multiField.querySelectorAll('.field-row');
+    // Only remove if more than one row remains
+    if (allRows.length > 1) {
+      rowElement.remove();
     }
+    // (Optional) else: you could flash a tooltip or shake effect indicating at least one is required
+  }
+
+  // Attach add/remove to all existing buttons
+  document.querySelectorAll('.add-btn').forEach((btn) => {
+    const fieldKey = btn.getAttribute('data-field');
+    btn.addEventListener('click', () => handleAddClick(fieldKey));
+  });
+
+  document.querySelectorAll('.remove-btn').forEach((btn) => {
+    const fieldKey = btn.getAttribute('data-field');
+    // Find the parent .field-row for this remove button
+    const rowElem = btn.closest('.field-row');
+    btn.addEventListener('click', () => handleRemoveClick(fieldKey, rowElem));
+  });
+
+
+  // ----- FORM SUBMISSION -----
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Disable all inputs/buttons
+    form.querySelectorAll('input, textarea, select, button').forEach((el) => {
+      el.disabled = true;
+    });
+
+    // Show thank-you + progress bar
+    thankYouContainer.hidden = false;
+    setTimeout(() => {
+      progressFill.style.width = '100%';
+    }, 100);
+
+    // Gather all form data into a JSON object
+    const formData = new FormData(form);
+    const payload = {};
+    formData.forEach((value, key) => {
+      // Handle array fields (fields ending in [])
+      if (key.endsWith('[]')) {
+        const baseKey = key.replace('[]', '');
+        if (!payload[baseKey]) payload[baseKey] = [];
+        payload[baseKey].push(value.trim());
+      } else {
+        payload[key] = value.trim();
+      }
+    });
+
+    console.log('Collected payload →', payload);
+    // TODO: insert encryption/HMAC here, then POST to your endpoint
+    /*
+    fetch('https://your-endpoint-url', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: JSON.stringify(payload),
+    })
+    .then(res => res.json())
+    .then(resp => console.log('Server response:', resp))
+    .catch(err => console.error('Error:', err));
+    */
+  });
 });
