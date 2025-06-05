@@ -189,17 +189,17 @@
                         <div class="form-row">
                             <div class="form-cell">
                                 <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
-                                <input type="text" id="join-name" placeholder="Enter your name / Ingrese su Nombre" required>
+                                <input type="text" id="join-name" placeholder="Enter your name"  data-en="Enter your name" data-es="Ingrese su Nombre" required>
                             </div>
                             <div class="form-cell">
                                 <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-                                <input type="email" id="join-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
+                                <input type="email" id="join-email" placeholder="Enter your email" data-en="Enter your email" data-es="Ingrese su correo electrónico" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-cell">
                                 <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-                                <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required>
+                                <input type="tel" id="join-contact" placeholder="Enter your contact number" data-en="Enter your contact number" data-es="Ingrese su número" required>
                             </div>
                             <div class="form-cell">
                                 <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="form-cell">
                                 <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
-                                <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
+                                <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" data-en="Tell us about yourself" data-es="Cuéntanos sobre ti" required></textarea>
                             </div>
                         </div>
                     </form>
@@ -248,17 +248,17 @@
                         <div class="form-row">
                             <div class="form-cell">
                                 <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
-                                <input type="text" id="contact-name" placeholder="Enter your name / Ingrese su Nombre" required>
+                                <input type="text" id="contact-name" placeholder="Enter your name" data-en="Enter your name" data-es="Ingrese su Nombre" required>
                             </div>
                             <div class="form-cell">
                                 <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-                                <input type="email" id="contact-email" placeholder="Enter your email / Ingrese su correo electrónico" required>
+                                <input type="email" id="contact-email" placeholder="Enter your email" data-en="Enter your email" data-es="Ingrese su correo electrónico" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-cell">
                                 <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-                                <input type="tel" id="contact-number" placeholder="Enter your contact number / Ingrese su número" required>
+                                <input type="tel" id="contact-number" placeholder="Enter your contact number" data-en="Enter your contact number" data-es="Ingrese su número" required>
                             </div>
                             <div class="form-cell">
                                 <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
@@ -272,8 +272,38 @@
                             </div>
                             <div class="form-cell">
                                 <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
-                                <textarea id="contact-comments" rows="4" placeholder="What service are you interested in? / En qué servicio está interesado?" required></textarea>
+                                <textarea id="contact-comments" rows="4" placeholder="What service are you interested in?" data-en="What service are you interested in?" data-es=" En qué servicio está interesado" required></textarea>
                             </div>
+                           <!-- Service Inquiry -->
+      <div class="field">
+        <label for="service" data-en="Service Inquiry" data-es="Consultas de Servicio">Service Inquiry</label>
+        <select
+          id="service"
+          name="service"
+          required
+          data-en="Select a service"
+          data-es="Seleccione un servicio">
+          <option value="" disabled selected data-en="Select a service" data-es="Seleccione un servicio">
+            Select a service
+          </option>
+          <option value="business-operations" data-en="Business Operations" data-es="Gestión">Business Operations</option>
+          <option value="contact-center"      data-en="Contact Center"      data-es="Centro de Servicio">Contact Center</option>
+          <option value="it-support"          data-en="IT Support"          data-es="Soporte IT">IT Support</option>
+          <option value="professionals"       data-en="Professionals"       data-es="Profesionales">Professionals</option>
+        </select>
+      </div>
+<div class="field">
+        <label for="message" data-en="Message" data-es="Mensaje">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required
+          placeholder="Type your message here..."
+          data-en="Type your message here..."
+          data-es="Escribe tu mensaje aquí..."
+        ></textarea>
+      </div>
                         </div>
                     </form>
                 </div>
