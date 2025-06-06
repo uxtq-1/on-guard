@@ -1,23 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <!-- ======================================================================
-  Hardened CSP
-  ====================================================================== -->
-  <title>Ops Online Support - Secure IT Support & Remote Solutions</title>
-  <meta name="description" content="Ops Online Support offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies." />
-  <meta name="keywords" content="IT Support, Remote Solutions, Contact Center, Business Operations, Professional Services, Ops Online Support, Secure IT Services" />
-  <meta name="robots" content="index, follow" />
+  <!-- ==================================================================
+       Document Metadata & External Resources
+  ================================================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta property="og:title" content="Ops Online Support - Secure IT Support & Remote Solutions" />
-  <meta property="og:description" content="Ops Online Support offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies." />
-  <meta property="og:image" content="assets/images/hero-image.jpg" />
-  <meta property="og:url" content="https://www.opsonlinesolutions.com/index.html" />
+  <!-- Hardened CSP via Meta Tag -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com;
+    style-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
+    img-src 'self' https://trusted-image-cdn.com;
+    font-src 'self' https://cdnjs.cloudflare.com;
+    connect-src 'self';
+    frame-src 'self' https://www.google.com;
+    object-src 'none';
+    base-uri 'self';
+  ">
+
+  <!-- SEO: Title, Description, OpenGraph, Schema -->
+  <title>Contact Us | Ops Online Support</title>
+  <meta name="description" content="Get in touch with Ops Online Support. We are here to answer your questions and provide support.">
+  <meta name="keywords" content="Contact, Support, Ops Online Support, Get in touch, Customer Service">
+  <meta property="og:title" content="Contact Us | Ops Online Support">
+  <meta property="og:description" content="Get in touch with Ops Online Support. We are here to answer your questions and provide support.">
+  <meta property="og:image" content="assets/images/hero-image.jpg"> <!-- Assuming same hero image for now -->
+  <meta property="og:url" content="https://www.opsonlinesolutions.com/contact.html">
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ops Online Support" />
-
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -30,7 +42,7 @@
         "telephone": "+1-201-350-7567",
         "contactType": "Customer Service",
         "areaServed": "US",
-        "availableLanguage": "English"
+        "availableLanguage": ["English", "Spanish"]
       },
       "sameAs": [
         "https://www.facebook.com/yourpage",
@@ -39,21 +51,22 @@
       ]
     }
   </script>
- <!-- ======================================================================
-                      Links to Pages
-    ====================================================================== -->
-  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
-  <link rel="stylesheet" media="(max-width:768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
-  <link rel="icon" href="assets/favicon.ico" />
+
+  <!-- Stylesheets & Icons -->
+  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+  <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
+  <link rel="manifest" href="manifest.json" nonce="{{CSP_NONCE_PLACEHOLDER}}"> <!-- Assuming manifest is still relevant -->
+  <link rel="icon" href="assets/favicon.ico">
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-  <div id="secure-content" style="display:none;">
-    <header>
-      <nav>
-        <ul>
+  <header>
+   <!-- ==================================================================
+       Header Section: Navigation & Toggle Buttons (Desktop Only)
+  ================================================================== -->
+    <nav>
+      <ul>
           <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
           <li><a href="business-operations.html" data-en="Business Operations" data-es="Gestión">Business Operations</a></li>
           <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
@@ -61,77 +74,55 @@
           <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
           <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
           <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
-        </ul>
-      </nav>
-      <div class="toggle-container">
-        <button id="theme-toggle-desktop">Light</button>
-        <button id="language-toggle-desktop">EN</button>
-      </div>
-      </header>
- <!-- ======================================================================
-                              Hero Section
-    ====================================================================== -->
-    
-    <section class="hero">
-      <h2 data-en="Welcome to Ops Online Support" data-es="Bienvenido a Ops Online Support">Welcome to Ops Online Support</h2>
-      <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
-        Empowering remote solutions with cutting-edge strategies.
-      </p>
-      <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image" loading="lazy" />
-    </section>
-
-     <!-- ======================================================================
-                              Services-Preview  Section
-    ====================================================================== -->
-
- <section id="services-preview" class="services">
-      <div class="service-item">
-        <h3 data-en="Business Operations" data-es="Gestión">Business Operations</h3>
-        <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">
-          Discover how we optimize your business processes.
-        </p>
-        <a href="business-operations.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
-        <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">
-          Enhance customer interactions with our contact solutions.
-        </p>
-        <a href="contact-center.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
-        <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">
-          Ensure seamless IT operations with our expert support.
-        </p>
-        <a href="it-support.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
-        <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">
-          Access top-tier professionals for your business needs.
-        </p>
-        <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-    </section>
-
-     <!-- ======================================================================
-                              Footer Section
-    ====================================================================== -->
-
-    <footer>
-      <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
-    </footer>
-    
-     <!-- ======================================================================
-                        Join Us Floating-Icons Section
-    ====================================================================== -->
-
-    <div class="floating-icons">
-      <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
-      <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
+      </ul>
+    </nav>
+    <!-- Theme and Language Toggle for Desktop -->
+    <div class="toggle-container">
+    <button id="theme-toggle-desktop">Light</button>
+    <button id="language-toggle-desktop">EN</button>
     </div>
+  </header>
 
+  <!-- ==================================================================
+       Hero Section: Contact Us
+  ================================================================== -->
+  <section class="hero" id="contact-hero">
+    <h2 data-en="Contact Us" data-es="Contáctenos">Contact Us</h2>
+    <p data-en="We're here to help and answer any question you might have. Fill out the form below, or reach out to us via phone." data-es="Estamos aquí para ayudar y responder cualquier pregunta que puedas tener. Completa el formulario a continuación o contáctanos por teléfono.">
+      We're here to help and answer any question you might have. Fill out the form below, or reach out to us via phone.
+    </p>
+    <img src="assets/images/hero-image.jpg" alt="Contact Ops Online Support" class="hero-image" loading="lazy">
+  </section>
+
+  <!-- ==================================================================
+       Contact Options Section
+  ================================================================== -->
+  <section id="contact-options" class="contact-info" style="padding: 2rem 1rem; text-align: center;">
+    <p data-en="You can reach us by phone or by using our secure contact form." data-es="Puede contactarnos por teléfono o utilizando nuestro formulario de contacto seguro.">You can reach us by phone or by using our secure contact form.</p>
+    <p style="font-size: 1.2em; margin-top: 1rem;" data-en="Phone:" data-es="Teléfono:">Phone: <a href="tel:+1-201-350-7567">+1-201-350-7567</a></p>
+    <button class="btn" data-modal="contact-modal" style="margin-top: 1rem;" data-en="Open Contact Form" data-es="Abrir Formulario de Contacto">Open Contact Form</button>
+  </section>
+
+  <!-- ==================================================================
+       Footer Section
+  ================================================================== -->
+  <footer>
+    <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
+  </footer>
+
+  <!-- ==================================================================
+       Floating Icons (Triggers for Modals) - Copied from about-us.html
+  ================================================================== -->
+  <div class="floating-icons">
+    <button class="floating-icon" data-modal="join-modal" aria-label="Join Us" tabindex="0">
+      <i class="fas fa-user-plus"></i>
+    </button>
+    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us" tabindex="0">
+      <i class="fas fa-envelope-open-text"></i>
+    </button>
+  </div>
+
+    <!-- Join Us Modal - Copied from about-us.html -->
     <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true">
       <div class="modal-content">
         <div class="modal-header">
@@ -207,7 +198,82 @@
               </div>
             </div>
             <div class="form-row">
-
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Experience" data-es="Experiencia">Experience</label>
+                <div class="dynamic-field-container" data-section-name="experience" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="experience[0][description]" class="dynamic-input" data-en-placeholder="Describe experience" data-es-placeholder="Describa la experiencia" style="width: 60%;">
+                    <input type="date" name="experience[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Experience" data-es="Añadir Experiencia">Add Experience</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Skills" data-es="Habilidades">Skills</label>
+                <div class="dynamic-field-container" data-section-name="skills" data-max-entries="10">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="skills[0][description]" class="dynamic-input" data-en-placeholder="Enter a skill" data-es-placeholder="Ingrese una habilidad" style="width: 80%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Skill" data-es="Añadir Habilidad">Add Skill</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Certifications" data-es="Certificaciones">Certifications</label>
+                <div class="dynamic-field-container" data-section-name="certifications" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="certifications[0][description]" class="dynamic-input" data-en-placeholder="Describe certification" data-es-placeholder="Describa la certificación" style="width: 60%;">
+                    <input type="date" name="certifications[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Certification" data-es="Añadir Certificación">Add Certification</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Hobbies" data-es="Pasatiempos">Hobbies</label>
+                <div class="dynamic-field-container" data-section-name="hobbies" data-max-entries="10">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="hobbies[0][description]" class="dynamic-input" data-en-placeholder="Enter a hobby" data-es-placeholder="Ingrese un pasatiempo" style="width: 80%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Hobby" data-es="Añadir Pasatiempo">Add Hobby</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Studies" data-es="Estudios">Studies</label>
+                <div class="dynamic-field-container" data-section-name="studies" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="studies[0][description]" class="dynamic-input" data-en-placeholder="Describe study" data-es-placeholder="Describa el estudio" style="width: 60%;">
+                    <input type="date" name="studies[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Study" data-es="Añadir Estudio">Add Study</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Continuing Studies" data-es="Estudios Adicionales">Continuing Studies</label>
+                <div class="dynamic-field-container" data-section-name="continuing_studies" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="continuing_studies[0][description]" class="dynamic-input" data-en-placeholder="Describe continuing study" data-es-placeholder="Describa el estudio adicional" style="width: 60%;">
+                    <input type="date" name="continuing_studies[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Continuing Study" data-es="Añadir Estudio Adicional">Add Continuing Study</button>
+              </div>
+            </div>
+            <div class="form-row">
               <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
                 <label class="dynamic-section-label" data-en="Experience" data-es="Experiencia">Experience</label>
                 <div class="dynamic-field-container" data-section-name="experience" data-max-entries="5">
@@ -297,10 +363,7 @@
       </div>
     </div>
 
-     <!-- ======================================================================
-                        Contact Us Floating-Icons Section
-    ====================================================================== -->
-    
+    <!-- Contact Us Modal - Copied from about-us.html -->
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true">
       <div class="modal-content">
         <div class="modal-header">
@@ -342,40 +405,36 @@
             </div>
           </form>
            </div>
-     <!-- ======================================================================
-                        Submit Button Floating-Icons Section
-    ====================================================================== -->
        <div class="modal-footer">
           <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
         </div>
       </div>
     </div>
-     <!-- ======================================================================
-                              Mobile-Nav Section
-    ====================================================================== -->
-       <nav class="mobile-nav">
-      <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
-      <button id="mobile-services-toggle" class="mobile-nav-item"><i class="fas fa-bars"></i><span>Services</span></button>
-      <button id="mobile-language-toggle" class="mobile-nav-item">EN</button>
-      <button id="mobile-theme-toggle" class="mobile-nav-item">Light</button>
-      <a href="#" class="mobile-nav-item"><i class="fas fa-comment-alt"></i><span>Chat</span></a>
-    </nav>
 
-    <div id="mobile-services-menu" class="mobile-services-menu">
+  <!-- Mobile Bottom Navigation Bar - Copied from about-us.html -->
+  <nav class="mobile-nav">
+      <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+      <button class="mobile-nav-item" id="mobile-services-toggle"><i class="fas fa-bars"></i><span>Services</span></button>
+      <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
+      <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
+      <a href="#" class="mobile-nav-item"><i class="fas fa-comment-alt"></i><span>Chat</span></a>
+  </nav>
+
+  <!-- Hidden Mobile Services Menu - Copied from about-us.html -->
+  <div class="mobile-services-menu" id="mobile-services-menu">
       <ul>
-        <li><a href="business-operations.html">Business Operations</a></li>
-        <li><a href="contact-center.html">Contact Center</a></li>
-        <li><a href="it-support.html">IT Support</a></li>
-        <li><a href="professionals.html">Professionals</a></li>
+          <li><a href="business-operations.html">Business Operations</a></li>
+          <li><a href="contact-center.html">Contact Center</a></li>
+          <li><a href="it-support.html">IT Support</a></li>
+          <li><a href="professionals.html">Professionals</a></li>
       </ul>
-    </div>
   </div>
-    <!-- CHATBOT_PLACEHOLDER: Future chatbot integration point. Consider placement within or alongside the mobile-nav for global accessibility, or as a separate fixed element. -->
-     <!-- ======================================================================
-                           Reference Section
-    ====================================================================== -->
+
+  <!-- JavaScript: Main Functionality & Mobile Menu Toggle -->
   <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/contact-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script> <!-- Assuming this handles the contact modal -->
+  <script src="js/join-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script> <!-- Assuming this handles the join modal -->
   <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
 </body>
