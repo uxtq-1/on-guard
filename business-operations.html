@@ -21,20 +21,20 @@
   ================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Operations | OPS Online Solutions</title>
-  <meta name="description" content="Optimize your business operations with secure and efficient solutions from OPS Online Solutions. Streamline processes and enhance productivity." />
-  <meta name="keywords" content="Business Operations, Process Optimization, Efficiency, Productivity, OPS Online Solutions, Business Solutions" />
-  <meta property="og:title" content="Business Operations | OPS Online Solutions" />
-  <meta property="og:description" content="Optimize your business operations with secure and efficient solutions from OPS Online Solutions. Streamline processes and enhance productivity." />
+  <title>Business Operations | Ops Online Support</title>
+  <meta name="description" content="Optimize your business operations with secure and efficient solutions from Ops Online Support. Streamline processes and enhance productivity." />
+  <meta name="keywords" content="Business Operations, Process Optimization, Efficiency, Productivity, Ops Online Support, Business Solutions" />
+  <meta property="og:title" content="Business Operations | Ops Online Support" />
+  <meta property="og:description" content="Optimize your business operations with secure and efficient solutions from Ops Online Support. Streamline processes and enhance productivity." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.opsonlinesolutions.com/business-operations.html" />
   <meta property="og:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
-  <meta property="og:site_name" content="OPS Online Solutions" />
+  <meta property="og:site_name" content="Ops Online Support" />
   <script type="application/ld+json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "OPS Online Solutions",
+      "name": "Ops Online Support",
       "url": "https://www.opsonlinesolutions.com",
       "logo": "https://www.opsonlinesolutions.com/assets/logo.png"
     }
@@ -56,7 +56,7 @@
           <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
           <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
           <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="security.html" data-en="Security" data-es="Seguridad">Security</a></li>
+          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
     </nav>
     <div class="toggle-container">
@@ -107,7 +107,7 @@
   </section>
   <!-- ===== Footer Section ===== -->
   <footer>
-    <p>&copy; 2025 OPS Solutions Services. All rights reserved.</p>
+    <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
   </footer>
   <!-- ===== Floating Icons (Modals) ===== -->
   <div class="floating-icons">
@@ -127,6 +127,7 @@
       </div>
       <div class="modal-body">
         <form id="join-form">
+          <input type="text" name="contact_preference_notes" style="display:none !important; visibility:hidden !important; opacity:0 !important; position:absolute !important; left:-9999px !important; top:-9999px !important;" tabindex="-1" autocomplete="off">
           <div class="form-row">
             <div class="form-cell">
               <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
@@ -142,29 +143,145 @@
               <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
               <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required>
             </div>
+          </div>
+          <div class="form-row">
             <div class="form-cell">
-              <label for="join-date" data-en="Date" data-es="Fecha">Date</label>
-              <input type="date" id="join-date" required>
+              <label for="join-interest" data-en="Interest in" data-es="Interés en">Interest in</label>
+              <select id="join-interest" name="join-interest" required>
+                <option value="" data-en="Select an option..." data-es="Seleccione una opción...">Select an option...</option>
+                <option value="business_operations" data-en="Business Operations" data-es="Gestión">Business Operations</option>
+                <option value="contact_center" data-en="Contact Center" data-es="Centro de Servicios">Contact Center</option>
+                <option value="it_support" data-en="IT Support" data-es="Soporte IT">IT Support</option>
+                <option value="professionals" data-en="Professionals" data-es="Profesionales">Professionals</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-cell" style="grid-column: 1 / -1;"> <!-- Spanning full width for the new section -->
+              <label data-en="Willing to Work" data-es="Disponibilidad Laboral">Willing to Work</label>
+              <div class="checkbox-group" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
+                <span class="checkbox-item" style="display: flex; align-items: center;">
+                  <input type="checkbox" id="work_type_remote" name="work_type_remote" value="remote">
+                  <label for="work_type_remote" style="margin-left: 5px;" data-en="Remote" data-es="Remoto">Remote</label>
+                </span>
+                <span class="checkbox-item" style="display: flex; align-items: center;">
+                  <input type="checkbox" id="work_type_hybrid" name="work_type_hybrid" value="hybrid">
+                  <label for="work_type_hybrid" style="margin-left: 5px;" data-en="Hybrid" data-es="Híbrido">Hybrid</label>
+                </span>
+                <span class="checkbox-item" style="display: flex; align-items: center;">
+                  <input type="checkbox" id="work_type_onsite" name="work_type_onsite" value="on-site">
+                  <label for="work_type_onsite" style="margin-left: 5px;" data-en="On-Site" data-es="Presencial">On-Site</label>
+                </span>
+                <span class="checkbox-item" style="display: flex; align-items: center;">
+                  <input type="checkbox" id="work_type_freelance" name="work_type_freelance" value="freelance">
+                  <label for="work_type_freelance" style="margin-left: 5px;" data-en="Freelance" data-es="Freelance">Freelance</label>
+                </span>
+                <span class="checkbox-item" style="display: flex; align-items: center;">
+                  <input type="checkbox" id="work_type_part_time" name="work_type_part_time" value="part-time">
+                  <label for="work_type_part_time" style="margin-left: 5px;" data-en="Part-Time" data-es="Medio Tiempo">Part-Time</label>
+                </span>
+                <span class="checkbox-item" style="display: flex; align-items: center;">
+                  <input type="checkbox" id="work_type_project_based" name="work_type_project_based" value="project-based">
+                  <label for="work_type_project_based" style="margin-left: 5px;" data-en="Project-Based" data-es="Por Proyecto">Project-Based</label>
+                </span>
+                <span class="checkbox-item" style="display: flex; align-items: center;">
+                  <input type="checkbox" id="work_type_temporary" name="work_type_temporary" value="temporary">
+                  <label for="work_type_temporary" style="margin-left: 5px;" data-en="Temporary" data-es="Temporal">Temporary</label>
+                </span>
+                <span class="checkbox-item" style="display: flex; align-items: center;">
+                  <input type="checkbox" id="work_type_voluntary" name="work_type_voluntary" value="voluntary">
+                  <label for="work_type_voluntary" style="margin-left: 5px;" data-en="Voluntary / NGO / Non-Profit" data-es="Voluntariado / ONG / Sin Fines de Lucro">Voluntary / NGO / Non-Profit</label>
+                </span>
+              </div>
             </div>
           </div>
           <div class="form-row">
             <div class="form-cell">
-              <label for="join-time" data-en="Time" data-es="Hora">Time</label>
-              <input type="time" id="join-time" required>
-            </div>
-            <div class="form-cell">
-              <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label>
-              <input type="file" id="join-resume" accept=".pdf,.doc,.docx" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell">
+              <!-- Keeping join-cover for now, though it might be redundant with a general comment field -->
               <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label>
-              <input type="file" id="join-cover" accept=".pdf,.doc,.docx" required>
+              <input type="file" id="join-cover" accept=".pdf,.doc,.docx">
             </div>
+          </div>
+          <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Experience" data-es="Experiencia">Experience</label>
+                <div class="dynamic-field-container" data-section-name="experience" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="experience[0][description]" class="dynamic-input" data-en-placeholder="Describe experience" data-es-placeholder="Describa la experiencia" style="width: 60%;">
+                    <input type="date" name="experience[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Experience" data-es="Añadir Experiencia">Add Experience</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Skills" data-es="Habilidades">Skills</label>
+                <div class="dynamic-field-container" data-section-name="skills" data-max-entries="10">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="skills[0][description]" class="dynamic-input" data-en-placeholder="Enter a skill" data-es-placeholder="Ingrese una habilidad" style="width: 80%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Skill" data-es="Añadir Habilidad">Add Skill</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Certifications" data-es="Certificaciones">Certifications</label>
+                <div class="dynamic-field-container" data-section-name="certifications" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="certifications[0][description]" class="dynamic-input" data-en-placeholder="Describe certification" data-es-placeholder="Describa la certificación" style="width: 60%;">
+                    <input type="date" name="certifications[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Certification" data-es="Añadir Certificación">Add Certification</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Hobbies" data-es="Pasatiempos">Hobbies</label>
+                <div class="dynamic-field-container" data-section-name="hobbies" data-max-entries="10">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="hobbies[0][description]" class="dynamic-input" data-en-placeholder="Enter a hobby" data-es-placeholder="Ingrese un pasatiempo" style="width: 80%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Hobby" data-es="Añadir Pasatiempo">Add Hobby</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Studies" data-es="Estudios">Studies</label>
+                <div class="dynamic-field-container" data-section-name="studies" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="studies[0][description]" class="dynamic-input" data-en-placeholder="Describe study" data-es-placeholder="Describa el estudio" style="width: 60%;">
+                    <input type="date" name="studies[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Study" data-es="Añadir Estudio">Add Study</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Continuing Studies" data-es="Estudios Adicionales">Continuing Studies</label>
+                <div class="dynamic-field-container" data-section-name="continuing_studies" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="continuing_studies[0][description]" class="dynamic-input" data-en-placeholder="Describe continuing study" data-es-placeholder="Describa el estudio adicional" style="width: 60%;">
+                    <input type="date" name="continuing_studies[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Continuing Study" data-es="Añadir Estudio Adicional">Add Continuing Study</button>
+              </div>
+            </div>
+          <div class="form-row">
             <div class="form-cell">
-              <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label>
-              <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required></textarea>
+                <label for="join-comment" data-en="Cover Letter" data-es="Carta de Presentación">Cover Letter</label>
+                <textarea id="join-comment" name="join-comment" rows="4" placeholder="Enter your cover letter text here / Ingrese el texto de su carta de presentación aquí" required></textarea>
             </div>
           </div>
         </form>
@@ -178,7 +295,7 @@
   <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
+        <h3 id="contactModalTitle" data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
         <button class="close-modal" data-close aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
@@ -247,6 +364,7 @@
   </div>
   <!-- ===== JS Scripts ===== -->
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
 </body>
 </html>

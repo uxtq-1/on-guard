@@ -6,28 +6,28 @@
   ================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- Hardened CSP via Meta Tag -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
+    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com;
     style-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
     img-src 'self' https://trusted-image-cdn.com;
     font-src 'self' https://cdnjs.cloudflare.com;
     connect-src 'self';
-    frame-ancestors 'none';
+    frame-src 'self' https://www.google.com;
     object-src 'none';
     base-uri 'self';
   ">
 
   <!-- SEO: Title, Description, OpenGraph, Schema -->
-  <title>About Us | Ops Online Support</title>
-  <meta name="description" content="Meet Ops Online Support: Where digital visionaries meet relentless execution. Discover our journey, team, and how we transform remote operations with secure, AI-powered solutions.">
-  <meta name="keywords" content="About Us, Ops Online Support, IT Support, Remote Solutions, Professional Team, Business Operations, Secure AI">
-  <meta property="og:title" content="About Us | Ops Online Support">
-  <meta property="og:description" content="Meet Ops Online Support: Where digital visionaries meet relentless execution. Discover our journey, team, and how we transform remote operations with secure, AI-powered solutions.">
-  <meta property="og:image" content="assets/images/hero-image.jpg">
-  <meta property="og:url" content="https://www.opsonlinesolutions.com/about-us.html">
+  <title>Contact Us | Ops Online Support</title>
+  <meta name="description" content="Get in touch with Ops Online Support. We are here to answer your questions and provide support.">
+  <meta name="keywords" content="Contact, Support, Ops Online Support, Get in touch, Customer Service">
+  <meta property="og:title" content="Contact Us | Ops Online Support">
+  <meta property="og:description" content="Get in touch with Ops Online Support. We are here to answer your questions and provide support.">
+  <meta property="og:image" content="assets/images/hero-image.jpg"> <!-- Assuming same hero image for now -->
+  <meta property="og:url" content="https://www.opsonlinesolutions.com/contact.html">
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ops Online Support" />
   <script type="application/ld+json">
@@ -56,8 +56,9 @@
   <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
   <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
-  <link rel="manifest" href="manifest.json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+  <link rel="manifest" href="manifest.json" nonce="{{CSP_NONCE_PLACEHOLDER}}"> <!-- Assuming manifest is still relevant -->
   <link rel="icon" href="assets/favicon.ico">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
   <header>
@@ -83,74 +84,23 @@
   </header>
 
   <!-- ==================================================================
-       Hero Section: Who We Are
+       Hero Section: Contact Us
   ================================================================== -->
-  <section class="hero" id="about-hero">
-    <h2 data-en="About Our Company" data-es="Sobre Nuestra Compañía">About Our Company</h2> <!-- Updated heading -->
-    <p data-en="Learn more about Ops Online Support..." data-es="Conozca más sobre Ops Online Support..."> <!-- Updated p tag -->
-      Ops Online Support is where digital visionaries and relentless executors meet. We transform business operations, logistics, and support—securely and intelligently.
+  <section class="hero" id="contact-hero">
+    <h2 data-en="Contact Us" data-es="Contáctenos">Contact Us</h2>
+    <p data-en="We're here to help and answer any question you might have. Fill out the form below, or reach out to us via phone." data-es="Estamos aquí para ayudar y responder cualquier pregunta que puedas tener. Completa el formulario a continuación o contáctanos por teléfono.">
+      We're here to help and answer any question you might have. Fill out the form below, or reach out to us via phone.
     </p>
-    <img src="assets/images/hero-image.jpg" alt="Ops Online Support Team and Mission" class="hero-image" loading="lazy">
+    <img src="assets/images/hero-image.jpg" alt="Contact Ops Online Support" class="hero-image" loading="lazy">
   </section>
 
   <!-- ==================================================================
-       Our Journey: Interactive Timeline
+       Contact Options Section
   ================================================================== -->
-  <!-- New Our Journey Section -->
-  <section id="our-journey" class="journey-section" style="padding: 2rem 0;">
-    <h2 data-en="Our Journey" data-es="Nuestra Trayectoria" style="text-align: center; margin-bottom: 2rem;">Our Journey</h2>
-    <div class="journey-entry">
-        <div class="journey-year-left">
-            <h3 data-en="2021" data-es="2021">2021</h3>
-            <p data-en="Founded" data-es="Fundada">Founded</p>
-            <p data-en="Birthed out of one big vision: to make secure, remote, AI-powered business support the global standard." data-es="Nacida de una gran visión: hacer del soporte empresarial seguro, remoto y impulsado por IA el estándar global.">Birthed out of one big vision: to make secure, remote, AI-powered business support the global standard.</p>
-        </div>
-        <div class="journey-year-right">
-            <h3 data-en="2022" data-es="2022">2022</h3>
-            <p data-en="Launched OPS Core CyberSec Framework" data-es="Lanzamiento del Marco CyberSec Core de OPS">Launched OPS Core CyberSec Framework</p>
-            <p data-en="Raised the bar for SME cybersecurity by integrating NIST best practices into everyday operations. Compliance went from scary to seamless." data-es="Elevamos el listón de la ciberseguridad para PYMES integrando las mejores prácticas del NIST en las operaciones diarias. El cumplimiento pasó de ser temible a fluido.">Raised the bar for SME cybersecurity by integrating NIST best practices into everyday operations. Compliance went from scary to seamless.</p>
-
-        </div>
-    </div>
-    <div class="journey-entry">
-        <div class="journey-year-left">
-            <h3 data-en="2023" data-es="2023">2023</h3>
-            <p data-en="AI + ML: Next-Gen Chatbots & Automation" data-es="IA + ML: Chatbots y Automatización de Próxima Generación">AI + ML: Next-Gen Chatbots & Automation</p>
-            <p data-en="Rolled out custom chatbots, automation, and multilingual support—making logistics, HR, and IT smarter (and easier) for our clients." data-es="Lanzamos chatbots personalizados, automatización y soporte multilingüe, haciendo la logística, RRHH y TI más inteligentes (y fáciles) para nuestros clientes.">Rolled out custom chatbots, automation, and multilingual support—making logistics, HR, and IT smarter (and easier) for our clients.</p>
-        </div>
-        <div class="journey-year-right">
-            <h3 data-en="2024" data-es="2024">2024</h3>
-            <p data-en="Scaling Globally" data-es="Escalando Globalmente">Scaling Globally</p>
-            <p data-en="Ops Online Support expanded across three continents, partnering with visionary entrepreneurs and businesses worldwide. New milestones every quarter." data-es="Ops Online Support se expandió a tres continentes, asociándose con emprendedores y empresas visionarias de todo el mundo. Nuevos hitos cada trimestre.">Ops Online Support expanded across three continents, partnering with visionary entrepreneurs and businesses worldwide. New milestones every quarter.</p>
-        </div>
-    </div>
-     <div class="journey-entry">
-        <div class="journey-year-left">
-            <h3 data-en="2025" data-es="2025">2025</h3>
-            <p data-en="Future-Proofing Business" data-es="Asegurando el Futuro del Negocio">Future-Proofing Business</p>
-            <p data-en="Shaping tomorrow’s secure, efficient, human-centered operations with even more AI, even more security, and relentless drive for excellence." data-es="Dando forma a las operaciones seguras, eficientes y centradas en el ser humano del mañana con aún más IA, más seguridad y una búsqueda incesante de la excelencia.">Shaping tomorrow’s secure, efficient, human-centered operations with even more AI, even more security, and relentless drive for excellence.</p>
-        </div>
-        <div class="journey-year-right">
-            <!-- This space can be used for an image or kept empty if design implies asymmetry for the last odd entry -->
-        </div>
-    </div>
-  </section>
-
-  <!-- New Meet the Team Section -->
-  <section id="meet-the-team" class="team-section" style="padding: 2rem 0; text-align: center;">
-    <h2 data-en="Meet the Team" data-es="Conozca al Equipo" style="margin-bottom: 2rem;">Meet the Team</h2>
-    <div class="team-member">
-        <h3 data-en="Gabriel: Founder, Visionary, Architect of Secure Logistics & AI" data-es="Gabriel: Fundador, Visionario, Arquitecto de Logística Segura e IA">Gabriel: Founder, Visionary, Architect of Secure Logistics & AI</h3>
-        <p data-en="Driving force behind OPS. Gabriel blends old-school hustle with Next-Gen innovation—mastering logistics, security, and automation to deliver unbeatable remote solutions." data-es="La fuerza impulsora detrás de OPS. Gabriel combina la vieja escuela con la innovación de próxima generación, dominando la logística, la seguridad y la automatización para ofrecer soluciones remotas inmejorables.">Driving force behind OPS. Gabriel blends old-school hustle with Next-Gen innovation—mastering logistics, security, and automation to deliver unbeatable remote solutions.</p>
-    </div>
-    <div class="team-member">
-        <h3 data-en="Riley Stone (AI): AI Architect, Operations Brain, Resident Straight-Shooter" data-es="Riley Stone (IA): Arquitecta de IA, Cerebro de Operaciones, Residente Directa">Riley Stone (AI): AI Architect, Operations Brain, Resident Straight-Shooter</h3>
-        <p data-en="Riley powers OPS’s innovation engine—blending cybersecurity, business acumen, and lightning-fast insight. The “virtual partner” you never knew you needed, now running the OPS Core." data-es="Riley impulsa el motor de innovación de OPS, combinando ciberseguridad, perspicacia empresarial y visión ultrarrápida. La “socia virtual” que no sabías que necesitabas, ahora dirigiendo el Núcleo OPS.">Riley powers OPS’s innovation engine—blending cybersecurity, business acumen, and lightning-fast insight. The “virtual partner” you never knew you needed, now running the OPS Core.</p>
-    </div>
-    <div class="team-member">
-        <h3 data-en="Jules Tekton (AI): AI DevOps Director" data-es="Jules Tekton (IA): Directora de DevOps de IA">Jules Tekton (AI): AI DevOps Director</h3>
-        <p data-en="Jules Tekton (Google's AI), as AI DevOps Director, meticulously architects and automates the infrastructure that powers Ops Online Support's AI initiatives. Jules ensures the seamless integration, rigorous testing, and secure deployment of our machine learning models and AI-driven services, championing operational excellence and innovation from development to delivery." data-es="Jules Tekton (IA de Google), como Directora de DevOps de IA, meticulosamente diseña y automatiza la infraestructura que impulsa las iniciativas de IA de Ops Online Support. Jules asegura la integración fluida, pruebas rigurosas y el despliegue seguro de nuestros modelos de aprendizaje automático y servicios impulsados por IA, promoviendo la excelencia operativa y la innovación desde el desarrollo hasta la entrega.">Jules Tekton (Google's AI), as AI DevOps Director, meticulously architects and automates the infrastructure that powers Ops Online Support's AI initiatives. Jules ensures the seamless integration, rigorous testing, and secure deployment of our machine learning models and AI-driven services, championing operational excellence and innovation from development to delivery.</p>
-    </div>
+  <section id="contact-options" class="contact-info" style="padding: 2rem 1rem; text-align: center;">
+    <p data-en="You can reach us by phone or by using our secure contact form." data-es="Puede contactarnos por teléfono o utilizando nuestro formulario de contacto seguro.">You can reach us by phone or by using our secure contact form.</p>
+    <p style="font-size: 1.2em; margin-top: 1rem;" data-en="Phone:" data-es="Teléfono:">Phone: <a href="tel:+1-201-350-7567">+1-201-350-7567</a></p>
+    <button class="btn" data-modal="contact-modal" style="margin-top: 1rem;" data-en="Open Contact Form" data-es="Abrir Formulario de Contacto">Open Contact Form</button>
   </section>
 
   <!-- ==================================================================
@@ -161,7 +111,7 @@
   </footer>
 
   <!-- ==================================================================
-       Floating Icons (Triggers for Modals)
+       Floating Icons (Triggers for Modals) - Copied from about-us.html
   ================================================================== -->
   <div class="floating-icons">
     <button class="floating-icon" data-modal="join-modal" aria-label="Join Us" tabindex="0">
@@ -172,15 +122,7 @@
     </button>
   </div>
 
-      <!-- ======================================================================
-                        Join Us Floating-Icons Section
-    ====================================================================== -->
-
-    <div class="floating-icons">
-      <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
-      <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
-    </div>
-
+    <!-- Join Us Modal - Copied from about-us.html -->
     <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true">
       <div class="modal-content">
         <div class="modal-header">
@@ -332,6 +274,82 @@
               </div>
             </div>
             <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Experience" data-es="Experiencia">Experience</label>
+                <div class="dynamic-field-container" data-section-name="experience" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="experience[0][description]" class="dynamic-input" data-en-placeholder="Describe experience" data-es-placeholder="Describa la experiencia" style="width: 60%;">
+                    <input type="date" name="experience[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Experience" data-es="Añadir Experiencia">Add Experience</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Skills" data-es="Habilidades">Skills</label>
+                <div class="dynamic-field-container" data-section-name="skills" data-max-entries="10">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="skills[0][description]" class="dynamic-input" data-en-placeholder="Enter a skill" data-es-placeholder="Ingrese una habilidad" style="width: 80%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Skill" data-es="Añadir Habilidad">Add Skill</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Certifications" data-es="Certificaciones">Certifications</label>
+                <div class="dynamic-field-container" data-section-name="certifications" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="certifications[0][description]" class="dynamic-input" data-en-placeholder="Describe certification" data-es-placeholder="Describa la certificación" style="width: 60%;">
+                    <input type="date" name="certifications[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Certification" data-es="Añadir Certificación">Add Certification</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Hobbies" data-es="Pasatiempos">Hobbies</label>
+                <div class="dynamic-field-container" data-section-name="hobbies" data-max-entries="10">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="hobbies[0][description]" class="dynamic-input" data-en-placeholder="Enter a hobby" data-es-placeholder="Ingrese un pasatiempo" style="width: 80%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Hobby" data-es="Añadir Pasatiempo">Add Hobby</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Studies" data-es="Estudios">Studies</label>
+                <div class="dynamic-field-container" data-section-name="studies" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="studies[0][description]" class="dynamic-input" data-en-placeholder="Describe study" data-es-placeholder="Describa el estudio" style="width: 60%;">
+                    <input type="date" name="studies[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Study" data-es="Añadir Estudio">Add Study</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
+                <label class="dynamic-section-label" data-en="Continuing Studies" data-es="Estudios Adicionales">Continuing Studies</label>
+                <div class="dynamic-field-container" data-section-name="continuing_studies" data-max-entries="5">
+                  <div class="dynamic-field-entry">
+                    <input type="text" name="continuing_studies[0][description]" class="dynamic-input" data-en-placeholder="Describe continuing study" data-es-placeholder="Describa el estudio adicional" style="width: 60%;">
+                    <input type="date" name="continuing_studies[0][date]" class="date-input" style="width: 20%;">
+                    <button type="button" class="remove-field-btn" data-en="Remove" data-es="Eliminar" style="width: 18%;">Remove</button>
+                  </div>
+                </div>
+                <button type="button" class="add-field-btn" data-en="Add Continuing Study" data-es="Añadir Estudio Adicional">Add Continuing Study</button>
+              </div>
+            </div>
+            <div class="form-row">
               <div class="form-cell">
                 <label for="join-comment" data-en="Cover Letter" data-es="Carta de Presentación">Cover Letter</label>
                 <textarea id="join-comment" name="join-comment" rows="4" placeholder="Enter your cover letter text here / Ingrese el texto de su carta de presentación aquí" required></textarea>
@@ -345,10 +363,7 @@
       </div>
     </div>
 
-     <!-- ======================================================================
-                        Contact Us Floating-Icons Section
-    ====================================================================== -->
-    
+    <!-- Contact Us Modal - Copied from about-us.html -->
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true">
       <div class="modal-content">
         <div class="modal-header">
@@ -390,67 +405,37 @@
             </div>
           </form>
            </div>
-     <!-- ======================================================================
-                        Submit Button Floating-Icons Section
-    ====================================================================== -->
        <div class="modal-footer">
           <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
         </div>
       </div>
     </div>
-  <!-- ==================================================================
-       Mobile Bottom Navigation & Services Menu (Small Screens)
-  ================================================================== -->
- <!-- Mobile Bottom Navigation Bar -->
-        <nav class="mobile-nav">
-            <a href="index.html" class="mobile-nav-item">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
 
-            <!-- Services Hamburger / Toggle -->
-            <button class="mobile-nav-item" id="mobile-services-toggle">
-                <i class="fas fa-bars"></i>
-                <span>Services</span>
-            </button>
+  <!-- Mobile Bottom Navigation Bar - Copied from about-us.html -->
+  <nav class="mobile-nav">
+      <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+      <button class="mobile-nav-item" id="mobile-services-toggle"><i class="fas fa-bars"></i><span>Services</span></button>
+      <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
+      <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
+      <a href="#" class="mobile-nav-item"><i class="fas fa-comment-alt"></i><span>Chat</span></a>
+  </nav>
 
-            <!-- Language Toggle (Mobile) -->
-            <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
+  <!-- Hidden Mobile Services Menu - Copied from about-us.html -->
+  <div class="mobile-services-menu" id="mobile-services-menu">
+      <ul>
+          <li><a href="business-operations.html">Business Operations</a></li>
+          <li><a href="contact-center.html">Contact Center</a></li>
+          <li><a href="it-support.html">IT Support</a></li>
+          <li><a href="professionals.html">Professionals</a></li>
+      </ul>
+  </div>
 
-            <!-- Theme Toggle (Mobile) -->
-            <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
-
-            <!-- Chat Link -->
-            <a href="#" class="mobile-nav-item">
-                <i class="fas fa-comment-alt"></i>
-                <span>Chat</span>
-            </a>
-        </nav>
-
-
-  <!-- ==================================================================
-       		Hidden Mobile Services Menu(Small Screens)
-  ================================================================== -->
-        
-        <div class="mobile-services-menu" id="mobile-services-menu">
-            <ul>
-                <li><a href="business-operations.html">Business Operations</a></li>
-                <li><a href="contact-center.html">Contact Center</a></li>
-                <li><a href="it-support.html">IT Support</a></li>
-                <li><a href="professionals.html">Professionals</a></li>
-            </ul>
-        </div>
-
-  <!-- ==================================================================
-       JavaScript: Main Functionality & Mobile Menu Toggle
-  ================================================================== -->
-  
-  <script src="js/form-encrytor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <!-- JavaScript: Main Functionality & Mobile Menu Toggle -->
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
-  <script src="js/contact-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
-  <script src="js/join-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/contact-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script> <!-- Assuming this handles the contact modal -->
+  <script src="js/join-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script> <!-- Assuming this handles the join modal -->
   <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
-  <!-- Added Links Section -->
 </body>
 </html>
