@@ -72,6 +72,7 @@
           <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
           <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
           <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
       </ul>
     </nav>
     <!-- Theme and Language Toggle for Desktop -->
@@ -177,11 +178,8 @@
   <footer>
     <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
   </footer>
-  <!-- ==================================================================
-                      floating-icons
-  ================================================================== --> 
-  
-      <div class="floating-icons">
+
+    <div class="floating-icons">
       <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
       <button class="floating-icon" data-modal="chatbot-modal" aria-label="Chatbot"><i class="fas fa-comments"></i></button>
       <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
@@ -195,6 +193,7 @@
         </div>
         <div class="modal-body">
           <form id="join-form">
+            <input type="text" name="contact_preference_notes" style="display:none !important; visibility:hidden !important; opacity:0 !important; position:absolute !important; left:-9999px !important; top:-9999px !important;" tabindex="-1" autocomplete="off">
             <div class="form-row">
               <div class="form-cell">
                 <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
@@ -349,10 +348,7 @@
         </div>
       </div>
     </div>
-  
-      <!-- ==================================================================
-                                  chatbot-modal
-      ================================================================== --> 
+
     <div id="chatbot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chatbotModalTitle">
       <div class="modal-content">
         <div class="modal-header">
@@ -364,17 +360,17 @@
         </div>
       </div>
     </div>
+
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
       <div class="modal-content">
-      <!-- ==================================================================
-                                  Contact Us
-      ================================================================== --> 
         <div class="modal-header">
           <h3 id="contactModalTitle" data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
           <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="contact-form">
+            <input type="text" name="contact_preference_notes" style="display:none !important; visibility:hidden !important; opacity:0 !important; position:absolute !important; left:-9999px !important; top:-9999px !important;" tabindex="-1" autocomplete="off">
+            <div class="form-row">
               <div class="form-cell">
                 <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
                 <input type="text" id="contact-name" placeholder="Enter your name / Ingrese su Nombre" required />
@@ -414,11 +410,10 @@
         </div>
       </div>
     </div>
-  
-   <!-- ======================================================================
+
+ <!-- ======================================================================
                               Mobile-Nav Section
     ====================================================================== -->
-  
        <nav class="mobile-nav">
       <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
       <button id="mobile-services-toggle" class="mobile-nav-item"><i class="fas fa-bars"></i><span>Services</span></button>
@@ -435,12 +430,6 @@
         <li><a href="professionals.html">Professionals</a></li>
       </ul>
     </div>
-  </div>
-  <!-- ==================================================================
-      CHATBOT_PLACEHOLDER: Future chatbot integration point.
-  ================================================================== -->
-
-    <!-- Consider placement within or alongside the mobile-nav for global accessibility, or as a separate fixed element. -->
 
   <!-- ==================================================================
        JavaScript: Main Functionality & Mobile Menu Toggle
