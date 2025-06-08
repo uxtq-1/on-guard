@@ -177,18 +177,11 @@
   <footer>
     <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
   </footer>
-
-    <div class="floating-icons">
-      <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
-      <button class="floating-icon" data-modal="chatbot-modal" aria-label="Chatbot"><i class="fas fa-comments"></i></button>
-      <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
-    </div>
-
-   <!-- ======================================================================
-                        Join Us Floating-Icons Section
-    ====================================================================== -->
-
-    <div class="floating-icons">
+  <!-- ==================================================================
+                      floating-icons
+  ================================================================== --> 
+  
+      <div class="floating-icons">
       <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
       <button class="floating-icon" data-modal="chatbot-modal" aria-label="Chatbot"><i class="fas fa-comments"></i></button>
       <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
@@ -356,6 +349,10 @@
         </div>
       </div>
     </div>
+  
+      <!-- ==================================================================
+                                  chatbot-modal
+      ================================================================== --> 
     <div id="chatbot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chatbotModalTitle">
       <div class="modal-content">
         <div class="modal-header">
@@ -367,20 +364,17 @@
         </div>
       </div>
     </div>
-
-     <!-- ======================================================================
-                        Contact Us Floating-Icons Section
-    ====================================================================== -->
-    
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
       <div class="modal-content">
+      <!-- ==================================================================
+                                  Contact Us
+      ================================================================== --> 
         <div class="modal-header">
           <h3 id="contactModalTitle" data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
           <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="contact-form">
-           <div class="form-row">
               <div class="form-cell">
                 <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
                 <input type="text" id="contact-name" placeholder="Enter your name / Ingrese su Nombre" required />
@@ -420,9 +414,11 @@
         </div>
       </div>
     </div>
-     <!-- ======================================================================
+  
+   <!-- ======================================================================
                               Mobile-Nav Section
     ====================================================================== -->
+  
        <nav class="mobile-nav">
       <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
       <button id="mobile-services-toggle" class="mobile-nav-item"><i class="fas fa-bars"></i><span>Services</span></button>
@@ -440,18 +436,20 @@
       </ul>
     </div>
   </div>
-    <!-- CHATBOT_PLACEHOLDER: Future chatbot integration point. Consider placement within or alongside the mobile-nav for global accessibility, or as a separate fixed element. -->
-     <!-- ======================================================================
+  <!-- ==================================================================
+      CHATBOT_PLACEHOLDER: Future chatbot integration point.
+  ================================================================== -->
+
+    <!-- Consider placement within or alongside the mobile-nav for global accessibility, or as a separate fixed element. -->
+
   <!-- ==================================================================
        JavaScript: Main Functionality & Mobile Menu Toggle
   ================================================================== -->
   
-  <script src="js/form-encrytor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/honeypot-alert.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
-  <script src="js/contact-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
-  <script src="js/join-handler.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
-  <!-- Added Links Section -->
 </body>
 </html>

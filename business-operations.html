@@ -110,17 +110,18 @@
   <footer>
     <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
   </footer>
-  <!-- ===== Floating Icons (Modals) ===== -->
+
     <div class="floating-icons">
       <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
       <button class="floating-icon" data-modal="chatbot-modal" aria-label="Chatbot"><i class="fas fa-comments"></i></button>
       <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
     </div>
-    <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true">
+
+    <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 data-en="Join Us" data-es="Únete">Join Us</h3>
-          <button class="close-modal" data-close>&times;</button>
+          <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete">Join Us</h3>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="join-form">
@@ -279,15 +280,28 @@
         </div>
       </div>
     </div>
-    <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true">
+
+    <div id="chatbot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chatbotModalTitle">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
-          <button class="close-modal" data-close>&times;</button>
+          <h3 id="chatbotModalTitle" data-en="Chatbot" data-es="Chatbot">Chatbot</h3>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p data-en="Chatbot Coming Soon" data-es="Chatbot Próximamente">Chatbot Coming Soon</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="contactModalTitle" data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="contact-form">
-            <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
+            <input type="text" name="contact_preference_notes" style="display:none !important; visibility:hidden !important; opacity:0 !important; position:absolute !important; left:-9999px !important; top:-9999px !important;" tabindex="-1" autocomplete="off">
             <div class="form-row">
               <div class="form-cell">
                 <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
@@ -320,11 +334,15 @@
             </div>
           </form>
            </div>
+     <!-- ======================================================================
+                        Submit Button Floating-Icons Section
+    ====================================================================== -->
        <div class="modal-footer">
           <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
         </div>
       </div>
     </div>
+
   <!-- ===== Mobile Bottom Navigation & Services Menu ===== -->
   <nav class="mobile-nav">
     <a href="index.html" class="mobile-nav-item">
@@ -351,6 +369,8 @@
     </ul>
   </div>
   <!-- ===== JS Scripts ===== -->
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/honeypot-alert.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
