@@ -322,7 +322,7 @@
         </div>
         <div class="modal-body">
           <form id="contact-form">
-            <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
+            <input type="text" name="contact_preference_notes" style="display:none !important; visibility:hidden !important; opacity:0 !important; position:absolute !important; left:-9999px !important; top:-9999px !important;" tabindex="-1" autocomplete="off">
             <div class="form-row">
               <div class="form-cell">
                 <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
@@ -388,6 +388,7 @@
                            Reference Section
     ====================================================================== -->
   <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/honeypot-alert.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>

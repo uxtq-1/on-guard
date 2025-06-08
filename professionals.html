@@ -1,59 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <!-- ======================================================================
-  Hardened CSP
-  ====================================================================== -->
-  <title>Ops Online Support - Secure IT Support & Remote Solutions</title>
-  <meta name="description" content="Ops Online Support offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies." />
-  <meta name="keywords" content="IT Support, Remote Solutions, Contact Center, Business Operations, Professional Services, Ops Online Support, Secure IT Services" />
-  <meta name="robots" content="index, follow" />
-
-  <meta property="og:title" content="Ops Online Support - Secure IT Support & Remote Solutions" />
-  <meta property="og:description" content="Ops Online Support offers secure IT support, remote solutions, and professional services to optimize your business operations. Empowering businesses with cutting-edge strategies." />
-  <meta property="og:image" content="assets/images/hero-image.jpg" />
-  <meta property="og:url" content="https://www.opsonlinesolutions.com/index.html" />
+  <script src="js/integrity-checker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <!-- ==================================================================
+                         Hardened CSP via Meta Tag
+  ================================================================== -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
+    style-src 'self' 'nonce-{{CSP_NONCE_PLACEHOLDER}}' https://cdnjs.cloudflare.com;
+    img-src 'self' https://trusted-image-cdn.com;
+    font-src 'self' https://cdnjs.cloudflare.com;
+    connect-src 'self';
+    frame-ancestors 'none';
+    object-src 'none';
+    base-uri 'self';
+  ">
+  <!-- ==================================================================
+                     Document Metadata & External Resources
+  ================================================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Services | Ops Online Support</title>
+  <meta name="description" content="Access top-tier professionals for your business needs through Ops Online Support. Connect with experts in IT, security, and operations." />
+  <meta name="keywords" content="Professional Services, Expert Consultation, IT Professionals, Security Experts, Ops Online Support, Business Talent" />
+  <meta property="og:title" content="Professional Services | Ops Online Support" />
+  <meta property="og:description" content="Access top-tier professionals for your business needs through Ops Online Support. Connect with experts in IT, security, and operations." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.opsonlinesolutions.com/professionals.html" />
+  <meta property="og:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
   <meta property="og:site_name" content="Ops Online Support" />
-
-  <script type="application/ld+json">
+  <script type="application/ld+json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Ops Online Support",
       "url": "https://www.opsonlinesolutions.com",
-      "logo": "https://www.opsonlinesolutions.com/assets/logo.png",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+1-201-350-7567",
-        "contactType": "Customer Service",
-        "areaServed": "US",
-        "availableLanguage": "English"
-      },
-      "sameAs": [
-        "https://www.facebook.com/yourpage",
-        "https://twitter.com/yourhandle",
-        "https://www.linkedin.com/company/yourcompany"
-      ]
+      "logo": "https://www.opsonlinesolutions.com/assets/logo.png"
     }
   </script>
- <!-- ======================================================================
-                      Links to Pages
-    ====================================================================== -->
-  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
-  <link rel="stylesheet" media="(max-width:768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
-  <link rel="icon" href="assets/favicon.ico" />
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js" integrity="sha512-DJjvM/U3zCRpzrY6DGDA5VsoR3gqI3fA7rM2BHjsI/FUAjdU+sHnhQeMhH9LPyh39FjPzYFfJgP5KjLjp9Y1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="css/global.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+  <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
+  <link rel="manifest" href="manifest.json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
+  <link rel="icon" href="assets/favicon.ico">
 </head>
 <body>
-  <div id="secure-content" style="display:none;">
-    <header>
-      <nav>
-        <ul>
+  <!-- ===== Header Section ===== -->
+  <header>
+    <nav>
+      <ul>
           <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
           <li><a href="business-operations.html" data-en="Business Operations" data-es="Gestión">Business Operations</a></li>
           <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
@@ -61,73 +57,60 @@
           <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
           <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
           <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
-        </ul>
-      </nav>
-      <div class="toggle-container">
-        <button id="theme-toggle-desktop">Light</button>
-        <button id="language-toggle-desktop">EN</button>
-      </div>
-      </header>
+      </ul>
+    </nav>
+    <div class="toggle-container">
+      <button id="theme-toggle-desktop">Light</button>
+      <button id="language-toggle-desktop">EN</button>
+    </div>
+  </header>
   <main>
- <!-- ======================================================================
-                              Hero Section
-    ====================================================================== -->
-    
-    <section class="hero">
-      <h1 data-en="Welcome to Ops Online Support" data-es="Bienvenido a Ops Online Support">Welcome to Ops Online Support</h1>
-      <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
-        Empowering remote solutions with cutting-edge strategies.
+  <!-- ===== Hero Section ===== -->
+  <section class="hero">
+    <h1 data-en="Elite Professionals for Every Need" data-es="Profesionales de Élite para Cada Necesidad">
+      Elite Professionals for Every Need
+    </h1>
+    <p data-en="From DevOps engineers to finance experts—get access to vetted professionals who drive results." data-es="Desde ingenieros DevOps hasta expertos en finanzas: acceda a profesionales verificados que impulsan resultados.">
+      From DevOps engineers to finance experts—get access to vetted professionals who drive results.
+    </p>
+    <img src="assets/images/hero-image.jpg" alt="Professionals Hero Image" class="hero-image" loading="lazy">
+  </section>
+  <!-- ===== Services Preview Section ===== -->
+  <section id="services-preview" class="services">
+    <div class="service-item">
+      <h3 data-en="Business Operations" data-es="Gestión">Business Operations</h3>
+      <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">
+        Discover how we optimize your business processes.
       </p>
-      <img src="assets/images/hero-image.jpg" alt="Technicians collaborating remotely on laptops" class="hero-image" loading="lazy" />
-    </section>
-
-     <!-- ======================================================================
-                              Services-Preview  Section
-    ====================================================================== -->
-
- <section id="services-preview" class="services">
-      <div class="service-item">
-        <h3 data-en="Business Operations" data-es="Gestión">Business Operations</h3>
-        <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">
-          Discover how we optimize your business processes.
-        </p>
-        <a href="business-operations.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
-        <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">
-          Enhance customer interactions with our contact solutions.
-        </p>
-        <a href="contact-center.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
-        <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">
-          Ensure seamless IT operations with our expert support.
-        </p>
-        <a href="it-support.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-      <div class="service-item">
-        <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
-        <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">
-          Access top-tier professionals for your business needs.
-        </p>
-        <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-      </div>
-    </section>
-
-     <!-- ======================================================================
-                              Footer Section
-    ====================================================================== -->
-
-    <footer>
-      <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
-    </footer>
+      <a href="business-operations.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
+      <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">
+        Enhance customer interactions with our contact solutions.
+      </p>
+      <a href="contact-center.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
+      <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">
+        Ensure seamless IT operations with our expert support.
+      </p>
+      <a href="it-support.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
+      <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">
+        Access top-tier professionals for your business needs.
+      </p>
+      <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+  </section>
+  <!-- ===== Footer Section ===== -->
   </main>
-    
-     <!-- ======================================================================
-                        Join Us Floating-Icons Section
-    ====================================================================== -->
+  <footer>
+    <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
+  </footer>
 
     <div class="floating-icons">
       <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
@@ -298,6 +281,7 @@
         </div>
       </div>
     </div>
+
     <div id="chatbot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chatbotModalTitle">
       <div class="modal-content">
         <div class="modal-header">
@@ -310,10 +294,6 @@
       </div>
     </div>
 
-     <!-- ======================================================================
-                        Contact Us Floating-Icons Section
-    ====================================================================== -->
-    
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
       <div class="modal-content">
         <div class="modal-header">
@@ -322,7 +302,7 @@
         </div>
         <div class="modal-body">
           <form id="contact-form">
-            <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
+            <input type="text" name="contact_preference_notes" style="display:none !important; visibility:hidden !important; opacity:0 !important; position:absolute !important; left:-9999px !important; top:-9999px !important;" tabindex="-1" autocomplete="off">
             <div class="form-row">
               <div class="form-cell">
                 <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
@@ -363,31 +343,35 @@
         </div>
       </div>
     </div>
-     <!-- ======================================================================
-                              Mobile-Nav Section
-    ====================================================================== -->
-       <nav class="mobile-nav">
-      <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
-      <button id="mobile-services-toggle" class="mobile-nav-item"><i class="fas fa-bars"></i><span>Services</span></button>
-      <button id="mobile-language-toggle" class="mobile-nav-item">EN</button>
-      <button id="mobile-theme-toggle" class="mobile-nav-item">Light</button>
-      <a href="#" class="mobile-nav-item"><i class="fas fa-comment-alt"></i><span>Chat</span></a>
-    </nav>
 
-    <div id="mobile-services-menu" class="mobile-services-menu">
-      <ul>
-        <li><a href="business-operations.html">Business Operations</a></li>
-        <li><a href="contact-center.html">Contact Center</a></li>
-        <li><a href="it-support.html">IT Support</a></li>
-        <li><a href="professionals.html">Professionals</a></li>
-      </ul>
-    </div>
+  <!-- ===== Mobile Bottom Navigation & Services Menu ===== -->
+  <nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <button class="mobile-nav-item" id="mobile-services-toggle">
+      <i class="fas fa-bars"></i>
+      <span>Services</span>
+    </button>
+    <button class="mobile-nav-item" id="language-toggle-mobile">EN</button>
+    <button class="mobile-nav-item" id="theme-toggle-mobile">Light</button>
+    <a href="#" class="mobile-nav-item">
+      <i class="fas fa-comment-alt"></i>
+      <span>Chat</span>
+    </a>
+  </nav>
+  <div class="mobile-services-menu" id="mobile-services-menu">
+    <ul>
+      <li><a href="business-operations.html">Business Operations</a></li>
+      <li><a href="contact-center.html">Contact Center</a></li>
+      <li><a href="it-support.html">IT Support</a></li>
+      <li><a href="professionals.html">Professionals</a></li>
+    </ul>
   </div>
-    <!-- CHATBOT_PLACEHOLDER: Future chatbot integration point. Consider placement within or alongside the mobile-nav for global accessibility, or as a separate fixed element. -->
-     <!-- ======================================================================
-                           Reference Section
-    ====================================================================== -->
+  <!-- ===== JS Scripts ===== -->
   <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/honeypot-alert.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>

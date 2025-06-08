@@ -21,13 +21,13 @@
   ================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Operations | Ops Online Support</title>
-  <meta name="description" content="Optimize your business operations with secure and efficient solutions from Ops Online Support. Streamline processes and enhance productivity." />
-  <meta name="keywords" content="Business Operations, Process Optimization, Efficiency, Productivity, Ops Online Support, Business Solutions" />
-  <meta property="og:title" content="Business Operations | Ops Online Support" />
-  <meta property="og:description" content="Optimize your business operations with secure and efficient solutions from Ops Online Support. Streamline processes and enhance productivity." />
+  <title>Contact Center Solutions | Ops Online Support</title>
+  <meta name="description" content="Enhance customer interactions with Ops Online Support's secure and advanced contact center solutions. Improve customer support and engagement." />
+  <meta name="keywords" content="Contact Center, Customer Support, Customer Engagement, CX Solutions, Ops Online Support, Call Center" />
+  <meta property="og:title" content="Contact Center Solutions | Ops Online Support" />
+  <meta property="og:description" content="Enhance customer interactions with Ops Online Support's secure and advanced contact center solutions. Improve customer support and engagement." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.opsonlinesolutions.com/business-operations.html" />
+  <meta property="og:url" content="https://www.opsonlinesolutions.com/contact-center.html" />
   <meta property="og:image" content="https://www.opsonlinesolutions.com/assets/images/hero-image.jpg" />
   <meta property="og:site_name" content="Ops Online Support" />
   <script type="application/ld+json" nonce="{{CSP_NONCE_PLACEHOLDER}}">
@@ -67,13 +67,13 @@
   <main>
   <!-- ===== Hero Section ===== -->
   <section class="hero">
-    <h1 data-en="Business Operations Excellence" data-es="Excelencia en Operaciones Empresariales">
-      Business Operations Excellence
+    <h1 data-en="Contact Center Solutions" data-es="Soluciones de Contact Center">
+      Contact Center Solutions
     </h1>
-    <p data-en="Streamline your business for growth and efficiency." data-es="Optimiza tu negocio para el crecimiento y la eficiencia.">
-      Streamline your business for growth and efficiency.
+    <p data-en="Enhance every customer interaction, boost loyalty, and grow your brand." data-es="Mejora cada interacción con el cliente, impulsa la lealtad y haz crecer tu marca.">
+      Enhance every customer interaction, boost loyalty, and grow your brand.
     </p>
-    <img src="assets/images/hero-image.jpg" alt="Business Operations Hero Image" class="hero-image" loading="lazy">
+    <img src="assets/images/hero-image.jpg" alt="Contact Center Hero Image" class="hero-image" loading="lazy">
   </section>
   <!-- ===== Services Preview Section ===== -->
   <section id="services-preview" class="services">
@@ -111,17 +111,18 @@
   <footer>
     <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
   </footer>
-  <!-- ===== Floating Icons (Modals) ===== -->
+
     <div class="floating-icons">
       <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
       <button class="floating-icon" data-modal="chatbot-modal" aria-label="Chatbot"><i class="fas fa-comments"></i></button>
       <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
     </div>
-    <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true">
+
+    <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 data-en="Join Us" data-es="Únete">Join Us</h3>
-          <button class="close-modal" data-close>&times;</button>
+          <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete">Join Us</h3>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="join-form">
@@ -280,15 +281,28 @@
         </div>
       </div>
     </div>
-    <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true">
+
+    <div id="chatbot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chatbotModalTitle">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
-          <button class="close-modal" data-close>&times;</button>
+          <h3 id="chatbotModalTitle" data-en="Chatbot" data-es="Chatbot">Chatbot</h3>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p data-en="Chatbot Coming Soon" data-es="Chatbot Próximamente">Chatbot Coming Soon</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="contactModalTitle" data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="contact-form">
-            <input type="text" name="contact_preference_notes" style="display:none; visibility:hidden;" tabindex="-1" autocomplete="off">
+            <input type="text" name="contact_preference_notes" style="display:none !important; visibility:hidden !important; opacity:0 !important; position:absolute !important; left:-9999px !important; top:-9999px !important;" tabindex="-1" autocomplete="off">
             <div class="form-row">
               <div class="form-cell">
                 <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
@@ -321,11 +335,15 @@
             </div>
           </form>
            </div>
+     <!-- ======================================================================
+                        Submit Button Floating-Icons Section
+    ====================================================================== -->
        <div class="modal-footer">
           <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
         </div>
       </div>
     </div>
+
   <!-- ===== Mobile Bottom Navigation & Services Menu ===== -->
   <nav class="mobile-nav">
     <a href="index.html" class="mobile-nav-item">
@@ -352,6 +370,8 @@
     </ul>
   </div>
   <!-- ===== JS Scripts ===== -->
+  <script src="js/form-encryptor.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
+  <script src="js/honeypot-alert.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/service-worker.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
