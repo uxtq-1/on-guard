@@ -46,7 +46,10 @@
   <link rel="icon" href="assets/favicon.ico">
 </head>
 <body>
-  <!-- ===== Header Section ===== -->
+    <!-- ======================================================================
+                              Header Section
+    ====================================================================== -->
+
   <header>
     <nav>
         <ul>
@@ -64,7 +67,10 @@
       <button id="language-toggle-desktop">EN</button>
     </div>
   </header>
-  <!-- ===== Hero Section ===== -->
+     <!-- ======================================================================
+                            Hero Section
+    ====================================================================== -->
+
   <section class="hero">
     <h2 data-en="Business Operations Excellence" data-es="Excelencia en Operaciones Empresariales">
       Business Operations Excellence
@@ -74,7 +80,10 @@
     </p>
     <img src="assets/images/hero-image.jpg" alt="Business Operations Hero Image" class="hero-image" loading="lazy">
   </section>
-  <!-- ===== Services Preview Section ===== -->
+    <!-- ======================================================================
+                           Services Preview Section
+    ====================================================================== -->
+ 
   <section id="services-preview" class="services">
     <div class="service-item">
       <h3 data-en="Business Operations" data-es="Gestión">Business Operations</h3>
@@ -105,19 +114,22 @@
       <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
     </div>
   </section>
-  <!-- ===== Footer Section ===== -->
+    <!-- ======================================================================
+                        Footer Section
+    ====================================================================== -->
+
   <footer>
     <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
   </footer>
-  <!-- ===== Floating Icons (Modals) ===== -->
-  <div class="floating-icons">
-    <button class="floating-icon" data-modal="join-modal" aria-label="Join Us" tabindex="0">
-      <i class="fas fa-user-plus"></i>
-    </button>
-    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us" tabindex="0">
-      <i class="fas fa-envelope-open-text"></i>
-    </button>
-  </div>
+     <!-- ======================================================================
+                        Join Us Floating-Icons Section
+    ====================================================================== -->
+
+    <div class="floating-icons">
+      <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
+      <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
+    </div>
+
     <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true">
       <div class="modal-content">
         <div class="modal-header">
@@ -281,6 +293,11 @@
         </div>
       </div>
     </div>
+
+     <!-- ======================================================================
+                        Contact Us Floating-Icons Section
+    ====================================================================== -->
+    
     <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true">
       <div class="modal-content">
         <div class="modal-header">
@@ -322,36 +339,35 @@
             </div>
           </form>
            </div>
+     <!-- ======================================================================
+                        Submit Button Floating-Icons Section
+    ====================================================================== -->
        <div class="modal-footer">
           <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
         </div>
       </div>
     </div>
-  <!-- ===== Mobile Bottom Navigation & Services Menu ===== -->
-  <nav class="mobile-nav">
-    <a href="index.html" class="mobile-nav-item">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
-    </a>
-    <button class="mobile-nav-item" id="mobile-services-toggle">
-      <i class="fas fa-bars"></i>
-      <span>Services</span>
-    </button>
-    <button class="mobile-nav-item" id="language-toggle-mobile">EN</button>
-    <button class="mobile-nav-item" id="theme-toggle-mobile">Light</button>
-    <a href="#" class="mobile-nav-item">
-      <i class="fas fa-comment-alt"></i>
-      <span>Chat</span>
-    </a>
-  </nav>
-  <div class="mobile-services-menu" id="mobile-services-menu">
-    <ul>
-      <li><a href="business-operations.html">Business Operations</a></li>
-      <li><a href="contact-center.html">Contact Center</a></li>
-      <li><a href="it-support.html">IT Support</a></li>
-      <li><a href="professionals.html">Professionals</a></li>
-    </ul>
+     <!-- ======================================================================
+                              Mobile-Nav Section
+    ====================================================================== -->
+       <nav class="mobile-nav">
+      <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+      <button id="mobile-services-toggle" class="mobile-nav-item"><i class="fas fa-bars"></i><span>Services</span></button>
+      <button id="mobile-language-toggle" class="mobile-nav-item">EN</button>
+      <button id="mobile-theme-toggle" class="mobile-nav-item">Light</button>
+      <a href="#" class="mobile-nav-item"><i class="fas fa-comment-alt"></i><span>Chat</span></a>
+    </nav>
+
+    <div id="mobile-services-menu" class="mobile-services-menu">
+      <ul>
+        <li><a href="business-operations.html">Business Operations</a></li>
+        <li><a href="contact-center.html">Contact Center</a></li>
+        <li><a href="it-support.html">IT Support</a></li>
+        <li><a href="professionals.html">Professionals</a></li>
+      </ul>
+    </div>
   </div>
+    <!-- CHATBOT_PLACEHOLDER: Future chatbot integration point. Consider placement within or alongside the mobile-nav for global accessibility, or as a separate fixed element. -->
   <!-- ===== JS Scripts ===== -->
   <script src="js/main.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
   <script src="js/dynamic-forms.js" defer nonce="{{CSP_NONCE_PLACEHOLDER}}"></script>
