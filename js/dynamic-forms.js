@@ -1,3 +1,5 @@
+'use strict';
+
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.add-field-btn').forEach(button => {
     button.addEventListener('click', function() {

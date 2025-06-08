@@ -60,6 +60,7 @@
           <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
           <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
           <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
       </nav>
       <div class="toggle-container">
@@ -67,16 +68,17 @@
         <button id="language-toggle-desktop">EN</button>
       </div>
       </header>
+  <main>
  <!-- ======================================================================
                               Hero Section
     ====================================================================== -->
     
     <section class="hero">
-      <h2 data-en="Welcome to Ops Online Support" data-es="Bienvenido a Ops Online Support">Welcome to Ops Online Support</h2>
+      <h1 data-en="Welcome to Ops Online Support" data-es="Bienvenido a Ops Online Support">Welcome to Ops Online Support</h1>
       <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
         Empowering remote solutions with cutting-edge strategies.
       </p>
-      <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image" loading="lazy" />
+      <img src="assets/images/hero-image.jpg" alt="Technicians collaborating remotely on laptops" class="hero-image" loading="lazy" />
     </section>
 
      <!-- ======================================================================
@@ -121,22 +123,23 @@
     <footer>
       <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
     </footer>
+  </main>
     
      <!-- ======================================================================
                         Join Us Floating-Icons Section
     ====================================================================== -->
 
     <div class="floating-icons">
-      <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
-      <button class="floating-icon" data-modal="chatbot-modal" aria-label="Chatbot"><i class="fas fa-comments"></i></button>
       <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
+      <button class="floating-icon" data-modal="chatbot-modal" aria-label="Chatbot"><i class="fas fa-comments"></i></button>
+      <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
     </div>
 
-    <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 data-en="Join Us" data-es="Únete">Join Us</h3>
-          <button class="close-modal" data-close>&times;</button>
+          <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete">Join Us</h3>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="join-form">
@@ -299,7 +302,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h3 id="chatbotModalTitle" data-en="Chatbot" data-es="Chatbot">Chatbot</h3>
-          <button class="close-modal" data-close>&times;</button>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <p data-en="Chatbot Coming Soon" data-es="Chatbot Próximamente">Chatbot Coming Soon</p>
@@ -311,11 +314,11 @@
                         Contact Us Floating-Icons Section
     ====================================================================== -->
     
-    <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
-          <button class="close-modal" data-close>&times;</button>
+          <h3 id="contactModalTitle" data-en="Contact Us" data-es="Enlázate">Contact Us</h3>
+          <button class="close-modal" data-close aria-label="Close">&times;</button>
         </div>
         <div class="modal-body">
           <form id="contact-form">

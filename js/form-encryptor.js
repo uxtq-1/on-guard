@@ -2,6 +2,7 @@
 // Module for handling secure form submissions with AES-GCM encryption.
 
 const FormEncryptor = (() => {
+'use strict';
 
     // --- Configuration ---
     // SERVER-SIDE TODO: ADMINISTRATOR MUST PROVIDE A VALID RSA-OAEP PUBLIC KEY PEM STRING HERE.
@@ -237,7 +238,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0j5R/K9R5XQJ4Y7Y0iZg
         }
 
         // 7. Send to Backend (Placeholder for now)
-        console.log("Payload for backend:", {
+        /* console.log("Payload for backend:", {
             backendUrl,
             // Note: FormData entries cannot be easily logged directly in full detail for files.
             // We'll log what's easily stringifiable.
@@ -249,7 +250,7 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0j5R/K9R5XQJ4Y7Y0iZg
             formType: finalPayload.get('formType'),
             encryptedFilesMeta: finalPayload.get('encryptedFilesMeta'),
             // Files themselves are harder to log concisely from FormData.
-        });
+        }); */
 
         // Actual fetch (commented out for now as per instructions)
         // try {
