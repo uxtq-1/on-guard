@@ -60,7 +60,6 @@
           <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
           <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
           <li><a href="about-us.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="contact.html" data-en="Contact" data-es="Contacto">Contact</a></li>
         </ul>
       </nav>
       <div class="toggle-container">
@@ -128,8 +127,9 @@
     ====================================================================== -->
 
     <div class="floating-icons">
-      <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
       <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
+      <button class="floating-icon" data-modal="chatbot-modal" aria-label="Chatbot"><i class="fas fa-comments"></i></button>
+      <button class="floating-icon" data-modal="join-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
     </div>
 
     <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true">
@@ -292,6 +292,17 @@
         </div>
         <div class="modal-footer">
           <button type="submit" form="join-form" class="submit-button" data-en="Submit" data-es="Enviar">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div id="chatbot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chatbotModalTitle">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="chatbotModalTitle" data-en="Chatbot" data-es="Chatbot">Chatbot</h3>
+          <button class="close-modal" data-close>&times;</button>
+        </div>
+        <div class="modal-body">
+          <p data-en="Chatbot Coming Soon" data-es="Chatbot Próximamente">Chatbot Coming Soon</p>
         </div>
       </div>
     </div>

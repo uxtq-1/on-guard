@@ -163,11 +163,12 @@ footer {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); REMOVE this if icons are against the right edge */
   display: flex;
-  flex-direction: row; /* Icons side-by-side */
-  gap: 1rem; /* Spacing between icons */
+  flex-direction: column; /* CHANGED */
+  gap: 1rem;
   z-index: 2000;
+  align-items: flex-end; /* Align items to the right if the container is wider */
 }
 /* =========================================================
                        floating-icon
