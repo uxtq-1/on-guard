@@ -2,6 +2,10 @@
  * main.js
  * Handles language switching, side menu toggles,
  * services sub-menu, modals, form submissions, and
+'use strict';
+ * main.js
+ * Handles language switching, side menu toggles,
+ * services sub-menu, modals, form submissions, and
  * theme toggles (desktop & mobile).
  *****************************************************/
 
@@ -26,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
       el.textContent = (lang === "en") ? el.getAttribute("data-en") : el.getAttribute("data-es");
     });
   }
-  document.body.lang = currentLanguage;
+  document.documentElement.lang = currentLanguage;
   updateLanguage(currentLanguage);
 
   function setLanguageButtonLabels() {
@@ -38,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function toggleLanguage() {
     currentLanguage = (currentLanguage === "en") ? "es" : "en";
     localStorage.setItem("language", currentLanguage);
-    document.body.lang = currentLanguage;
+    document.documentElement.lang = currentLanguage;
     updateLanguage(currentLanguage);
     setLanguageButtonLabels();
   }
@@ -155,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     FormEncryptor.processForm(formElement, formType, siteKey, backendUrl, 'Magd@lena-Silv3r')
 
-      then(response => {
+        .then(response => {
             console.log('Contact form submission response:', response);
             alert('Message sent successfully! (Simulated)');
             formElement.reset();

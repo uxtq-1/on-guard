@@ -1,11 +1,13 @@
+'use strict';
+
 const CACHE_NAME = 'ops-solutions-cache-v2'; // Updated cache name
 const urlsToCache = [
   '/',
   '/index.html',
   '/about-us.html',
-  '/contact.html',
-  '/join.html',
-  '/security.html',
+  // '/contact.html', // Removed
+  // '/join.html', // Removed
+  // '/security.html', // Removed
   '/business-operations.html',
   '/contact-center.html',
   '/it-support.html',
@@ -15,9 +17,10 @@ const urlsToCache = [
   // css/contact.css is not included as its existence is not confirmed
   '/js/main.js',
   '/js/form-encryptor.js',
-  '/js/contact-handler.js',
-  '/js/join-handler.js',
-  '/js/service-worker.js', // Caching itself
+  // '/js/contact-handler.js', // Removed
+  // '/js/join-handler.js', // Removed
+  '/js/dynamic-forms.js', // Added
+  // '/js/service-worker.js', // Removed from self-caching
   '/assets/logo.png',
   '/assets/images/hero-image.jpg',
   '/assets/favicon.ico',
