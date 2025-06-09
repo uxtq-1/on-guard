@@ -9,10 +9,10 @@
  * theme toggles (desktop & mobile).
  *****************************************************/
 
-const RECAPTCHA_V3_SITE_KEY = 'YOUR_RECAPTCHA_V3_SITE_KEY_PLACEHOLDER'; // User should replace this
+const RECAPTCHA_V3_SITE_KEY = 'YOUR_ACTUAL_RECAPTCHA_SITE_KEY'; // TODO: Replace with your actual reCAPTCHA v3 Site Key
 
 // ======= APi ======= // USER_SHOULD_REPLACE_THIS_PLACEHOLDER_WITH_ACTUAL_BACKEND_URL // ======= APi ======= //
-const BACKEND_SUBMISSION_URL = 'YOUR_BACKEND_SUBMISSION_URL_PLACEHOLDER'; // User should replace this
+const BACKEND_SUBMISSION_URL = 'YOUR_ACTUAL_BACKEND_URL/submit'; // TODO: Replace with your actual backend submission URL
 
 document.addEventListener("DOMContentLoaded", () => {
   // Show secure content after load
