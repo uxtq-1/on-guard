@@ -279,6 +279,15 @@ footer {
   font-size: 1rem; /* Added font-size */
   width: 100%; /* Make elements take full cell width */
   transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transition */
+  background-color: #ffffff;
+  color: #333333;
+}
+
+.form-cell input::placeholder,
+.form-cell textarea::placeholder,
+.form-cell select::placeholder { /* Note: select placeholder styling is tricky and often not direct */
+  color: #757575;
+  opacity: 1; /* Firefox needs this */
 }
 
 .form-cell input:focus,
