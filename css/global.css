@@ -227,7 +227,7 @@ footer {
   justify-content: space-between;
   align-items: center;
   background-color: #9b87f5;
-  padding: 1rem;
+  padding: 1.25rem 1.5rem; /* Updated padding */
   color: #fff;
 }
 
@@ -245,7 +245,7 @@ footer {
 }
 
 .modal-body {
-  padding: 1rem;
+  padding: 1.5rem; /* Updated padding from Block 1 */
   flex: 1;
   overflow-y: auto;
 }
@@ -253,7 +253,7 @@ footer {
 .modal-body form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.25rem; /* Updated gap */
 }
 /* =========================================================
                          form-cell
@@ -261,24 +261,97 @@ footer {
 .form-cell {
   display: flex;
   flex-direction: column;
+  /* margin-bottom: 0.5rem; -- Decided to rely on form gap for now */
 }
 
 .form-cell label {
   font-weight: bold;
   margin-bottom: 0.5rem;
+  display: block; /* Ensure label behaves predictably with margin */
 }
 
 .form-cell input,
-.form-cell textarea {
-  padding: 0.5rem;
+.form-cell textarea,
+.form-cell select {
+  padding: 0.75rem; /* Updated padding */
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px; /* Updated border-radius */
+  font-size: 1rem; /* Added font-size */
+  width: 100%; /* Make elements take full cell width */
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added transition */
+}
+
+.form-cell input:focus,
+.form-cell textarea:focus,
+.form-cell select:focus {
+  border-color: #9b87f5; /* Or your theme's primary focus color */
+  box-shadow: 0 0 0 0.2rem rgba(155, 135, 245, 0.25); /* Subtle focus ring */
+  outline: none;
+}
+
+/* Styles for Dynamic Form Sections */
+.dynamic-section-wrapper {
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid #e0e0e0; /* Subtle separation */
+  grid-column: 1 / -1; /* Make wrapper span full width if in grid */
+}
+
+.add-field-btn, .remove-field-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  margin-top: 0.5rem; /* Space above add button */
+}
+
+.dynamic-field-entry {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center; /* Vertically align items in the entry */
+    margin-bottom: 0.5rem; /* Space between entries */
+}
+
+.dynamic-field-entry input.dynamic-input {
+  flex-grow: 1; /* Allow input to take available space */
+}
+
+.dynamic-field-entry input.date-input {
+  flex-basis: 150px; /* Give date a reasonable base size */
+  min-width: 120px; /* Ensure date input doesn't get too small */
+}
+
+.dynamic-field-entry .remove-field-btn {
+  flex-shrink: 0; /* Prevent remove button from shrinking */
+  margin-top: 0; /* Remove margin-top if it's inside an entry */
+}
+
+.add-field-btn {
+  background-color: #e7e4ff; /* Lighter primary color variant */
+  color: #5642ac;
+  border-color: #c5bfff;
+}
+
+.add-field-btn:hover {
+  background-color: #d8d1fa;
+}
+
+.remove-field-btn {
+  background-color: #ffe4e4; /* Lighter error/remove color */
+  color: #ac4242;
+  border-color: #ffc5c5;
+}
+
+.remove-field-btn:hover {
+  background-color: #fad1d1;
 }
 
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  padding: 1rem;
+  padding: 1.25rem 1.5rem; /* Updated padding */
   border-top: 1px solid #eee;
 }
 /* =========================================================
@@ -292,6 +365,7 @@ footer {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-weight: bold; /* Added font-weight */
 }
 
 .submit-button:hover {
@@ -343,27 +417,59 @@ body[data-theme="dark"] .modal-content {
    ========================================================= */
 
 body[data-theme="dark"] .form-cell input,
-body[data-theme="dark"] .form-cell textarea {
-  background-color: #ffffff;      /* Dark purple background */
-  color: #8c8c8c;                 /* Soft light text */
+body[data-theme="dark"] .form-cell textarea,
+body[data-theme="dark"] .form-cell select {
+  background-color: #2a2a2e;      /* Darker background for inputs */
+  color: #e0e0e0;                 /* Light text for inputs */
   border: 1px solid #5a4580;      /* Darker purple border */
-  font-size: 0.9rem;              /* Slightly smaller text */
+  padding: 0.75rem; /* Matched from light theme */
+  border-radius: 6px; /* Matched from light theme */
+  font-size: 1rem; /* Matched from light theme */
+  width: 100%; /* Matched from light theme */
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Matched from light theme */
 }
 
 body[data-theme="dark"] .form-cell input::placeholder,
-body[data-theme="dark"] .form-cell textarea::placeholder {
-  color: #c79cfc;                 /* White placeholder text */
+body[data-theme="dark"] .form-cell textarea::placeholder,
+body[data-theme="dark"] .form-cell select::placeholder {
+  color: #a0a0a0;                 /* Lighter placeholder text for dark inputs */
 }
 
 body[data-theme="dark"] .form-cell input:focus,
-body[data-theme="dark"] .form-cell textarea:focus {
+body[data-theme="dark"] .form-cell textarea:focus,
+body[data-theme="dark"] .form-cell select:focus {
   border-color: #bb86fc;          /* Bright purple border on focus */
+  box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25); /* Subtle focus ring for dark theme */
   outline: none;
-  box-shadow: 0 0 8px 2px #bb86fc; /* Purple glow */
 }
 
 body[data-theme="dark"] .form-cell label {
-  color: #000000 !important;      /* Force black labels */
+  color: #e0e0e0 !important;      /* Ensure labels are light in dark mode */
+}
+
+/* Dark Theme for Dynamic Sections */
+body[data-theme="dark"] .dynamic-section-wrapper {
+  border-top: 1px solid #3a3a3a; /* Dark theme separator */
+}
+
+body[data-theme="dark"] .add-field-btn {
+  background-color: #3e305e; /* Darker primary variant */
+  color: #d8cfff;
+  border-color: #5a4580;
+}
+
+body[data-theme="dark"] .add-field-btn:hover {
+  background-color: #4f3f7a;
+}
+
+body[data-theme="dark"] .remove-field-btn {
+  background-color: #5e3030; /* Darker error/remove color */
+  color: #ffc0c0;
+  border-color: #804545;
+}
+
+body[data-theme="dark"] .remove-field-btn:hover {
+  background-color: #7a3f3f;
 }
 
 /* About Us Page Specific Styles */

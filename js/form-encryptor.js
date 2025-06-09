@@ -8,10 +8,19 @@ const FormEncryptor = (() => {
     // SERVER-SIDE TODO: ADMINISTRATOR MUST PROVIDE A VALID RSA-OAEP PUBLIC KEY PEM STRING HERE.
     // This key is used to encrypt (wrap) the AES session key before sending it to the backend.
     // If this key is not provided, the AES session key will be sent in raw format, WHICH IS INSECURE.
-    const BACKEND_PUBLIC_KEY_PEM = `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0j5R/K9R5XQJ4Y7Y0iZg
-... (example, replace with actual key)
------END PUBLIC KEY-----`;
+    // --- IMPORTANT SECURITY WARNING ---
+    // THE `BACKEND_PUBLIC_KEY_PEM` CONSTANT BELOW IS CRITICAL FOR SECURE OPERATION.
+    // IT MUST BE REPLACED WITH THE ACTUAL RSA PUBLIC KEY (in PEM format) FROM YOUR BACKEND SERVER.
+    //
+    // IF THIS KEY IS EMPTY OR NOT A VALID PUBLIC KEY CORRESPONDING TO THE BACKEND'S PRIVATE KEY:
+    // - THE AES SESSION KEY (used to encrypt form data) WILL BE SENT TO THE BACKEND
+    //   IN RAW, UNENCRYPTED FORM.
+    // - THIS COMPLETELY NEGATES THE CONFIDENTIALITY OF THE CLIENT-SIDE ENCRYPTION.
+    //
+    // DO NOT DEPLOY TO PRODUCTION WITHOUT SETTING A VALID BACKEND PUBLIC KEY HERE.
+    // CONSULT YOUR BACKEND ADMINISTRATOR OR SECURITY TEAM FOR THE CORRECT KEY.
+    // --- END IMPORTANT SECURITY WARNING ---
+    const BACKEND_PUBLIC_KEY_PEM = '';
     // For demonstration, a placeholder is used. In a real scenario, this must be a valid key.
     // Ensure the key is properly formatted and accessible.
 

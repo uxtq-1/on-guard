@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (honeypot && honeypot.value.trim() !== '') {
         e.preventDefault(); // Stop form submission for this form
 
-        const workerUrl = 'https://your-worker-name.your-subdomain.workers.dev/bot-alert'; // Placeholder
+        const workerUrl = 'YOUR_ACTUAL_HONEYPOT_WORKER_URL'; // TODO: Replace with your actual honeypot alert worker URL
         const payload = {
           message: 'Bot detected via honeypot field on form: ' + formId,
           timestamp: new Date().toISOString(),
