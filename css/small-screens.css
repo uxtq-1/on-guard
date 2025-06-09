@@ -137,7 +137,34 @@
     max-width: 95%;
     height: 90vh;
   }
+
+  .modal-body {
+    padding: 1rem; /* Slightly reduce padding for mobile */
+  }
+
   .modal-body form {
     grid-template-columns: 1fr;
+  }
+
+  .modal-body .add-field-btn {
+    padding: 0.75rem 1.2rem; /* Match input padding for vertical rhythm */
+    font-size: 0.9rem; /* Consistent with other button */
+    width: 100%; /* Make add buttons full width for easier tapping in single column */
+    margin-top: 1rem; /* Ensure space above */
+  }
+
+  .modal-body .dynamic-field-entry {
+    flex-direction: column; /* Stack input and remove button vertically */
+    align-items: stretch; /* Make children full width */
+  }
+
+  .modal-body .dynamic-field-entry input.dynamic-input,
+  .modal-body .dynamic-field-entry input.date-input,
+  .modal-body .dynamic-field-entry .remove-field-btn {
+    width: 100%; /* Ensure they take full width in the column */
+    margin-bottom: 0.5rem; /* Add space between stacked items */
+  }
+  .modal-body .dynamic-field-entry .remove-field-btn {
+    margin-bottom: 0; /* No margin for the last item in the entry */
   }
 }
