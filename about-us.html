@@ -197,6 +197,7 @@
         <div class="modal-body">
           <form id="join-form">
             <input type="text" name="contact_preference_notes" style="display:none !important; visibility:hidden !important; opacity:0 !important; position:absolute !important; left:-9999px !important; top:-9999px !important;" tabindex="-1" autocomplete="off">
+            <!-- Target Row 1: Name and Email -->
             <div class="form-row">
               <div class="form-cell">
                 <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
@@ -207,24 +208,13 @@
                 <input type="email" id="join-email" placeholder="Enter your email / Ingrese su correo electrónico" required />
               </div>
             </div>
+            <!-- Target Row 2: Contact Number and Willing to Work -->
             <div class="form-row">
               <div class="form-cell">
                 <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
                 <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required />
               </div>
-            </div>
-            <div class="form-row">
-              <div class="form-cell">
-                <label for="join-interest" data-en="Interest in" data-es="Interés en">Interest in</label>
-                <select id="join-interest" name="join-interest" required>
-                  <option value="" data-en="Select an option..." data-es="Seleccione una opción...">Select an option...</option>
-                  <option value="business_operations" data-en="Business Operations" data-es="Gestión">Business Operations</option>
-                  <option value="contact_center" data-en="Contact Center" data-es="Centro de Servicios">Contact Center</option>
-                  <option value="it_support" data-en="IT Support" data-es="Soporte IT">IT Support</option>
-                  <option value="professionals" data-en="Professionals" data-es="Profesionales">Professionals</option>
-                </select>
-              </div>
-              <div class="form-cell" style="grid-column: 1 / -1;"> <!-- Spanning full width for the new section -->
+              <div class="form-cell"> <!-- Willing to Work section -->
                 <h4 class="collapsible-header">
                   <span data-en="Willing to Work" data-es="Disponibilidad Laboral">Willing to Work</span>
                   <span class="collapse-icon">+</span>
@@ -272,6 +262,20 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <!-- Target Row 3: Interest in -->
+            <div class="form-row">
+              <div class="form-cell">
+                <label for="join-interest" data-en="Interest in" data-es="Interés en">Interest in</label>
+                <select id="join-interest" name="join-interest" required>
+                  <option value="" data-en="Select an option..." data-es="Seleccione una opción...">Select an option...</option>
+                  <option value="business_operations" data-en="Business Operations" data-es="Gestión">Business Operations</option>
+                  <option value="contact_center" data-en="Contact Center" data-es="Centro de Servicios">Contact Center</option>
+                  <option value="it_support" data-en="IT Support" data-es="Soporte IT">IT Support</option>
+                  <option value="professionals" data-en="Professionals" data-es="Profesionales">Professionals</option>
+                </select>
+              </div>
+              <div class="form-cell"></div> <!-- Empty cell for alignment -->
             </div>
             <div class="form-row">
               <div class="form-cell dynamic-section-wrapper" style="grid-column: 1 / -1;">
