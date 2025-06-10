@@ -261,6 +261,7 @@ footer {
 .form-cell {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start; /* Added for top alignment */
   /* margin-bottom: 0.5rem; -- Decided to rely on form gap for now */
 }
 
