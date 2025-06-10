@@ -481,6 +481,144 @@ body[data-theme="dark"] .remove-field-btn:hover {
   background-color: #7a3f3f;
 }
 
+/* Collapsible Section Styling */
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0; /* Match form-cell vertical padding if desired, or keep distinct */
+  cursor: pointer;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 0.5rem; /* Space before content when expanded */
+  font-weight: bold; /* Make header text bold */
+}
+
+.collapsible-header:hover {
+  background-color: #f9f9f9; /* Subtle hover for light theme */
+}
+
+.collapsible-header .collapse-icon {
+  font-size: 1.2em;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.collapsible-header.expanded .collapse-icon {
+  transform: rotate(45deg); /* Rotates '+' to 'x' or similar effect */
+}
+
+.collapsible-content {
+  display: none; /* Collapsed by default - JS will toggle to block/grid/flex */
+  padding-top: 0.5rem; /* Space between header and content when expanded */
+}
+
+.collapsible-content.open {
+  display: block;
+}
+
+/* "DONE" Button Styling */
+.btn-done {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #4CAF50; /* Greenish border */
+  background-color: #e8f5e9; /* Light green background */
+  color: #2e7d32; /* Darker green text */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  margin-top: 1rem; /* Space above done button */
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.btn-done:hover {
+  background-color: #dcedc8;
+}
+
+.btn-done.is-done {
+  background-color: #c8e6c9;
+  border-color: #388e3c;
+  color: #1b5e20;
+}
+
+/* "Willing to Work" Two-Column Checkbox Layout */
+.two-column-checkboxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem; /* Row gap and column gap */
+}
+
+.checkbox-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Space between checkbox items in a column */
+}
+
+/* Join Modal Font Size Adjustments */
+#join-modal .collapsible-header {
+    font-size: 0.9rem;
+}
+
+#join-modal .collapsible-content,
+#join-modal .collapsible-content .form-cell label,
+#join-modal .collapsible-content .checkbox-item label {
+  font-size: 11px;
+}
+
+#join-modal .collapsible-content .dynamic-field-entry input,
+#join-modal .collapsible-content .dynamic-field-entry select,
+#join-modal .collapsible-content .dynamic-field-entry textarea {
+  font-size: 11px; /* Ensure input font matches label */
+  padding: 0.6rem; /* Slightly reduced padding for smaller font */
+}
+
+#join-modal .collapsible-content .add-field-btn,
+#join-modal .collapsible-content .remove-field-btn,
+#join-modal .collapsible-content .btn-done {
+  font-size: 10px;
+  padding: 0.5rem 0.8rem;
+}
+
+/* Dark Theme Adjustments for Collapsible and Done Button */
+body[data-theme="dark"] .collapsible-header:hover {
+  background-color: #2a2a2a; /* Dark hover for header */
+}
+
+body[data-theme="dark"] .collapsible-header {
+  border-bottom-color: #3a3a3a;
+}
+
+body[data-theme="dark"] .btn-done {
+  border-color: #66bb6a; /* Dark theme green border */
+  background-color: #2e3b2e; /* Dark green background */
+  color: #a5d6a7; /* Lighter green text */
+}
+
+body[data-theme="dark"] .btn-done:hover {
+  background-color: #384c38;
+}
+
+body[data-theme="dark"] .btn-done.is-done {
+    background-color: #1e331e;
+    border-color: #4caf50;
+    color: #81c784;
+}
+
+/* Font color for 11px text in dark mode (specific if needed, else general color applies) */
+body[data-theme="dark"] #join-modal .collapsible-content,
+body[data-theme="dark"] #join-modal .collapsible-content .form-cell label,
+body[data-theme="dark"] #join-modal .collapsible-content .checkbox-item label {
+  /* color: #c0c0c0; Default #e0e0e0 should be fine */
+}
+
+body[data-theme="dark"] #join-modal .collapsible-content .dynamic-field-entry input,
+body[data-theme="dark"] #join-modal .collapsible-content .dynamic-field-entry select,
+body[data-theme="dark"] #join-modal .collapsible-content .dynamic-field-entry textarea {
+  /* Dark theme input styles are already specific and should apply font size from above */
+}
+
+
 /* About Us Page Specific Styles */
 .journey-section {
   padding: 2rem 1rem; /* Add some padding */

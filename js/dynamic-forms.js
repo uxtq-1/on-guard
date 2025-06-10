@@ -51,4 +51,47 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.remove-field-btn').forEach(button => {
     button.addEventListener('click', handleRemoveField);
   });
+
+  // Collapsible Functionality
+  const joinModal = document.getElementById('join-modal');
+
+  if (joinModal) {
+      const collapsibleHeaders = joinModal.querySelectorAll('.collapsible-header');
+
+      collapsibleHeaders.forEach(header => {
+          const content = header.nextElementSibling;
+          if (content && content.classList.contains('collapsible-content')) {
+              // Initialize as collapsed: CSS handles this with display:none by default.
+              // JS will toggle an 'open' class for content and 'expanded' for header.
+              content.classList.remove('open');
+              header.classList.remove('expanded'); // Ensure header icon is in collapsed state
+
+              header.addEventListener('click', function() {
+                  content.classList.toggle('open');
+                  this.classList.toggle('expanded');
+              });
+          }
+      });
+
+      // "DONE" Button Functionality
+      const doneButtons = joinModal.querySelectorAll('.btn-done');
+
+      doneButtons.forEach(button => {
+          button.addEventListener('click', function() {
+              const contentWrapper = this.closest('.collapsible-content');
+              if (contentWrapper) {
+                  contentWrapper.classList.remove('open');
+                  // Also update the header associated with this content
+                  const header = contentWrapper.previousElementSibling;
+                  if (header && header.classList.contains('collapsible-header')) {
+                      header.classList.remove('expanded');
+                  }
+              }
+              this.classList.add('is-done');
+              // Optionally change text:
+              // const currentLang = document.documentElement.lang || 'en';
+              // this.textContent = (currentLang === 'es') ? 'Completado' : 'Completed';
+          });
+      });
+  }
 });
