@@ -167,4 +167,16 @@
   .modal-body .dynamic-field-entry .remove-field-btn {
     margin-bottom: 0; /* No margin for the last item in the entry */
   }
+
+  /* Specific adjustments for #join-modal collapsible content on small screens */
+  #join-modal .collapsible-content .btn-done {
+    font-size: 12px; /* Increase from 10px for mobile readability/tap */
+    padding: 0.7rem 1rem; /* Slightly more generous padding */
+  }
+
+  #join-modal .collapsible-content,
+  #join-modal .collapsible-content .form-cell label,
+  #join-modal .collapsible-content .checkbox-item label {
+    line-height: 1.5; /* Ensure good line height for small font */
+  }
 }
