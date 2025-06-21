@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage(message, 'ai-message');
         console.warn(message);
     }
-
     // --- Honeypot Detection ---
     function checkHoneypot() {
         if (!honeypotInput) return false;
@@ -225,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
             disableChatFeatures("Network error during verification. Please try again.");
         }
     }
-
     // --- Chat UI and Feature Enable/Disable ---
     function enableChatFeatures() {
         humanVerified = true;
@@ -236,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage("Verification successful! You can start chatting now.", 'ai-message');
         userInput.focus();
     }
-
     function disableChatFeatures(message = "Please complete the security check to continue.") {
         humanVerified = false;
         if (userInput) userInput.disabled = true;
@@ -276,11 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if(captchaPlaceholder) captchaPlaceholder.innerHTML = ''; // Clear captcha widget
         }
     }
-
     chatbotLauncher.addEventListener('click', () => toggleChatbotUi(true));
     closeChatbotButton.addEventListener('click', () => toggleChatbotUi(false));
-
-
     // --- Chat Message Submission (largely same as before) ---
     chatForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -317,11 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
     // --- Initial Page Setup ---
     // Chat is initially hidden. No chat features (CAPTCHA, input) are enabled by default.
     // Event listeners for launcher/close button handle activation.
-
     // Clean up honeypot interval on page unload (if active)
     window.addEventListener('beforeunload', () => {
         stopHoneypotChecks();
