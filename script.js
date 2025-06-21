@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatContainerWrapper = document.getElementById('opsChatContainerWrapper');
     const aiChatbotContainer = document.getElementById('aiChatbotContainer'); // This ID is on the .chat-container div
     const closeChatbotButton = document.getElementById('opsCloseChatbot');
-
     const chatMessages = document.getElementById('opsChatMessages');
     const userInput = document.getElementById('opsUserInput');
     const sendButton = document.getElementById('opsSendButton');
@@ -15,23 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const honeypotInput = document.getElementById('ops_contact_me_by_fax_only'); // Matches new ID in HTML
     const securityCheckContainer = document.getElementById('opsSecurityCheckContainer');
     const captchaPlaceholder = document.getElementById('opsCaptchaPlaceholder');
-
     // State Variables
     let humanVerified = false;
     let captchaLoaded = false;
     let captchaType = 'recaptcha'; // or 'turnstile' - CHOOSE ONE and set site key below
     let chatActive = false;
     let honeypotIntervalId = null;
-
     // --- Configuration ---
     const CLOUDFLARE_AI_ENDPOINT = 'https://your-cloudflare-ai-endpoint.example.com/chat';
     const BACKEND_VERIFY_ENDPOINT = '/api/verify-captcha';
     const HONEYPOT_ALERT_ENDPOINT = '/api/log-honeypot-trigger';
-
     // IMPORTANT: SET YOUR SITE KEY HERE
     const RECAPTCHA_SITE_KEY = 'YOUR_RECAPTCHA_V2_SITE_KEY_NEEDS_TO_BE_SET';
     const TURNSTILE_SITE_KEY = 'YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY_NEEDS_TO_BE_SET';
-
     // --- Utility Functions ---
     function appendMessage(text, sender, isHTML = false) {
         if (!chatMessages) return;
@@ -62,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage(message, 'ai-message');
         console.warn(message);
     }
-
     // --- Honeypot Detection ---
     function checkHoneypot() {
         if (!honeypotInput) return false;
@@ -225,7 +219,6 @@ document.addEventListener('DOMContentLoaded', () => {
             disableChatFeatures("Network error during verification. Please try again.");
         }
     }
-
     // --- Chat UI and Feature Enable/Disable ---
     function enableChatFeatures() {
         humanVerified = true;
@@ -236,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage("Verification successful! You can start chatting now.", 'ai-message');
         userInput.focus();
     }
-
     function disableChatFeatures(message = "Please complete the security check to continue.") {
         humanVerified = false;
         if (userInput) userInput.disabled = true;
@@ -276,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if(captchaPlaceholder) captchaPlaceholder.innerHTML = ''; // Clear captcha widget
         }
     }
-
     chatbotLauncher.addEventListener('click', () => toggleChatbotUi(true));
     closeChatbotButton.addEventListener('click', () => toggleChatbotUi(false));
 
@@ -297,8 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleChatbotUi(false);
         }
     });
-
-
     // --- Chat Message Submission (largely same as before) ---
     chatForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -335,7 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
     // --- Initial Page Setup ---
     // Chat is initially hidden. No chat features (CAPTCHA, input) are enabled by default.
     // Event listeners for launcher/close button handle activation.

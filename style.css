@@ -87,6 +87,7 @@
 }
 
 /* User Messages Styling */
+
 #aiChatbotContainer .user-message { /* Scoped selector */
     align-items: flex-end;
     margin-left: auto; /* Push to the right */
@@ -99,6 +100,7 @@
 }
 
 /* Security Check Container (reCAPTCHA/Turnstile) */
+
 #aiChatbotContainer .security-check-container { /* Scoped selector */
     padding: 15px 20px;
     text-align: center;
