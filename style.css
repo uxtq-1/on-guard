@@ -1,5 +1,4 @@
 /* style.css - Styles for the Secure AI Chatbot Interface */
-
 /* Basic Reset & Body Styling from inline styles (now centralized) */
 * {
     margin: 0;
@@ -209,8 +208,6 @@ body {
 .chat-messages::-webkit-scrollbar-thumb:hover {
     background-color: #b389d9;
 }
-
-
 /* Responsive adjustments for the chat window when it's open */
 /* The main website content responsiveness is handled by its own simple max-width and auto margins. */
 /* This media query primarily targets the chat window itself. */
