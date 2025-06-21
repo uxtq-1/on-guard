@@ -87,6 +87,7 @@
 }
 
 /* User Messages Styling */
+
 #aiChatbotContainer .user-message { /* Scoped selector */
     align-items: flex-end;
     margin-left: auto; /* Push to the right */
@@ -99,6 +100,7 @@
 }
 
 /* Security Check Container (reCAPTCHA/Turnstile) */
+
 #aiChatbotContainer .security-check-container { /* Scoped selector */
     padding: 15px 20px;
     text-align: center;
@@ -210,4 +212,4 @@
 /* NO MORE GLOBAL STYLES OR RESPONSIVE QUERIES AFFECTING '.chat-container-wrapper' or '#chatbotLauncher'
    Those are now handled by inline styles in index.html or by user's global.css / small-screens.css
    This file (style.css) is ONLY for the *internals* of #aiChatbotContainer.
-*/
+

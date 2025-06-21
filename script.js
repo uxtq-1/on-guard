@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatContainerWrapper = document.getElementById('opsChatContainerWrapper');
     const aiChatbotContainer = document.getElementById('aiChatbotContainer'); // This ID is on the .chat-container div
     const closeChatbotButton = document.getElementById('opsCloseChatbot');
-
     const chatMessages = document.getElementById('opsChatMessages');
     const userInput = document.getElementById('opsUserInput');
     const sendButton = document.getElementById('opsSendButton');
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const honeypotInput = document.getElementById('ops_contact_me_by_fax_only'); // Matches new ID in HTML
     const securityCheckContainer = document.getElementById('opsSecurityCheckContainer');
     const captchaPlaceholder = document.getElementById('opsCaptchaPlaceholder');
-
+  
     // State Variables
     let humanVerified = false;
     let captchaLoaded = false;
@@ -31,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // IMPORTANT: SET YOUR SITE KEY HERE
     const RECAPTCHA_SITE_KEY = 'YOUR_RECAPTCHA_V2_SITE_KEY_NEEDS_TO_BE_SET';
     const TURNSTILE_SITE_KEY = 'YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY_NEEDS_TO_BE_SET';
-
+  
     // --- Utility Functions ---
     function appendMessage(text, sender, isHTML = false) {
         if (!chatMessages) return;
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn(message);
     }
 
-    // --- Honeypot Detection ---
+  // --- Honeypot Detection ---
     function checkHoneypot() {
         if (!honeypotInput) return false;
         if (honeypotInput.checked) {
@@ -297,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleChatbotUi(false);
         }
     });
-
 
     // --- Chat Message Submission (largely same as before) ---
     chatForm.addEventListener('submit', async (event) => {
