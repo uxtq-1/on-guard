@@ -1,40 +1,35 @@
 // script.js - Functionality for the Secure AI Chatbot Interface (Click-to-Activate)
 
 document.addEventListener('DOMContentLoaded', () => {
-    // DOM Element References
-    const chatbotLauncher = document.getElementById('chatbotLauncher');
-    const chatContainerWrapper = document.getElementById('chatContainerWrapper');
-    const aiChatbotContainer = document.getElementById('aiChatbotContainer'); // The actual chat UI
-    const closeChatbotButton = document.getElementById('closeChatbot');
-
-    const chatMessages = document.getElementById('chatMessages');
-    const userInput = document.getElementById('userInput');
-    const sendButton = document.getElementById('sendButton');
-    const chatForm = document.getElementById('chatForm');
-    const honeypotInput = document.getElementById('contact_me_by_fax_only');
-    const securityCheckContainer = document.getElementById('securityCheckContainer');
-    const captchaPlaceholder = document.getElementById('captchaPlaceholder');
-    // Note: chatInputArea is part of aiChatbotContainer, no separate var needed if always together.
-
+    // DOM Element References - UPDATED WITH 'ops' PREFIX
+    const chatbotLauncher = document.getElementById('opsChatbotLauncher');
+    const mobileChatLauncher = document.getElementById('mobileChatLauncher'); // New launcher for mobile nav
+    const chatContainerWrapper = document.getElementById('opsChatContainerWrapper');
+    const aiChatbotContainer = document.getElementById('aiChatbotContainer'); // This ID is on the .chat-container div
+    const closeChatbotButton = document.getElementById('opsCloseChatbot');
+    const chatMessages = document.getElementById('opsChatMessages');
+    const userInput = document.getElementById('opsUserInput');
+    const sendButton = document.getElementById('opsSendButton');
+    const chatForm = document.getElementById('opsChatForm');
+    const honeypotInput = document.getElementById('ops_contact_me_by_fax_only'); // Matches new ID in HTML
+    const securityCheckContainer = document.getElementById('opsSecurityCheckContainer');
+    const captchaPlaceholder = document.getElementById('opsCaptchaPlaceholder');
     // State Variables
     let humanVerified = false;
-    let captchaLoaded = false; // Flag to track if CAPTCHA script has been loaded
+    let captchaLoaded = false;
     let captchaType = 'recaptcha'; // or 'turnstile' - CHOOSE ONE and set site key below
-    let chatActive = false; // Is the chat UI currently open?
-    let honeypotIntervalId = null; // To store the ID of the honeypot check interval
-
+    let chatActive = false;
+    let honeypotIntervalId = null;
     // --- Configuration ---
-    const CLOUDFLARE_AI_ENDPOINT = 'https://your-cloudflare-ai-endpoint.example.com/chat'; // Placeholder
-    const BACKEND_VERIFY_ENDPOINT = '/api/verify-captcha'; // Placeholder
-    const HONEYPOT_ALERT_ENDPOINT = '/api/log-honeypot-trigger'; // Placeholder
-
+    const CLOUDFLARE_AI_ENDPOINT = 'https://your-cloudflare-ai-endpoint.example.com/chat';
+    const BACKEND_VERIFY_ENDPOINT = '/api/verify-captcha';
+    const HONEYPOT_ALERT_ENDPOINT = '/api/log-honeypot-trigger';
     // IMPORTANT: SET YOUR SITE KEY HERE
     const RECAPTCHA_SITE_KEY = 'YOUR_RECAPTCHA_V2_SITE_KEY_NEEDS_TO_BE_SET';
     const TURNSTILE_SITE_KEY = 'YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY_NEEDS_TO_BE_SET';
-
-    // --- Utility Functions (appendMessage, sanitizeText, disableChat remain largely the same) ---
+    // --- Utility Functions ---
     function appendMessage(text, sender, isHTML = false) {
-        if (!chatMessages) return; // Guard if chat isn't fully initialized
+        if (!chatMessages) return;
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', sender);
         const paragraph = document.createElement('p');
@@ -332,7 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial Page Setup ---
     // Chat is initially hidden. No chat features (CAPTCHA, input) are enabled by default.
     // Event listeners for launcher/close button handle activation.
- honeypot interval on page unload (if active)
+
+    // Clean up honeypot interval on page unload (if active)
     window.addEventListener('beforeunload', () => {
         stopHoneypotChecks();
     });

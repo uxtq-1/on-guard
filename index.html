@@ -1,199 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure AI Chatbot</title>
-    <link rel="stylesheet" href="style.css">
+  <!-- ==================================================================
+       Document Metadata & External Resources
+       ================================================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPS Solutions Services</title>
+  <!-- Global CSS (Desktop-First) -->
+  <link rel="stylesheet" href="css/global.css">
+  <!-- Additional overrides for small screens -->
+  <link rel="stylesheet" media="(max-width: 768px)" href="css/small-screens.css">
+  <!-- Font Awesome Stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/favicon.ico">
 
-    <!--
-      SECURITY HEADERS: These meta tags instruct the browser on how to handle content and requests,
-      enhancing security against common web vulnerabilities.
-    -->
+  <!-- Chatbot Specific CSS - Placed inline for now, can be moved to a file -->
+  <!-- These styles are for the chatbot launcher and the wrapper that positions the chat window -->
+  <style>
+    /* Anti-cloning for body - from previous chatbot work, user might want this */
+    body.ops-body-anti-select { /* Added a more specific class to avoid global body impact if not desired */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    /* Honeypot field styling - for the form inside the chatbot */
+    .ops-chatbot-honeypot-field {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 0;
+        width: 0;
+        z-index: -1;
+        pointer-events: none;
+    }
 
-    <!-- CSP (Content Security Policy)
-         Defines approved sources for content, mitigating XSS and data injection attacks.
-         - default-src 'self': Allows content from the same origin by default.
-         - script-src: Specifies allowed sources for JavaScript. Includes 'self', Google for reCAPTCHA, and Cloudflare for Turnstile.
-         - style-src: Specifies allowed sources for CSS. 'unsafe-inline' is included for the anti-cloning/honeypot styles.
-                      For maximum security, move all styles to style.css and remove 'unsafe-inline'.
-         - img-src: Allows images from 'self' and data URIs.
-         - font-src: Allows fonts from 'self'.
-         - frame-src: Specifies allowed sources for iframes (used by reCAPTCHA/Turnstile).
-         - connect-src: Restricts URLs for XHR, WebSockets, Fetch API. Crucial for controlling where data can be sent.
-                        Update 'https://your-cloudflare-ai-endpoint.example.com' to your actual AI backend.
-         - object-src 'none': Disallows plugins like Flash, reducing attack surface.
-         - base-uri 'self': Restricts the URLs that can be used in a document's <base> element.
-    -->
-    <meta http-equiv="Content-Security-Policy"
-          content="default-src 'self';
-                   script-src 'self' https://www.google.com https://www.gstatic.com https://challenges.cloudflare.com;
-                   style-src 'self' 'unsafe-inline';
-                   img-src 'self' data:;
-                   font-src 'self';
-                   frame-src https://www.google.com https://www.gstatic.com https://challenges.cloudflare.com;
-                   connect-src 'self' https://your-cloudflare-ai-endpoint.example.com;
-                   object-src 'none';
-                   base-uri 'self';">
-    <!-- Other Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY"> <!-- Prevents clickjacking -->
-    <meta name="referrer-policy" content="strict-origin-when-cross-origin">
-    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet"> <!-- Discourage search engine indexing and caching -->
-    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=(), usb=()"> <!-- Feature policy to disable unnecessary browser features -->
+    /* Chatbot Launcher Button */
+    #opsChatbotLauncher {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #6a0dad; /* Purple - can be themed by user's CSS if they target the ID */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 28px; /* Adjust if using Font Awesome icon */
+        line-height: 60px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        z-index: 2000; /* Ensure it's above other floating items if any, and modals */
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    #opsChatbotLauncher:hover {
+        background-color: #5e0ca5; /* Darker purple */
+        transform: scale(1.1);
+    }
+    #opsChatbotLauncher.hidden {
+        display: none;
+    }
 
-    <style>
-        /* Anti-cloning: Basic CSS to make it slightly harder to copy-paste all content directly. */
-        body {
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* IE 10 and IE 11 */
-            user-select: none; /* Standard syntax */
-            /* Basic styling for the main page content */
-            font-family: sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .main-website-header, .main-website-content, .main-website-footer {
-            padding: 20px;
-            max-width: 900px;
-            margin: 20px auto;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        /* Honeypot field styling - ensure it's truly invisible and not accessible by users or assistive tech. */
-        .honeypot-field {
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 0;
-            width: 0;
-            z-index: -1; /* Send it behind other content */
-            pointer-events: none; /* Make sure it cannot be interacted with */
-        }
-        /* Initially hide the chat container and style the launcher */
-        /* Styles for chat-container when visible are in style.css, here we ensure it's hidden and positioned */
-        .chat-container-wrapper { /* New wrapper for positioning */
-            display: none; /* Hidden by default */
-            pointer-events: none; /* Ignore mouse events when hidden */
-            position: fixed;
-            bottom: 20px; /* Distance from bottom of viewport */
-            right: 20px;  /* Distance from right of viewport */
-            z-index: 1000; /* Ensure it's above most other content */
-            /* width: auto; /* Width will be determined by its content or by .chat-container's max-width */
-            max-width: 420px; /* A more typical pop-up chat width */
-            /* height: auto; /* Height will be determined by its content or by .chat-container's max-height */
-            max-height: calc(100vh - 100px); /* Max height, leaving some space from top/bottom, e.g. 80vh or fixed like 600px */
-            /* To prevent it from being too small if content is minimal, .chat-container can have min-height */
-            /* Box shadow for the wrapper itself to lift it off the page */
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            border-radius: 12px; /* Match .chat-container's border-radius if it has one */
-            overflow: hidden; /* Ensures children (.chat-container) respect the wrapper's border-radius */
-        }
-        .chat-container-wrapper.active {
-            display: flex; /* Using flex to make .chat-container fill it easily */
-            flex-direction: column; /* Stack children vertically if any other elements were in wrapper */
-            pointer-events: auto; /* Allow mouse events when active */
-        }
+    /* Chat Container Wrapper - for positioning and initial hide/show */
+    .ops-chat-container-wrapper {
+        display: none;
+        pointer-events: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1999; /* Slightly below launcher when hidden, above page content when active */
+        max-width: 420px;
+        max-height: calc(100vh - 90px); /* Adjusted to leave more space from launcher */
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .ops-chat-container-wrapper.active {
+        display: flex;
+        flex-direction: column;
+        pointer-events: auto;
+    }
 
+    /* Responsive adjustments for chat launcher and wrapper (can be moved to small-screens.css by user) */
+    @media (max-width: 480px) {
+        #opsChatbotLauncher {
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            bottom: 15px; /* Adjusted for mobile nav */
+            right: 15px;
+        }
+        .ops-chat-container-wrapper.active {
+            bottom: 10px;
+            right: 10px;
+            left: 10px;
+            width: auto;
+            max-height: calc(100vh - 80px); /* Adjust considering mobile nav height */
+        }
+    }
+  </style>
+  <!-- Link to the external CSS for the chatbot's internal appearance -->
+  <link rel="stylesheet" href="style.css"> <!-- This is OUR chatbot's style.css -->
 
-        #chatbotLauncher {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #6a0dad; /* Purple */
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 28px; /* Emoji/icon size */
-            line-height: 60px; /* Center emoji vertically */
-            text-align: center; /* Center emoji horizontally */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            z-index: 1001;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        #chatbotLauncher:hover {
-            background-color: #5e0ca5; /* Darker purple */
-            transform: scale(1.1);
-        }
-        #chatbotLauncher.hidden {
-            display: none; /* Hide launcher when chat is open */
-        }
-    </style>
 </head>
-<body>
-    <header class="main-website-header">
-        <h1>Welcome to Our Awesome Website!</h1>
-        <p>This page demonstrates how a chatbot can be integrated and activated on click.</p>
-    </header>
 
-    <main class="main-website-content">
-        <section>
-            <h2>About Us</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.</p>
-        </section>
-        <section>
-            <h2>Our Services</h2>
-            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor.</p>
-        </section>
-    </main>
+<body class="ops-body-anti-select"> <!-- Added class for optional anti-select -->
+  <!-- ==================================================================
+       Header Section: Navigation & Toggle Buttons (Desktop Only)
+       ================================================================== -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
+        <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+        <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
+        <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
+        <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+      </ul>
+    </nav>
 
-    <footer class="main-website-footer">
-        <p>&copy; 2024 Jules AI Assistant Services</p>
-    </footer>
-
-    <!-- Chatbot Launcher Icon/Button -->
-    <button id="chatbotLauncher" aria-label="Open Chat">💬</button>
-
-    <!-- Wrapper for the chat container for positioning and visibility control -->
-    <div class="chat-container-wrapper" id="chatContainerWrapper">
-        <!-- The existing chat-container div will be placed here by script or be here directly -->
-        <!-- For simplicity, moving the existing chat-container inside -->
-        <div class="chat-container" id="aiChatbotContainer" role="dialog" aria-modal="true" aria-labelledby="chatHeaderTitle">
-            <header class="chat-header">
-                <h1 id="chatHeaderTitle">AI Chatbot</h1>
-                <button id="closeChatbot" aria-label="Close Chat" style="background:none; border:none; color:white; font-size:24px; position:absolute; top:12px; right:15px; cursor:pointer; padding:5px;">&times;</button>
-            </header>
-            <div class="chat-messages" id="chatMessages" aria-live="polite" aria-atomic="false">
-                <!-- Initial message will be added by script after verification -->
-            </div>
-            <div class="security-check-container" id="securityCheckContainer">
-                <p><em>Please verify you are human to chat:</em></p>
-                <div id="captchaPlaceholder">
-                    <!-- CAPTCHA widget (reCAPTCHA/Turnstile) will be rendered here by script.js -->
-                </div>
-            </div>
-            <footer class="chat-input-area">
-                <form id="chatForm" action="javascript:void(0);">
-                    <div class="honeypot-field" aria-hidden="true">
-                        <label for="contact_me_by_fax_only">Contact me by fax only</label>
-                        <input type="checkbox" name="contact_me_by_fax_only" id="contact_me_by_fax_only" value="1" tabindex="-1" autocomplete="off">
-                    </div>
-                    <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" disabled aria-label="User message input">
-                    <button type="submit" id="sendButton" disabled>Send</button>
-                </form>
-            </footer>
-        </div>
+    <!-- Theme and Language Toggle for Desktop -->
+    <div class="toggle-container">
+      <button id="theme-toggle-desktop">Light</button>
+      <button id="language-toggle-desktop">EN</button>
     </div>
+  </header>
 
-    <!-- CAPTCHA API scripts (reCAPTCHA/Turnstile) will be loaded dynamically by script.js
-         when the chat is opened. This avoids loading them if the user doesn't interact with the chatbot.
-    -->
-    <!-- For reference, direct script loading would look like:
-    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaApiLoad&render=explicit" async defer></script>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileApiLoad&render=explicit" async defer></script>
-    -->
-    <script src="script.js"></script>
+  <!-- ==================================================================
+       Hero Section
+       ================================================================== -->
+  <section class="hero">
+    <h2 data-en="Welcome to Ops Solutions Services" data-es="Bienvenido a OPS Solutions Services">
+      Welcome to Ops Solutions Services
+    </h2>
+    <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">
+      Empowering remote solutions with cutting-edge strategies.
+    </p>
+    <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image">
+  </section>
+
+  <!-- ==================================================================
+       Services Preview Section
+       ================================================================== -->
+  <section id="services-preview" class="services">
+    <div class="service-item">
+      <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
+      <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">
+        Discover how we optimize your business processes.
+      </p>
+      <a href="business-operations.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
+      <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">
+        Enhance customer interactions with our contact solutions.
+      </p>
+      <a href="contact-center.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
+      <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">
+        Ensure seamless IT operations with our expert support.
+      </p>
+      <a href="it-support.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+    <div class="service-item">
+      <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
+      <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">
+        Access top-tier professionals for your business needs.
+      </p>
+      <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Footer Section
+       ================================================================== -->
+  <footer>
+    <p>&copy; 2025 OPS Solutions Services. All rights reserved.</p>
+  </footer>
+
+  <!-- ==================================================================
+       Floating Icons (Triggers for Modals)
+       ================================================================== -->
+  <div class="floating-icons">
+    <button class="floating-icon" data-modal="join-modal" aria-label="Join Us" tabindex="0">
+      <i class="fas fa-user-plus"></i>
+    </button>
+    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us" tabindex="0">
+      <i class="fas fa-envelope-open-text"></i>
+    </button>
+    <!-- Chatbot launcher can also be here if preferred, or standalone as implemented -->
+  </div>
+
+  <!-- ==================================================================
+       Join Modal & Contact Modal (Structure provided by user, unchanged)
+       ================================================================== -->
+  <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
+    <div class="modal-content"> <div class="modal-header"> <h3 id="joinModalTitle" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h3> <button class="close-modal" data-close aria-label="Close">&times;</button> </div> <div class="modal-body"> <form id="join-form"> <div class="form-row"> <div class="form-cell"> <label for="join-name" data-en="Name" data-es="Nombre">Name</label> <input type="text" id="join-name" placeholder="Enter your name / Ingrese su Nombre" required > </div> <div class="form-cell"> <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label> <input type="email" id="join-email" placeholder="Enter your email / Ingrese su correo electrónico" required > </div> </div> <div class="form-row"> <div class="form-cell"> <label for="join-contact" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label> <input type="tel" id="join-contact" placeholder="Enter your contact number / Ingrese su número" required > </div> <div class="form-cell"> <label for="join-date" data-en="Date" data-es="Fecha">Date</label> <input type="date" id="join-date" required > </div> </div> <div class="form-row"> <div class="form-cell"> <label for="join-time" data-en="Time" data-es="Hora">Time</label> <input type="time" id="join-time" required > </div> <div class="form-cell"> <label for="join-resume" data-en="Upload Your Resume" data-es="Sube tu Currículum">Upload Your Resume</label> <input type="file" id="join-resume" accept=".pdf,.doc,.docx" required > </div> </div> <div class="form-row"> <div class="form-cell"> <label for="join-cover" data-en="Upload Your Cover Letter" data-es="Sube tu Carta de Presentación">Upload Your Cover Letter</label> <input type="file" id="join-cover" accept=".pdf,.doc,.docx" required > </div> <div class="form-cell"> <label for="join-comment" data-en="Comment" data-es="Comentario">Comment</label> <textarea id="join-comment" rows="4" placeholder="Tell us about yourself" required ></textarea> </div> </div> </form> </div> <div class="modal-footer"> <button type="submit" form="join-form" class="submit-button" data-en="Submit" data-es="Enviar" >Submit</button> </div> </div>
+  </div>
+  <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <div class="modal-content"> <div class="modal-header"> <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3> <button class="close-modal" data-close aria-label="Close">&times;</button> </div> <div class="modal-body"> <form id="contact-form"> <div class="form-row"> <div class="form-cell"> <label for="contact-name" data-en="Name" data-es="Nombre">Name</label> <input type="text" id="contact-name" placeholder="Enter your name / Ingrese su Nombre" required > </div> <div class="form-cell"> <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label> <input type="email" id="contact-email" placeholder="Enter your email / Ingrese su correo electrónico" required > </div> </div> <div class="form-row"> <div class="form-cell"> <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label> <input type="tel" id="contact-number" placeholder="Enter your contact number / Ingrese su número" required > </div> <div class="form-cell"> <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label> <input type="date" id="contact-date" required > </div> </div> <div class="form-row"> <div class="form-cell"> <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label> <input type="time" id="contact-time" required > </div> <div class="form-cell"> <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label> <textarea id="contact-comments" rows="4" placeholder="What service are you interested in? / En qué servicio está interesado?" required ></textarea> </div> </div> </form> </div> <div class="modal-footer"> <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar" >Send</button> </div> </div>
+  </div>
+
+  <!-- ==================================================================
+       Mobile Bottom Navigation & Services Menu (Small Screens)
+       ================================================================== -->
+  <nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav-item"> <i class="fas fa-home"></i> <span>Home</span> </a>
+    <button class="mobile-nav-item" id="mobile-services-toggle"> <i class="fas fa-bars"></i> <span>Services</span> </button>
+    <button class="mobile-nav-item" id="mobile-language-toggle">EN</button>
+    <button class="mobile-nav-item" id="mobile-theme-toggle">Light</button>
+    <!-- MODIFIED: Chat Link in mobile nav to also trigger our chatbot -->
+    <button class="mobile-nav-item" id="mobileChatLauncher"> <i class="fas fa-comment-alt"></i> <span>Chat</span> </button>
+  </nav>
+  <div class="mobile-services-menu" id="mobile-services-menu">
+    <ul> <li><a href="business-operations.html">Business Operations</a></li> <li><a href="contact-center.html">Contact Center</a></li> <li><a href="it-support.html">IT Support</a></li> <li><a href="professionals.html">Professionals</a></li> </ul>
+  </div>
+
+  <!-- ==================================================================
+       CHATBOT HTML ELEMENTS (Added by Jules)
+       ================================================================== -->
+  <!-- Chatbot Launcher Icon/Button -->
+  <button id="opsChatbotLauncher" aria-label="Open Chat">💬</button> <!-- Consider using a Font Awesome icon here too -->
+
+  <!-- Wrapper for the chat container for positioning and visibility control -->
+  <div class="ops-chat-container-wrapper" id="opsChatContainerWrapper">
+      <div class="chat-container" id="aiChatbotContainer" role="dialog" aria-modal="true" aria-labelledby="opsChatHeaderTitle">
+          <header class="chat-header">
+              <h1 id="opsChatHeaderTitle">AI Chatbot</h1>
+              <button id="opsCloseChatbot" aria-label="Close Chat" style="background:none; border:none; color:white; font-size:24px; position:absolute; top:12px; right:15px; cursor:pointer; padding:5px;">&times;</button>
+          </header>
+          <div class="chat-messages" id="opsChatMessages" aria-live="polite" aria-atomic="false">
+              <!-- Initial message will be added by script after verification -->
+          </div>
+          <div class="security-check-container" id="opsSecurityCheckContainer">
+              <p><em>Please verify you are human to chat:</em></p>
+              <div id="opsCaptchaPlaceholder">
+                  <!-- CAPTCHA widget (reCAPTCHA/Turnstile) will be rendered here by script.js -->
+              </div>
+          </div>
+          <footer class="chat-input-area">
+              <form id="opsChatForm" action="javascript:void(0);">
+                  <div class="ops-chatbot-honeypot-field" aria-hidden="true">
+                      <label for="ops_contact_me_by_fax_only">Contact me by fax only</label>
+                      <input type="checkbox" name="ops_contact_me_by_fax_only" id="ops_contact_me_by_fax_only" value="1" tabindex="-1" autocomplete="off">
+                  </div>
+                  <input type="text" id="opsUserInput" placeholder="Type your message..." autocomplete="off" disabled aria-label="User message input">
+                  <button type="submit" id="opsSendButton" disabled>Send</button>
+              </form>
+          </footer>
+      </div>
+  </div>
+
+  <!-- ==================================================================
+       JavaScript: Main Functionality & Mobile Menu Toggle
+       ================================================================== -->
+  <script src="js/main.js" defer></script>
+  <script src="js/service-worker.js" defer></script>
+  <!-- Chatbot JavaScript -->
+  <script src="script.js" defer></script>
 </body>
 </html>
