@@ -212,4 +212,4 @@
 /* NO MORE GLOBAL STYLES OR RESPONSIVE QUERIES AFFECTING '.chat-container-wrapper' or '#chatbotLauncher'
    Those are now handled by inline styles in index.html or by user's global.css / small-screens.css
    This file (style.css) is ONLY for the *internals* of #aiChatbotContainer.
-*/
+
