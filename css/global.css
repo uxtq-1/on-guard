@@ -273,7 +273,11 @@ footer {
 
 .form-cell input,
 .form-cell textarea,
-.form-cell select {
+.form-cell select,
+#join-modal .form-row > input[type="text"], /* Added for Join Us top-level inputs */
+#join-modal .form-row > input[type="email"], /* Added for Join Us top-level inputs */
+#join-modal .form-row > input[type="tel"], /* Added for Join Us top-level inputs */
+#join-modal .form-row > textarea /* Added for Join Us top-level textarea (e.g. comments) */ {
   padding: 0.75rem; /* Updated padding */
   border: 1px solid #ccc;
   border-radius: 6px; /* Updated border-radius */
@@ -286,6 +290,11 @@ footer {
 
 .form-cell input::placeholder,
 .form-cell textarea::placeholder,
+/* Apply placeholder styles also to the new Join Us inputs */
+#join-modal .form-row > input[type="text"]::placeholder,
+#join-modal .form-row > input[type="email"]::placeholder,
+#join-modal .form-row > input[type="tel"]::placeholder,
+#join-modal .form-row > textarea::placeholder,
 .form-cell select::placeholder { /* Note: select placeholder styling is tricky and often not direct */
   color: #757575;
   opacity: 1; /* Firefox needs this */
@@ -557,28 +566,33 @@ body[data-theme="dark"] .remove-field-btn:hover {
 }
 
 /* Join Modal Font Size Adjustments */
+/*
+  The following specific font size adjustments for #join-modal have been removed
+  to ensure consistency with the #contact-modal form.
+  The goal is to have both forms use the standard font sizes defined for .form-cell elements (e.g., 1rem for inputs).
+*/
 #join-modal .collapsible-header {
-    font-size: 0.9rem;
+    /* font-size: 0.9rem; */ /* Removed */
 }
 
 #join-modal .collapsible-content,
 #join-modal .collapsible-content .form-cell label,
 #join-modal .collapsible-content .checkbox-item label {
-  font-size: 11px;
+  /* font-size: 11px; */ /* Removed */
 }
 
 #join-modal .collapsible-content .dynamic-field-entry input,
 #join-modal .collapsible-content .dynamic-field-entry select,
 #join-modal .collapsible-content .dynamic-field-entry textarea {
-  font-size: 11px; /* Ensure input font matches label */
-  padding: 0.6rem; /* Slightly reduced padding for smaller font */
+  /* font-size: 11px; */ /* Removed */
+  /* padding: 0.6rem; */ /* Removed to allow general input padding to apply */
 }
 
 #join-modal .collapsible-content .add-field-btn,
 #join-modal .collapsible-content .remove-field-btn,
 #join-modal .collapsible-content .btn-done {
-  font-size: 10px;
-  padding: 0.5rem 0.8rem;
+  /* font-size: 10px; */ /* Removed */
+  /* padding: 0.5rem 0.8rem; */ /* Removed to allow general button padding to apply or be adjusted if necessary */
 }
 
 /* Dark Theme Adjustments for Collapsible and Done Button */
