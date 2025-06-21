@@ -43,7 +43,6 @@
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=(), usb=()"> <!-- Feature policy to disable unnecessary browser features -->
 
     <style>
-
         /* Anti-cloning: Basic CSS to make it slightly harder to copy-paste all content directly. */
         body {
             -webkit-user-select: none; /* Safari */
@@ -81,17 +80,25 @@
         /* Styles for chat-container when visible are in style.css, here we ensure it's hidden and positioned */
         .chat-container-wrapper { /* New wrapper for positioning */
             display: none; /* Hidden by default */
+            pointer-events: none; /* Ignore mouse events when hidden */
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            width: 100%; /* Max width will be set by .chat-container style in style.css */
-            max-width: 600px; /* Ensure wrapper doesn't exceed chat container's max width */
-            height: calc(100vh - 40px);
-            max-height: 700px;
+            bottom: 20px; /* Distance from bottom of viewport */
+            right: 20px;  /* Distance from right of viewport */
+            z-index: 1000; /* Ensure it's above most other content */
+            /* width: auto; /* Width will be determined by its content or by .chat-container's max-width */
+            max-width: 420px; /* A more typical pop-up chat width */
+            /* height: auto; /* Height will be determined by its content or by .chat-container's max-height */
+            max-height: calc(100vh - 100px); /* Max height, leaving some space from top/bottom, e.g. 80vh or fixed like 600px */
+            /* To prevent it from being too small if content is minimal, .chat-container can have min-height */
+            /* Box shadow for the wrapper itself to lift it off the page */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            border-radius: 12px; /* Match .chat-container's border-radius if it has one */
+            overflow: hidden; /* Ensures children (.chat-container) respect the wrapper's border-radius */
         }
         .chat-container-wrapper.active {
-            display: block; /* Show when active */
+            display: flex; /* Using flex to make .chat-container fill it easily */
+            flex-direction: column; /* Stack children vertically if any other elements were in wrapper */
+            pointer-events: auto; /* Allow mouse events when active */
         }
 
 

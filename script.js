@@ -275,6 +275,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     chatbotLauncher.addEventListener('click', () => toggleChatbotUi(true));
     closeChatbotButton.addEventListener('click', () => toggleChatbotUi(false));
+
+    // Click outside to close
+    document.addEventListener('click', (event) => {
+        // Check if chat is active, if the chatbot container exists, and if the click is outside the container
+        if (chatActive && aiChatbotContainer && !aiChatbotContainer.contains(event.target) && event.target !== chatbotLauncher) {
+            // Ensure the click wasn't on the launcher itself, which would immediately reopen it
+            console.log("Clicked outside chat container."); // For debugging
+            toggleChatbotUi(false);
+        }
+    });
+
+    // ESC key to close
+    document.addEventListener('keydown', (event) => {
+        if (chatActive && event.key === "Escape") {
+            console.log("ESC key pressed."); // For debugging
+            toggleChatbotUi(false);
+        }
+    });
     // --- Chat Message Submission (largely same as before) ---
     chatForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -314,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial Page Setup ---
     // Chat is initially hidden. No chat features (CAPTCHA, input) are enabled by default.
     // Event listeners for launcher/close button handle activation.
-    // Clean up honeypot interval on page unload (if active)
+ honeypot interval on page unload (if active)
     window.addEventListener('beforeunload', () => {
         stopHoneypotChecks();
     });
