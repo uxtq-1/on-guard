@@ -43,18 +43,30 @@
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=(), usb=()"> <!-- Feature policy to disable unnecessary browser features -->
 
     <style>
-        /* Anti-cloning: Basic CSS to make it slightly harder to copy-paste all content directly */
+
+        /* Anti-cloning: Basic CSS to make it slightly harder to copy-paste all content directly. */
         body {
             -webkit-user-select: none; /* Safari */
             -moz-user-select: none; /* Firefox */
             -ms-user-select: none; /* IE 10 and IE 11 */
             user-select: none; /* Standard syntax */
+            /* Basic styling for the main page content */
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
         }
-        /* Honeypot field styling - ensure it's truly invisible and not accessible by users or assistive tech.
-           CSS `display: none !important` can sometimes be ignored by sophisticated bots or screen readers if not careful.
-           Combining opacity, absolute positioning off-screen, zero size, and z-index is more robust.
-           `pointer-events: none` ensures it doesn't interfere with mouse interactions on elements below it.
-        */
+        .main-website-header, .main-website-content, .main-website-footer {
+            padding: 20px;
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        /* Honeypot field styling - ensure it's truly invisible and not accessible by users or assistive tech. */
         .honeypot-field {
             opacity: 0;
             position: absolute;
@@ -65,47 +77,116 @@
             z-index: -1; /* Send it behind other content */
             pointer-events: none; /* Make sure it cannot be interacted with */
         }
+        /* Initially hide the chat container and style the launcher */
+        /* Styles for chat-container when visible are in style.css, here we ensure it's hidden and positioned */
+        .chat-container-wrapper { /* New wrapper for positioning */
+            display: none; /* Hidden by default */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 100%; /* Max width will be set by .chat-container style in style.css */
+            max-width: 600px; /* Ensure wrapper doesn't exceed chat container's max width */
+            height: calc(100vh - 40px);
+            max-height: 700px;
+        }
+        .chat-container-wrapper.active {
+            display: block; /* Show when active */
+        }
+
+
+        #chatbotLauncher {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6a0dad; /* Purple */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 28px; /* Emoji/icon size */
+            line-height: 60px; /* Center emoji vertically */
+            text-align: center; /* Center emoji horizontally */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 1001;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        #chatbotLauncher:hover {
+            background-color: #5e0ca5; /* Darker purple */
+            transform: scale(1.1);
+        }
+        #chatbotLauncher.hidden {
+            display: none; /* Hide launcher when chat is open */
+        }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <header class="chat-header">
-            <h1>AI Chatbot Interface</h1>
-        </header>
-        <div class="chat-messages" id="chatMessages" aria-live="polite" aria-atomic="false">
-            <!-- Messages will appear here -->
-            <div class="message ai-message">
-                <p>Welcome! Please complete the security check to begin chatting.</p>
-            </div>
-        </div>
-        <div class="security-check-container" id="securityCheckContainer">
-            <!-- reCAPTCHA v2 Checkbox or Cloudflare Turnstile will be integrated here -->
-            <p><em>Please verify you are human:</em></p>
-            <!-- Example for Google reCAPTCHA v2 -->
-            <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_V2_SITE_KEY" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
+    <header class="main-website-header">
+        <h1>Welcome to Our Awesome Website!</h1>
+        <p>This page demonstrates how a chatbot can be integrated and activated on click.</p>
+    </header>
 
-            <!-- Example for Cloudflare Turnstile -->
-            <!-- <div class="cf-turnstile" data-sitekey="YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY" data-callback="onTurnstileSuccess"></div> -->
-        </div>
-        <footer class="chat-input-area">
-            <form id="chatForm" action="javascript:void(0);"> <!-- Prevent default form submission -->
-                <!-- Honeypot field for bot detection -->
-                <div class="honeypot-field" aria-hidden="true">
-                    <label for="contact_me_by_fax_only">Contact me by fax only</label>
-                    <input type="checkbox" name="contact_me_by_fax_only" id="contact_me_by_fax_only" value="1" tabindex="-1" autocomplete="off">
+    <main class="main-website-content">
+        <section>
+            <h2>About Us</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.</p>
+        </section>
+        <section>
+            <h2>Our Services</h2>
+            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor.</p>
+        </section>
+    </main>
+
+    <footer class="main-website-footer">
+        <p>&copy; 2024 Jules AI Assistant Services</p>
+    </footer>
+
+    <!-- Chatbot Launcher Icon/Button -->
+    <button id="chatbotLauncher" aria-label="Open Chat">💬</button>
+
+    <!-- Wrapper for the chat container for positioning and visibility control -->
+    <div class="chat-container-wrapper" id="chatContainerWrapper">
+        <!-- The existing chat-container div will be placed here by script or be here directly -->
+        <!-- For simplicity, moving the existing chat-container inside -->
+        <div class="chat-container" id="aiChatbotContainer" role="dialog" aria-modal="true" aria-labelledby="chatHeaderTitle">
+            <header class="chat-header">
+                <h1 id="chatHeaderTitle">AI Chatbot</h1>
+                <button id="closeChatbot" aria-label="Close Chat" style="background:none; border:none; color:white; font-size:24px; position:absolute; top:12px; right:15px; cursor:pointer; padding:5px;">&times;</button>
+            </header>
+            <div class="chat-messages" id="chatMessages" aria-live="polite" aria-atomic="false">
+                <!-- Initial message will be added by script after verification -->
+            </div>
+            <div class="security-check-container" id="securityCheckContainer">
+                <p><em>Please verify you are human to chat:</em></p>
+                <div id="captchaPlaceholder">
+                    <!-- CAPTCHA widget (reCAPTCHA/Turnstile) will be rendered here by script.js -->
                 </div>
-                <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" disabled aria-label="User message input">
-                <button type="submit" id="sendButton" disabled>Send</button>
-            </form>
-        </footer>
+            </div>
+            <footer class="chat-input-area">
+                <form id="chatForm" action="javascript:void(0);">
+                    <div class="honeypot-field" aria-hidden="true">
+                        <label for="contact_me_by_fax_only">Contact me by fax only</label>
+                        <input type="checkbox" name="contact_me_by_fax_only" id="contact_me_by_fax_only" value="1" tabindex="-1" autocomplete="off">
+                    </div>
+                    <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" disabled aria-label="User message input">
+                    <button type="submit" id="sendButton" disabled>Send</button>
+                </form>
+            </footer>
+        </div>
     </div>
 
-    <!-- Cloudflare Turnstile script (if using Turnstile) -->
-    <!-- <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> -->
-
-    <!-- Google reCAPTCHA script (if using reCAPTCHA) -->
-    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
-
+    <!-- CAPTCHA API scripts (reCAPTCHA/Turnstile) will be loaded dynamically by script.js
+         when the chat is opened. This avoids loading them if the user doesn't interact with the chatbot.
+    -->
+    <!-- For reference, direct script loading would look like:
+    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaApiLoad&render=explicit" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileApiLoad&render=explicit" async defer></script>
+    -->
     <script src="script.js"></script>
 </body>
 </html>
