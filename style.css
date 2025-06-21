@@ -1,0 +1,267 @@
+/* style.css - Styles for the Secure AI Chatbot Interface */
+
+/* Basic Reset & Body Styling from inline styles (now centralized) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Styles for the main website body (previously partially inline) */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4; /* Consistent background for the whole page */
+    color: #333;
+    line-height: 1.6;
+    margin: 0; /* Ensure no default body margin */
+    /* Anti-cloning user-select is still in inline <style> in HTML for earliest application */
+}
+
+/* Styles for generic main website content sections (from inline HTML) */
+.main-website-header, .main-website-content, .main-website-footer {
+    padding: 20px;
+    max-width: 900px;
+    margin: 20px auto; /* Centering the main content */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+
+/* Chat Container Styling (for when it's visible) */
+/* The .chat-container-wrapper controls visibility and fixed positioning.
+   .chat-container itself defines the chat window's appearance. */
+.chat-container {
+    width: 100%; /* Takes full width of its wrapper (.chat-container-wrapper) */
+    height: 100%; /* Takes full height of its wrapper */
+    background-color: #ffffff;
+    border-radius: 12px; /* Rounded corners for the chat window */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* More pronounced shadow for a "pop-out" feel */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* max-width and max-height are effectively controlled by .chat-container-wrapper */
+}
+
+/* Chat Header: Top bar with the title */
+.chat-header {
+    background-color: #6a0dad; /* Main Purple Shade */
+    color: #ffffff;
+    padding: 15px 20px;
+    text-align: center;
+    border-bottom: 1px solid #5e0ca5;
+    position: relative; /* For positioning the close button */
+}
+
+.chat-header h1 {
+    font-size: 1.3em; /* Slightly adjusted */
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Close button is styled inline in HTML for simplicity, but could be moved here */
+/* #closeChatbot { ... } */
+
+
+/* Chat Messages Area: Container for all chat bubbles */
+.chat-messages {
+    flex-grow: 1;
+    padding: 15px; /* Adjusted padding */
+    overflow-y: auto;
+    background-color: #f7f2ff; /* Very light purple tint */
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Individual Message Styling */
+.message {
+    margin-bottom: 12px; /* Adjusted spacing */
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+}
+
+.message p {
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.4; /* Adjusted line height */
+    word-wrap: break-word;
+    font-size: 0.95em; /* Slightly smaller text in bubbles */
+}
+
+/* AI Messages Styling */
+.ai-message {
+    align-items: flex-start;
+}
+
+.ai-message p {
+    background-color: #8a2be2; /* Medium Purple */
+    color: #ffffff;
+    border-top-left-radius: 0; /* Tail effect */
+}
+
+/* User Messages Styling */
+.user-message {
+    align-items: flex-end;
+    margin-left: auto; /* Push to the right */
+}
+
+.user-message p {
+    background-color: #e9e9eb; /* Slightly different grey for user */
+    color: #333333;
+    border-top-right-radius: 0; /* Tail effect */
+}
+
+/* Security Check Container (reCAPTCHA/Turnstile) */
+.security-check-container {
+    padding: 15px 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.security-check-container p {
+    margin-bottom: 10px; /* Adjusted margin */
+    color: #555;
+    font-size: 0.9em;
+}
+
+/* Ensure reCAPTCHA/Turnstile iframe/widget itself is centered */
+/* Placeholder for CAPTCHA widget, direct children will be the widget */
+#captchaPlaceholder > div {
+    display: inline-block;
+    margin: 0 auto; /* Center the CAPTCHA widget */
+}
+/* Or, if the widget itself needs specific centering and is not display:inline-block by default: */
+.g-recaptcha, .cf-turnstile {
+    display: inline-block; /* Or other display type as required by the widget */
+    /* Add margin: 0 auto; if their parent is text-align: center and they are block/inline-block */
+}
+
+
+/* Chat Input Area: Footer containing the text input and send button */
+.chat-input-area {
+    display: flex;
+    padding: 10px 15px; /* Adjusted padding */
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input-area form {
+    display: flex;
+    width: 100%;
+}
+
+#userInput {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 0.95em; /* Adjusted font size */
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#userInput:focus {
+    border-color: #6a0dad; /* Purple focus highlight */
+}
+
+#userInput:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+#sendButton {
+    padding: 10px 18px; /* Adjusted padding */
+    background-color: #6a0dad; /* Main Purple Shade */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95em; /* Adjusted font size */
+    transition: background-color 0.3s;
+}
+
+#sendButton:hover:not(:disabled) {
+    background-color: #5e0ca5; /* Darker Purple on hover */
+}
+
+#sendButton:disabled {
+    background-color: #bca0dc; /* Lighter, desaturated purple */
+    cursor: not-allowed;
+}
+
+/* Scrollbar styling (Optional, for Webkit-based browsers) */
+.chat-messages::-webkit-scrollbar {
+    width: 7px; /* Slightly thinner */
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f7f2ff;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: #c9a0eb;
+    border-radius: 10px;
+    border: 1.5px solid #f7f2ff; /* Adjusted border */
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background-color: #b389d9;
+}
+
+
+/* Responsive adjustments for the chat window when it's open */
+/* The main website content responsiveness is handled by its own simple max-width and auto margins. */
+/* This media query primarily targets the chat window itself. */
+@media (max-width: 480px) {
+    /* The .chat-container-wrapper is already full width on small screens due to fixed pos and right:20px, bottom:20px
+       If we want it edge-to-edge:
+    .chat-container-wrapper.active {
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    .chat-container {
+        border-radius: 0;
+    }
+    */
+
+    /* If keeping the floating window style but smaller margins */
+    .chat-container-wrapper.active {
+        bottom: 10px;
+        right: 10px;
+        left: 10px; /* Make it spread if screen is too small */
+        width: auto; /* Override fixed width from inline style if any */
+    }
+    #chatbotLauncher {
+        bottom: 10px;
+        right: 10px;
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+
+
+    .chat-header h1 {
+        font-size: 1.1em; /* Smaller title */
+    }
+    #closeChatbot {
+        font-size: 20px;
+        top: 8px;
+        right: 10px;
+    }
+
+    .message p {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+
+    #userInput, #sendButton {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+}
