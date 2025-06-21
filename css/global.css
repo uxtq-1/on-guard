@@ -619,6 +619,211 @@ body[data-theme="dark"] #join-modal .collapsible-content .dynamic-field-entry te
   /* Dark theme input styles are already specific and should apply font size from above */
 }
 
+/* === CSS from Sample for New Join Us Form === */
+/*
+  NOTE: Some styles from the sample might overlap with existing styles.
+  Existing styles for .modal-overlay, .modal-content, .modal-header, .close-modal,
+  .form-row, label, input, textarea, .submit-button are already present.
+  We will add new specific styles and adjust where necessary, keeping existing purple theme.
+  The sample's body font-family and margin are ignored as global.css already defines body styles.
+  The sample's .modal-overlay, .modal-content, .modal-header, .close-modal are very similar;
+  existing ones will largely take precedence or be slightly tweaked if needed.
+*/
+
+/* Styles for the new form elements, adapted from the sample */
+.lang-toggle { /* This was in sample, but site has its own lang toggle. Style kept for reference if ever used. */
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+.form-section {
+  border: 1px solid #ddd; /* Existing theme uses #e0e0e0 for similar borders, consider unifying */
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  background: #f9f9f9; /* Light background for sections */
+}
+body[data-theme="dark"] .form-section {
+  border: 1px solid #3a3a3a;
+  background: #2a2a2a; /* Dark background for sections */
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem; /* Added margin based on sample's header having margin-bottom */
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.1rem; /* Sample size */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* color: #9b87f5; Ensure this inherits existing header colors or is styled to match purple theme */
+}
+
+.circle-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  /* background-color: #007bff; Sample blue, will be changed to purple theme */
+  background-color: #9b87f5; /* Purple theme */
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  font-size: 1.2rem;
+  transition: background-color 0.3s;
+}
+.circle-btn:hover {
+  background-color: #7e69ab; /* Darker purple */
+}
+
+.circle-btn.remove {
+  /* background-color: #dc3545; Sample red, will be changed to a theme-appropriate color */
+  background-color: #d32f2f; /* A generic red, or could be a themed error color */
+}
+body[data-theme="dark"] .circle-btn.remove {
+  background-color: #e57373; /* Lighter red for dark theme */
+}
+body[data-theme="dark"] .circle-btn {
+  background-color: #bb86fc; /* Lighter purple for dark theme */
+}
+body[data-theme="dark"] .circle-btn:hover {
+  background-color: #9b87f5;
+}
+
+
+/* .inputs is a container for dynamically added inputs.
+   Existing .form-cell input styles will apply to inputs added here.
+   The sample had .inputs input { display: block; width: 100%; padding: 0.5rem; margin: 0.5rem 0; box-sizing: border-box; }
+   This is similar to existing input styles. We'll ensure they are applied.
+*/
+.form-section .inputs input[type="text"] { /* Specificity for inputs within .form-section .inputs */
+  display: block;
+  width: 100%;
+  padding: 0.75rem; /* Match existing input padding */
+  margin: 0.5rem 0; /* Vertical margin for multiple inputs */
+  box-sizing: border-box;
+  border: 1px solid #ccc; /* Match existing */
+  border-radius: 6px; /* Match existing */
+  font-size: 1rem; /* Match existing */
+}
+body[data-theme="dark"] .form-section .inputs input[type="text"] {
+  background-color: #2a2a2e;
+  color: #e0e0e0;
+  border: 1px solid #5a4580;
+}
+
+
+.accept-btn,
+.edit-btn {
+  /* background-color: #28a745; Sample green */
+  background-color: #6e54c9; /* Adjusted to a purple shade */
+  color: white;
+  padding: 0.4rem 1rem;
+  border: none;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+.accept-btn:hover, .edit-btn:hover {
+  background-color: #5642ac; /* Darker purple */
+}
+
+.edit-btn {
+  /* background-color: #ffc107; Sample yellow */
+  background-color: #b39ddb; /* Lighter purple, or a contrasting color */
+  color: #000; /* Keep text dark for light background */
+}
+.edit-btn:hover {
+  background-color: #9575cd;
+}
+
+body[data-theme="dark"] .accept-btn {
+  background-color: #bb86fc;
+  color: #000;
+}
+body[data-theme="dark"] .accept-btn:hover {
+  background-color: #9b87f5;
+}
+body[data-theme="dark"] .edit-btn {
+  background-color: #7e57c2;
+  color: #fff;
+}
+body[data-theme="dark"] .edit-btn:hover {
+  background-color: #673ab7;
+}
+
+.completed .section-header h2 {
+  color: #388e3c; /* Green for completed, consider if this fits theme or use a purple variant */
+}
+.completed .section-header h2::after {
+  content: " ✅";
+  font-size: 1rem;
+}
+body[data-theme="dark"] .completed .section-header h2 {
+  color: #81c784; /* Lighter green for dark theme */
+}
+
+.form-footer { /* For the div wrapping the submit button inside the form */
+  text-align: right;
+  margin-top: 2rem;
+  /* Ensure it spans full width if form items are in columns, or is handled by form's grid/flex layout */
+  grid-column: 1 / -1; /* If form is a grid */
+}
+
+/* The sample's main form tag does not have specific styling, relies on content.
+   The sample's input[type="text"], input[type="email"], input[type="tel"], textarea styles
+   are similar to existing .form-cell input, .form-cell textarea.
+   The new HTML structure places labels directly followed by inputs within .form-row divs,
+   not within .form-cell, so we need to ensure they are styled correctly.
+*/
+
+#join-modal .form-row { /* Styles for new .form-row structure in join modal */
+  margin-bottom: 1rem; /* From sample */
+  /* If form elements need to be side-by-side, this would need display:grid or flex */
+}
+
+#join-modal .form-row label { /* Label styling for new structure */
+  font-weight: bold;
+  display: block; /* Ensure label is above input */
+  margin-bottom: 0.3rem; /* Space between label and input */
+}
+
+#join-modal .form-row input[type="text"],
+#join-modal .form-row input[type="email"],
+#join-modal .form-row input[type="tel"],
+#join-modal .form-row textarea {
+  width: 100%; /* Take full width of .form-row */
+  /* Padding, border, etc., will inherit from existing general input/textarea styles or .form-cell input if specific enough */
+}
+
+/* Ensure general modal content padding is applied if #join-modal .form is now direct child */
+#join-modal .modal-content > form {
+    padding: 1.5rem; /* Re-apply padding that was on modal-body */
+    /* If the form itself should be scrollable, add overflow-y: auto and max-height */
+    /* However, the .modal-content itself has max-height and .modal-body (now form) had overflow.
+       The main .modal-body class was removed, so the form itself might need overflow if it's too long.
+       The sample had .modal-content with overflow-y: auto and max-height: 90vh.
+       Our existing .modal-content has overflow:hidden, and .modal-body had overflow-y:auto.
+       It's better to restore overflow-y: auto to the form or a wrapper if .modal-content is hidden.
+       Let's assume the form itself will be the scrollable part.
+    */
+    overflow-y: auto;
+    flex-grow: 1; /* Allow form to take available space in flex modal-content */
+}
+
 
 /* About Us Page Specific Styles */
 .journey-section {

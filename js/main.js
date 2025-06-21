@@ -27,7 +27,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateLanguage(lang) {
     document.querySelectorAll("[data-en]").forEach(el => {
-      el.textContent = (lang === "en") ? el.getAttribute("data-en") : el.getAttribute("data-es");
+      // Update text content for elements like labels, buttons, titles
+      if (el.hasAttribute(`data-${lang}`)) { // Check if the target language attribute exists
+        el.textContent = el.getAttribute(`data-${lang}`);
+      } else { // Fallback to 'en' if specific language attribute is missing
+        el.textContent = el.getAttribute("data-en");
+      }
+    });
+
+    // Update placeholders for input and textarea elements
+    document.querySelectorAll("input[data-placeholder-en], textarea[data-placeholder-en]").forEach(el => {
+      const placeholderAttr = `data-placeholder-${lang}`;
+      if (el.hasAttribute(placeholderAttr)) {
+        el.placeholder = el.getAttribute(placeholderAttr);
+      } else { // Fallback to 'en' placeholder
+        el.placeholder = el.getAttribute("data-placeholder-en");
+      }
+    });
+
+    // Update aria-labels for elements that have them
+    document.querySelectorAll("[data-en-aria-label]").forEach(el => {
+      const ariaLabelAttr = `data-${lang}-aria-label`;
+      if (el.hasAttribute(ariaLabelAttr)) {
+        el.setAttribute('aria-label', el.getAttribute(ariaLabelAttr));
+      } else { // Fallback to 'en' aria-label
+        el.setAttribute('aria-label', el.getAttribute("data-en-aria-label"));
+      }
     });
   }
   document.documentElement.lang = currentLanguage;
