@@ -1,0 +1,31 @@
+<!-- Chatbot Launcher Icon/Button -->
+<button id="opsChatbotLauncher" aria-label="Open Chat"><i class="fas fa-comment-dots"></i></button>
+
+<!-- Wrapper for the chat container for positioning and visibility control -->
+<div class="ops-chat-container-wrapper" id="opsChatContainerWrapper">
+    <div class="chat-container" id="aiChatbotContainer" role="dialog" aria-modal="true" aria-labelledby="opsChatHeaderTitle">
+        <header class="chat-header">
+            <h1 id="opsChatHeaderTitle">AI Chatbot</h1>
+            <button id="opsCloseChatbot" aria-label="Close Chat" style="background:none; border:none; color:white; font-size:24px; position:absolute; top:12px; right:15px; cursor:pointer; padding:5px;">&times;</button>
+        </header>
+        <div class="chat-messages" id="opsChatMessages" aria-live="polite" aria-atomic="false">
+            <!-- Initial message will be added by script after verification -->
+        </div>
+        <div class="security-check-container" id="opsSecurityCheckContainer">
+            <p><em>Please verify you are human to chat:</em></p>
+            <div id="opsCaptchaPlaceholder">
+                <!-- CAPTCHA widget (reCAPTCHA/Turnstile) will be rendered here by script.js -->
+            </div>
+        </div>
+        <footer class="chat-input-area">
+            <form id="opsChatForm" action="javascript:void(0);">
+                <div class="ops-chatbot-honeypot-field" aria-hidden="true">
+                    <label for="ops_contact_me_by_fax_only">Contact me by fax only</label>
+                    <input type="checkbox" name="ops_contact_me_by_fax_only" id="ops_contact_me_by_fax_only" value="1" tabindex="-1" autocomplete="off">
+                </div>
+                <input type="text" id="opsUserInput" placeholder="Type your message..." autocomplete="off" disabled aria-label="User message input">
+                <button type="submit" id="opsSendButton" disabled>Send</button>
+            </form>
+        </footer>
+    </div>
+</div>
