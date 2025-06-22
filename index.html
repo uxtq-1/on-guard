@@ -38,76 +38,13 @@
         pointer-events: none;
     }
 
-    /* Chatbot Launcher Button */
-    #opsChatbotLauncher {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #6a0dad; /* Purple - can be themed by user's CSS if they target the ID */
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        font-size: 28px; /* Adjust if using Font Awesome icon */
-        line-height: 60px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-        z-index: 2000; /* Ensure it's above other floating items if any, and modals */
-        transition: background-color 0.3s, transform 0.2s;
-    }
-    #opsChatbotLauncher:hover {
-        background-color: #5e0ca5; /* Darker purple */
-        transform: scale(1.1);
-    }
-    #opsChatbotLauncher.hidden {
-        display: none;
-    }
-
-    /* Chat Container Wrapper - for positioning and initial hide/show */
-    .ops-chat-container-wrapper {
-        display: none;
-        pointer-events: none;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1999; /* Slightly below launcher when hidden, above page content when active */
-        max-width: 420px;
-        max-height: calc(100vh - 90px); /* Adjusted to leave more space from launcher */
-        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    .ops-chat-container-wrapper.active {
-        display: flex;
-        flex-direction: column;
-        pointer-events: auto;
-    }
-
-    /* Responsive adjustments for chat launcher and wrapper (can be moved to small-screens.css by user) */
-    @media (max-width: 480px) {
-        #opsChatbotLauncher {
-            width: 50px;
-            height: 50px;
-            font-size: 22px;
-            bottom: 15px; /* Adjusted for mobile nav */
-            right: 15px;
-        }
-        .ops-chat-container-wrapper.active {
-            bottom: 10px;
-            right: 10px;
-            left: 10px;
-            width: auto;
-            max-height: calc(100vh - 80px); /* Adjust considering mobile nav height */
-        }
-    }
+    /* Minimal inline styles remain, specific modal styles moved to join_docs/join-us-modal.css */
   </style>
-  <!-- Link to the external CSS for the chatbot's internal appearance -->
-  <link rel="stylesheet" href="style.css"> <!-- This is OUR chatbot's style.css -->
+  <!-- Chatbot CSS files -->
+  <link rel="stylesheet" href="chatbot_creation/chatbot-container.css">
+  <link rel="stylesheet" href="chatbot_creation/chatbot-ui.css">
+  <!-- Join Us Modal CSS -->
+  <link rel="stylesheet" href="join_docs/join-us-modal.css">
 
 </head>
 
@@ -204,105 +141,9 @@
        Join Modal & Contact Modal
        ================================================================== -->
   <div id="join-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
-    <!-- CONTENT OF THIS MODAL WILL BE REPLACED -->
-    <div class="modal-content">
-      <div class="lang-toggle">EN | ES</div> <!-- MODIFIED: Removed inline onclick -->
-      <div class="modal-header">
-        <h3 data-en="Join Us" data-es="Únete a Nosotros" id="joinModalTitle">Join Us</h3>
-        <button class="close-modal" onclick="document.getElementById('join-modal').style.display='none'">&times;</button>
-      </div>
-
-      <form id="join-form">
-        <!-- Row: Name, Email, Phone -->
-        <div class="form-row">
-          <label for="name" data-en="Name" data-es="Nombre">Name</label>
-          <input type="text" id="name" name="name" placeholder="Enter your name" data-placeholder-en="Enter your name" data-placeholder-es="Ingresa tu nombre" />
-
-          <label for="email" data-en="Email" data-es="Correo Electrónico">Email</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" data-placeholder-en="Enter your email" data-placeholder-es="Ingresa tu correo" />
-
-          <label for="phone" data-en="Phone" data-es="Teléfono">Phone</label>
-          <input type="tel" id="phone" name="phone" placeholder="Enter your phone" data-placeholder-en="Enter your phone" data-placeholder-es="Ingresa tu teléfono" />
-        </div>
-
-        <!-- Dynamic Sections (Skills, Education, etc.) -->
-        <div class="form-section" data-section="Skills">
-          <div class="section-header">
-            <h2 data-en="Skills" data-es="Habilidades">Skills</h2>
-            <div>
-              <button type="button" class="circle-btn add">+</button>
-              <button type="button" class="circle-btn remove">−</button>
-            </div>
-          </div>
-          <div class="inputs"></div>
-          <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
-          <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display: none;">Edit</button>
-        </div>
-
-        <div class="form-section" data-section="Education">
-          <div class="section-header">
-            <h2 data-en="Education" data-es="Educación">Education</h2>
-            <div>
-              <button type="button" class="circle-btn add">+</button>
-              <button type="button" class="circle-btn remove">−</button>
-            </div>
-          </div>
-          <div class="inputs"></div>
-          <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
-          <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display: none;">Edit</button>
-        </div>
-
-        <div class="form-section" data-section="Continued Education">
-          <div class="section-header">
-            <h2 data-en="Continued Education" data-es="Educación Continua">Continued Education</h2>
-            <div>
-              <button type="button" class="circle-btn add">+</button>
-              <button type="button" class="circle-btn remove">−</button>
-            </div>
-          </div>
-          <div class="inputs"></div>
-          <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
-          <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display: none;">Edit</button>
-        </div>
-
-        <div class="form-section" data-section="Certification">
-          <div class="section-header">
-            <h2 data-en="Certification" data-es="Certificación">Certification</h2>
-            <div>
-              <button type="button" class="circle-btn add">+</button>
-              <button type="button" class="circle-btn remove">−</button>
-            </div>
-          </div>
-          <div class="inputs"></div>
-          <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
-          <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display: none;">Edit</button>
-        </div>
-
-        <div class="form-section" data-section="Hobbies">
-          <div class="section-header">
-            <h2 data-en="Hobbies" data-es="Pasatiempos">Hobbies</h2>
-            <div>
-              <button type="button" class="circle-btn add">+</button>
-              <button type="button" class="circle-btn remove">−</button>
-            </div>
-          </div>
-          <div class="inputs"></div>
-          <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
-          <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display: none;">Edit</button>
-        </div>
-
-        <!-- Comments -->
-        <div class="form-row">
-          <label for="comment" data-en="Tell us about yourself" data-es="Cuéntanos sobre ti">Tell us about yourself</label>
-          <textarea id="comment" name="comment" rows="4" data-placeholder-en="Tell us about yourself..." data-placeholder-es="Cuéntanos sobre ti..."></textarea>
-        </div>
-
-        <!-- Submit -->
-        <div class="form-footer">
-          <button type="submit" class="submit-button" data-en="Submit" data-es="Enviar">Submit</button>
-        </div>
-      </form>
-    </div>
+    <!-- Content for this modal will be loaded dynamically by join_docs/join-us-form.js -->
+    <!-- It will inject into a .modal-content div, or this div itself can be the placeholder -->
+    <div class="join-modal-content-placeholder"></div>
   </div>
 
   <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
@@ -327,43 +168,16 @@
   <!-- ==================================================================
        CHATBOT HTML ELEMENTS (Added by Jules)
        ================================================================== -->
-  <!-- Chatbot Launcher Icon/Button -->
-  <button id="opsChatbotLauncher" aria-label="Open Chat">💬</button> <!-- Consider using a Font Awesome icon here too -->
-  <!-- Wrapper for the chat container for positioning and visibility control -->
-  <div class="ops-chat-container-wrapper" id="opsChatContainerWrapper">
-      <div class="chat-container" id="aiChatbotContainer" role="dialog" aria-modal="true" aria-labelledby="opsChatHeaderTitle">
-          <header class="chat-header">
-              <h1 id="opsChatHeaderTitle">AI Chatbot</h1>
-              <button id="opsCloseChatbot" aria-label="Close Chat" style="background:none; border:none; color:white; font-size:24px; position:absolute; top:12px; right:15px; cursor:pointer; padding:5px;">&times;</button>
-          </header>
-          <div class="chat-messages" id="opsChatMessages" aria-live="polite" aria-atomic="false">
-              <!-- Initial message will be added by script after verification -->
-          </div>
-          <div class="security-check-container" id="opsSecurityCheckContainer">
-              <p><em>Please verify you are human to chat:</em></p>
-              <div id="opsCaptchaPlaceholder">
-                  <!-- CAPTCHA widget (reCAPTCHA/Turnstile) will be rendered here by script.js -->
-              </div>
-          </div>
-          <footer class="chat-input-area">
-              <form id="opsChatForm" action="javascript:void(0);">
-                  <div class="ops-chatbot-honeypot-field" aria-hidden="true">
-                      <label for="ops_contact_me_by_fax_only">Contact me by fax only</label>
-                      <input type="checkbox" name="ops_contact_me_by_fax_only" id="ops_contact_me_by_fax_only" value="1" tabindex="-1" autocomplete="off">
-                  </div>
-                  <input type="text" id="opsUserInput" placeholder="Type your message..." autocomplete="off" disabled aria-label="User message input">
-                  <button type="submit" id="opsSendButton" disabled>Send</button>
-              </form>
-          </footer>
-      </div>
-  </div>
+  <div id="chatbot-placeholder"></div>
 
   <!-- ==================================================================
        JavaScript: Main Functionality & Mobile Menu Toggle
        ================================================================== -->
   <script src="js/main.js" defer></script>
   <script src="js/service-worker.js" defer></script>
+  <!-- "Join Us" Modal Form JavaScript -->
+  <script src="join_docs/join-us-form.js" defer></script>
   <!-- Chatbot JavaScript -->
-  <script src="script.js" defer></script>
+  <script src="chatbot_creation/chatbot.js" defer></script>
 </body>
 </html>
