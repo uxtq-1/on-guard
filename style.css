@@ -1,0 +1,215 @@
+/* style.css - Styles FOR THE CHATBOT WINDOW INTERNALS ONLY */
+
+/* All selectors should be scoped to the chatbot container to avoid conflicts */
+/* The main chatbot container ID is #aiChatbotContainer */
+
+/* Basic Reset FOR CHATBOT ELEMENTS where needed if not inheriting box-sizing */
+#aiChatbotContainer * {
+    box-sizing: border-box;
+    /* margin: 0; Resetting margin/padding here might be too aggressive if some child elements need it.
+       padding: 0; Apply specific resets as needed below. */
+}
+
+/* Chat Container Styling (for when it's visible) */
+/* The .ops-chat-container-wrapper (styled inline in HTML) controls visibility and fixed positioning.
+   #aiChatbotContainer itself defines the chat window's appearance. */
+#aiChatbotContainer { /* This is the .chat-container div */
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    /* border-radius: 12px; /* This is now on the wrapper, inherited due to wrapper's overflow:hidden */
+    /* box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* This is now on the wrapper */
+    overflow: hidden; /* Important for keeping children contained */
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Ensure consistent font */
+    color: #333; /* Default text color for chat */
+    line-height: 1.5; /* Default line height for chat */
+}
+
+/* Chat Header: Top bar with the title */
+#aiChatbotContainer .chat-header { /* Scoped selector */
+    background-color: #6a0dad; /* Main Purple Shade */
+    color: #ffffff;
+    padding: 10px 15px; /* Adjusted padding */
+    text-align: center;
+    border-bottom: 1px solid #5e0ca5;
+    position: relative; /* For positioning the close button */
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+#aiChatbotContainer .chat-header h1 { /* Scoped selector for H1 inside chat-header */
+    font-size: 1.2em; /* Adjusted font size */
+    margin: 0;
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+/* The close button (#opsCloseChatbot) is styled inline in HTML for its position,
+   but could have font/color overrides here if needed, e.g. #opsCloseChatbot { color: white; } */
+
+
+/* Chat Messages Area: Container for all chat bubbles */
+#aiChatbotContainer .chat-messages { /* Scoped selector */
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: #f7f2ff; /* Very light purple tint */
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Individual Message Styling */
+#aiChatbotContainer .message { /* Scoped selector */
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+}
+
+#aiChatbotContainer .message p { /* Scoped selector */
+    padding: 8px 12px; /* Slightly smaller padding */
+    border-radius: 15px; /* Slightly smaller radius */
+    line-height: 1.4;
+    word-wrap: break-word; /* Already default for p, but good to have */
+    font-size: 0.9rem; /* Using rem for better accessibility scaling */
+    margin: 0; /* Remove default p margin */
+}
+
+/* AI Messages Styling */
+#aiChatbotContainer .ai-message { /* Scoped selector */
+    align-items: flex-start;
+}
+
+#aiChatbotContainer .ai-message p { /* Scoped selector */
+    background-color: #8a2be2; /* Medium Purple */
+    color: #ffffff;
+    border-top-left-radius: 0; /* Tail effect */
+}
+
+/* User Messages Styling */
+
+#aiChatbotContainer .user-message { /* Scoped selector */
+    align-items: flex-end;
+    margin-left: auto; /* Push to the right */
+}
+
+#aiChatbotContainer .user-message p { /* Scoped selector */
+    background-color: #e9e9eb;
+    color: #333333;
+    border-top-right-radius: 0; /* Tail effect */
+}
+
+/* Security Check Container (reCAPTCHA/Turnstile) */
+
+#aiChatbotContainer .security-check-container { /* Scoped selector */
+    padding: 15px 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+#aiChatbotContainer .security-check-container p { /* Scoped selector */
+    margin-bottom: 10px;
+    color: #555;
+    font-size: 0.85rem;
+    margin-top:0;
+}
+
+/* Ensure reCAPTCHA/Turnstile iframe/widget itself is centered */
+/* Placeholder for CAPTCHA widget, direct children will be the widget */
+#opsCaptchaPlaceholder > div { /* Using the ID from HTML */
+    display: inline-block; /* Or as required by the widget */
+    margin: 0 auto;
+    /* Ensure the CAPTCHA widget is not overly large if it tries to be responsive */
+    max-width: 100%;
+}
+/* These might be needed if the widget itself has specific classes */
+#aiChatbotContainer .g-recaptcha,
+#aiChatbotContainer .cf-turnstile {
+    display: inline-block;
+    line-height: 0; /* Fix potential extra space below iframe */
+}
+
+
+/* Chat Input Area: Footer containing the text input and send button */
+#aiChatbotContainer .chat-input-area { /* Scoped selector */
+    display: flex;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+#aiChatbotContainer .chat-input-area form { /* Scoped selector */
+    display: flex;
+    width: 100%;
+    align-items: center; /* Vertically align items in form */
+}
+
+#opsUserInput { /* Using specific ID */
+    flex-grow: 1;
+    padding: 8px 12px; /* Adjusted padding */
+    border: 1px solid #ccc;
+    border-radius: 18px; /* Match message bubble radius */
+    margin-right: 8px; /* Adjusted margin */
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+    min-height: 38px; /* Ensure decent height */
+}
+
+#opsUserInput:focus { /* Using specific ID */
+    border-color: #6a0dad; /* Purple focus highlight */
+}
+
+#opsUserInput:disabled { /* Using specific ID */
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+#opsSendButton { /* Using specific ID */
+    padding: 8px 15px; /* Adjusted padding */
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    border-radius: 18px; /* Match input radius */
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+    min-height: 38px; /* Match input height */
+    font-weight: 600;
+}
+
+#opsSendButton:hover:not(:disabled) { /* Using specific ID */
+    background-color: #5e0ca5;
+}
+
+#opsSendButton:disabled { /* Using specific ID */
+    background-color: #bca0dc;
+    cursor: not-allowed;
+}
+
+/* Scrollbar styling (Optional, for Webkit-based browsers) */
+#aiChatbotContainer .chat-messages::-webkit-scrollbar { /* Scoped selector */
+    width: 6px; /* Slightly thinner */
+}
+
+#aiChatbotContainer .chat-messages::-webkit-scrollbar-track { /* Scoped selector */
+    background: #f0e6f7; /* Slightly different track */
+}
+
+#aiChatbotContainer .chat-messages::-webkit-scrollbar-thumb { /* Scoped selector */
+    background-color: #c9a0eb;
+    border-radius: 10px;
+    /* border: 1.5px solid #f7f2ff; /* Removed border for cleaner look */
+}
+
+#aiChatbotContainer .chat-messages::-webkit-scrollbar-thumb:hover { /* Scoped selector */
+    background-color: #b389d9;
+}
+
+/* NO MORE GLOBAL STYLES OR RESPONSIVE QUERIES AFFECTING '.chat-container-wrapper' or '#chatbotLauncher'
+   Those are now handled by inline styles in index.html or by user's global.css / small-screens.css
+   This file (style.css) is ONLY for the *internals* of #aiChatbotContainer.
+
