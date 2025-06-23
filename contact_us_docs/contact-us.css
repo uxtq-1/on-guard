@@ -1,0 +1,10 @@
+body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; color: #333; }
+.container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+h1 { color: #333; text-align: center; }
+label { display: block; margin-bottom: 5px; font-weight: bold; }
+input[type="text"], input[type="email"], textarea { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box; }
+textarea { height: 100px; }
+.button { background-color: #5cb85c; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+.button:hover { background-color: #4cae4c; }
+.lang-toggle { text-align: right; margin-bottom: 20px; }
+.lang-toggle button { background: none; border: none; color: #007bff; cursor: pointer; }
