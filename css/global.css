@@ -716,6 +716,70 @@ body[data-theme="dark"] #join-modal .collapsible-content .dynamic-field-entry te
   /* Dark theme input styles are already specific and should apply font size from above */
 }
 
+/* =========================================================
+                       dark-theme site
+   ========================================================= */
+body[data-theme="dark"] {
+  background-color: #1a1a1a; /* Dark grey background */
+  color: #ffffff; /* White font color for all text */
+}
+
+body[data-theme="dark"] header {
+  background-color: #1c1c1c; /* Slightly different dark shade for header */
+}
+
+body[data-theme="dark"] header nav a,
+body[data-theme="dark"] .hero p,
+body[data-theme="dark"] .service-item p, /* Ensure service item text is white */
+body[data-theme="dark"] footer p /* Ensure footer text is white */ {
+  color: #ffffff; /* White font for navigation links and specific paragraphs */
+}
+
+/* Headers font White */
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] h5,
+body[data-theme="dark"] h6,
+body[data-theme="dark"] .hero h2, /* Specific hero header */
+body[data-theme="dark"] .service-item h3 /* Specific service item header */ {
+  color: #ffffff; /* White font for all headers */
+}
+
+
+body[data-theme="dark"] .services {
+  background-color: #1a1a1a; /* Match body background */
+}
+
+body[data-theme="dark"] .floating-icon {
+  background-color: #bb86fc; /* Keep purple accent for floating icons or change if needed */
+  color: #ffffff; /* Icon color */
+}
+
+body[data-theme="dark"] .floating-icon:hover {
+  background-color: #7e69ab;
+}
+
+/* Modal content in dark theme */
+body[data-theme="dark"] .modal-content {
+  background-color: #2b2b2b; /* Dark background for modal content */
+  color: #ffffff; /* White text in modal */
+}
+
+body[data-theme="dark"] .modal-header {
+  background-color: #1c1c1c; /* Dark header for modal */
+  color: #ffffff;
+}
+
+body[data-theme="dark"] .close-modal {
+    color: #ffffff;
+}
+
+body[data-theme="dark"] .close-modal:hover {
+    color: #dddddd;
+}
+
 /* === CSS from Sample for New Join Us Form === */
 /*
   NOTE: Some styles from the sample might overlap with existing styles.
