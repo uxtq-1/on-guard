@@ -394,76 +394,159 @@ footer {
                        dark-theme site
    ========================================================= */
 body[data-theme="dark"] {
-  background-color: #121212;
-  color: #e0e0e0;
+  background-color: #1a1a1a; /* Dark grey background */
+  color: #ffffff; /* White font color for all text */
 }
 
 body[data-theme="dark"] header {
-  background-color: #1c1c1c;
+  background-color: #1c1c1c; /* Slightly different dark shade for header */
 }
 
-body[data-theme="dark"] header nav a {
-  color: #e0e0e0;
+body[data-theme="dark"] header nav a,
+body[data-theme="dark"] .hero p,
+body[data-theme="dark"] .service-item p, /* Ensure service item text is white */
+body[data-theme="dark"] footer p /* Ensure footer text is white */ {
+  color: #ffffff; /* White font for navigation links and specific paragraphs */
 }
 
-body[data-theme="dark"] .hero h2 {
-  color: #bb86fc;
+/* Headers font White */
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] h5,
+body[data-theme="dark"] h6,
+body[data-theme="dark"] .hero h2, /* Specific hero header */
+body[data-theme="dark"] .service-item h3 /* Specific service item header */ {
+  color: #ffffff; /* White font for all headers */
 }
 
-body[data-theme="dark"] .hero p {
-  color: #e0e0e0;
-}
 
 body[data-theme="dark"] .services {
-  background-color: #121212;
+  background-color: #1a1a1a; /* Match body background */
 }
 
 body[data-theme="dark"] .floating-icon {
-  background-color: #bb86fc;
+  background-color: #bb86fc; /* Keep purple accent for floating icons or change if needed */
+  color: #ffffff; /* Icon color */
 }
 
 body[data-theme="dark"] .floating-icon:hover {
   background-color: #7e69ab;
 }
 
+/* Modal content in dark theme */
 body[data-theme="dark"] .modal-content {
-  background-color: #d3caff;
-  color: #e0e0e0;
+  background-color: #2b2b2b; /* Dark background for modal content */
+  color: #ffffff; /* White text in modal */
 }
+
+body[data-theme="dark"] .modal-header {
+  background-color: #1c1c1c; /* Dark header for modal */
+  color: #ffffff;
+}
+
+body[data-theme="dark"] .close-modal {
+    color: #ffffff;
+}
+
+body[data-theme="dark"] .close-modal:hover {
+    color: #dddddd;
+}
+
 
 /* =========================================================
-            dark-theme background-color floating icons
+            dark-theme form fields and inputs
    ========================================================= */
 
+/* Styling for form fields: white background, dark gray fonts inside */
 body[data-theme="dark"] .form-cell input,
 body[data-theme="dark"] .form-cell textarea,
-body[data-theme="dark"] .form-cell select {
-  background-color: #2a2a2e;      /* Darker background for inputs */
-  color: #e0e0e0;                 /* Light text for inputs */
-  border: 1px solid #5a4580;      /* Darker purple border */
-  padding: 0.75rem; /* Matched from light theme */
-  border-radius: 6px; /* Matched from light theme */
-  font-size: 1rem; /* Matched from light theme */
-  width: 100%; /* Matched from light theme */
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Matched from light theme */
+body[data-theme="dark"] .form-cell select,
+body[data-theme="dark"] #join-modal .form-row > input[type="text"],
+body[data-theme="dark"] #join-modal .form-row > input[type="email"],
+body[data-theme="dark"] #join-modal .form-row > input[type="tel"],
+body[data-theme="dark"] #join-modal .form-row > textarea {
+  background-color: #ffffff;      /* White background for inputs */
+  color: #333333;                 /* Dark gray text for inputs */
+  border: 1px solid #555555;      /* Slightly darker border for contrast on white */
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
+/* Placeholder text color for dark theme inputs */
 body[data-theme="dark"] .form-cell input::placeholder,
 body[data-theme="dark"] .form-cell textarea::placeholder,
-body[data-theme="dark"] .form-cell select::placeholder {
-  color: #a0a0a0;                 /* Lighter placeholder text for dark inputs */
+body[data-theme="dark"] .form-cell select::placeholder, /* select placeholder styling is limited */
+body[data-theme="dark"] #join-modal .form-row > input[type="text"]::placeholder,
+body[data-theme="dark"] #join-modal .form-row > input[type="email"]::placeholder,
+body[data-theme="dark"] #join-modal .form-row > input[type="tel"]::placeholder,
+body[data-theme="dark"] #join-modal .form-row > textarea::placeholder {
+  color: #555555;                 /* Dark gray placeholder text */
+  opacity: 1; /* Ensure placeholder is visible */
 }
 
+/* Focus style for inputs in dark theme */
 body[data-theme="dark"] .form-cell input:focus,
 body[data-theme="dark"] .form-cell textarea:focus,
-body[data-theme="dark"] .form-cell select:focus {
-  border-color: #bb86fc;          /* Bright purple border on focus */
-  box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25); /* Subtle focus ring for dark theme */
+body[data-theme="dark"] .form-cell select:focus,
+body[data-theme="dark"] #join-modal .form-row > input[type="text"]:focus,
+body[data-theme="dark"] #join-modal .form-row > input[type="email"]:focus,
+body[data-theme="dark"] #join-modal .form-row > input[type="tel"]:focus,
+body[data-theme="dark"] #join-modal .form-row > textarea:focus {
+  border-color: #bb86fc;          /* Purple border on focus (can be adjusted) */
+  box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25);
   outline: none;
 }
 
-body[data-theme="dark"] .form-cell label {
-  color: #e0e0e0 !important;      /* Ensure labels are light in dark mode */
+/* Labels for form cells in dark theme */
+body[data-theme="dark"] .form-cell label,
+body[data-theme="dark"] #join-modal .form-row label {
+  color: #ffffff !important;      /* Ensure labels are white in dark mode */
+}
+
+/* Ensure buttons maintain visibility and appropriate styling */
+body[data-theme="dark"] .toggle-container button {
+  background-color: #333333; /* Darker background for toggle buttons */
+  color: #ffffff; /* White text */
+  border: 1px solid #555555;
+}
+
+body[data-theme="dark"] .toggle-container button:hover {
+  background-color: #444444;
+}
+
+body[data-theme="dark"] .service-item .btn {
+  background-color: #bb86fc; /* Purple accent for buttons */
+  color: #000000; /* Black text for contrast on purple button */
+}
+
+body[data-theme="dark"] .service-item .btn:hover {
+  background-color: #9b87f5;
+}
+
+body[data-theme="dark"] .submit-button {
+  background-color: #bb86fc; /* Purple accent for submit buttons */
+  color: #000000; /* Black text for contrast */
+}
+
+body[data-theme="dark"] .submit-button:hover {
+  background-color: #9b87f5;
+}
+
+/* Ensure specific text elements that might have their own color rules are white */
+body[data-theme="dark"] .hero p,
+body[data-theme="dark"] .service-item p,
+body[data-theme="dark"] .journey-year-left p,
+body[data-theme="dark"] .journey-year-right p,
+body[data-theme="dark"] .team-member p,
+body[data-theme="dark"] .contact-join-links .link-item p,
+body[data-theme="dark"] .modal-body p /* For any general paragraph text in modals */
+ {
+  color: #ffffff;
 }
 
 /* Dark Theme for Dynamic Sections */
