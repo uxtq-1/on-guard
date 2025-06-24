@@ -176,8 +176,6 @@
         font-size: 2.2rem;
     }
 }
-
-/*
 The following is in global.css, so it's not needed here:
 @media screen and (min-width: 769px) {
   .mobile-nav,
@@ -186,4 +184,4 @@ The following is in global.css, so it's not needed here:
     display: none !important;
   }
 }
-*/
+
