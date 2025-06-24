@@ -94,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(`INFO:Main/masterToggleLanguage: Language changed to ${currentLanguage.toUpperCase()}`);
         }
     };
-
     if (langToggleDesktop) langToggleDesktop.addEventListener("click", () => window.masterToggleLanguage());
     if (langToggleMobile) langToggleMobile.addEventListener("click", () => window.masterToggleLanguage());
 
@@ -108,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNodeLanguageTexts(currentLanguage, document.body);
     setLanguageButtonVisuals();
     console.log(`INFO:Main/LangInit: Initial language set to ${currentLanguage.toUpperCase()}`);
+
     /* ================================================================
        2) THEME TOGGLE (Desktop & Mobile for index.html header)
        ================================================================= */
