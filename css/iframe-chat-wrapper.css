@@ -66,4 +66,8 @@
         border-radius: 0;
         max-height: 100vh;
     }
+    /* When active and on very small screens, ensure it's above mobile nav (z-index: 10002) */
+    #chatbot-placeholder.active {
+        z-index: 10003;
+    }
 }

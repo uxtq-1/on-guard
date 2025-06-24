@@ -7,7 +7,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const chatbotUrl = 'chatbot_creation/chatbot-widget.html'; // Path relative to project root
   let iframeLoaded = false;
-  // chatbotVisible state is now managed by the presence of 'active' class on chatbotPlaceholder
+  let chatbotIframe = null; // Store the iframe element
+  let themeObserver = null; // Store the MutationObserver
+
+  // Function to apply theme to iframe
+  function applyThemeToIframe(theme) {
+    if (chatbotIframe && chatbotIframe.contentWindow && chatbotIframe.contentWindow.document && chatbotIframe.contentWindow.document.body) {
+      chatbotIframe.contentWindow.document.body.setAttribute('data-theme', theme);
+      console.log(`INFO:ChatbotLoader/applyThemeToIframe: Applied theme "${theme}" to chatbot iframe.`);
+    } else {
+      console.warn('WARN:ChatbotLoader/applyThemeToIframe: Chatbot iframe content not fully accessible yet.');
+    }
+  }
+
+  // Function to set up theme synchronization
+  function setupThemeSync() {
+    if (!chatbotIframe) return;
+
+    // Initial theme application
+    const currentTheme = document.body.getAttribute('data-theme') || 'light';
+
+    // Wait for iframe to load its content before trying to access its document
+    chatbotIframe.onload = () => {
+        console.log('INFO:ChatbotLoader/setupThemeSync: Chatbot iframe "onload" event triggered.');
+        applyThemeToIframe(currentTheme);
+
+        // Setup MutationObserver after iframe is loaded and theme initially applied
+        if (themeObserver) themeObserver.disconnect(); // Disconnect previous observer if any
+
+        themeObserver = new MutationObserver((mutationsList) => {
+          for (const mutation of mutationsList) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+              const newTheme = document.body.getAttribute('data-theme') || 'light';
+              applyThemeToIframe(newTheme);
+            }
+          }
+        });
+
+        themeObserver.observe(document.body, { attributes: true });
+        console.log('INFO:ChatbotLoader/setupThemeSync: MutationObserver set up for theme changes on parent body.');
+    };
+    // If iframe is already loaded (e.g. from cache, or if onload fired before this was attached)
+    // and contentDocument is accessible, try applying theme.
+     if (chatbotIframe.contentDocument && chatbotIframe.contentDocument.readyState === 'complete') {
+        console.log('INFO:ChatbotLoader/setupThemeSync: Chatbot iframe already loaded, applying theme.');
+        applyThemeToIframe(currentTheme);
+         // Also setup observer here if needed, though onload should ideally handle it.
+        if (!themeObserver && chatbotIframe.contentWindow && chatbotIframe.contentWindow.document) {
+            if (themeObserver) themeObserver.disconnect();
+            themeObserver = new MutationObserver((mutationsList) => {
+              for (const mutation of mutationsList) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                  const newTheme = document.body.getAttribute('data-theme') || 'light';
+                  applyThemeToIframe(newTheme);
+                }
+              }
+            });
+            themeObserver.observe(document.body, { attributes: true });
+            console.log('INFO:ChatbotLoader/setupThemeSync: MutationObserver set up (iframe already loaded case).');
+        }
+    }
+  }
+
 
   function loadAndShowChatbot() {
     if (!chatbotPlaceholder) {
@@ -15,18 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Ensure placeholder has a close button if not already present from HTML structure
-    // This is a fallback; ideally, the close mechanism is part of the placeholder's initial HTML or styled wrapper
     if (!chatbotPlaceholder.querySelector('.chatbot-placeholder-close-btn')) {
         const closeButton = document.createElement('button');
         closeButton.innerHTML = '&times;';
-        closeButton.className = 'chatbot-placeholder-close-btn'; // For styling via iframe-chat-wrapper.css
+        closeButton.className = 'chatbot-placeholder-close-btn';
         closeButton.setAttribute('aria-label', 'Close Chat');
-        // Styling for this button should be in iframe-chat-wrapper.css
-        // Example minimal styles if CSS doesn't cover it:
-        // closeButton.style.position = 'absolute'; closeButton.style.top = '10px'; closeButton.style.right = '10px';
-        // closeButton.style.zIndex = '10'; closeButton.style.background='transparent'; closeButton.style.border='none';
-        // closeButton.style.fontSize='1.5rem'; closeButton.style.color='var(--text-current)'; closeButton.style.cursor='pointer';
         closeButton.onclick = hideChatbot;
         chatbotPlaceholder.appendChild(closeButton);
     }
@@ -36,47 +90,53 @@ document.addEventListener('DOMContentLoaded', () => {
       iframe.src = chatbotUrl;
       iframe.title = 'Live Chat Support';
       // Styling for iframe (width:100%, height:100%, border:none) should be in iframe-chat-wrapper.css
-      // targeting #chatbot-placeholder.active iframe
 
-      // Clear previous content (like a 'Loading...' message or old iframe)
-      // Keep close button if it was added dynamically
       const currentCloseBtn = chatbotPlaceholder.querySelector('.chatbot-placeholder-close-btn');
-      chatbotPlaceholder.innerHTML = ''; // Clear
-      if(currentCloseBtn) chatbotPlaceholder.appendChild(currentCloseBtn); // Re-add close button
+      chatbotPlaceholder.innerHTML = '';
+      if(currentCloseBtn) chatbotPlaceholder.appendChild(currentCloseBtn);
 
       chatbotPlaceholder.appendChild(iframe);
+      chatbotIframe = iframe; // Store the iframe
       iframeLoaded = true;
-      console.log('INFO:ChatbotLoader/loadAndShowChatbot: Chatbot iframe loaded into placeholder.');
+      console.log('INFO:ChatbotLoader/loadAndShowChatbot: Chatbot iframe created and appended.');
+      setupThemeSync(); // Setup theme synchronization
+    } else if (chatbotIframe) {
+        // If iframe was loaded but maybe hidden and re-shown, ensure theme is current
+        const currentTheme = document.body.getAttribute('data-theme') || 'light';
+        applyThemeToIframe(currentTheme);
+        // Re-ensure observer is active if it was disconnected
+        if (!themeObserver || (themeObserver && themeObserver.takeRecords && themeObserver.takeRecords().length === 0 && !document.body.getAttribute('data-theme-observed-by-chatbot'))) {
+             console.log('INFO:ChatbotLoader/loadAndShowChatbot: Re-initializing theme sync for existing iframe.');
+             setupThemeSync(); // This will re-establish observer if needed
+             document.body.setAttribute('data-theme-observed-by-chatbot', 'true'); // Mark that observer is setup
+        }
     }
 
-    chatbotPlaceholder.classList.add('active'); // Show the placeholder (styled by CSS)
+
+    chatbotPlaceholder.classList.add('active');
     console.log('INFO:ChatbotLoader/loadAndShowChatbot: Chatbot placeholder displayed.');
-    // Focus management: focus the iframe or a close button after opening
     const closeBtn = chatbotPlaceholder.querySelector('.chatbot-placeholder-close-btn');
     if(closeBtn) closeBtn.focus();
-    else if (chatbotPlaceholder.querySelector('iframe')) chatbotPlaceholder.querySelector('iframe').focus();
-
+    else if (chatbotIframe) chatbotIframe.focus();
   }
 
   function hideChatbot() {
     if (chatbotPlaceholder) {
-      chatbotPlaceholder.classList.remove('active'); // Hide the placeholder
+      chatbotPlaceholder.classList.remove('active');
       console.log('INFO:ChatbotLoader/hideChatbot: Chatbot placeholder hidden.');
-      // Optional: To save resources, you could also remove the iframe content when hidden for a long time
-      // This means it reloads fully next time.
-      // setTimeout(() => {
-      //   if (!chatbotPlaceholder.classList.contains('active')) { // Check if still hidden
-      //     const iframe = chatbotPlaceholder.querySelector('iframe');
-      //     if (iframe) chatbotPlaceholder.removeChild(iframe);
-      //     iframeLoaded = false;
-      //     console.log('INFO:ChatbotLoader/hideChatbot: Chatbot iframe removed after timeout.');
-      //   }
-      // }, 60000); // e.g., remove after 1 minute of being hidden
+      // Consider disconnecting observer when hidden if performance is an issue,
+      // but for theme changes it's likely low overhead.
+      // if (themeObserver) {
+      //   themeObserver.disconnect();
+      //   themeObserver = null;
+      //   document.body.removeAttribute('data-theme-observed-by-chatbot');
+      //   console.log('INFO:ChatbotLoader/hideChatbot: Theme observer disconnected.');
+      // }
     }
   }
 
   function toggleChatbot(event) {
-    if(event) event.preventDefault(); // Prevent default action if it's from an anchor click
+    if(event) event.preventDefault();
     if (!chatbotPlaceholder) return;
 
     if (chatbotPlaceholder.classList.contains('active')) {
@@ -98,14 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('WARN:ChatbotLoader/DOMContentLoaded: Desktop chat FAB (chatbot-fab-trigger) not found.');
   }
 
-  // ESC key to close the chatbot placeholder if it's visible
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && chatbotPlaceholder && chatbotPlaceholder.classList.contains('active')) {
         hideChatbot();
         console.log('EVENT:ChatbotLoader/document#keydown[Escape] - Chatbot placeholder closed via ESC.');
-        // Return focus to the trigger if possible
         if(document.activeElement === chatbotPlaceholder || chatbotPlaceholder.contains(document.activeElement)){
-            if(desktopChatFab) desktopChatFab.focus(); // Or whichever trigger was last used
+            if(desktopChatFab) desktopChatFab.focus();
         }
     }
   });
