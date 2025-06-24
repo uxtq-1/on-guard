@@ -603,7 +603,7 @@ body[data-theme="dark"] .right-side-menu-nav .sub-menu {
 }
 
 /* Media query from user's global CSS for hiding mobile nav on desktop */
-@media screen and (min-width: 769px) {
+/* @media screen and (min-width: 769px) {
   .mobile-nav,
   #mobile-services-menu, /* ID for index.html mobile menu */
   .mobile-menu-toggle-btn, /* Class for join_us.html mobile menu trigger */
@@ -612,5 +612,5 @@ body[data-theme="dark"] .right-side-menu-nav .sub-menu {
   /* So, #mobile-services-menu selector above will hide both if they share the ID */
   /* If join_us.html mobile menu needs to be distinct, its ID should be unique */
   {
-    display: none !important; /* Ensure it's hidden on desktop */
-  }
+   /* display: none !important; /* Ensure it's hidden on desktop
+  }*/ 
