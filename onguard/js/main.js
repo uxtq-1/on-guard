@@ -107,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNodeLanguageTexts(currentLanguage, document.body);
     setLanguageButtonVisuals();
     console.log(`INFO:Main/LangInit: Initial language set to ${currentLanguage.toUpperCase()}`);
-
     /* ================================================================
        2) THEME TOGGLE (Desktop & Mobile for index.html header)
        ================================================================= */
@@ -145,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (themeToggleDesktop) themeToggleDesktop.addEventListener("click", () => window.masterToggleTheme());
     if (themeToggleMobile) themeToggleMobile.addEventListener("click", () => window.masterToggleTheme());
     applyTheme(currentTheme); // Initial theme application
-    /* ==================================================================
+   /* ==================================================================
        3) Right-Side Main Menu (for index.html)
        ================================================================== */
     const menuOpenBtn = document.getElementById('menu-open');
