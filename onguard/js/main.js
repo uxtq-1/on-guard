@@ -146,16 +146,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (themeToggleDesktop) themeToggleDesktop.addEventListener("click", () => window.masterToggleTheme());
     if (themeToggleMobile) themeToggleMobile.addEventListener("click", () => window.masterToggleTheme());
-   applyTheme(currentTheme); // Initial theme application
-
-
+    applyTheme(currentTheme); // Initial theme application
     /* ==================================================================
        3) Right-Side Main Menu (for index.html)
        ================================================================== */
     const menuOpenBtn = document.getElementById('menu-open');
     const menuCloseBtn = document.getElementById('menu-close');
     const rightSideMenu = document.getElementById('rightSideMenu');
-   if (menuOpenBtn && rightSideMenu) { // menuCloseBtn is inside rightSideMenu
+    if (menuOpenBtn && rightSideMenu) { // menuCloseBtn is inside rightSideMenu
         menuOpenBtn.addEventListener('click', () => {
             rightSideMenu.classList.add('open');
             menuOpenBtn.setAttribute('aria-expanded', 'true');
@@ -329,3 +327,4 @@ window.sanitizeInput = function(inputString) {
 // window.masterToggleTheme = toggleThemeOnClick; // `toggleThemeOnClick` is not in this scope anymore
 // The language and theme toggles are now self-contained within the main DOMContentLoaded listener.
 // `window.updateDynamicContentLanguage` is already exposed for dynamic content.
+ 
