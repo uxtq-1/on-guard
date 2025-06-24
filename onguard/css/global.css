@@ -379,7 +379,8 @@ body[data-theme="dark"] .submit-button:hover {
    ================================================================== */
 .floating-icons {
     position: fixed;
-    bottom: 20px; /* Default desktop - will be overridden by adaptable_screen.css for mobile */
+
+    bottom: 20px; /* Default desktop - will be overridden by small-screens.css for mobile */
     right: 20px;  /* Default desktop */
     display: flex;
     flex-direction: column;
@@ -603,14 +604,23 @@ body[data-theme="dark"] .right-side-menu-nav .sub-menu {
 }
 
 /* Media query from user's global CSS for hiding mobile nav on desktop */
-/* @media screen and (min-width: 769px) {
-  .mobile-nav,
-  #mobile-services-menu, /* ID for index.html mobile menu */
-  .mobile-menu-toggle-btn, /* Class for join_us.html mobile menu trigger */
-  #join-us-page-mobile-menu /* ID for join_us.html mobile menu (if I used this ID) */
-  /* Note: join_us.html actually uses id="mobile-services-menu" for its mobile menu too */
-  /* So, #mobile-services-menu selector above will hide both if they share the ID */
-  /* If join_us.html mobile menu needs to be distinct, its ID should be unique */
+/* This rule ensures that mobile navigation elements defined in index.html's specific mobile nav
+   and join_us.html's specific mobile menu are hidden on larger screens. */
+@media screen and (min-width: 769px) {
+  .mobile-nav, /* For index.html's bottom mobile nav */
+  #mobile-services-menu, /* For index.html's services popup AND potentially join_us.html's menu if ID is reused */
+  .mobile-menu-toggle-btn, /* For join_us.html's mobile menu trigger */
+  body > #mobile-services-menu /* More specific selector for join_us.html's full screen mobile menu if it's a direct child of body and has this ID */
+  /* Note: join_us.html uses id="mobile-services-menu" for its specific menu.
+     If this ID is unique to that page, then '#mobile-services-menu' or 'body > #mobile-services-menu' will target it.
+     If index.html also has an element with ID #mobile-services-menu for its services popup (which it does, targeted by main.js),
+     then the simple '#mobile-services-menu' selector here will hide BOTH on desktop.
+     This is generally the desired outcome: hide all known mobile menu structures on desktop.
+     The key is ensuring that JS for each page correctly targets its own menu structure,
+     and that styling conflicts don't arise if the ID is reused for elements with different appearances.
+     Using more unique IDs like 'index-mobile-services-menu' and 'joinus-mobile-services-menu' would be safer for CSS if their global styles needed to differ,
+     but for a simple display:none, this combined selector is functional. */
   {
-   /* display: none !important; /* Ensure it's hidden on desktop
-  }*/ 
+    display: none !important; /* Ensure it's hidden on desktop */
+  }
+}
