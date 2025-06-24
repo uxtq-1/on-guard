@@ -1,0 +1,625 @@
+/* onguard/css/global.css */
+
+:root {
+  --primary-color: #4b0082; /* Indigo from user's new base */
+  --accent-color: #f1c40f; /* Yellow from user's new base */
+  --bg-light: #ffffff;
+  --bg-dark: #121212; /* Dark from user's new base (was #1a1a1a) */
+  --text-color-light-theme: #333333;
+  --text-color-dark-theme: #e0e0e0; /* Light grey from user's new base */
+  --font-family: 'Segoe UI', sans-serif; /* User's preferred font */
+
+  /* Define color scheme based on theme */
+  --bg-current: var(--bg-light);
+  --text-current: var(--text-color-light-theme);
+  --header-bg-current: #9b87f5; /* User's header color */
+  --header-text-current: #ffffff;
+  --nav-link-current: #ffffff;
+  --button-bg-current: var(--accent-color); /* For general buttons like toggles */
+  --button-text-current: #333333;
+  --action-button-bg-current: #007bff; /* For main submit buttons, from user CSS */
+  --action-button-text-current: #ffffff;
+  --service-item-bg-current: #f9f9f9; /* User's service item/hero bg */
+  --service-item-shadow: rgba(0,0,0,0.1);
+  --footer-bg-current: #7e69ab; /* User's footer color */
+  --footer-text-current: #ffffff;
+  --link-color-current: var(--primary-color);
+  --border-color-current: #ddd; /* For general borders in light mode */
+  --input-bg-current: var(--bg-light);
+  --input-border-current: #ccc;
+  --modal-content-bg: var(--bg-light);
+  --modal-content-text: var(--text-current);
+  --modal-header-bg: #9b87f5; /* User's modal header color */
+  --modal-header-text: #ffffff;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0; /* Reset from user CSS */
+  padding: 0; /* Reset from user CSS */
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-current); /* Was #f4f4f4, now themed */
+  color: var(--text-current);
+  line-height: 1.6;
+  /* padding: 20px; -- Removed global padding, apply to specific sections if needed */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body[data-theme="dark"] {
+  --bg-current: var(--bg-dark);
+  --text-current: var(--text-color-dark-theme);
+  --header-bg-current: #1c1c1c; /* User's dark header */
+  --header-text-current: var(--text-color-dark-theme);
+  --nav-link-current: var(--text-color-dark-theme);
+  --button-bg-current: #cea70c;
+  --button-text-current: #1a1a1a;
+  --action-button-bg-current: #0056b3; /* User's dark submit button */
+  --action-button-text-current: var(--text-color-dark-theme);
+  --service-item-bg-current: #121212; /* User's dark service/hero bg */
+  --service-item-shadow: rgba(255,255,255,0.05);
+  --footer-bg-current: #1c1c1c; /* Match dark header */
+  --footer-text-current: var(--text-color-dark-theme);
+  --link-color-current: #bb86fc; /* User's dark link color */
+  --border-color-current: #444;
+  --input-bg-current: #333;
+  --input-border-current: #555;
+  --modal-content-bg: #000000; /* User's dark modal content bg */
+  --modal-content-text: var(--text-color-dark-theme);
+  --modal-header-bg: #1c1c1c; /* User's dark modal header */
+  --modal-header-text: var(--text-color-dark-theme);
+}
+
+a {
+  color: var(--link-color-current);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+header {
+  background-color: var(--header-bg-current);
+  color: var(--header-text-current);
+  padding: 15px 20px; /* User's padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative; /* For toggle container positioning */
+}
+
+header nav { /* Assuming this is the main desktop nav */
+    flex-grow: 1;
+    display: flex; /* Added to help center the ul if needed */
+    justify-content: center; /* Center nav ul */
+}
+header nav ul {
+  display: flex;
+  list-style: none;
+  gap: 20px; /* User's gap */
+  padding: 0;
+  margin: 0;
+}
+header nav a { /* Combined from header nav ul li a */
+  color: var(--nav-link-current);
+  font-weight: bold; /* User's font-weight */
+  text-decoration: none;
+}
+
+.toggle-container { /* For desktop lang/theme toggles */
+  display: flex;
+  gap: 10px; /* User's gap */
+  align-items: center;
+}
+.toggle-container button {
+  background-color: #7e69ab; /* User's specific color, could be themed with a new var */
+  color: white;
+  border: none;
+  padding: 8px 15px; /* User's padding */
+  cursor: pointer;
+  border-radius: 20px; /* User's radius */
+  transition: background-color 0.3s;
+}
+.toggle-container button:hover {
+  background-color: #9b87f5; /* User's hover */
+}
+body[data-theme="dark"] .toggle-container button {
+    background-color: var(--button-bg-current);
+    color: var(--button-text-current);
+}
+
+
+.hero {
+  text-align: center;
+  padding: 4rem 1rem; /* User's padding */
+  background-color: var(--service-item-bg-current);
+}
+.hero h2 {
+  font-size: 2.5rem; /* User's font-size */
+  color: var(--primary-color); /* User's color */
+}
+body[data-theme="dark"] .hero h2 {
+  color: #bb86fc; /* User's dark hero h2 */
+}
+.hero p {
+  font-size: 1.3rem; /* User's font-size */
+  margin-top: 1rem; /* User's margin */
+  color: var(--text-current); /* Was #333, now themed */
+}
+.hero-image {
+  width: 100%; /* User's width */
+  max-width: 800px; /* Added max-width for very large screens */
+  height: auto;
+  margin-top: 2rem; /* User's margin */
+  border-radius: 10px; /* User's radius */
+}
+
+.services {
+  padding: 2rem; /* User's padding */
+  background-color: #f1f0fb; /* User's specific bg */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* User's gap */
+  justify-content: space-between; /* User's justify */
+}
+body[data-theme="dark"] .services {
+  background-color: #121212; /* User's dark services bg */
+}
+
+
+.service-item {
+  background: var(--service-item-bg-current); /* Was transparent, now themed */
+  border: 2px solid var(--primary-color); /* User: currentColor, now primary, themed for dark */
+  color: var(--text-current); /* User: inherit, now themed */
+  border-radius: 8px;
+  width: calc(25% - 1rem); /* User's width for 4 items */
+  text-align: center;
+  padding: 1.5rem; /* User's padding */
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  margin-bottom: 1rem; /* Ensure spacing if they wrap */
+}
+body[data-theme="dark"] .service-item {
+    border-color: var(--link-color-current);
+}
+
+.service-item h3 {
+  margin-bottom: 1rem; /* User's margin */
+  color: var(--primary-color); /* User's color */
+}
+body[data-theme="dark"] .service-item h3 {
+    color: var(--link-color-current);
+}
+
+
+.service-item p {
+  margin-bottom: 1rem; /* User's margin */
+}
+
+.service-item .btn { /* Button specific to service items */
+  background-color: var(--primary-color); /* User's color */
+  color: #fff;
+  padding: 10px 20px; /* User's padding */
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+.service-item .btn:hover {
+  background-color: #7e69ab; /* User's hover color */
+}
+body[data-theme="dark"] .service-item .btn {
+    background-color: var(--link-color-current);
+    color: var(--bg-dark);
+}
+
+
+footer {
+  background-color: var(--footer-bg-current); /* User: #7e69ab, now themed */
+  color: var(--footer-text-current);    /* User: white, now themed */
+  padding: 1rem;    /* User's padding */
+  text-align: center;
+  margin-top: 2rem; /* User's margin */
+}
+
+/* ==================================================================
+   Modal Styles (Consolidated from user's new global CSS)
+   ================================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0; /* top, right, bottom, left = 0 */
+    background-color: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content { /* General modal content box */
+    background-color: var(--modal-content-bg);
+    color: var(--modal-content-text);
+    padding: 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* My original shadow, user had 0 0 20px */
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+body[data-theme="dark"] .modal-content { /* User specific dark modal content */
+    background-color: #000;
+    color: #e0e0e0;
+    box-shadow: 0 8px 40px rgba(255,255,255,0.1); /* User's dark shadow */
+}
+
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem; /* From user CSS */
+    color: var(--modal-header-text);
+    background-color: var(--modal-header-bg);
+}
+body[data-theme="dark"] .modal-header {
+    color: var(--text-color-dark-theme); /* Ensure contrast if primary-color doesn't change enough */
+}
+
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-modal {
+    background: none; /* Was transparent */
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--modal-header-text);
+    transition: color 0.3s; /* From user CSS */
+}
+.close-modal:hover {
+  color: #ddd; /* User's hover */
+}
+body[data-theme="dark"] .close-modal {
+    color: var(--text-color-dark-theme);
+}
+
+
+.modal-body {
+  padding: 1rem; /* From user CSS */
+  flex-grow: 1;
+  overflow-y: auto;
+}
+/* User CSS has form grid inside modal-body form */
+.modal-body form {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Default 2 columns for forms in modals */
+  gap: 1rem;
+}
+
+
+.form-cell { /* Used by ContactUs form in index.html */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+/* For forms where label is not part of form-cell directly */
+.modal-body form label {
+    font-weight: bold;
+    color: var(--text-current);
+}
+
+
+.modal-body input[type="text"],
+.modal-body input[type="email"],
+.modal-body input[type="tel"],
+.modal-body input[type="date"],
+.modal-body input[type="time"],
+.modal-body input[type="file"],
+.modal-body select,
+.modal-body textarea {
+    width: 100%;
+    padding: 0.5rem; /* From user CSS */
+    border: 1px solid var(--input-border-current);
+    border-radius: 5px; /* From user CSS */
+    box-sizing: border-box;
+    font-size: 1rem;
+    background-color: var(--input-bg-current);
+    color: var(--text-current);
+}
+
+.modal-body textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color-current);
+    background-color: var(--modal-content-bg); /* Match modal content bg */
+}
+
+.submit-button { /* General submit button style, potentially overridden by specific modal CSS */
+    background-color: var(--action-button-bg-current);
+    color: var(--action-button-text-current);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold; /* Added from user's contact_us.css */
+}
+.submit-button:hover {
+  background-color: #7e69ab; /* User's hover for purple buttons */
+}
+body[data-theme="dark"] .submit-button {
+    background-color: var(--link-color-current); /* Using a lighter color for dark mode submit */
+    color: var(--bg-dark);
+}
+body[data-theme="dark"] .submit-button:hover {
+    opacity: 0.8;
+}
+
+
+/* ==================================================================
+   Floating Action Buttons (FABs) Styles (From user CSS, themed)
+   ================================================================== */
+.floating-icons {
+    position: fixed;
+    bottom: 20px; /* Default desktop - will be overridden by small-screens.css for mobile */
+    right: 20px;  /* Default desktop */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 999;
+}
+
+.floating-icon {
+    background-color: var(--primary-color); /* User: #9b87f5 */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;  /* From user CSS */
+    height: 60px; /* From user CSS */
+    font-size: 24px; /* From user CSS */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+.floating-icon:hover {
+  background-color: #7e69ab; /* User's hover */
+  transform: scale(1.1);
+}
+body[data-theme="dark"] .floating-icon {
+    background-color: #bb86fc; /* User's dark FAB */
+    color: var(--bg-dark);
+}
+body[data-theme="dark"] .floating-icon:hover {
+  background-color: #7e69ab;
+}
+
+
+/* ==================================================================
+   Accessibility & Utilities
+   ================================================================== */
+a:focus, button:focus, input:focus, textarea:focus, select:focus, [tabindex]:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+body[data-theme="dark"] a:focus,
+body[data-theme="dark"] button:focus,
+body[data-theme="dark"] input:focus,
+body[data-theme="dark"] textarea:focus,
+body[data-theme="dark"] select:focus,
+body[data-theme="dark"] [tabindex]:focus {
+    outline-color: var(--button-bg-current);
+}
+
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.fas, .fab, .far, .fal, .fad {
+    vertical-align: middle;
+}
+
+.ops-body-anti-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.ops-chatbot-honeypot-field {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 0;
+    width: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* ==================================================================
+   Right Side Main Menu (for index.html)
+   ================================================================== */
+.header-menu-trigger { /* For #menu-open */
+    background: none;
+    border: none;
+    color: var(--header-text-current);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: 1rem;
+}
+
+.right-side-menu {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 320px;
+    height: 100vh;
+    background-color: var(--bg-current);
+    color: var(--text-current);
+    box-shadow: -3px 0 8px rgba(0,0,0,0.25);
+    z-index: 2500;
+    transition: right 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.right-side-menu.open {
+    right: 0;
+}
+
+.right-side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color-current);
+}
+
+#menu-close {
+    background: none;
+    border: none;
+    color: var(--text-current);
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.right-side-menu-body {
+    padding: 1rem 1.5rem;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.right-side-menu-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.right-side-menu-nav ul li a,
+.right-side-menu-nav ul li > button {
+    display: block;
+    padding: 0.85rem 0;
+    color: var(--link-color-current);
+    text-decoration: none;
+    font-size: 1.1rem;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color-current);
+}
+.right-side-menu-nav ul li:last-child > a,
+.right-side-menu-nav ul li:last-child > button {
+    border-bottom: none;
+}
+
+
+.right-side-menu-nav ul li > button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.right-side-menu-nav ul li a:hover,
+.right-side-menu-nav ul li > button:hover {
+    opacity: 0.7;
+    background-color: rgba(0,0,0,0.03);
+}
+body[data-theme="dark"] .right-side-menu-nav ul li a:hover,
+body[data-theme="dark"] .right-side-menu-nav ul li > button:hover {
+    background-color: rgba(255,255,255,0.05);
+}
+
+
+.right-side-menu-nav .sub-menu {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: rgba(0,0,0,0.02);
+}
+body[data-theme="dark"] .right-side-menu-nav .sub-menu {
+    background-color: rgba(255,255,255,0.03);
+}
+
+
+.right-side-menu-nav .sub-menu.open {
+    max-height: 500px;
+    padding-bottom: 0.5rem;
+}
+
+.right-side-menu-nav .sub-menu li a {
+    font-size: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: none;
+}
+.right-side-menu-nav .sub-menu li:last-child a {
+    padding-bottom: 0.6rem;
+}
+
+
+.services-trigger button .fa-chevron-down {
+    transition: transform 0.3s ease-in-out;
+    font-size: 0.8em;
+}
+.services-trigger button[aria-expanded="true"] .fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+/* Media query from user's global CSS for hiding mobile nav on desktop */
+/* This rule ensures that mobile navigation elements defined in index.html's specific mobile nav
+   and join_us.html's specific mobile menu are hidden on larger screens. */
+@media screen and (min-width: 769px) {
+  .mobile-nav, /* For index.html's bottom mobile nav */
+  #mobile-services-menu, /* For index.html's services popup AND potentially join_us.html's menu if ID is reused */
+  .mobile-menu-toggle-btn, /* For join_us.html's mobile menu trigger */
+  body > #mobile-services-menu /* More specific selector for join_us.html's full screen mobile menu if it's a direct child of body and has this ID */
+  /* Note: join_us.html uses id="mobile-services-menu" for its specific menu.
+     If this ID is unique to that page, then '#mobile-services-menu' or 'body > #mobile-services-menu' will target it.
+     If index.html also has an element with ID #mobile-services-menu for its services popup (which it does, targeted by main.js),
+     then the simple '#mobile-services-menu' selector here will hide BOTH on desktop.
+     This is generally the desired outcome: hide all known mobile menu structures on desktop.
+     The key is ensuring that JS for each page correctly targets its own menu structure,
+     and that styling conflicts don't arise if the ID is reused for elements with different appearances.
+     Using more unique IDs like 'index-mobile-services-menu' and 'joinus-mobile-services-menu' would be safer for CSS if their global styles needed to differ,
+     but for a simple display:none, this combined selector is functional. */
+  {
+    display: none !important; /* Ensure it's hidden on desktop */
+  }
+}
