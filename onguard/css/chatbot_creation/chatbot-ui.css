@@ -1,0 +1,123 @@
+/* onguard/css/chatbot_creation/chatbot-ui.css */
+/* Styles for the chat UI elements within chatbot-widget.html (iframe content) */
+
+.chat-log {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  margin: 0.5rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 20px;
+  max-width: 80%;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.message.user-message {
+  background: #e1bee7;
+  color: #333;
+  align-self: flex-end;
+  margin-left: auto;
+  border-bottom-right-radius: 5px;
+}
+
+.message.bot-message {
+  background: #ede7f6;
+  color: #333;
+  align-self: flex-start;
+  margin-right: auto;
+  border-bottom-left-radius: 5px;
+}
+
+.chat-form {
+  display: flex;
+  align-items: center; /* Align items for button and input height */
+  border-top: 1px solid #ddd;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+.chat-form input#chat-input {
+  flex: 1;
+  padding: 0.6rem 1rem; /* Adjusted padding for vertical alignment with button */
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 1rem;
+  outline: none;
+  margin-right: 0.5rem;
+}
+.chat-form input#chat-input:focus {
+  border-color: #6a1b9a;
+  box-shadow: 0 0 0 2px rgba(106, 27, 154, 0.2);
+}
+
+/* Styles for the reCAPTCHA placeholder */
+.recaptcha-placeholder-container {
+  padding: 0.25rem 0.5rem 0.25rem 0; /* Reduced padding, esp. right */
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.recaptcha-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+#human-verification-checkbox {
+  margin-right: 0.3rem;
+  width: 16px; /* Adjust size */
+  height: 16px; /* Adjust size */
+  accent-color: #6a1b9a; /* Theme the checkbox color */
+}
+
+.recaptcha-text {
+  line-height: 1;
+}
+
+/* Send button - styled as a triangle */
+.chat-form button#chat-send-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 0.5rem;
+  width: 36px; /* Adjust size of the clickable area */
+  height: 36px; /* Adjust size of the clickable area */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Make it circular for a modern look */
+  transition: background-color 0.2s ease;
+}
+
+.chat-form button#chat-send-button:hover {
+  background-color: rgba(106, 27, 154, 0.1); /* Light purple hover */
+}
+
+.chat-form button#chat-send-button::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;      /* Half of height */
+  border-bottom: 8px solid transparent;   /* Half of height */
+  border-left: 12px solid #6a1b9a;     /* Color and width of triangle */
+  margin-left: 3px; /* Adjust to center the triangle if container is circular */
+}
+
+/* Dark theme considerations for UI inside iframe (Placeholder) */
+/* This requires chatbot-widget.html's body to get data-theme attribute */
+/* For example:
+body[data-theme="dark"] .chat-log { background: #2a2a2a; }
+body[data-theme="dark"] .message.user-message { background: #7b1fa2; color: #f0f0f0; }
+...
+*/
