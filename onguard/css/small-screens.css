@@ -1,180 +1,202 @@
 /* onguard/css/small-screens.css */
-/* Styles primarily for index.html's mobile-specific navigation components and layout adjustments */
+/* -------------------------------------------------------------------------
+   Responsive UI Styles (Mobile-First, Modular, and Clean)
+   Target: index.html and shared components
+   ------------------------------------------------------------------------- */
 
+/* -------------------- Root Variables -------------------- */
+:root {
+  --mobile-nav-base-height: 55px;
+  --mobile-nav-bottom-offset: env(safe-area-inset-bottom, 0px);
+}
+
+/* -------------------- Mobile Devices -------------------- */
 @media (max-width: 768px) {
-    /* Hide desktop header navigation and theme/language toggles on index.html */
-    header nav,
-    header .toggle-container {
-        display: none;
-    }
-.services {
-        flex-direction: column;
-        align-items: center;
-    }
-    .service-item {
-        width: 90%;
-        margin: 10px 0;
-    } 
 
-    /* Modal content adjustments for small screens - user's global.css has similar */
-    /* This ensures full width and no border radius for modals on small screens */
-    /* This might be redundant if global.css @media already does this effectively */
-    .modal-content {
-        width: 100%;
-        max-width: 100%; /* Override any desktop max-width */
-        height: 100%;
-        max-height: 100vh;
-        border-radius: 0;
-        border: none; /* Remove borders for full-screen feel */
-        box-shadow: none; /* Remove shadow for full-screen feel */
-    }
-    .modal-overlay.active { /* Ensure padding is removed if modal content is full screen */
-        padding: 0;
-    }
+  /* Hide desktop-specific UI */
+  header nav,
+  .toggle-container {
+    display: none;
+  }
 
- .form-row {
-        flex-direction: column;
-    }
-    .form-cell {
-        flex: 1 1 100%;
-        margin-bottom: 15px;
-    }
-    .form-cell:last-child {
-        margin-bottom: 0;
-    } 
-    
-    /* CSS Variables for Mobile Nav Dimensions (specific to index.html mobile nav) */
-    :root { /* Define these here if not globally defined or if specific to this sheet's components */
-        --mobile-nav-base-height: 55px;
-        --mobile-nav-bottom-offset: env(safe-area-inset-bottom, 0px);
-    }
+  /* Typography adjustments */
+  .hero-title {
+    font-size: 1.8rem;
+  }
 
-    /* Mobile Bottom Navigation Bar (for index.html) */
-    .mobile-nav {
-        display: flex;
-        justify-content: space-around;
-        align-items: stretch; /* Stretch items to fill height before their internal padding */
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
+  .hero-subtitle {
+    font-size: 1rem;
+  }
 
-        background-color: var(--primary-color);
-        border-top: 1px solid var(--border-color-current);
+  /* Reusable layout utilities */
+  .stack-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-        padding-top: 0.5rem; /* Padding for content */
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        padding-bottom: calc(0.5rem + var(--mobile-nav-bottom-offset)); /* Apply safe area to bottom padding */
+  /* Services section */
+  .services {
+    composes: stack-center;
+  }
 
-        height: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
+  .service-item {
+    width: 90%;
+    margin: 10px 0;
+  }
 
-        box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-        box-sizing: border-box;
-        z-index: 10002;
-    }
+  /* Modal styles */
+  .fullscreen-modal {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
 
-    .mobile-nav-item {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-        color: var(--header-text-current);
-        font-size: 0.9rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.25rem 0.1rem; /* Minimal padding for items themselves */
-        flex: 1;
-        /* height: var(--mobile-nav-base-height); Removed, align-items:stretch on parent handles height distribution */
-        text-align: center;
-        line-height: 1.2;
-    }
-    .mobile-nav-item span {
-        font-size: 0.7rem; /* Smaller text for nav item labels */
-        margin-top: 2px;
-    }
+  .modal-overlay.active {
+    padding: 0;
+  }
 
-    .mobile-nav-item i {
-        font-size: 1.2rem;
-        margin-bottom: 0; /* Reduced margin */
-    }
+  /* Form layout */
+  .form-row {
+    display: flex;
+    flex-direction: column;
+  }
 
-    .mobile-nav-item.active {
-        color: var(--accent-color);
-    }
+  .form-cell {
+    flex: 1 1 100%;
+    margin-bottom: 15px;
+  }
 
-    /* Mobile Services Menu (popup for index.html mobile nav) */
-    #mobile-services-menu {
-        position: fixed;
-        bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
-        left: 0;
-        width: 100%;
-        background-color: var(--bg-current);
-        padding: 1rem;
-        border-top: 1px solid var(--border-color-current);
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        z-index: 10001;
-        transform: translateY(100%);
-        transition: transform 0.3s ease-in-out;
-        box-sizing: border-box;
-        max-height: 50%;
-        overflow-y: auto;
-    }
+  .form-cell:last-child {
+    margin-bottom: 0;
+  }
 
-    #mobile-services-menu.active {
-        transform: translateY(0);
-    }
+  /* Mobile Bottom Navigation */
+  .mobile-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-color);
+    border-top: 1px solid var(--border-color-current);
+    padding: 0.5rem 0.5rem calc(0.5rem + var(--mobile-nav-bottom-offset));
+    height: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    z-index: 10002;
+  }
 
-    #mobile-services-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    color: var(--header-text-current);
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.2;
+    padding: 0.25rem 0.1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
 
-    #mobile-services-menu ul li {
-        margin-bottom: 0.1rem; /* Reduced from 0.5rem */
-        border-bottom: 1px solid var(--border-color-current);
-    }
-    #mobile-services-menu ul li:last-child {
-        border-bottom: none;
-    }
+  .mobile-nav-item i {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+  }
 
-    #mobile-services-menu ul li a {
-        display: block;
-        padding: 0.75rem 0.5rem; /* Adjusted padding */
-        text-decoration: none;
-        color: var(--link-color-current);
-        font-weight: 600;
-    }
+  .mobile-nav-item span {
+    font-size: 0.7rem;
+    margin-top: 2px;
+  }
 
-    /* Body padding to avoid overlap with fixed mobile nav (for index.html) */
-    /* This should only apply if .mobile-nav is visible */
-    body:has(.mobile-nav) {
-      /* :has selector might not be fully supported, JS fallback might be needed if issues */
-      /* For now, assuming this applies on pages with .mobile-nav like index.html */
-      padding-bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
-    }
+  .mobile-nav-item.active {
+    color: var(--accent-color);
+  }
 
-    /* Floating icons adjustments for mobile (for index.html) */
-    /* These values are from user's provided adaptable_screen.css */
-    .floating-icons {
-        bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset) + 0.5rem);
-        right: 0.5rem;
-        gap: 0.75rem;
-        z-index: 999; /* Kept from global, ensures it's below modals/menus */
-    }
+  /* Mobile Services Menu */
+  #mobile-services-menu {
+    position: fixed;
+    bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-current);
+    padding: 1rem;
+    border-top: 1px solid var(--border-color-current);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 10001;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+    box-sizing: border-box;
+    max-height: 50%;
+    overflow-y: auto;
+  }
 
-    .floating-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 1.3rem;
-    }
+  #mobile-services-menu.active {
+    transform: translateY(0);
+  }
+
+  #mobile-services-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #mobile-services-menu ul li {
+    margin-bottom: 0.1rem;
+    border-bottom: 1px solid var(--border-color-current);
+  }
+
+  #mobile-services-menu ul li:last-child {
+    border-bottom: none;
+  }
+
+  #mobile-services-menu ul li a {
+    display: block;
+    padding: 0.75rem 0.5rem;
+    text-decoration: none;
+    color: var(--link-color-current);
+    font-weight: 600;
+  }
+
+  /* Body padding (JS toggled class version for compatibility) */
+  body.mobile-nav-active {
+    padding-bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
+  }
+
+  /* Floating icons */
+  .floating-icons {
+    bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset) + 0.5rem);
+    right: 0.5rem;
+    gap: 0.75rem;
+    z-index: 999;
+  }
+
+  .floating-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+  }
 }
 
- @media (min-width: 769px) and (max-width: 1024px) {
-    .hero h2 {
-        font-size: 2.2rem;
-    }
+/* -------------------- Tablet Screens (769px–1024px) -------------------- */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .service-item {
+    width: calc(50% - 1rem);
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
 }
+
+/* Note: global.css should disable .mobile-nav and #mobile-services-menu above 769px */
