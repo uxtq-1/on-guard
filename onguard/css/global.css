@@ -379,7 +379,6 @@ body[data-theme="dark"] .submit-button:hover {
    ================================================================== */
 .floating-icons {
     position: fixed;
-
     bottom: 20px; /* Default desktop - will be overridden by small-screens.css for mobile */
     right: 20px;  /* Default desktop */
     display: flex;
