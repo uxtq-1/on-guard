@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OPS Chatbot</title>
+  <!-- Styles for the iframe content -->
+  <link rel="stylesheet" href="../css/chatbot_creation/chatbot-container.css">
+  <link rel="stylesheet" href="../css/chatbot_creation/chatbot-ui.css">
+</head>
+<body>
+  <div id="chatbot-container">
+    <div id="chat-log" class="chat-log">
+      <!-- Chat messages will appear here -->
+    </div>
+    <form id="chat-form" class="chat-form">
+      <input type="text" id="chat-input" placeholder="Ask me anything..." autocomplete="off" required />
+
+      <!-- Honeypot Field -->
+      <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <!-- Placeholder for visible reCAPTCHA -->
+      <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
+        <label class="recaptcha-label">
+          <input type="checkbox" id="human-verification-checkbox" name="human-verification" required>
+          <span class="recaptcha-text">I am human</span>
+          <!-- Add data-en/es for span text if this widget will also have language switching -->
+        </label>
+      </div>
+
+      <button type="submit" id="chat-send-button" aria-label="Send Message">
+        <!-- Send button text or icon (e.g., triangle) will be styled by CSS -->
+        Send
+      </button>
+    </form>
+  </div>
+
+  <script src="../js/chatbot_creation/chatbot.js" defer></script>
+</body>
+</html>
