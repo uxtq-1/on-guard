@@ -327,4 +327,4 @@ window.sanitizeInput = function(inputString) {
 // window.masterToggleTheme = toggleThemeOnClick; // `toggleThemeOnClick` is not in this scope anymore
 // The language and theme toggles are now self-contained within the main DOMContentLoaded listener.
 // `window.updateDynamicContentLanguage` is already exposed for dynamic content.
- 
+
