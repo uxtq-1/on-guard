@@ -94,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(`INFO:Main/masterToggleLanguage: Language changed to ${currentLanguage.toUpperCase()}`);
         }
     };
-
     if (langToggleDesktop) langToggleDesktop.addEventListener("click", () => window.masterToggleLanguage());
     if (langToggleMobile) langToggleMobile.addEventListener("click", () => window.masterToggleLanguage());
 
@@ -108,8 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNodeLanguageTexts(currentLanguage, document.body);
     setLanguageButtonVisuals();
     console.log(`INFO:Main/LangInit: Initial language set to ${currentLanguage.toUpperCase()}`);
-
-
     /* ================================================================
        2) THEME TOGGLE (Desktop & Mobile for index.html header)
        ================================================================= */
@@ -125,7 +122,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const ariaLabel = (theme === 'light') ?
             (themeToggleDesktop?.dataset[currentLanguage + 'LabelDark'] || themeToggleDesktop?.dataset['enLabelDark'] || "Switch to Dark Theme") :
             (themeToggleDesktop?.dataset[currentLanguage + 'LabelLight'] || themeToggleDesktop?.dataset['enLabelLight'] || "Switch to Light Theme");
-
         if (themeToggleDesktop) {
             themeToggleDesktop.textContent = buttonText;
             if(ariaLabel) themeToggleDesktop.setAttribute('aria-label', ariaLabel);
@@ -147,17 +143,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (themeToggleDesktop) themeToggleDesktop.addEventListener("click", () => window.masterToggleTheme());
     if (themeToggleMobile) themeToggleMobile.addEventListener("click", () => window.masterToggleTheme());
-
     applyTheme(currentTheme); // Initial theme application
-
-
-    /* ==================================================================
+   /* ==================================================================
        3) Right-Side Main Menu (for index.html)
        ================================================================== */
     const menuOpenBtn = document.getElementById('menu-open');
     const menuCloseBtn = document.getElementById('menu-close');
     const rightSideMenu = document.getElementById('rightSideMenu');
-
     if (menuOpenBtn && rightSideMenu) { // menuCloseBtn is inside rightSideMenu
         menuOpenBtn.addEventListener('click', () => {
             rightSideMenu.classList.add('open');
@@ -260,13 +252,11 @@ document.addEventListener("DOMContentLoaded", () => {
        6) Form Submission Logic (DEFERRED to specific component scripts)
        ================================================================ */
     console.log('INFO:Main/FormSubmissions: Form submission logic deferred to specific scripts like contact_us.js and join_us.js.');
-
     /* ================================================================
        7) Mobile Services Menu Toggle (for index.html's bottom nav menu)
        ================================================================= */
     const mobileServicesToggle = document.getElementById('mobile-services-toggle');
     const mobileServicesMenu = document.getElementById('mobile-services-menu');
-
     if (mobileServicesToggle && mobileServicesMenu) {
         mobileServicesToggle.addEventListener('click', () => {
             const isOpen = mobileServicesMenu.classList.toggle('active');
@@ -323,13 +313,11 @@ window.sanitizeInput = function(inputString) {
     PII_PATTERNS.forEach(pattern => {
         sanitized = sanitized.replace(pattern, '[REDACTED PII]');
     });
-
     if (inputString !== sanitized) {
         console.warn("WARN:sanitizeInput: Input modified for security/PII.");
     }
     return sanitized;
 };
-
 // Expose global toggle functions if needed by other scripts (like join_us.js for its own toggles)
 // This is a simple way; modules or custom events would be more robust for larger apps.
 // window.masterToggleLanguage = toggleLanguage; // `toggleLanguage` is not in this scope anymore, it was part of the old main.js structure
