@@ -7,19 +7,14 @@
     header .toggle-container {
         display: none;
     }
-
-    /* Specific overrides for .service-item if global.css @media isn't sufficient */
-    /* User's global.css @media had width: 100% for .service-item */
-    /* My previous adaptable_screen.css had width: 90% and different margin. */
-    /* Assuming global.css's mobile styles for .service-item are now primary. */
-    /* .services {
+.services {
         flex-direction: column;
         align-items: center;
     }
     .service-item {
         width: 90%;
         margin: 10px 0;
-    } */
+    } 
 
     /* Modal content adjustments for small screens - user's global.css has similar */
     /* This ensures full width and no border radius for modals on small screens */
@@ -37,10 +32,7 @@
         padding: 0;
     }
 
-    /* Form layout stacking (if .form-row/.form-cell is used within general modals) */
-    /* User's global.css @media uses grid-template-columns: 1fr for .modal-body form */
-    /* This .form-row/.form-cell is a flex alternative. If grid is global, this can be removed. */
-    /* .form-row {
+ .form-row {
         flex-direction: column;
     }
     .form-cell {
@@ -49,8 +41,8 @@
     }
     .form-cell:last-child {
         margin-bottom: 0;
-    } */
-
+    } 
+    
     /* CSS Variables for Mobile Nav Dimensions (specific to index.html mobile nav) */
     :root { /* Define these here if not globally defined or if specific to this sheet's components */
         --mobile-nav-base-height: 55px;
@@ -181,10 +173,8 @@
     }
 }
 
-/* Tablet view adjustments (if any specific are needed beyond global.css) */
-/* User's global.css handles .service-item for 2-column on tablet (flex: 0 1 45%) */
-/* @media (min-width: 769px) and (max-width: 1024px) {
+ @media (min-width: 769px) and (max-width: 1024px) {
     .hero h2 {
         font-size: 2.2rem;
     }
-} */
+}
