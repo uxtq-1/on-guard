@@ -263,7 +263,10 @@ document.addEventListener("DOMContentLoaded", () => {
     closeModalButtons.forEach(btn => {
         btn.addEventListener('click', (event) => {
             const parentModal = event.currentTarget.closest('.modal-overlay');
-            if (parentModal) parentModal.classList.remove('active');
+            if (parentModal) {
+                parentModal.classList.remove('active');
+                document.body.offsetHeight; // Force reflow
+            }
             if (lastFocusedElement) lastFocusedElement.focus();
         });
     });
@@ -272,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 overlay.classList.remove('active');
+                document.body.offsetHeight; // Force reflow
                 if (lastFocusedElement) lastFocusedElement.focus();
             }
         });
@@ -282,6 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const activeModal = document.querySelector('.modal-overlay.active');
             if (activeModal) {
                 activeModal.classList.remove('active');
+                document.body.offsetHeight; // Force reflow
                 if (lastFocusedElement) lastFocusedElement.focus();
             }
         }
