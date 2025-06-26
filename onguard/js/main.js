@@ -265,7 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const parentModal = event.currentTarget.closest('.modal-overlay');
             if (parentModal) {
                 parentModal.classList.remove('active');
-                document.body.offsetHeight; // Force reflow
             }
             if (lastFocusedElement) lastFocusedElement.focus();
         });
@@ -296,6 +295,28 @@ document.addEventListener("DOMContentLoaded", () => {
        6) Form Submission Logic (DEFERRED to specific component scripts)
        ================================================================ */
     console.log('INFO:Main/FormSubmissions: Form submission logic deferred to specific scripts like contact_us.js and join_us.js.');
+
+    // Prevent default submission for join-us-form and close modal
+    const joinUsForm = document.getElementById('join-us-form');
+    if (joinUsForm) {
+        joinUsForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission and navigation
+            console.log('INFO:Main/joinUsForm#submit: Default submission prevented.');
+
+            // Find the parent modal to close it
+            const parentModal = joinUsForm.closest('.modal-overlay');
+            if (parentModal) {
+                parentModal.classList.remove('active');
+            }
+            // Return focus to the element that opened the modal (if known)
+            if (lastFocusedElement) { // lastFocusedElement is defined in the modal opening logic
+                lastFocusedElement.focus();
+            }
+            // Optionally, display a success message or clear the form here
+            // For now, just closing the modal and preventing navigation.
+        });
+    }
+
 
     /* ================================================================
        7) Mobile Services Menu Toggle (for index.html's bottom nav menu)
