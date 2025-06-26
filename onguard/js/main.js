@@ -274,6 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 overlay.classList.remove('active');
+                document.body.offsetHeight; // Force reflow
                 if (lastFocusedElement) lastFocusedElement.focus();
             }
         });
@@ -284,6 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const activeModal = document.querySelector('.modal-overlay.active');
             if (activeModal) {
                 activeModal.classList.remove('active');
+                document.body.offsetHeight; // Force reflow
                 if (lastFocusedElement) lastFocusedElement.focus();
             }
         }
