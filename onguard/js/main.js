@@ -206,8 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ==================================================================
-       5) Modals (General Logic for index.html: Contact Us)
-          Join Us is now a separate page. Chatbot uses iframe system.
+       5) Modals (General Logic for index.html)
        ================================================================== */
     const modalTriggers = document.querySelectorAll('.floating-icon[data-modal], button[data-modal]');
     const closeModalButtons = document.querySelectorAll('.modal-overlay .close-modal[data-close]');
@@ -222,9 +221,41 @@ document.addEventListener("DOMContentLoaded", () => {
             const targetModal = document.getElementById(modalId);
             if (targetModal) {
                 targetModal.classList.add('active');
-                const focusableElement = targetModal.querySelector('input:not([type="hidden"]), button, [tabindex="0"], a[href], textarea, select');
-                if (focusableElement) focusableElement.focus();
-                else targetModal.focus();
+                // Focus management
+                let firstFocusableElement = targetModal.querySelector('input:not([type="hidden"]):not([disabled]), button:not([disabled]), [href]:not([disabled]), textarea:not([disabled]), select:not([disabled]), iframe, [tabindex]:not([tabindex="-1"]):not([disabled])');
+
+                if (modalId === 'chatbot-modal') {
+                    const iframe = targetModal.querySelector('iframe');
+                    if (iframe) {
+                        // Attempt to focus iframe, then content within after a delay,
+                        // though direct focusing content inside is often blocked.
+                        iframe.focus();
+                        // setTimeout(() => {
+                        //     try {
+                        //         if(iframe.contentWindow) iframe.contentWindow.focus();
+                        //         const chatInput = iframe.contentWindow.document.getElementById('chat-input');
+                        //         if (chatInput) chatInput.focus();
+                        //     } catch (e) {
+                        //         console.warn("Could not focus element within chatbot iframe:", e);
+                        //     }
+                        // }, 100); // Small delay for iframe to load/render
+                        firstFocusableElement = null; // Handled, don't fallback to other elements in modal frame
+                    }
+                }
+
+                if (firstFocusableElement) {
+                    firstFocusableElement.focus();
+                } else if (!targetModal.contains(document.activeElement)) {
+                    // If no specific element was focused (e.g. chatbot iframe handled it, or no elements found)
+                    // and focus is not already within the modal, focus the first close button or modal itself.
+                    const headerCloseButton = targetModal.querySelector('.modal-header .close-modal');
+                    if (headerCloseButton) {
+                        headerCloseButton.focus();
+                    } else {
+                        targetModal.setAttribute('tabindex', '-1'); // Make it focusable
+                        targetModal.focus();
+                    }
+                }
             }
         });
     });
@@ -232,7 +263,10 @@ document.addEventListener("DOMContentLoaded", () => {
     closeModalButtons.forEach(btn => {
         btn.addEventListener('click', (event) => {
             const parentModal = event.currentTarget.closest('.modal-overlay');
-            if (parentModal) parentModal.classList.remove('active');
+            if (parentModal) {
+                parentModal.classList.remove('active');
+                document.body.offsetHeight; // Force reflow
+            }
             if (lastFocusedElement) lastFocusedElement.focus();
         });
     });
@@ -241,6 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 overlay.classList.remove('active');
+                document.body.offsetHeight; // Force reflow
                 if (lastFocusedElement) lastFocusedElement.focus();
             }
         });
@@ -251,6 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const activeModal = document.querySelector('.modal-overlay.active');
             if (activeModal) {
                 activeModal.classList.remove('active');
+                document.body.offsetHeight; // Force reflow
                 if (lastFocusedElement) lastFocusedElement.focus();
             }
         }
