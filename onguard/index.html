@@ -99,22 +99,22 @@
     <div class="service-item">
       <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
       <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">Discover how we optimize your business processes.</p>
-      <a href="business-operations.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+      <button class="btn" data-modal="business-operations-modal" data-en="Learn More" data-es="Saber Más">Learn More</button>
     </div>
     <div class="service-item">
       <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
       <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">Enhance customer interactions with our contact solutions.</p>
-      <a href="contact-center.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+      <button class="btn" data-modal="contact-center-modal" data-en="Learn More" data-es="Saber Más">Learn More</button>
     </div>
     <div class="service-item">
       <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
       <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">Ensure seamless IT operations with our expert support.</p>
-      <a href="it-support.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+      <button class="btn" data-modal="it-support-modal" data-en="Learn More" data-es="Saber Más">Learn More</button>
     </div>
     <div class="service-item">
       <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
       <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">Access top-tier professionals for your business needs.</p>
-      <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
+      <button class="btn" data-modal="professionals-modal" data-en="Learn More" data-es="Saber Más">Learn More</button>
     </div>
   </section>
 
@@ -129,19 +129,19 @@
        Floating Icons
        ================================================================== -->
   <div class="floating-icons">
-    <a href="join_us.html" class="floating-icon"
+    <button class="floating-icon" data-modal="join-us-modal"
             aria-label="Join Us" data-en-label="Join Us" data-es-label="Únete"
             title="Join Us" data-en-title="Join Us" data-es-title="Únete"
             tabindex="0">
       <i class="fas fa-user-plus"></i>
-    </a>
+    </button>
     <button class="floating-icon" data-modal="contact-modal"
             aria-label="Contact Us" data-en-label="Contact Us" data-es-label="Contáctenos"
             title="Contact Us" data-en-title="Contact Us" data-es-title="Contáctenos"
             tabindex="0">
       <i class="fas fa-envelope-open-text"></i>
     </button>
-    <button class="floating-icon" id="chatbot-fab-trigger"
+    <button class="floating-icon" data-modal="chatbot-modal" id="chatbot-fab-trigger"
             aria-label="Open Chat" data-en-label="Open Chat" data-es-label="Abrir Chat"
             title="Open Chat" data-en-title="Open Chat" data-es-title="Abrir Chat"
             tabindex="0">
@@ -217,6 +217,159 @@
   </div>
 
   <!-- ==================================================================
+       Join Us Modal
+       ================================================================== -->
+  <div id="join-us-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinUsModalTitle" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="joinUsModalTitle" data-en="Join Our Team" data-es="Únete a Nuestro Equipo">Join Our Team</h3>
+        <button class="close-modal" data-close aria-label="Close" data-en-label="Close" data-es-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="join-us-form">
+          <div class="form-row">
+            <div class="form-cell">
+              <label for="join-full-name" data-en="Full Name" data-es="Nombre Completo">Full Name</label>
+              <input type="text" id="join-full-name" name="join-full-name" required
+                     placeholder="Enter your full name" data-en-placeholder="Enter your full name" data-es-placeholder="Ingrese su nombre completo">
+            </div>
+            <div class="form-cell">
+              <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+              <input type="email" id="join-email" name="join-email" required
+                     placeholder="Enter your email" data-en-placeholder="Enter your email" data-es-placeholder="Ingrese su correo electrónico">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-cell">
+              <label for="join-phone" data-en="Phone Number (Optional)" data-es="Número de Teléfono (Opcional)">Phone Number (Optional)</label>
+              <input type="tel" id="join-phone" name="join-phone"
+                     placeholder="Enter your phone number" data-en-placeholder="Enter your phone number" data-es-placeholder="Ingrese su número de teléfono">
+            </div>
+            <div class="form-cell">
+              <label for="join-position" data-en="Position Applied For" data-es="Posición Solicitada">Position Applied For</label>
+              <select id="join-position" name="join-position" required>
+                <option value="" disabled selected data-en="Select a position" data-es="Seleccione una posición">Select a position</option>
+                <option value="business_analyst" data-en="Business Analyst" data-es="Analista de Negocios">Business Analyst</option>
+                <option value="customer_service_rep" data-en="Customer Service Rep" data-es="Representante de Servicio al Cliente">Customer Service Rep</option>
+                <option value="it_support_specialist" data-en="IT Support Specialist" data-es="Especialista en Soporte Técnico">IT Support Specialist</option>
+                <option value="project_manager" data-en="Project Manager" data-es="Gerente de Proyecto">Project Manager</option>
+                <option value="other" data-en="Other" data-es="Otro">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-cell" style="flex: 1 1 100%;">
+              <label for="join-resume" data-en="Upload Resume (PDF, DOC, DOCX)" data-es="Subir CV (PDF, DOC, DOCX)">Upload Resume (PDF, DOC, DOCX)</label>
+              <input type="file" id="join-resume" name="join-resume" accept=".pdf,.doc,.docx" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-cell" style="flex: 1 1 100%;">
+              <label for="join-cover-letter" data-en="Cover Letter (Optional)" data-es="Carta de Presentación (Opcional)">Cover Letter (Optional)</label>
+              <textarea id="join-cover-letter" name="join-cover-letter" rows="5"
+                        placeholder="Tell us why you're a good fit" data-en-placeholder="Tell us why you're a good fit" data-es-placeholder="Cuéntanos por qué eres un buen candidato"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" form="join-us-form" class="submit-button" data-en="Submit Application" data-es="Enviar Solicitud">Submit Application</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       Chatbot Modal
+       ================================================================== -->
+  <div id="chatbot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chatbotModalTitle" style="display: none;">
+    <div class="modal-content" style="width: 90%; max-width: 450px; height: 70vh; max-height: 600px;"> <!-- Adjusted size for typical chatbot window -->
+      <div class="modal-header">
+        <h3 id="chatbotModalTitle" data-en="Chat Support" data-es="Soporte por Chat">Chat Support</h3>
+        <button class="close-modal" data-close aria-label="Close" data-en-label="Close" data-es-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 0; overflow: hidden;">
+        <iframe src="chatbot_creation/chatbot-widget.html" title="Chatbot Widget" style="width: 100%; height: 100%; border: none;"></iframe>
+      </div>
+      <!-- Footer might not be needed for chatbot modal -->
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       Service Modals
+       ================================================================== -->
+  <!-- Business Operations Modal -->
+  <div id="business-operations-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="boModalTitle" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="boModalTitle" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
+        <button class="close-modal" data-close aria-label="Close" data-en-label="Close" data-es-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4 data-en="Streamlining Your Success" data-es="Optimizando Su Éxito">Streamlining Your Success</h4>
+        <p data-en="Detailed content about Business Operations services will go here. We help optimize your processes for maximum efficiency and growth." data-es="El contenido detallado sobre los servicios de Operaciones Empresariales irá aquí. Ayudamos a optimizar sus procesos para máxima eficiencia y crecimiento.">Detailed content about Business Operations services will go here. We help optimize your processes for maximum efficiency and growth.</p>
+        <p data-en="Key services include: process analysis, workflow design, automation solutions, and performance management." data-es="Los servicios clave incluyen: análisis de procesos, diseño de flujo de trabajo, soluciones de automatización y gestión del rendimiento.">Key services include: process analysis, workflow design, automation solutions, and performance management.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="close-modal submit-button" data-close data-en="Close" data-es="Cerrar">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Center Modal -->
+  <div id="contact-center-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ccModalTitle" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="ccModalTitle" data-en="Contact Center Solutions" data-es="Soluciones de Centro de Contacto">Contact Center Solutions</h3>
+        <button class="close-modal" data-close aria-label="Close" data-en-label="Close" data-es-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4 data-en="Connecting You With Your Customers" data-es="Conectándolo Con Sus Clientes">Connecting You With Your Customers</h4>
+        <p data-en="Information about our advanced Contact Center solutions. We provide multi-channel support, customer service excellence, and engagement strategies." data-es="Información sobre nuestras soluciones avanzadas de Centro de Contacto. Ofrecemos soporte multicanal, excelencia en el servicio al cliente y estrategias de participación.">Information about our advanced Contact Center solutions. We provide multi-channel support, customer service excellence, and engagement strategies.</p>
+        <p data-en="Includes inbound/outbound call handling, email support, live chat services, and social media customer care." data-es="Incluye manejo de llamadas entrantes/salientes, soporte por correo electrónico, servicios de chat en vivo y atención al cliente en redes sociales.">Includes inbound/outbound call handling, email support, live chat services, and social media customer care.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="close-modal submit-button" data-close data-en="Close" data-es="Cerrar">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IT Support Modal -->
+  <div id="it-support-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="itModalTitle" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="itModalTitle" data-en="IT Support Services" data-es="Servicios de Soporte Técnico">IT Support Services</h3>
+        <button class="close-modal" data-close aria-label="Close" data-en-label="Close" data-es-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4 data-en="Reliable Tech Support When You Need It" data-es="Soporte Técnico Confiable Cuando lo Necesita">Reliable Tech Support When You Need It</h4>
+        <p data-en="Our IT Support services ensure your technology runs smoothly. We offer helpdesk support, network management, cybersecurity, and cloud services." data-es="Nuestros servicios de Soporte Técnico aseguran que su tecnología funcione sin problemas. Ofrecemos soporte de mesa de ayuda, gestión de redes, ciberseguridad y servicios en la nube.">Our IT Support services ensure your technology runs smoothly. We offer helpdesk support, network management, cybersecurity, and cloud services.</p>
+        <p data-en="24/7 monitoring, remote assistance, and on-site support options available." data-es="Monitoreo 24/7, asistencia remota y opciones de soporte en sitio disponibles.">24/7 monitoring, remote assistance, and on-site support options available.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="close-modal submit-button" data-close data-en="Close" data-es="Cerrar">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Professionals Modal -->
+  <div id="professionals-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="profModalTitle" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="profModalTitle" data-en="Professional Services" data-es="Servicios Profesionales">Professional Services</h3>
+        <button class="close-modal" data-close aria-label="Close" data-en-label="Close" data-es-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4 data-en="Expert Talent for Your Key Projects" data-es="Talento Experto Para Sus Proyectos Clave">Expert Talent for Your Key Projects</h4>
+        <p data-en="Access our network of skilled professionals for consulting, project management, and specialized expertise. We connect you with the right talent to achieve your business goals." data-es="Acceda a nuestra red de profesionales calificados para consultoría, gestión de proyectos y experiencia especializada. Lo conectamos con el talento adecuado para alcanzar sus objetivos comerciales.">Access our network of skilled professionals for consulting, project management, and specialized expertise. We connect you with the right talent to achieve your business goals.</p>
+        <p data-en="Areas include: IT consulting, business strategy, financial advisory, and human resources." data-es="Las áreas incluyen: consultoría de TI, estrategia empresarial, asesoría financiera y recursos humanos.">Areas include: IT consulting, business strategy, financial advisory, and human resources.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="close-modal submit-button" data-close data-en="Close" data-es="Cerrar">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
        Mobile Bottom Navigation & Services Menu (for index.html)
        ================================================================== -->
   <nav class="mobile-nav">
@@ -230,7 +383,7 @@
     </button>
     <button class="mobile-nav-item" id="mobile-language-toggle" aria-label="Switch Language" data-en-label="Switch Language" data-es-label="Cambiar Idioma" title="Switch Language" data-en-title="Switch Language" data-es-title="Cambiar Idioma">EN</button>
     <button class="mobile-nav-item" id="mobile-theme-toggle" aria-label="Toggle Theme" data-en-label="Toggle Theme" data-es-label="Cambiar Tema" title="Toggle Theme" data-en-title="Toggle Theme" data-es-title="Cambiar Tema">Light</button>
-    <button class="mobile-nav-item" id="mobileChatLauncher" aria-label="Open Chat" data-en-label="Open Chat" data-es-label="Abrir Chat" title="Open Chat" data-en-title="Open Chat" data-es-title="Abrir Chat">
+    <button class="mobile-nav-item" data-modal="chatbot-modal" id="mobileChatLauncher" aria-label="Open Chat" data-en-label="Open Chat" data-es-label="Abrir Chat" title="Open Chat" data-en-title="Open Chat" data-es-title="Abrir Chat">
       <i class="fas fa-comment-alt"></i>
       <span data-en="Chat" data-es="Chat">Chat</span>
     </button>
