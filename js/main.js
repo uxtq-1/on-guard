@@ -9,6 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
 
     /* ================================================================
+       Contact Form Placeholder Submission
+       ================================================================= */
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            // const formData = new FormData(contactForm);
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(`Contact Form Data: ${key}: ${value}`);
+            // }
+            alert('Contact form submission is not fully implemented in this version. Data logged to console if uncommented.');
+            console.log('INFO:Main/ContactForm: Placeholder submission triggered for contact form.');
+            // contactForm.reset(); // Optionally reset form
+        });
+    }
+
+    /* ================================================================
        1) LANGUAGE TOGGLE (Desktop & Mobile for index.html header)
        ================================================================= */
     let currentLanguage = localStorage.getItem("language") || "en";

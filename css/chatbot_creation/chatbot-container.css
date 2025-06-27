@@ -1,0 +1,30 @@
+/* css/chatbot_creation/chatbot-container.css */
+/* Styles for the main container of the chatbot inside the iframe */
+
+body { /* Body of the iframe */
+    margin: 0;
+    font-family: Arial, sans-serif; /* Basic font */
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    background-color: #f0f0f0; /* Default light mode background for iframe body */
+    color: #333; /* Default light mode text for iframe body */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body[data-theme="dark"] {
+    background-color: #222; /* Dark mode background for iframe body */
+    color: #eee; /* Dark mode text for iframe body */
+}
+
+#chatbot-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Takes up available space */
+    overflow: hidden; /* Prevents scrollbars on the container itself */
+    border: 1px solid #ccc; /* Default light mode border */
+}
+
+body[data-theme="dark"] #chatbot-container {
+    border-color: #444; /* Dark mode border */
+}
