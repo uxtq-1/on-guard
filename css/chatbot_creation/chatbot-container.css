@@ -22,9 +22,10 @@ body[data-theme="dark"] {
     flex-direction: column;
     flex-grow: 1; /* Takes up available space */
     overflow: hidden; /* Prevents scrollbars on the container itself */
-    border: 1px solid #ccc; /* Default light mode border */
+    margin: 2px; /* New margin */
+    border: 2px solid royalpurple; /* New border */
 }
 
 body[data-theme="dark"] #chatbot-container {
-    border-color: #444; /* Dark mode border */
+    border-color: mediumpurple; /* New dark mode border - can be adjusted */
 }
