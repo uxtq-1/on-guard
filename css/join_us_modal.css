@@ -113,14 +113,23 @@ body[data-theme="dark"] #join-us-modal .form-section .edit-btn {
 #join-us-modal .modal-body select,
 #join-us-modal .modal-body textarea {
     width: 100%;
-    padding: 0.65rem; /* Slightly more padding for better touch */
+    /* Using styles from global.css: padding: 0.75rem; border-radius: 6px; */
+    /* These specific rules can be removed if global.css is sufficient */
+    padding: 0.75rem;
     border: 1px solid var(--input-border-current);
-    border-radius: 5px;
+    border-radius: 6px;
     box-sizing: border-box;
     font-size: 1rem;
     background-color: var(--input-bg-current);
     color: var(--text-current);
+    /* transition: border-color 0.3s, box-shadow 0.3s; -- Inherited from global.css if not overridden */
 }
+/* Focus styles will also be inherited from global.css:
+#join-us-modal .modal-body input[type="text"]:focus, ... {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.25);
+}
+*/
 
 #join-us-modal .modal-footer .close-modal {
     background-color: grey;

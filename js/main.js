@@ -281,8 +281,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             let targetModal;
 
-            if (modalId === 'contact-modal') { // Existing static modal
-                targetModal = document.getElementById(modalId);
+            // Unified loading logic for all modals
+            if (modalId === 'contact-modal') {
+                targetModal = await loadModalContent(
+                    modalId,
+                    'contact_us.html', // HTML file to fetch
+                    'contact-modal-placeholder', // Placeholder ID in index.html
+                    typeof initializeContactUsModal === 'function' ? initializeContactUsModal : null // Callback from contact_us.js
+                );
             } else if (modalId === 'join-us-modal') {
                 targetModal = await loadModalContent(
                     modalId,
@@ -296,6 +302,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     'chatbot_modal.html',
                     'chatbot-modal-placeholder',
                     typeof initializeChatbotModal === 'function' ? initializeChatbotModal : null
+                );
+            } else if (modalId === 'help-support-modal') {
+                targetModal = await loadModalContent(
+                    modalId,
+                    'help_support_modal.html',
+                    'help-support-modal-placeholder',
+                    null // No specific JS initializer needed for this simple modal
                 );
             }
             // Add other dynamic modals here with else if (modalId === 'another-modal') { ... }
@@ -401,6 +414,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Search for: targetModalElement.classList.remove('active');
     // Replace with: closeModal(targetModalElement);
     // This will be done in the subsequent diff for js/main.js.
+
+    // Expose closeModal globally for other scripts if needed
+    window.closeModal = closeModal;
 
     /* ================================================================
        6) Form Submission Logic (DEFERRED to specific component scripts)

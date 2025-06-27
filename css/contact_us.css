@@ -1,180 +1,77 @@
-/* === Modal Base === */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: none; /* Initially hidden */
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem; /* Added padding for smaller screens not to touch edges */
+/* css/contact_us.css */
+/* Specific styles for the Contact Us modal. */
+/* Base modal styles are now in css/global.css */
+
+/* The #contact-modal ID can be used for very specific overrides if needed,
+   but most styling should rely on the .modal-overlay structure from global.css. */
+
+/* Override global.css modal form layout if necessary.
+   global.css sets .modal-body form to grid-template-columns: 1fr;
+   If Contact Us form needs two columns, uncomment and adjust:
+*/
+#contact-modal .modal-body form {
+  grid-template-columns: 1fr 1fr; /* Two columns for this specific form */
+  gap: 1.25rem; /* Specific gap for this form */
 }
 
-.modal-overlay.active {
-  display: flex; /* Activated by JS */
+
+/* Specific styling for form elements within the Contact Us modal, if different from global */
+/* For example, if labels or inputs in this modal need unique styling: */
+#contact-modal .modal-body label {
+  /* font-size: 0.85rem; */ /* Example: slightly smaller labels only for this modal */
+  /* color: var(--primary-color); */ /* Example: primary color labels for this modal */
 }
 
-.modal-content {
-  background: #fff; /* Consider var(--bg-current) if theme support is needed */
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-  padding: 1.5rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-height: 90vh; /* Added to prevent overflow on short screens */
-  overflow-y: auto; /* Added for scrollability if content exceeds max-height */
+/* The .form-row and .form-cell classes are used by this form's HTML structure.
+   global.css provides basic flex behavior for .form-row > .form-cell to be 48% width.
+   If specific adjustments are needed for contact_us.html structure: */
+
+#contact-modal .form-row {
+  /* display: flex; gap: 1rem; flex-wrap: wrap; -- Defined in global.css if form is 1fr and uses .form-row */
 }
 
-.modal-header,
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+#contact-modal .form-cell {
+  /* flex: 1 1 48%; -- Defined in global.css for .form-row > .form-cell */
 }
 
-.modal-header {
-  border-bottom: 1px solid #eee; /* Added for separation */
-  padding-bottom: 1rem; /* Added padding */
+/* Full-width cells (like textarea) within the two-column grid */
+#contact-modal .modal-body form .form-cell.full-width {
+  grid-column: 1 / -1; /* Span across both columns */
 }
 
-.modal-footer {
-  border-top: 1px solid #eee; /* Added for separation */
-  padding-top: 1rem; /* Added padding */
-  margin-top: 1rem; /* Ensure space above footer */
-  margin-bottom: 0; /* Footer is last element */
+
+/* Submit button in the footer for this specific modal.
+   global.css provides .modal-footer .submit-button styling.
+   If #contact-modal needs a different submit button appearance:
+*/
+#contact-modal .modal-footer .submit-button {
+  /* background-color: green; */ /* Example: Make this modal's submit button green */
+  /* padding: 0.8rem 2rem; */   /* Example: Different padding */
 }
 
-.modal-header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #333; /* Consider var(--text-color-current) */
-}
 
-.close-modal {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: #666; /* Consider var(--text-color-current-muted) */
-  cursor: pointer;
-  padding: 0.5rem; /* Easier to click */
-  line-height: 1; /* Ensure consistent alignment */
-}
-
-.modal-body {
-  margin-bottom: 1rem;
-}
-
-#contact-form { /* Changed from form to #contact-form for specificity */
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.form-cell {
-  flex: 1 1 48%; /* Allows two cells per row, wrapping if needed */
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-bottom: 0.3rem;
-  font-weight: 600;
-  color: #444; /* Consider var(--text-color-current) */
-  font-size: 0.9rem; /* Slightly smaller label */
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="date"],
-input[type="time"],
-select,
-textarea {
-  padding: 0.6rem;
-  border: 1px solid #ccc; /* Consider var(--border-color-current) */
-  border-radius: 6px;
-  font-size: 1rem;
-  width: 100%; /* Ensure inputs take full width of their cell */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  background-color: #fff; /* Consider var(--input-bg-current) */
-  color: #333; /* Consider var(--text-color-current) */
-}
-
-textarea {
-  resize: vertical;
-  min-height: 80px; /* Set a min-height */
-}
-
-.submit-button {
-  padding: 0.75rem 1.5rem;
-  background-color: #6a1b9a; /* Consider var(--accent-color) */
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-size: 1rem; /* Ensure consistent font size */
-}
-
-.submit-button:hover {
-  background-color: #4a148c; /* Consider var(--accent-color-hover) */
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .modal-content {
-    padding: 1rem; /* Adjust padding for smaller modals */
+/* Responsive adjustments specific to the Contact Us modal */
+@media (max-width: 768px) { /* Broader breakpoint than 600px for form layout */
+  #contact-modal .modal-body form {
+    grid-template-columns: 1fr; /* Stack to single column earlier */
   }
-  .form-cell {
-    flex: 1 1 100%; /* Stack form cells vertically on small screens */
-  }
-  .modal-header h3 {
-    font-size: 1.25rem; /* Adjust header size */
-  }
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="date"],
-  input[type="time"],
-  select,
-  textarea {
-    font-size: 0.95rem; /* Adjust font size in inputs for small screens */
-  }
-  .submit-button {
-    font-size: 0.95rem; /* Adjust button font size */
-  }
+  /* .form-cell will naturally take full width due to grid stacking */
 }
 
-/* Ensure theme variables are respected if available in global.css */
-/* For example, if your global.css defines these:
-body.dark-theme .modal-content {
-  background: var(--bg-dark, #333);
-  color: var(--text-dark, #fff);
-}
-body.dark-theme .modal-header h3,
-body.dark-theme label,
-body.dark-theme input,
-body.dark-theme select,
-body.dark-theme textarea {
-  color: var(--text-dark, #fff);
-}
-body.dark-theme input,
-body.dark-theme select,
-body.dark-theme textarea {
-  background-color: var(--input-bg-dark, #444);
-  border-color: var(--border-color-dark, #555);
-}
-body.dark-theme .close-modal {
-  color: var(--text-dark-muted, #bbb);
-}
+/*
+  Removed styles that are now covered by css/global.css:
+  - .modal-overlay (base, active state)
+  - .modal-content (base background, border-radius, width, max-width, max-height, base padding, shadow, display flex, etc.)
+    Note: global.css .modal-content has padding:0, and .modal-body has padding: 1.5rem.
+          contact_us.css previously had padding: 1.5rem directly on .modal-content.
+          This change makes the padding consistent via .modal-body.
+  - .modal-header (base display, padding, border-bottom, background, text color)
+  - .modal-header h3 (base margin, font-size, text color)
+  - .close-modal (in header: base font-size, background, border, color, cursor, padding, line-height)
+  - .modal-body (base padding, flex-grow, overflow-y)
+  - .modal-footer (base display, padding, border-top, background)
+  - General input, select, textarea styles (padding, border, radius, font-size, width, box-sizing, colors)
+    Note: global.css now has slightly larger padding (0.75rem) and border-radius (6px) for inputs.
+  - General .submit-button styles (colors, padding, font-weight, border, radius, cursor)
+    Note: global.css now has specific .modal-footer button styling.
 */

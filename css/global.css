@@ -2,11 +2,13 @@
 
 :root {
   --primary-color: #4b0082; /* Indigo from user's new base */
+  --primary-color-rgb: 75, 0, 130; /* RGB version for box-shadow */
   --accent-color: #f1c40f; /* Yellow from user's new base */
   --bg-light: #ffffff;
   --bg-dark: #121212; /* Dark from user's new base (was #1a1a1a) */
   --text-color-light-theme: #333333;
   --text-color-dark-theme: #e0e0e0; /* Light grey from user's new base */
+  --link-color-dark-theme-rgb: 187, 134, 252; /* RGB for dark theme link color (used for focus) */
   --font-family: 'Segoe UI', sans-serif; /* User's preferred font */
 
   /* Define color scheme based on theme */
@@ -278,55 +280,80 @@ body[data-theme="dark"] .modal-content { /* User specific dark modal content */
     padding: 1rem; /* From user CSS */
     color: var(--modal-header-text);
     background-color: var(--modal-header-bg);
+    border-bottom: 1px solid var(--border-color-current); /* Added for consistency */
 }
 body[data-theme="dark"] .modal-header {
     color: var(--text-color-dark-theme); /* Ensure contrast if primary-color doesn't change enough */
+    border-bottom-color: var(--border-color-current);
 }
 
 
 .modal-header h3 {
     margin: 0;
     font-size: 1.5rem;
+    color: var(--modal-header-text); /* Ensured it uses the variable */
+}
+body[data-theme="dark"] .modal-header h3 {
+    color: var(--modal-header-text);
 }
 
 .close-modal {
     background: none; /* Was transparent */
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Increased from 1.5rem for better visibility/clickability */
     cursor: pointer;
     color: var(--modal-header-text);
     transition: color 0.3s; /* From user CSS */
+    padding: 0.25rem 0.5rem; /* Added padding for easier clicking */
+    line-height: 1; /* Ensures consistent alignment */
 }
 .close-modal:hover {
-  color: #ddd; /* User's hover */
+  color: rgba(255,255,255,0.7); /* Lighter hover for dark headers */
 }
 body[data-theme="dark"] .close-modal {
-    color: var(--text-color-dark-theme);
+    color: var(--modal-header-text); /* Should match header text color */
+}
+body[data-theme="dark"] .close-modal:hover {
+    color: rgba(224, 224, 224, 0.7); /* Lighter hover for dark theme header text */
 }
 
 
 .modal-body {
-  padding: 1rem; /* From user CSS */
+  padding: 1.5rem; /* Standardized padding for modal body, was 1rem. contact_us.css had 1.5rem on .modal-content */
   flex-grow: 1;
   overflow-y: auto;
 }
-/* User CSS has form grid inside modal-body form */
+
+/* Default form styling within modal-body, can be overridden by specific modal CSS */
 .modal-body form {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Default 2 columns for forms in modals */
+  /* Default to single column, specific modals can override to 1fr 1fr if needed */
+  grid-template-columns: 1fr;
   gap: 1rem;
 }
-
-
-.form-cell { /* Used by ContactUs form in index.html */
+.modal-body form .form-row { /* Optional class for grouping fields side-by-side if form is 1fr */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.modal-body form .form-cell { /* Used by ContactUs form and potentially others */
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.5rem; /* Space between label and input within a cell */
+    flex: 1 1 100%; /* Default to full width, can be adjusted in .form-row context */
 }
-/* For forms where label is not part of form-cell directly */
+/* If .form-row is used to make cells side-by-side: */
+.modal-body form .form-row > .form-cell {
+    flex: 1 1 48%; /* Allows two cells per row */
+}
+
+
+/* Generic label styling within modal forms */
 .modal-body form label {
-    font-weight: bold;
+    font-weight: 600; /* Was bold, using 600 for consistency */
     color: var(--text-current);
+    margin-bottom: 0.25rem; /* Small space above input */
+    font-size: 0.9rem;
 }
 
 
@@ -339,31 +366,112 @@ body[data-theme="dark"] .close-modal {
 .modal-body select,
 .modal-body textarea {
     width: 100%;
-    padding: 0.5rem; /* From user CSS */
+    padding: 0.75rem; /* Increased padding for better touch/look */
     border: 1px solid var(--input-border-current);
-    border-radius: 5px; /* From user CSS */
+    border-radius: 6px; /* Slightly more rounded */
     box-sizing: border-box;
     font-size: 1rem;
     background-color: var(--input-bg-current);
     color: var(--text-current);
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
+.modal-body input[type="text"]:focus,
+.modal-body input[type="email"]:focus,
+.modal-body input[type="tel"]:focus,
+.modal-body input[type="date"]:focus,
+.modal-body input[type="time"]:focus,
+.modal-body input[type="file"]:focus,
+.modal-body select:focus,
+.modal-body textarea:focus {
+    border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.25);
+    outline: none; /* Remove default focus outline if custom is applied */
+}
+body[data-theme="dark"] .modal-body input[type="text"]:focus,
+body[data-theme="dark"] .modal-body input[type="email"]:focus,
+body[data-theme="dark"] .modal-body input[type="tel"]:focus,
+body[data-theme="dark"] .modal-body input[type="date"]:focus,
+body[data-theme="dark"] .modal-body input[type="time"]:focus,
+body[data-theme="dark"] .modal-body input[type="file"]:focus,
+body[data-theme="dark"] .modal-body select:focus,
+body[data-theme="dark"] .modal-body textarea:focus {
+    border-color: var(--link-color-current); /* Use current link color for dark theme focus */
+    box-shadow: 0 0 0 2px rgba(var(--link-color-dark-theme-rgb), 0.3);
+}
+
 
 .modal-body textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px; /* Increased min-height */
 }
 
 .modal-footer {
     display: flex;
-    justify-content: flex-end;
-    padding: 1rem;
+    justify-content: flex-end; /* Default, specific modals can override */
+    gap: 0.75rem; /* Space between buttons in footer */
+    padding: 1rem 1.5rem; /* Match body padding horizontal */
     border-top: 1px solid var(--border-color-current);
     background-color: var(--modal-content-bg); /* Match modal content bg */
 }
 
-.submit-button { /* General submit button style, potentially overridden by specific modal CSS */
-    background-color: var(--action-button-bg-current);
-    color: var(--action-button-text-current);
+/* General button styling for modal footer, can be `.btn` or more specific */
+.modal-footer .btn, .modal-footer button {
+    padding: 0.65rem 1.25rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    border: 1px solid transparent;
+}
+
+/* Primary action button (e.g. Submit) in modal footer */
+.modal-footer .submit-button, .modal-footer .btn-primary {
+    background-color: var(--primary-color); /* Was --action-button-bg-current */
+    color: var(--bg-light); /* Ensuring contrast with primary color */
+    border-color: var(--primary-color);
+}
+.modal-footer .submit-button:hover, .modal-footer .btn-primary:hover {
+    background-color: #7e69ab; /* Darker shade of primary */
+    border-color: #7e69ab;
+}
+body[data-theme="dark"] .modal-footer .submit-button,
+body[data-theme="dark"] .modal-footer .btn-primary {
+    background-color: var(--link-color-current); /* Dark theme primary action */
+    color: var(--bg-dark);
+    border-color: var(--link-color-current);
+}
+body[data-theme="dark"] .modal-footer .submit-button:hover,
+body[data-theme="dark"] .modal-footer .btn-primary:hover {
+    opacity: 0.85;
+}
+
+
+/* Secondary/Cancel button in modal footer */
+.modal-footer .close-modal-button, .modal-footer .btn-secondary {
+    background-color: transparent;
+    color: var(--text-current);
+    border: 1px solid var(--input-border-current); /* Subtle border */
+}
+.modal-footer .close-modal-button:hover, .modal-footer .btn-secondary:hover {
+    background-color: rgba(0,0,0,0.05);
+    border-color: var(--text-current);
+}
+body[data-theme="dark"] .modal-footer .close-modal-button,
+body[data-theme="dark"] .modal-footer .btn-secondary {
+    color: var(--text-color-dark-theme);
+    border-color: var(--input-border-current);
+}
+body[data-theme="dark"] .modal-footer .close-modal-button:hover,
+body[data-theme="dark"] .modal-footer .btn-secondary:hover {
+    background-color: rgba(255,255,255,0.1);
+    border-color: var(--text-color-dark-theme);
+}
+
+
+/* The .submit-button class outside of .modal-footer retains its original global.css definition */
+.submit-button {
+    background-color: var(--action-button-bg-current); /* This is the original global one */
+    color: var(--action-button-text-current); /* This is the original global one */
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 5px;
