@@ -1,0 +1,8 @@
+{
+  "short_name": "OPS",
+  "name": "OPS Solutions Services",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "theme_color": "#4b0082",
+  "background_color": "#ffffff"
+}
