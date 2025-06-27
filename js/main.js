@@ -358,9 +358,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === 'Escape') {
             const activeModal = document.querySelector('.modal-overlay.active');
             if (activeModal) {
-                activeModal.classList.remove('active');
-                removeFocusTrap(); // Remove trap when modal closes
-                if (lastFocusedElement) lastFocusedElement.focus();
+                // Directly use the generalized closeModal function
+                closeModal(activeModal);
             }
         }
     });
