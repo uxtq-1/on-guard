@@ -10,6 +10,31 @@ document.addEventListener('DOMContentLoaded', () => {
   let chatbotIframe = null; // Store the iframe element
   let themeObserver = null; // Store the MutationObserver
 
+  const desktopLangToggle = document.getElementById('language-toggle-desktop');
+  const mobileLangToggle = document.getElementById('mobile-language-toggle');
+  const languageChangeMessage = "Check the I'm Human Checkbox  - It is a pleasure to answer all your concerns and questions";
+
+  const sendLangMessageToChatbot = () => {
+    if (chatbotIframe && chatbotIframe.contentWindow) {
+      chatbotIframe.contentWindow.postMessage(languageChangeMessage, '*');
+      console.log('INFO:ChatbotLoader/sendLangMessageToChatbot: Sent language change message to iframe.');
+    } else {
+      console.warn('WARN:ChatbotLoader/sendLangMessageToChatbot: Chatbot iframe or contentWindow not available to send message.');
+    }
+  };
+
+  if (desktopLangToggle) {
+    desktopLangToggle.addEventListener('click', sendLangMessageToChatbot);
+  } else {
+    console.warn('WARN:ChatbotLoader/DOMContentLoaded: Desktop language toggle (language-toggle-desktop) not found.');
+  }
+
+  if (mobileLangToggle) {
+    mobileLangToggle.addEventListener('click', sendLangMessageToChatbot);
+  } else {
+    console.warn('WARN:ChatbotLoader/DOMContentLoaded: Mobile language toggle (mobile-language-toggle) not found.');
+  }
+
   // Function to apply theme to iframe
   function applyThemeToIframe(theme) {
     if (chatbotIframe && chatbotIframe.contentWindow && chatbotIframe.contentWindow.document && chatbotIframe.contentWindow.document.body) {
@@ -132,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       //   document.body.removeAttribute('data-theme-observed-by-chatbot');
       //   console.log('INFO:ChatbotLoader/hideChatbot: Theme observer disconnected.');
       // }
+      window.location.href = 'index.html'; // Redirect when chatbot is closed
     }
   }
 
@@ -165,6 +191,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if(document.activeElement === chatbotPlaceholder || chatbotPlaceholder.contains(document.activeElement)){
             if(desktopChatFab) desktopChatFab.focus();
         }
+    }
+  });
+
+  // Add event listener for clicks outside the chatbot modal
+  document.addEventListener('click', (event) => {
+    if (chatbotPlaceholder && chatbotPlaceholder.classList.contains('active')) {
+      const isClickInsideChatbot = chatbotPlaceholder.contains(event.target);
+      const isClickOnMobileLauncher = mobileChatLauncher && mobileChatLauncher.contains(event.target);
+      const isClickOnDesktopFab = desktopChatFab && desktopChatFab.contains(event.target);
+
+      if (!isClickInsideChatbot && !isClickOnMobileLauncher && !isClickOnDesktopFab) {
+        hideChatbot();
+        console.log('EVENT:ChatbotLoader/document#click - Chatbot placeholder closed via click outside.');
+      }
     }
   });
 
