@@ -10,6 +10,31 @@ document.addEventListener('DOMContentLoaded', () => {
   let chatbotIframe = null; // Store the iframe element
   let themeObserver = null; // Store the MutationObserver
 
+  const desktopLangToggle = document.getElementById('language-toggle-desktop');
+  const mobileLangToggle = document.getElementById('mobile-language-toggle');
+  const languageChangeMessage = "Check the I'm Human Checkbox  - It is a pleasure to answer all your concerns and questions";
+
+  const sendLangMessageToChatbot = () => {
+    if (chatbotIframe && chatbotIframe.contentWindow) {
+      chatbotIframe.contentWindow.postMessage(languageChangeMessage, '*');
+      console.log('INFO:ChatbotLoader/sendLangMessageToChatbot: Sent language change message to iframe.');
+    } else {
+      console.warn('WARN:ChatbotLoader/sendLangMessageToChatbot: Chatbot iframe or contentWindow not available to send message.');
+    }
+  };
+
+  if (desktopLangToggle) {
+    desktopLangToggle.addEventListener('click', sendLangMessageToChatbot);
+  } else {
+    console.warn('WARN:ChatbotLoader/DOMContentLoaded: Desktop language toggle (language-toggle-desktop) not found.');
+  }
+
+  if (mobileLangToggle) {
+    mobileLangToggle.addEventListener('click', sendLangMessageToChatbot);
+  } else {
+    console.warn('WARN:ChatbotLoader/DOMContentLoaded: Mobile language toggle (mobile-language-toggle) not found.');
+  }
+
   // Function to apply theme to iframe
   function applyThemeToIframe(theme) {
     if (chatbotIframe && chatbotIframe.contentWindow && chatbotIframe.contentWindow.document && chatbotIframe.contentWindow.document.body) {
