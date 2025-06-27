@@ -8,59 +8,67 @@ function initializeJoinUsModal(modalElement) {
     }
 
     let currentLang = localStorage.getItem("language") || "en";
-    // Theme is handled globally by main.js
 
     const joinForm = modalElement.querySelector('#join-us-form-modal');
-
     if (joinForm) {
         joinForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log(currentLang === 'es' ? 'INFO:join_us/submit: Formulario "Únete a Nosotros" enviado (simulado).' : 'INFO:join_us/submit: Join Us Form submitted (simulated).');
             const formData = new FormData(joinForm);
             const data = {};
             formData.forEach((value, key) => { data[key] = value; });
+            // Simulate submission (AJAX, fetch, etc. can be added here)
+            console.log(currentLang === 'es'
+                ? 'INFO:join_us/submit: Formulario "Únete a Nosotros" enviado (simulado).'
+                : 'INFO:join_us/submit: Join Us Form submitted (simulated).');
             console.log("INFO:join_us/submit: Join Us Form data:", data);
-            // Optionally reset form: joinForm.reset();
-            // Optionally close modal: modalElement.classList.remove('active');
-            // Consider giving user feedback on submission.
+
+            // Feedback to user (success message)
+            const feedbackArea = modalElement.querySelector('.join-us-feedback');
+            if (feedbackArea) {
+                feedbackArea.textContent = currentLang === 'es'
+                    ? '¡Enviado! Gracias por unirte a nosotros.'
+                    : 'Submitted! Thank you for joining us.';
+                feedbackArea.style.display = 'block';
+                setTimeout(() => {
+                    feedbackArea.style.display = 'none';
+                }, 2500);
+            }
+            // Optionally reset form:
+            // joinForm.reset();
         });
     } else {
-        console.error("ERROR:join_us/initializeJoinUsModal: Join Us form (#join-us-form-modal) not found in modalElement.");
+        console.error("ERROR:join_us/initializeJoinUsModal: #join-us-form-modal not found.");
     }
 
-    // Dynamic Form Sections (Skills, Education, etc.)
-    // Ensure querySelectorAll is called on modalElement to scope it correctly.
+    // Handle dynamic sections (Skills, Education, etc.)
     modalElement.querySelectorAll('.form-section').forEach(section => {
         const addBtn = section.querySelector('.add');
         const removeBtn = section.querySelector('.remove');
         const acceptBtn = section.querySelector('.accept-btn');
         const editBtn = section.querySelector('.edit-btn');
         const inputsContainer = section.querySelector('.inputs');
-        const titleElement = section.querySelector('h4'); // Changed from h2 to h4 in modal HTML
+        const titleElement = section.querySelector('h4');
 
         if (!addBtn || !removeBtn || !acceptBtn || !editBtn || !inputsContainer || !titleElement) {
             console.warn("WARN:join_us/initDynamicSections: Missing elements in a dynamic form section.", section);
             return;
         }
 
-        // Update current language for placeholder text generation
-        currentLang = localStorage.getItem("language") || "en";
-
         addBtn.onclick = () => {
             const input = document.createElement('input');
             input.type = 'text';
             const titleEn = titleElement.dataset.en || 'info';
             const titleEs = titleElement.dataset.es || 'info';
-            const placeholderEn = `Enter ${titleEn} info`;
-            const placeholderEs = `Ingresa ${titleEs} info`;
-            input.setAttribute('data-placeholder-en', placeholderEn);
-            input.setAttribute('data-placeholder-es', placeholderEs);
-            input.placeholder = currentLang === 'es' ? placeholderEs : placeholderEn;
-            // Apply global language update to this new input if window.updateDynamicContentLanguage exists
+            input.placeholder = currentLang === 'es'
+                ? `Ingresa ${titleEs} info`
+                : `Enter ${titleEn} info`;
+            input.setAttribute('data-placeholder-en', `Enter ${titleEn} info`);
+            input.setAttribute('data-placeholder-es', `Ingresa ${titleEs} info`);
             if (window.updateDynamicContentLanguage) {
-                 window.updateDynamicContentLanguage(input);
+                window.updateDynamicContentLanguage(input);
             }
             inputsContainer.appendChild(input);
+            input.focus();
         };
 
         removeBtn.onclick = () => {
@@ -73,8 +81,11 @@ function initializeJoinUsModal(modalElement) {
         acceptBtn.onclick = () => {
             const sectionInputs = inputsContainer.querySelectorAll('input');
             if (sectionInputs.length === 0) {
-                // TODO: Provide user feedback (e.g., via a status message area in the modal)
-                console.warn(currentLang === 'es' ? 'User feedback: Agrega al menos una entrada.' : 'User feedback: Please add at least one entry.');
+                // Feedback for no entries
+                const msg = currentLang === 'es'
+                    ? 'Por favor, agrega al menos una entrada.'
+                    : 'Please add at least one entry.';
+                showSectionFeedback(section, msg);
                 return;
             }
             sectionInputs.forEach(input => input.disabled = true);
@@ -95,20 +106,33 @@ function initializeJoinUsModal(modalElement) {
         };
     });
 
-    // Initial language update for the modal content when it's initialized
-    if (window.updateDynamicContentLanguage) {
+    // Initial language update for modal content
+    if (typeof window.updateDynamicContentLanguage === 'function') {
         window.updateDynamicContentLanguage(modalElement);
     } else {
-        console.warn("WARN:join_us/initializeJoinUsModal: window.updateDynamicContentLanguage not found. Modal language may not be up to date.");
+        console.warn("WARN:join_us/initializeJoinUsModal: window.updateDynamicContentLanguage not found.");
+    }
+
+    // Optional helper: Section-level feedback
+    function showSectionFeedback(section, msg) {
+        let feedback = section.querySelector('.section-feedback');
+        if (!feedback) {
+            feedback = document.createElement('div');
+            feedback.className = 'section-feedback';
+            feedback.style.color = '#c00';
+            feedback.style.fontSize = '0.9em';
+            feedback.style.marginTop = '4px';
+            section.appendChild(feedback);
+        }
+        feedback.textContent = msg;
+        feedback.style.display = 'block';
+        setTimeout(() => {
+            feedback.style.display = 'none';
+        }, 2500);
     }
 
     console.log('INFO:join_us/initializeJoinUsModal: Join Us modal initialized.');
 }
 
-// The actual loading and display of the modal will be handled by main.js
-// This script (join_us.js) will be called upon to initialize the modal's specific JS functionalities
-// once its HTML is loaded into the DOM.
-// Example of how it might be triggered from main.js after loading HTML:
-// if (modalId === 'join-us-modal' && typeof initializeJoinUsModal === 'function') {
-//   initializeJoinUsModal(targetModalElement);
-// }
+// Make initializer available globally for main.js
+window.initializeJoinUsModal = initializeJoinUsModal;
