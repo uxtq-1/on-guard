@@ -58,8 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Check Honeypot
     if (honeypotInput && honeypotInput.value !== '') {
       console.warn('WARN:ChatbotWidget/submit: Honeypot filled. Potential bot. Submission blocked.');
-      // Optionally, you can silently log this and not inform the user, or give a generic error.
-      // addMessage("Submission blocked.", 'bot');
+      addMessage("Honeypot triggered! Submission blocked.", 'bot');
       return;
     }
 
@@ -124,6 +123,20 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     addMessage("Hello! I'm your OPS Solutions assistant. How can I help you today?", 'bot');
   }, 500);
+
+  // Listen for messages from the parent page
+  const handleParentMessage = (event) => {
+    // Optional: Add origin check for security if needed
+    // if (event.origin !== 'expected-origin') return;
+    if (typeof event.data === 'string') {
+      addMessage(event.data, 'bot');
+      console.log('INFO:ChatbotWidget/handleParentMessage: Received message from parent:', event.data);
+    } else {
+      console.warn('WARN:ChatbotWidget/handleParentMessage: Received non-string message from parent:', event.data);
+    }
+  };
+
+  window.addEventListener('message', handleParentMessage);
 
   console.log('INFO:ChatbotWidget/DOMContentLoaded: Chatbot widget JS initialized inside iframe.');
 });

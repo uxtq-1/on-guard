@@ -5,11 +5,11 @@
     flex-grow: 1;
     padding: 10px;
     overflow-y: auto;
-    background-color: #fff; /* Light mode chat log background */
+    background-color: ghostwhite; /* Cold White chat log background */
     border-bottom: 1px solid #ccc;
 }
 body[data-theme="dark"] .chat-log {
-    background-color: #333; /* Dark mode chat log background */
+    background-color: #333; /* Dark mode chat log background - unchanged */
     border-bottom-color: #555;
 }
 
@@ -59,32 +59,33 @@ body[data-theme="dark"] .chat-form {
     border: 1px solid #ccc;
     border-radius: 20px;
     margin-right: 10px;
-    background-color: #fff; /* Light mode input */
+    background-color: ghostwhite; /* Cold White input background */
     color: #333;
 }
 body[data-theme="dark"] #chat-input {
-    background-color: #444; /* Dark mode input */
+    background-color: #444; /* Dark mode input - unchanged */
     color: #eee;
     border-color: #666;
 }
 
 #chat-send-button {
     padding: 10px 15px;
-    background-color: #007bff; /* Light mode send button */
-    color: white;
+    background-color: lemonchiffon; /* Lemon Yellow send button */
+    color: #333; /* Dark text for contrast */
     border: none;
     border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 #chat-send-button:hover {
-    background-color: #0056b3; /* Light mode send button hover */
+    background-color: gold; /* Slightly darker yellow for hover */
 }
 body[data-theme="dark"] #chat-send-button {
-    background-color: #0056b3; /* Dark mode send button */
+    background-color: #FFEC8B; /* Lighter lemon/gold for dark mode */
+    color: #222; /* Darker text for dark mode button */
 }
 body[data-theme="dark"] #chat-send-button:hover {
-    background-color: #003d80; /* Dark mode send button hover */
+    background-color: #EEDC82; /* Slightly darker for dark mode hover */
 }
 
 /* Honeypot field - already styled globally in global.css, but can add specifics if needed */
