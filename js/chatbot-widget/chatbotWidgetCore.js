@@ -1,4 +1,4 @@
-// js/chatbot_creation/chatbot.js
+// js/chatbot_creation/chatbotWidgetCore.js
 // This script runs *inside* the chatbot-widget.html iframe
 
 document.addEventListener('DOMContentLoaded', () => {

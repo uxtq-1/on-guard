@@ -1,11 +1,11 @@
-// js/chatbot.js - Iframe Loader for the new chatbot system
+// js/chatbotWidgetLoader.js - Iframe Loader for the new chatbot system
 
 document.addEventListener('DOMContentLoaded', () => {
   const chatbotPlaceholder = document.getElementById('chatbot-placeholder');
   const mobileChatLauncher = document.getElementById('mobileChatLauncher');
   const desktopChatFab = document.getElementById('chatbot-fab-trigger');
 
-  const chatbotUrl = 'chatbot_creation/chatbot-widget.html'; // Path relative to project root
+  const chatbotUrl = 'chatbot-widget/chatbot-widget-main.html'; // Path relative to project root
   let iframeLoaded = false;
   let chatbotIframe = null; // Store the iframe element
   let themeObserver = null; // Store the MutationObserver
