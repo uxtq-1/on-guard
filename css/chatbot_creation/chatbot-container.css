@@ -23,7 +23,7 @@ body[data-theme="dark"] {
     flex-grow: 1;
     overflow: hidden;
     margin: 2px;
-    border: 2px solid rebeccapurple; /* Fixed color name from 'royalpurple' */
+    border: 2px solid royalpurple;
 }
 
 body[data-theme="dark"] #chatbot-container {
