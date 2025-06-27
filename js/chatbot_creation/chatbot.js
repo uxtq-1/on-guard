@@ -5,11 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input');
   const log = document.getElementById('chat-log');
+  const sendButton = document.getElementById('chat-send-button'); // Get the send button
   const honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
   const humanCheckbox = document.getElementById('human-verification-checkbox');
 
-  if (!form || !input || !log) {
-    console.error('ERROR:ChatbotWidget/DOMContentLoaded: Core chatbot UI elements (#chat-form, #chat-input, #chat-log) not found in iframe.');
+  if (!form || !input || !log || !sendButton) { // Added sendButton to the check
+    console.error('ERROR:ChatbotWidget/DOMContentLoaded: Core chatbot UI elements (#chat-form, #chat-input, #chat-log, #chat-send-button) not found in iframe.');
     return;
   }
   if (!honeypotInput) {
@@ -17,7 +18,35 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (!humanCheckbox) {
     console.warn('WARN:ChatbotWidget/DOMContentLoaded: Human verification checkbox not found.');
+    // If checkbox is critical and not found, perhaps disable form submission entirely or log a more severe error.
+    // For now, we'll proceed, and the check in the submit handler will prevent submission.
   }
+
+  // Function to enable/disable form elements based on checkbox state
+  const updateFormState = () => {
+    if (humanCheckbox) {
+      const isHuman = humanCheckbox.checked;
+      input.disabled = !isHuman;
+      sendButton.disabled = !isHuman;
+      // Optionally, change styles for disabled state, e.g., opacity
+      if (!isHuman) {
+        input.placeholder = "Please check 'I am human' to type.";
+      } else {
+        input.placeholder = "Ask me anything...";
+      }
+    } else {
+      // If checkbox doesn't exist, keep form enabled by default (or could disable if it's a hard requirement)
+      input.disabled = false;
+      sendButton.disabled = false;
+    }
+  };
+
+  if (humanCheckbox) {
+    humanCheckbox.addEventListener('change', updateFormState);
+  }
+
+  // Initial state update
+  updateFormState();
 
   const addMessage = (text, sender = 'user', isHTML = false) => {
     const msg = document.createElement('div');
