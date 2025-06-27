@@ -17,6 +17,7 @@ on-guard/index.html
   <!-- Specific Component CSS -->
   <link rel="stylesheet" href="css/contact_us.css">
   <link rel="stylesheet" href="css/iframe-chat-wrapper.css">
+  <link rel="stylesheet" href="css/join_us.css"> <!-- Added for Join Us Modal styles -->
   <!-- Link to new chatbot CSS files when provided, e.g., css/chatbot_creation/chatbot-container.css -->
   <!-- Font Awesome Stylesheet -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
@@ -131,12 +132,12 @@ on-guard/index.html
        Floating Icons
        ================================================================== -->
   <div class="floating-icons">
-    <a href="join_us.html" class="floating-icon"
+    <button type="button" class="floating-icon" data-modal="join-us-modal"
             aria-label="Join Us" data-en-label="Join Us" data-es-label="Únete"
             title="Join Us" data-en-title="Join Us" data-es-title="Únete"
             tabindex="0">
       <i class="fas fa-user-plus"></i>
-    </a>
+    </button>
     <button class="floating-icon" data-modal="contact-modal"
             aria-label="Contact Us" data-en-label="Contact Us" data-es-label="Contáctenos"
             title="Contact Us" data-en-title="Contact Us" data-es-title="Contáctenos"
@@ -218,6 +219,157 @@ on-guard/index.html
   </div>
 
   <!-- ==================================================================
+       Join Us Modal (Structure for index.html)
+       ================================================================== -->
+  <div id="join-us-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="joinUsModalTitle">
+    <div class="modal-content" id="join-us-modal-content"> <!-- Added unique ID for content if needed by join_us.js -->
+      <div class="modal-header">
+        <h3 id="joinUsModalTitle" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h3>
+        <button class="close-modal" data-close aria-label="Close" data-en-label="Close" data-es-label="Cerrar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Content from join_us.html form will be injected here -->
+        <!-- Ensuring the form ID is unique if multiple forms exist on the page, or reuse if appropriate -->
+        <form id="join-us-form-modal" autocomplete="off"> <!-- Changed ID to be specific -->
+          <div class="form-grid">
+            <!-- Basic Info -->
+            <div class="form-row">
+              <label for="join-name" data-en="Name" data-es="Nombre">Name</label>
+              <input type="text" id="join-name" name="name" required
+                data-placeholder-en="Enter your name"
+                data-placeholder-es="Ingresa tu nombre"
+                placeholder="Enter your name" />
+
+              <label for="join-email" data-en="Email" data-es="Correo Electrónico">Email</label>
+              <input type="email" id="join-email" name="email" required
+                data-placeholder-en="Enter your email"
+                data-placeholder-es="Ingresa tu correo"
+                placeholder="Enter your email" />
+
+              <label for="join-phone" data-en="Phone" data-es="Teléfono">Phone</label>
+              <input type="tel" id="join-phone" name="phone" required
+                data-placeholder-en="Enter your phone"
+                data-placeholder-es="Ingresa tu teléfono"
+                placeholder="Enter your phone" />
+            </div>
+
+            <!-- Dynamic Sections: Skills, Education, etc. -->
+            <div class="form-section" data-section="Skills">
+              <div class="section-header">
+                <h2 data-en="Skills" data-es="Habilidades">Skills</h2>
+                <div>
+                  <button type="button" class="circle-btn add">+</button>
+                  <button type="button" class="circle-btn remove">−</button>
+                </div>
+              </div>
+              <div class="inputs"></div>
+              <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
+              <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display:none;">Edit</button>
+            </div>
+
+            <div class="form-section" data-section="Education">
+              <div class="section-header">
+                <h2 data-en="Education" data-es="Educación">Education</h2>
+                <div>
+                  <button type="button" class="circle-btn add">+</button>
+                  <button type="button" class="circle-btn remove">−</button>
+                </div>
+              </div>
+              <div class="inputs"></div>
+              <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
+              <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display:none;">Edit</button>
+            </div>
+
+            <div class="form-section" data-section="Continued Education">
+              <div class="section-header">
+                <h2 data-en="Continued Education" data-es="Educación Continua">Continued Education</h2>
+                <div>
+                  <button type="button" class="circle-btn add">+</button>
+                  <button type="button" class="circle-btn remove">−</button>
+                </div>
+              </div>
+              <div class="inputs"></div>
+              <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
+              <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display:none;">Edit</button>
+            </div>
+
+            <div class="form-section" data-section="Certification">
+              <div class="section-header">
+                <h2 data-en="Certification" data-es="Certificación">Certification</h2>
+                <div>
+                  <button type="button" class="circle-btn add">+</button>
+                  <button type="button" class="circle-btn remove">−</button>
+                </div>
+              </div>
+              <div class="inputs"></div>
+              <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
+              <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display:none;">Edit</button>
+            </div>
+
+            <div class="form-section" data-section="Hobbies">
+              <div class="section-header">
+                <h2 data-en="Hobbies" data-es="Pasatiempos">Hobbies</h2>
+                <div>
+                  <button type="button" class="circle-btn add">+</button>
+                  <button type="button" class="circle-btn remove">−</button>
+                </div>
+              </div>
+              <div class="inputs"></div>
+              <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
+              <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display:none;">Edit</button>
+            </div>
+
+            <div class="form-section" data-section="Experience">
+              <div class="section-header">
+                <h2 data-en="Experience" data-es="Experiencia">Experience</h2>
+                <div>
+                  <button type="button" class="circle-btn add">+</button>
+                  <button type="button" class="circle-btn remove">−</button>
+                </div>
+              </div>
+              <div class="inputs"></div>
+              <button type="button" class="accept-btn" data-en="Accept" data-es="Aceptar">Accept</button>
+              <button type="button" class="edit-btn" data-en="Edit" data-es="Editar" style="display:none;">Edit</button>
+            </div>
+
+            <!-- Interest Dropdown -->
+            <div class="form-section"> <!-- Removed full-width to make it part of the grid -->
+              <div class="section-header">
+                <h2 data-en="Area of Interest" data-es="Área de Interés">Area of Interest</h2>
+              </div>
+              <!-- <div class="form-cell"> form-cell might not be needed if select is direct child -->
+                <select id="join-interest" name="interest" required>
+                  <option value="" disabled selected data-en="Select an option" data-es="Seleccione una opción">Select an option</option>
+                  <option value="business_operations" data-en="Business Operations" data-es="Gestión">Business Operations</option>
+                  <option value="contact_center" data-en="Contact Center" data-es="Centro de Servicios">Contact Center</option>
+                  <option value="it_support" data-en="IT Support" data-es="Soporte Técnico">IT Support</option>
+                  <option value="professionals" data-en="Professionals" data-es="Profesionales">Professionals</option>
+                </select>
+              <!-- </div> -->
+            </div>
+
+            <!-- Tell us about yourself Section -->
+            <div class="form-section full-width"> <!-- Changed from form-row to form-section -->
+              <div class="section-header">
+                <h2 data-en="Tell us about yourself" data-es="Cuéntanos sobre ti">Tell us about yourself</h2>
+              </div>
+              <textarea id="join-comment" name="comment" rows="4"
+                data-placeholder-en="A brief summary about your experience and interests..."
+                data-placeholder-es="Un breve resumen sobre tu experiencia e intereses..."
+                placeholder="A brief summary about your experience and interests..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-footer"> <!-- Standard modal footer -->
+            <button type="submit" class="submit-button" data-en="Submit Application" data-es="Enviar Solicitud">Submit Application</button>
+          </div>
+        </form>
+      </div>
+      <!-- modal-footer from original join_us.html form is now part of the main modal structure -->
+    </div>
+  </div>
+
+  <!-- ==================================================================
        Mobile Bottom Navigation & Services Menu (for index.html)
        ================================================================== -->
   <nav class="mobile-nav">
@@ -255,7 +407,7 @@ on-guard/index.html
        ================================================================== -->
   <script src="js/main.js" defer></script>
   <script src="js/contact_us.js" defer></script>
-  <!-- join_us.js is for the standalone join_us.html page, not linked in index.html -->
+  <script src="js/join_us.js" defer></script> <!-- Added for Join Us modal functionality -->
   <!-- join_docs/join-us-form.js was for the old dynamic modal, not needed -->
   <script src="js/chatbot.js" defer></script> <!-- Iframe loader -->
   <!-- adaptable_screen.js (now small-screens.css) and mobile_nav.js functionality largely merged into main.js or CSS -->
