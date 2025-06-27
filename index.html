@@ -1,259 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <!-- ==================================================================
-       Document Metadata & External Resources
-       ================================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OPS Solutions Services</title>
-  <!-- Base CSS -->
-  <link rel="stylesheet" href="css/global.css">
-  <!-- Responsive Overrides -->
-  <link rel="stylesheet" href="css/small-screens.css">
-  <!-- Specific Component CSS -->
-  <link rel="stylesheet" href="css/iframe-chat-wrapper.css">
-  <!-- Link to new chatbot CSS files when provided, e.g., css/chatbot_creation/chatbot-container.css -->
-  <!-- Font Awesome Stylesheet -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
-  <!-- Manifest and Favicon -->
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/favicon.ico">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self';
+                 style-src 'self' 'unsafe-inline';
+                 connect-src 'self';
+                 img-src 'self' data:;
+                 frame-src 'self';
+                 object-src 'none';
+                 base-uri 'self';
+                 form-action 'self';">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <title>OPS Online Support</title>
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot_creation/chatbot-container.css">
+  <link rel="stylesheet" href="css/chatbot_creation/iframe-chat-wrapper.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha384-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-
-<body>
-  <!-- ==================================================================
-       Header Section: Navigation & Toggle Buttons
-       ================================================================== -->
-  <header>
-    <nav class="desktop-nav"> <!-- Renamed class for clarity vs right-side-menu-nav -->
-      <ul>
-        <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-        <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
-        <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-        <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-        <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-      </ul>
-    </nav>
-
-    <div class="header-controls">
-        <div class="toggle-container">
-            <button id="theme-toggle-desktop" data-en-label="Toggle Theme" data-es-label="Cambiar Tema" title="Toggle Theme" data-en-title="Toggle Theme" data-es-title="Cambiar Tema">Light</button>
-            <button id="language-toggle-desktop" data-en-label="Switch Language" data-es-label="Cambiar Idioma" title="Switch Language" data-en-title="Switch Language" data-es-title="Cambiar Idioma">EN</button>
-        </div>
-        <button id="menu-open" class="header-menu-trigger" aria-label="Open Main Menu" data-en-label="Open Main Menu" data-es-label="Abrir Menú Principal" title="Open Menu" data-en-title="Open Menu" data-es-title="Abrir Menú">
-            <i class="fas fa-bars"></i>
-        </button>
+<body class="landing-page" data-theme="light">
+  <!-- Accessibility: Skip Link -->
+  <a href="#services" class="skip-link">Skip to Services</a>
+  <!-- Header -->
+  <header class="main-header">
+    <div id="logo" class="logo" data-en="OPS Online Support" data-es="Soporte OPS">OPS Online Support™</div>
+    <!-- Language & Theme Toggles -->
+    <div class="toggles">
+      <button id="language-toggle-desktop" class="lang-toggle-btn" aria-label="Switch Language">ES</button>
+      <button id="theme-toggle-desktop" class="theme-toggle-btn" aria-label="Switch Theme">Dark</button>
     </div>
   </header>
 
-  <!-- ==================================================================
-       Right Side Main Menu (for desktop/tablet, or primary mobile if configured)
-       ================================================================== -->
-  <aside id="rightSideMenu" class="right-side-menu" role="navigation" aria-labelledby="rightSideMenuTitle">
-    <div class="right-side-menu-header">
-      <h2 id="rightSideMenuTitle" class="sr-only" data-en="Main Menu" data-es="Menú Principal">Main Menu</h2>
-      <button id="menu-close" aria-label="Close Main Menu" data-en-label="Close Main Menu" data-es-label="Cerrar Menú Principal" title="Close Menu" data-en-title="Close Menu" data-es-title="Cerrar Menú">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div class="right-side-menu-body">
-      <nav class="right-side-menu-nav">
-        <ul>
-          <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-          <li class="services-trigger">
-            <button aria-expanded="false" aria-controls="servicesSubMenu">
-              <span data-en="Services" data-es="Servicios">Services</span>
-              <i class="fas fa-chevron-down" aria-hidden="true"></i>
-            </button>
-            <ul id="servicesSubMenu" class="sub-menu">
-              <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
-              <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-              <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-              <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-            </ul>
-          </li>
-          <li><a href="about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
-          <li><a href="blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
-        </ul>
-      </nav>
-    </div>
-  </aside>
-
-  <!-- ==================================================================
-       Hero Section
-       ================================================================== -->
-  <section class="hero">
-    <h2 data-en="Welcome to Ops Solutions Services" data-es="Bienvenido a OPS Solutions Services">Welcome to Ops Solutions Services</h2>
-    <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">Empowering remote solutions with cutting-edge strategies.</p>
-    <img src="assets/images/hero-image.jpg" alt="Hero Image" class="hero-image">
-  </section>
-
-  <!-- ==================================================================
-       Services Preview Section
-       ================================================================== -->
-  <section id="services-preview" class="services">
-    <div class="service-item">
-      <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
-      <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">Discover how we optimize your business processes.</p>
-      <a href="business-operations.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-    </div>
-    <div class="service-item">
-      <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
-      <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">Enhance customer interactions with our contact solutions.</p>
-      <a href="contact-center.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-    </div>
-    <div class="service-item">
-      <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
-      <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">Ensure seamless IT operations with our expert support.</p>
-      <a href="it-support.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-    </div>
-    <div class="service-item">
-      <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
-      <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">Access top-tier professionals for your business needs.</p>
-      <a href="professionals.html" class="btn" data-en="Learn More" data-es="Saber Más">Learn More</a>
-    </div>
-  </section>
-
-  <!-- ==================================================================
-       Footer Section
-       ================================================================== -->
-  <footer>
-    <p>&copy; 2025 OPS Solutions Services. All rights reserved.</p>
-  </footer>
-
-  <!-- ==================================================================
-       Floating Icons
-       ================================================================== -->
-  <div class="floating-icons">
-    <a href="join_us.html" class="floating-icon"
-            aria-label="Join Us" data-en-label="Join Us" data-es-label="Únete"
-            title="Join Us" data-en-title="Join Us" data-es-title="Únete"
-            tabindex="0">
-      <i class="fas fa-user-plus"></i>
-    </a>
-    <button class="floating-icon" data-modal="contact-modal"
-            aria-label="Contact Us" data-en-label="Contact Us" data-es-label="Contáctenos"
-            title="Contact Us" data-en-title="Contact Us" data-es-title="Contáctenos"
-            tabindex="0">
-      <i class="fas fa-envelope-open-text"></i>
-    </button>
-    <button class="floating-icon" id="chatbot-fab-trigger"
-            aria-label="Open Chat" data-en-label="Open Chat" data-es-label="Abrir Chat"
-            title="Open Chat" data-en-title="Open Chat" data-es-title="Abrir Chat"
-            tabindex="0">
-      <i class="fas fa-comments"></i>
-    </button>
-  </div>
-  <!-- ==================================================================
-       Contact Modal (Structure for index.html)
-       ================================================================== -->
-  <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
-        <button class="close-modal" data-close aria-label="Close" data-en-label="Close" data-es-label="Cerrar">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="contact-form">
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
-              <input type="text" id="contact-name" name="contact-name" required
-                     placeholder="Enter your name" data-en-placeholder="Enter your name" data-es-placeholder="Ingrese su Nombre">
-            </div>
-            <div class="form-cell">
-              <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-              <input type="email" id="contact-email" name="contact-email" required
-                     placeholder="Enter your email" data-en-placeholder="Enter your email" data-es-placeholder="Ingrese su correo electrónico">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Contact Number</label>
-              <input type="tel" id="contact-number" name="contact-number" required
-                     placeholder="Enter your contact number" data-en-placeholder="Enter your contact number" data-es-placeholder="Ingrese su número">
-            </div>
-            <div class="form-cell">
-              <label for="contact-date" data-en="Preferred Date" data-es="Fecha Preferida">Preferred Date</label>
-              <input type="date" id="contact-date" name="contact-date" required
-                     data-en-placeholder="Preferred Date" data-es-placeholder="Fecha Preferida">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-time" data-en="Preferred Time" data-es="Hora Preferida">Preferred Time</label>
-              <input type="time" id="contact-time" name="contact-time" required
-                     data-en-placeholder="Preferred Time" data-es-placeholder="Hora Preferida">
-            </div>
-            <div class="form-cell">
-              <label for="contact-interest" data-en="What are you interested about?" data-es="¿En qué está interesado?">What are you interested about?</label>
-              <select id="contact-interest" name="contact-interest" required>
-                <option value="" disabled selected data-en="Select an option" data-es="Seleccione una opción">Select an option</option>
-                <option value="business_operations" data-en="Business Operations" data-es="Gestión">Business Operations</option>
-                <option value="contact_center" data-en="Contact Center" data-es="Centro de Servicios">Contact Center</option>
-                <option value="it_support" data-en="IT Support" data-es="Soporte Técnico">IT Support</option>
-                <option value="professionals" data-en="Professionals" data-es="Profesionales">Professionals</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell" style="flex: 1 1 100%;">
-              <label for="contact-comments" data-en="Comments" data-es="Comentarios">Comments</label>
-              <textarea id="contact-comments" name="contact-comments" rows="4" required
-                        placeholder="What service are you interested in?" data-en-placeholder="What service are you interested in?" data-es-placeholder="En qué servicio está interesado?"></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" form="contact-form" class="submit-button" data-en="Send" data-es="Enviar">Send</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================================================================
-       Mobile Bottom Navigation & Services Menu (for index.html)
-       ================================================================== -->
-  <nav class="mobile-nav">
-    <a href="index.html" class="mobile-nav-item">
-      <i class="fas fa-home"></i>
-      <span data-en="Home" data-es="Inicio">Home</span>
-    </a>
-    <button class="mobile-nav-item" id="mobile-services-toggle" aria-expanded="false" aria-controls="mobile-services-menu">
-      <i class="fas fa-bars"></i>
-      <span data-en="Services" data-es="Servicios">Services</span>
-    </button>
-    <button class="mobile-nav-item" id="mobile-language-toggle" aria-label="Switch Language" data-en-label="Switch Language" data-es-label="Cambiar Idioma" title="Switch Language" data-en-title="Switch Language" data-es-title="Cambiar Idioma">EN</button>
-    <button class="mobile-nav-item" id="mobile-theme-toggle" aria-label="Toggle Theme" data-en-label="Toggle Theme" data-es-label="Cambiar Tema" title="Toggle Theme" data-en-title="Toggle Theme" data-es-title="Cambiar Tema">Light</button>
-    <button class="mobile-nav-item" id="mobileChatLauncher" aria-label="Open Chat" data-en-label="Open Chat" data-es-label="Abrir Chat" title="Open Chat" data-en-title="Open Chat" data-es-title="Abrir Chat">
-      <i class="fas fa-comment-alt"></i>
-      <span data-en="Chat" data-es="Chat">Chat</span>
-    </button>
-  </nav>
-  <div class="mobile-services-menu" id="mobile-services-menu">
+  <!-- Navigation -->
+  <nav class="main-nav">
     <ul>
-      <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
-      <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-      <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-      <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+      <li><a href="#services" data-en="Business Operations" data-es="Operaciones">Business Operations</a></li>
+      <li><a href="#contact" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
+      <li><a href="#it" data-en="IT Support" data-es="Soporte TI">IT Support</a></li>
+      <li><a href="#professional" data-en="Professional" data-es="Profesionales">Professional</a></li>
     </ul>
+  </nav>
+  <!-- Floating Action Buttons -->
+  <div class="floating-icons">
+    <button id="chatbot-fab-trigger" class="floating-icon" data-modal="chatbot-placeholder" aria-label="Open Chatbot">
+      <i class="fas fa-robot"></i>
+    </button>
+    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us">
+      <i class="fas fa-envelope"></i>
+    </button>
+    <button class="floating-icon" data-modal="join-us-modal" aria-label="Join Us">
+      <i class="fas fa-user-plus"></i>
+    </button>
   </div>
-
-  <!-- ==================================================================
-       CHATBOT HTML ELEMENTS (Placeholder for iframe chatbot)
-       ================================================================== -->
-  <div id="chatbot-placeholder"></div>
-
-  <!-- ==================================================================
-       JavaScript
-       ================================================================== -->
-  <script src="js/main.js" defer></script>
-  <!-- join_us.js is for the standalone join_us.html page, not linked in index.html -->
-  <!-- join_docs/join-us-form.js was for the old dynamic modal, not needed -->
-  <script src="js/chatbot.js" defer></script> <!-- Iframe loader -->
-  <!-- adaptable_screen.js (now small-screens.css) and mobile_nav.js functionality largely merged into main.js or CSS -->
-  <!-- Service Worker registration is handled within main.js -->
+  <!-- Chatbot Placeholder (Iframe Container) -->
+  <div id="chatbot-placeholder" class="chatbot-placeholder" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="chatbot-fab-trigger"></div>
+  <!-- Modals -->
+  <div id="contact-modal" class="modal-overlay" tabindex="-1" role="dialog" aria-labelledby="contact-title">
+    <div class="modal-content">
+      <button class="close-modal" data-close aria-label="Close Modal">&times;</button>
+      <h2 id="contact-title" data-en="Contact Us" data-es="Contáctenos">Contact Us</h2>
+      <form id="contact-form">
+        <input type="text" name="name" required placeholder="Your Name">
+        <input type="email" name="email" required placeholder="Your Email">
+        <textarea name="message" required placeholder="Your Message"></textarea>
+        <input type="text" name="botfield" style="display:none;" tabindex="-1" autocomplete="off">
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div id="join-us-modal" class="modal-overlay" tabindex="-1" role="dialog" aria-labelledby="join-title">
+    <div class="modal-content">
+      <button class="close-modal" data-close aria-label="Close Modal">&times;</button>
+      <h2 id="join-title" data-en="Join Us" data-es="Únete a Nosotros">Join Us</h2>
+      <!-- Dynamic content is injected from join_us.js -->
+    </div>
+  </div>
+  <!-- Footer (Optional) -->
+  <footer>
+    <p>&copy; <span id="year"></span> OPS Online Support</p>
+  </footer>
+  <!-- Scripts -->
+  <script defer src="js/main.js"></script>
+  <script defer src="js/chatbot.js"></script>
+  <script defer src="js/contact_us.js"></script>
+  <script defer src="js/join_us.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
