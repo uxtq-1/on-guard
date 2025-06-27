@@ -1,12 +1,128 @@
-<!-- contact_us.html -->
-<div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
-  <div class="modal-content" tabindex="-1">
-    <button class="close-modal" data-close aria-label="Close Contact Form">&times;</button>
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Modal</title>
+  <style>
+    /* === Modal Base === */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      padding: 1.5rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .modal-header,
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .close-modal {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      margin-bottom: 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .form-cell {
+      flex: 1 1 48%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input,
+    select,
+    textarea {
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .submit-button {
+      padding: 0.75rem 1.5rem;
+      background-color: #6a1b9a;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .submit-button:hover {
+      background-color: #4a148c;
+    }
+
+    @media (max-width: 600px) {
+      .form-cell {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+  <div class="modal-content">
+
+    <!-- Modal Header -->
     <div class="modal-header">
-      <h2 id="contact-modal-title" data-en="Contact Us" data-es="Contáctanos">Contact Us</h2>
+      <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
+      <button class="close-modal" data-close aria-label="Close">&times;</button>
     </div>
 
+    <!-- Modal Body -->
     <div class="modal-body">
       <form id="contact-form" autocomplete="off" novalidate>
         <!-- Honeypot anti-bot field (hidden from humans) -->
@@ -32,5 +148,15 @@
         <button type="submit" id="submit-contact" data-en="Send Message" data-es="Enviar Mensaje">Send Message</button>
       </form>
     </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button type="submit" form="contact-form" class="submit-button"
+              data-en="Send" data-es="Enviar">Send</button>
+    </div>
+
   </div>
 </div>
+
+</body>
+</html>
