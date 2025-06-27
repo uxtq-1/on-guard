@@ -204,51 +204,204 @@ document.addEventListener("DOMContentLoaded", () => {
           Join Us is now a separate page. Chatbot uses iframe system.
        ================================================================== */
     const modalTriggers = document.querySelectorAll('.floating-icon[data-modal], button[data-modal]');
-    const closeModalButtons = document.querySelectorAll('.modal-overlay .close-modal[data-close]');
-    const allModalOverlays = document.querySelectorAll('.modal-overlay');
+    // Note: closeModalButtons and allModalOverlays will be queried dynamically after modal content is loaded.
     let lastFocusedElement = null; // To store element that triggered modal
+    let loadedModalHTML = {}; // Cache for loaded modal HTML to prevent multiple fetches
+
+    async function loadModalContent(modalId, modalFile, placeholderId, callback) {
+        const placeholder = document.getElementById(placeholderId);
+        if (!placeholder) {
+            console.error(`ERROR:Main/loadModalContent: Placeholder not found: #${placeholderId}`);
+            return null;
+        }
+
+        if (!loadedModalHTML[modalId]) {
+            try {
+                const response = await fetch(modalFile);
+                if (!response.ok) throw new Error(`Failed to fetch ${modalFile}: ${response.statusText}`);
+                const html = await response.text();
+                loadedModalHTML[modalId] = html;
+                placeholder.innerHTML = html;
+                console.log(`INFO:Main/loadModalContent: ${modalId} HTML loaded into #${placeholderId}`);
+            } catch (error) {
+                console.error(`ERROR:Main/loadModalContent: Could not load modal content for ${modalId}:`, error);
+                placeholder.innerHTML = `<p>Error loading modal content. Please try again later.</p>`;
+                return null;
+            }
+        } else {
+             // Ensure the HTML is in the placeholder if it was loaded but placeholder was cleared (e.g. SPA navigation)
+            if (placeholder.innerHTML.trim() === "") {
+                placeholder.innerHTML = loadedModalHTML[modalId];
+            }
+        }
+
+        const targetModalElement = document.getElementById(modalId); // Get the actual modal element from the loaded HTML
+        if (!targetModalElement) {
+            console.error(`ERROR:Main/loadModalContent: Modal element #${modalId} not found after loading HTML.`);
+            return null;
+        }
+
+        // Initialize modal-specific JS if a callback is provided
+        if (callback && typeof callback === 'function') {
+            // Check if already initialized to prevent multiple initializations if modal is re-shown
+            if (!targetModalElement.dataset.initialized) {
+                callback(targetModalElement);
+                targetModalElement.dataset.initialized = "true";
+            }
+        }
+
+        // Attach close listeners for this specific modal (if not already attached by a global listener)
+        // This is important if modals are loaded dynamically.
+        const closeButtons = targetModalElement.querySelectorAll('.close-modal[data-close]');
+        closeButtons.forEach(btn => {
+            // Prevent multiple listeners if modal is re-shown
+            if (!btn.dataset.closeListenerAttached) {
+                btn.addEventListener('click', () => closeModal(targetModalElement));
+                btn.dataset.closeListenerAttached = "true";
+            }
+        });
+
+        // Backdrop click for this specific modal
+        if (!targetModalElement.dataset.backdropListenerAttached) {
+            targetModalElement.addEventListener('click', (e) => {
+                if (e.target === targetModalElement) closeModal(targetModalElement);
+            });
+            targetModalElement.dataset.backdropListenerAttached = "true";
+        }
+
+
+        return targetModalElement;
+    }
 
     modalTriggers.forEach(trigger => {
-        trigger.addEventListener('click', (event) => {
+        trigger.addEventListener('click', async (event) => {
             lastFocusedElement = event.currentTarget;
             const modalId = event.currentTarget.dataset.modal;
             if (!modalId) return;
-            const targetModal = document.getElementById(modalId);
+
+            let targetModal;
+
+            if (modalId === 'contact-modal') { // Existing static modal
+                targetModal = document.getElementById(modalId);
+            } else if (modalId === 'join-us-modal') {
+                targetModal = await loadModalContent(
+                    modalId,
+                    'join_us_modal.html',
+                    'join-us-modal-placeholder',
+                    typeof initializeJoinUsModal === 'function' ? initializeJoinUsModal : null
+                );
+            } else if (modalId === 'chatbot-modal') {
+                targetModal = await loadModalContent(
+                    modalId,
+                    'chatbot_modal.html',
+                    'chatbot-modal-placeholder',
+                    typeof initializeChatbotModal === 'function' ? initializeChatbotModal : null
+                );
+            }
+            // Add other dynamic modals here with else if (modalId === 'another-modal') { ... }
+
             if (targetModal) {
                 targetModal.classList.add('active');
-                const focusableElement = targetModal.querySelector('input:not([type="hidden"]), button, [tabindex="0"], a[href], textarea, select');
+                // Update language for the newly loaded/shown modal
+                if (window.updateDynamicContentLanguage) {
+                    window.updateDynamicContentLanguage(targetModal);
+                }
+                setupFocusTrap(targetModal); // Setup focus trap
+                const focusableElement = targetModal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
                 if (focusableElement) focusableElement.focus();
-                else targetModal.focus();
+                else targetModal.focus(); // Fallback to focusing the modal itself
             }
         });
     });
 
-    closeModalButtons.forEach(btn => {
-        btn.addEventListener('click', (event) => {
-            const parentModal = event.currentTarget.closest('.modal-overlay');
-            if (parentModal) parentModal.classList.remove('active');
-            if (lastFocusedElement) lastFocusedElement.focus();
-        });
-    });
+    let currentTrapHandler = null; // To store the current active trap handler
 
-    allModalOverlays.forEach(overlay => {
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                overlay.classList.remove('active');
-                if (lastFocusedElement) lastFocusedElement.focus();
+    function setupFocusTrap(modalElement) {
+        const focusableElements = modalElement.querySelectorAll(
+            'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusableElement = focusableElements[0];
+        const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+        // Remove previous trap handler if any
+        if (currentTrapHandler) {
+            document.removeEventListener('keydown', currentTrapHandler);
+        }
+
+        currentTrapHandler = function(e) {
+            if (e.key !== 'Tab') return;
+
+            if (e.shiftKey) { // Shift + Tab
+                if (document.activeElement === firstFocusableElement) {
+                    lastFocusableElement.focus();
+                    e.preventDefault();
+                }
+            } else { // Tab
+                if (document.activeElement === lastFocusableElement) {
+                    firstFocusableElement.focus();
+                    e.preventDefault();
+                }
             }
-        });
-    });
+        };
+        document.addEventListener('keydown', currentTrapHandler);
+    }
 
+    function removeFocusTrap() {
+        if (currentTrapHandler) {
+            document.removeEventListener('keydown', currentTrapHandler);
+            currentTrapHandler = null;
+        }
+    }
+
+    // Global ESC key listener for any active modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             const activeModal = document.querySelector('.modal-overlay.active');
             if (activeModal) {
                 activeModal.classList.remove('active');
+                removeFocusTrap(); // Remove trap when modal closes
                 if (lastFocusedElement) lastFocusedElement.focus();
             }
         }
     });
+
+    // Enhanced close function for modals to also remove focus trap
+    function closeModal(modalElement) {
+        if (modalElement) {
+            modalElement.classList.remove('active');
+            removeFocusTrap();
+            if (lastFocusedElement) lastFocusedElement.focus();
+        }
+    }
+
+    // Close buttons for statically loaded modals (like contact-modal)
+    document.querySelectorAll('#contact-modal .close-modal[data-close]').forEach(btn => {
+        btn.addEventListener('click', (event) => {
+            const parentModal = event.currentTarget.closest('.modal-overlay');
+            closeModal(parentModal);
+        });
+    });
+
+    // Backdrop click for statically loaded modals
+    document.querySelectorAll('#contact-modal.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                closeModal(overlay);
+            }
+        });
+    });
+
+    // Update dynamic modal close logic in loadModalContent to use closeModal
+    // Modify the close button event listener inside loadModalContent:
+    // btn.addEventListener('click', () => closeModal(targetModalElement));
+    // Modify the backdrop click listener inside loadModalContent:
+    // targetModalElement.addEventListener('click', (e) => { if (e.target === targetModalElement) closeModal(targetModalElement); });
+    // This requires passing closeModal to loadModalContent or making it globally accessible if not already.
+    // For simplicity, the change will be directly in loadModalContent for now.
+    // The following is a conceptual note for the diff that will be generated next for loadModalContent:
+    // Search for: targetModalElement.classList.remove('active');
+    // Replace with: closeModal(targetModalElement);
+    // This will be done in the subsequent diff for js/main.js.
 
     /* ================================================================
        6) Form Submission Logic (DEFERRED to specific component scripts)

@@ -1,0 +1,138 @@
+/* css/join_us_modal.css */
+
+/* Specific styles for the Join Us modal content. */
+/* Many form styles might be inherited from global.css or join_us.css (if its content is merged here or globally). */
+
+/* Styles for the form grid inside the modal */
+#join-us-modal .modal-body .form-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Default to single column for modal */
+  gap: 1rem;
+}
+
+/* On larger screens, allow two columns if desired and content fits well */
+@media (min-width: 768px) {
+  #join-us-modal .modal-body .form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+#join-us-modal .form-row,
+#join-us-modal .form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Spacing between label and input, or within sections */
+}
+
+#join-us-modal .form-section.full-width {
+  grid-column: 1 / -1; /* Span full width if in multi-column grid */
+}
+
+
+#join-us-modal .form-section .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color-current);
+}
+
+#join-us-modal .form-section .section-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+body[data-theme="dark"] #join-us-modal .form-section .section-header h4 {
+    color: var(--link-color-current);
+}
+
+
+#join-us-modal .form-section .circle-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 1rem;
+  line-height: 28px;
+  text-align: center;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: background-color 0.3s;
+}
+#join-us-modal .form-section .circle-btn:hover {
+  background-color: var(--accent-color);
+}
+body[data-theme="dark"] #join-us-modal .form-section .circle-btn {
+    background-color: var(--link-color-current);
+    color: var(--bg-dark);
+}
+
+
+#join-us-modal .form-section .inputs input[type="text"] {
+  margin-bottom: 0.5rem; /* Space between dynamically added inputs */
+}
+
+#join-us-modal .form-section .accept-btn,
+#join-us-modal .form-section .edit-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+#join-us-modal .form-section .accept-btn:hover,
+#join-us-modal .form-section .edit-btn:hover {
+  opacity: 0.8;
+}
+
+body[data-theme="dark"] #join-us-modal .form-section .accept-btn,
+body[data-theme="dark"] #join-us-modal .form-section .edit-btn {
+    background-color: var(--link-color-current);
+    color: var(--bg-dark);
+}
+
+
+/* Ensure labels are distinct */
+#join-us-modal .modal-body label {
+    font-weight: bold;
+    margin-bottom: 0.25rem; /* Add a bit of space below the label */
+    color: var(--text-current);
+}
+
+/* Inputs styling, ensure they inherit from global.css or define here */
+#join-us-modal .modal-body input[type="text"],
+#join-us-modal .modal-body input[type="email"],
+#join-us-modal .modal-body input[type="tel"],
+#join-us-modal .modal-body select,
+#join-us-modal .modal-body textarea {
+    width: 100%;
+    padding: 0.65rem; /* Slightly more padding for better touch */
+    border: 1px solid var(--input-border-current);
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    background-color: var(--input-bg-current);
+    color: var(--text-current);
+}
+
+#join-us-modal .modal-footer .close-modal {
+    background-color: grey;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+#join-us-modal .modal-footer .close-modal:hover {
+    background-color: darkgrey;
+}
