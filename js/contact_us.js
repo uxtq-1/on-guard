@@ -1,67 +1,257 @@
 // js/contact_us.js
-// Handles submission logic, honeypot check, client-side sanitization, and basic feedback for Contact Us form
+// Handles loading the contact modal, its display, and form submission.
 
 document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contact-form');
-    const honeypotField = contactForm ? contactForm.querySelector('[name="contact-honeypot"]') : null;
+    const modalPlaceholder = document.getElementById('contact-modal-placeholder');
+    // Trigger elements can be identified by a common class or specific IDs
+    // For now, we'll use a data attribute for the floating icon
+    const modalTriggers = document.querySelectorAll('[data-modal="contact-modal"], #footer-contact-us-button');
 
-    if (!contactForm) {
-        console.error('ERROR:ContactForm/Init: Contact form not found on page.');
-        return;
-    }
+    let contactModal = null; // To store the loaded modal element
+    let contactForm = null; // To store the loaded form element
 
-    if (!honeypotField) {
-        console.warn('WARN:ContactForm/Init: Honeypot field is missing.');
-    }
-
-    contactForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(contactForm);
-        const data = {};
-
-        for (const [key, value] of formData.entries()) {
-            data[key] = window.sanitizeInput(value);
-        }
-
-        // Bot prevention: honeypot
-        if (honeypotField && honeypotField.value.trim() !== '') {
-            console.warn("WARN:ContactForm/submit: Honeypot field filled — likely bot.");
-            alert("Your submission could not be processed. Please try again.");
-            return;
-        }
-
-        // Validation (expandable)
-        if (!data.name || !data.email || !data.message) {
-            alert("Please fill out all required fields.");
-            return;
+    async function loadModal() {
+        if (!modalPlaceholder) {
+            // If there's no placeholder, this script might be running on contact_us.html itself
+            // In that case, the modal is already in the DOM.
+            contactModal = document.getElementById('contact-modal');
+            if (contactModal) {
+                contactForm = contactModal.querySelector('#contact-form');
+                if (!contactForm) {
+                    console.error('Contact form #contact-form not found within #contact-modal on this page.');
+                    return; // No form to attach submit listener to
+                }
+                // If on contact_us.html, the modal might be visible by default or styled differently.
+                // We won't hide it here, assuming its direct page view is intentional.
+                // We WILL attach close listeners if they exist for consistency.
+                attachModalEventListeners();
+                attachFormSubmissionListener();
+            } else {
+                console.log('Contact modal placeholder or modal itself not found. Modal functionality may be limited.');
+            }
+            return; // Exit, as no loading into placeholder is needed
         }
 
         try {
-            // Simulated sending process (replace with real endpoint)
-            console.log("INFO:ContactForm/submit: Submitting sanitized data:", data);
+            const response = await fetch('contact_us.html');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch contact_us.html: ${response.status} ${response.statusText}`);
+            }
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+            const modalHtmlElement = doc.querySelector('#contact-modal.modal-overlay');
 
-            // Placeholder for real API call:
-            /*
-            const response = await fetch('/api/send-contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+            if (modalHtmlElement) {
+                modalPlaceholder.appendChild(modalHtmlElement);
+                contactModal = modalHtmlElement; // Store the appended modal element
+                contactForm = contactModal.querySelector('#contact-form'); // Get the form from the loaded modal
+
+                if (!contactForm) {
+                    console.error('Contact form #contact-form not found within loaded modal.');
+                }
+
+                attachModalEventListeners();
+                if (contactForm) {
+                    attachFormSubmissionListener();
+                }
+                console.log('Contact modal loaded and initialized.');
+            } else {
+                console.error('Could not find #contact-modal.modal-overlay in fetched contact_us.html');
+            }
+        } catch (error) {
+            console.error('Error loading contact modal:', error);
+            if (modalPlaceholder) {
+                modalPlaceholder.innerHTML = '<p style="color:red; text-align:center;">Could not load contact form.</p>';
+            }
+        }
+    }
+
+    function attachModalEventListeners() {
+        if (!contactModal) return;
+
+        const closeModalButton = contactModal.querySelector('.close-modal');
+
+        // Event listeners for triggers (like floating icon or footer button)
+        modalTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (contactModal) {
+                    contactModal.classList.add('active');
+                } else {
+                    console.warn('Contact modal not loaded yet or unavailable.');
+                }
+            });
+        });
+
+        // Event listener for the close button
+        if (closeModalButton) {
+            closeModalButton.addEventListener('click', () => {
+                contactModal.classList.remove('active');
+            });
+        } else {
+            console.warn('Close button .close-modal not found in the modal.');
+        }
+
+        // Event listener for clicking on the overlay to close
+        contactModal.addEventListener('click', (event) => {
+            if (event.target === contactModal) { // Only if the click is on the overlay itself
+                contactModal.classList.remove('active');
+            }
+        });
+    }
+
+    function attachFormSubmissionListener() {
+        if (!contactForm) {
+            console.warn('WARN:ContactForm/Init: Contact form element not found for submission listener.');
+            return;
+        }
+
+        // Check for global sanitizeInput function (assuming it's provided elsewhere, e.g. main.js)
+        if (typeof window.sanitizeInput !== 'function') {
+            console.warn('WARN:ContactForm/Init: window.sanitizeInput is not defined. Input sanitization will be skipped.');
+            // Define a fallback if not present
+            window.sanitizeInput = (value) => typeof value === 'string' ? value.trim() : value;
+        }
+
+        const honeypotField = contactForm.querySelector('input[placeholder="Enter your name"]'); // Example, adjust if honeypot has a specific ID/name
+
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            console.log('Contact form submitted.');
+
+            const formData = new FormData(contactForm);
+            const data = {};
+            let allRequiredFilled = true;
+
+            for (const [key, value] of formData.entries()) {
+                data[key] = window.sanitizeInput(value);
+            }
+
+            // Simple client-side validation (check required fields based on the new form structure)
+            const requiredFields = ['contact-name', 'contact-email', 'contact-number', 'contact-date', 'contact-time', 'contact-interest', 'contact-comments'];
+            requiredFields.forEach(fieldId => {
+                const inputElement = contactForm.querySelector(`#${fieldId}`);
+                if (inputElement && inputElement.required && !data[fieldId]) {
+                    allRequiredFilled = false;
+                    // Optionally, add visual feedback for missing fields
+                    // inputElement.style.border = '1px solid red';
+                }
             });
 
-            if (!response.ok) throw new Error("Network response was not ok");
+            if (!allRequiredFilled) {
+                alert("Please fill out all required fields.");
+                // console.warn("Validation failed: Not all required fields are filled.");
+                return;
+            }
 
-            const result = await response.json();
-            if (!result.success) throw new Error(result.message || "Unknown error");
-            */
+            // Basic Honeypot check (assuming one of the fields could be a honeypot or a specific one is added)
+            // For this example, let's assume 'contact-number' could be misused if a more specific honeypot field isn't there.
+            // This is a placeholder for a real honeypot. The original HTML didn't have a clear one.
+            // if (data['hp-field'] && data['hp-field'].trim() !== '') { // If you add a field like <input name="hp-field" class="hidden">
+            //    console.warn("WARN:ContactForm/submit: Honeypot field filled — likely bot.");
+            //    alert("Your submission could not be processed.");
+            //    return;
+            // }
 
-            alert("Thank you for contacting us! We’ll get back to you shortly.");
-            contactForm.reset();
-        } catch (error) {
-            console.error("ERROR:ContactForm/submit:", error);
-            alert("There was a problem sending your message. Please try again later.");
+
+            try {
+                console.log("INFO:ContactForm/submit: Submitting sanitized data to Cloudflare Worker:", data);
+
+                const workerUrl = 'YOUR_CLOUDFLARE_WORKER_URL_HERE'; // IMPORTANT: Replace with your actual worker URL
+
+                if (workerUrl === 'YOUR_CLOUDFLARE_WORKER_URL_HERE') {
+                    console.warn("WARN:ContactForm/submit: Cloudflare Worker URL is not set. Using simulation.");
+                    // Simulate sending data if URL is not set
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    alert("Thank you for contacting us! (Simulated: Worker URL not set). We’ll get back to you shortly.");
+                } else {
+                    const response = await fetch(workerUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.text(); // Try to get error message from worker
+                        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}. Worker message: ${errorData}`);
+                    }
+
+                    // Assuming worker returns JSON with a success flag or message, e.g., { success: true }
+                    // const result = await response.json();
+                    // if (!result.success) { // Adjust based on your worker's response structure
+                    //    throw new Error(result.message || 'Unknown error from worker');
+                    // }
+
+                    alert("Thank you for contacting us! We’ll get back to you shortly.");
+                }
+
+                contactForm.reset();
+                if (contactModal) {
+                    contactModal.classList.remove('active'); // Close modal on successful submission
+                }
+            } catch (error) {
+                console.error("ERROR:ContactForm/submit:", error);
+                alert(`There was a problem sending your message: ${error.message}. Please try again later.`);
+            }
+        });
+        console.log('INFO:ContactForm/SubmitListener: Attached to form, configured for Cloudflare Worker (or simulation).');
+    }
+
+    // --- Initialization ---
+    // Check if we are on index.html (or any page that needs dynamic modal loading)
+    if (modalPlaceholder) {
+        loadModal(); // This will load, then attach listeners
+    } else {
+        // We might be on contact_us.html directly.
+        // The modal is already in the DOM. Just find it and attach listeners.
+        contactModal = document.getElementById('contact-modal');
+        if (contactModal) {
+            contactForm = contactModal.querySelector('#contact-form');
+            attachModalEventListeners(); // Attach close/open listeners
+            if (contactForm) {
+                attachFormSubmissionListener(); // Attach submit listener
+            } else {
+                 console.error('Contact form #contact-form not found within #contact-modal on this page (direct view).');
+            }
+            // If on contact_us.html, the modal is likely intended to be always visible or managed by its own page logic
+            // So, we don't add 'active' class here by default.
+            // However, if it's meant to be a modal even on its own page, it should start hidden by CSS
+            // and then a trigger specific to that page would open it.
+            // For now, assume it's visible if directly on contact_us.html.
+        } else {
+            console.log("No modal placeholder and no #contact-modal found directly on this page. contact_us.js will not initialize modal display/loading features.");
+        }
+    }
+
+    // Fallback for any triggers that might exist even if the modal isn't loaded into a placeholder
+    // This ensures that if contact_us.js is included on a page with triggers but no placeholder,
+    // the triggers won't cause errors, though they might not open a modal if it's not found.
+    modalTriggers.forEach(trigger => {
+        if (!trigger.getAttribute('listener-attached')) { // Prevent double-binding if attachModalEventListeners ran
+            trigger.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (contactModal && contactModal.classList.contains('modal-overlay')) {
+                    contactModal.classList.add('active');
+                } else {
+                    console.warn('Contact modal is not available or not loaded when trigger was clicked.');
+                }
+            });
+            trigger.setAttribute('listener-attached', 'true');
         }
     });
 
-    console.log('INFO:ContactForm/DOMContentLoaded: Contact form script initialized.');
+    console.log('INFO:ContactUsScript/DOMContentLoaded: contact_us.js fully processed.');
 });
+
+// Ensure a global sanitizeInput function exists (can be moved to main.js or a utility script)
+if (typeof window.sanitizeInput !== 'function') {
+    window.sanitizeInput = function(text) {
+        if (typeof text !== 'string') return text; // Return non-strings as-is
+        const element = document.createElement('div');
+        element.innerText = text;
+        return element.innerHTML.replace(/<br>/g, '\n'); // Basic sanitization, allows newlines from textareas
+    };
+}

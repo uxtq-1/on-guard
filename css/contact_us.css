@@ -1,111 +1,180 @@
-/* css/contact_us.css */
-/* Styles for the Contact Us modal, form, and responsive design */
-
+/* === Modal Base === */
 .modal-overlay {
-  display: none;
   position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.65);
-  justify-content: center;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: none; /* Initially hidden */
   align-items: center;
-  padding: 1rem;
-  overflow-y: auto;
-  backdrop-filter: blur(3px);
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem; /* Added padding for smaller screens not to touch edges */
 }
 
 .modal-overlay.active {
-  display: flex;
+  display: flex; /* Activated by JS */
 }
 
 .modal-content {
-  background-color: var(--bg-current, #fff);
-  color: var(--text-color-current, #000);
-  padding: 2rem;
+  background: #fff; /* Consider var(--bg-current) if theme support is needed */
   border-radius: 12px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  width: 90%;
   max-width: 600px;
-  width: 100%;
-  position: relative;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-height: 90vh; /* Added to prevent overflow on short screens */
+  overflow-y: auto; /* Added for scrollability if content exceeds max-height */
 }
 
-.modal-content h2 {
-  margin-top: 0;
+.modal-header,
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee; /* Added for separation */
+  padding-bottom: 1rem; /* Added padding */
+}
+
+.modal-footer {
+  border-top: 1px solid #eee; /* Added for separation */
+  padding-top: 1rem; /* Added padding */
+  margin-top: 1rem; /* Ensure space above footer */
+  margin-bottom: 0; /* Footer is last element */
+}
+
+.modal-header h3 {
+  margin: 0;
   font-size: 1.5rem;
+  color: #333; /* Consider var(--text-color-current) */
 }
 
-.modal-content .close-modal {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: transparent;
+.close-modal {
+  font-size: 1.5rem;
+  background: none;
   border: none;
-  font-size: 1.5rem;
+  color: #666; /* Consider var(--text-color-current-muted) */
   cursor: pointer;
-  color: var(--text-color-current, #000);
+  padding: 0.5rem; /* Easier to click */
+  line-height: 1; /* Ensure consistent alignment */
 }
 
-#contact-form {
+.modal-body {
+  margin-bottom: 1rem;
+}
+
+#contact-form { /* Changed from form to #contact-form for specificity */
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-#contact-form label {
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-cell {
+  flex: 1 1 48%; /* Allows two cells per row, wrapping if needed */
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 0.3rem;
   font-weight: 600;
+  color: #444; /* Consider var(--text-color-current) */
+  font-size: 0.9rem; /* Slightly smaller label */
 }
 
-#contact-form input,
-#contact-form textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color-current, #ccc);
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc; /* Consider var(--border-color-current) */
   border-radius: 6px;
   font-size: 1rem;
-  background-color: var(--input-bg-current, #f9f9f9);
-  color: var(--text-color-current, #000);
+  width: 100%; /* Ensure inputs take full width of their cell */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  background-color: #fff; /* Consider var(--input-bg-current) */
+  color: #333; /* Consider var(--text-color-current) */
 }
 
-#contact-form textarea {
+textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 80px; /* Set a min-height */
 }
 
-#contact-form button[type="submit"] {
-  padding: 0.75rem;
-  background-color: var(--accent-color, #007BFF);
+.submit-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #6a1b9a; /* Consider var(--accent-color) */
   color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
   font-weight: bold;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.25s ease;
+  transition: background-color 0.2s ease;
+  font-size: 1rem; /* Ensure consistent font size */
 }
 
-#contact-form button[type="submit"]:hover {
-  background-color: var(--accent-color-hover, #0056b3);
+.submit-button:hover {
+  background-color: #4a148c; /* Consider var(--accent-color-hover) */
 }
 
-/* Honeypot Field - Hidden from users */
-#contact-form .honeypot-field {
-  display: none !important;
-  visibility: hidden;
-  position: absolute;
-  left: -9999px;
-}
-
-/* Mobile adjustments */
-@media (max-width: 480px) {
+/* Responsive adjustments */
+@media (max-width: 600px) {
   .modal-content {
-    padding: 1.25rem;
-    border-radius: 8px;
+    padding: 1rem; /* Adjust padding for smaller modals */
   }
-
-  #contact-form button[type="submit"] {
-    font-size: 0.95rem;
+  .form-cell {
+    flex: 1 1 100%; /* Stack form cells vertically on small screens */
+  }
+  .modal-header h3 {
+    font-size: 1.25rem; /* Adjust header size */
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="time"],
+  select,
+  textarea {
+    font-size: 0.95rem; /* Adjust font size in inputs for small screens */
+  }
+  .submit-button {
+    font-size: 0.95rem; /* Adjust button font size */
   }
 }
+
+/* Ensure theme variables are respected if available in global.css */
+/* For example, if your global.css defines these:
+body.dark-theme .modal-content {
+  background: var(--bg-dark, #333);
+  color: var(--text-dark, #fff);
+}
+body.dark-theme .modal-header h3,
+body.dark-theme label,
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea {
+  color: var(--text-dark, #fff);
+}
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea {
+  background-color: var(--input-bg-dark, #444);
+  border-color: var(--border-color-dark, #555);
+}
+body.dark-theme .close-modal {
+  color: var(--text-dark-muted, #bbb);
+}
+*/
