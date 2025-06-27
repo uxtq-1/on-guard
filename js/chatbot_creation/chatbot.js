@@ -1,6 +1,3 @@
-on-guard/js/chatbot_creation/chatbot.js
-
-
 // js/chatbot_creation/chatbot.js
 // This script runs *inside* the chatbot-widget.html iframe
 
