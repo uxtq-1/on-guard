@@ -427,6 +427,8 @@
     const closeModalBtn = document.getElementById('close-modal-btn');
 
     function closeModal() {
+      window.location.href = 'index.html'; // Redirect to index.html
+      // It's good practice to hide the modal too, though redirection will make it less noticeable
       joinModal.style.display = 'none';
     }
 
@@ -447,6 +449,7 @@
     document.getElementById('join-form').addEventListener('submit', function(e) {
       e.preventDefault();
       alert(currentLang === 'es' ? 'Formulario enviado.' : 'Form submitted.');
+      window.location.href = 'index.html'; // Redirect to index.html
     });
 
     function toggleLang() {
