@@ -5,11 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input');
   const log = document.getElementById('chat-log');
+  const sendButton = document.getElementById('chat-send-button'); // Get the send button
   const honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
   const humanCheckbox = document.getElementById('human-verification-checkbox');
 
-  if (!form || !input || !log) {
-    console.error('ERROR:ChatbotWidget/DOMContentLoaded: Core chatbot UI elements (#chat-form, #chat-input, #chat-log) not found in iframe.');
+  if (!form || !input || !log || !sendButton) { // Added sendButton to the check
+    console.error('ERROR:ChatbotWidget/DOMContentLoaded: Core chatbot UI elements (#chat-form, #chat-input, #chat-log, #chat-send-button) not found in iframe.');
     return;
   }
   if (!honeypotInput) {
@@ -17,6 +18,41 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (!humanCheckbox) {
     console.warn('WARN:ChatbotWidget/DOMContentLoaded: Human verification checkbox not found.');
+    // If checkbox is critical, might disable chat functionality here too
+  }
+
+  // Function to toggle chat input and send button state
+  const setChatControlsDisabled = (disabled) => {
+    input.disabled = disabled;
+    sendButton.disabled = disabled;
+    if (disabled) {
+      input.placeholder = "Please check 'I am human' to chat.";
+    } else {
+      input.placeholder = "Ask me anything...";
+    }
+  };
+
+  // Initial state: disable chat controls, ensure checkbox is unticked
+  if (humanCheckbox) {
+    humanCheckbox.checked = false; // Ensure it's unticked initially
+    setChatControlsDisabled(true); // Disable controls
+  } else {
+    // If no checkbox, perhaps keep controls enabled or log a more critical error
+    // For now, assuming checkbox is essential as per requirements.
+    // Fallback: disable controls if checkbox is missing, to be safe.
+    setChatControlsDisabled(true);
+    console.error('ERROR:ChatbotWidget/DOMContentLoaded: Human verification checkbox is missing, chat controls disabled.');
+  }
+
+  // Event listener for the human verification checkbox
+  if (humanCheckbox) {
+    humanCheckbox.addEventListener('change', () => {
+      setChatControlsDisabled(!humanCheckbox.checked);
+      if (humanCheckbox.checked) {
+        // Optional: Focus input when checkbox is checked
+        input.focus();
+      }
+    });
   }
 
   const addMessage = (text, sender = 'user', isHTML = false) => {
@@ -115,7 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Reset human checkbox for next interaction
-    if(humanCheckbox) humanCheckbox.checked = false;
+    if(humanCheckbox) {
+      humanCheckbox.checked = false;
+      // Also disable controls as the checkbox is now unticked
+      setChatControlsDisabled(true);
+    }
 
     console.log('EVENT:ChatbotWidget/chatForm#submit: User message processed.');
   });
