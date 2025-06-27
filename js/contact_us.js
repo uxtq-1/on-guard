@@ -153,8 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
             //    alert("Your submission could not be processed.");
             //    return;
             // }
-
-
             try {
                 console.log("INFO:ContactForm/submit: Submitting sanitized data to Cloudflare Worker:", data);
 

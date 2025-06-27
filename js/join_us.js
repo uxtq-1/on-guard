@@ -1,53 +1,138 @@
 // js/join_us.js
-// Handles the Join Us modal logic and form submission
+// Handles logic for the Join Us modal (dynamically loaded from join_us_modal.html)
 
-document.addEventListener('DOMContentLoaded', () => {
-    const joinUsModal = document.getElementById('join-us-modal');
-    const fabJoin = document.getElementById('fab-join'); // Trigger for Join Us modal
-    const joinForm = document.getElementById('join-form');
-    const closeBtn = joinUsModal ? joinUsModal.querySelector('.close-modal[data-close]') : null;
-
-    if (!joinUsModal || !fabJoin || !joinForm) {
-        console.warn("Join Us modal, trigger, or form structure not found in HTML.");
+function initializeJoinUsModal(modalElement) {
+    if (!modalElement) {
+        console.error("ERROR:join_us/initializeJoinUsModal: Modal element not provided.");
         return;
     }
 
-    // Modal open logic
-    fabJoin.addEventListener('click', () => {
-        joinUsModal.classList.add('active');
-        const firstInput = joinForm.querySelector('input, textarea, select');
-        if (firstInput) firstInput.focus();
-    });
+    let currentLang = localStorage.getItem("language") || "en";
 
-    // Modal close logic
-    function closeJoinUsModal() {
-        joinUsModal.classList.remove('active');
-        fabJoin.focus();
+    const joinForm = modalElement.querySelector('#join-us-form-modal');
+    if (joinForm) {
+        joinForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(joinForm);
+            const data = {};
+            formData.forEach((value, key) => { data[key] = value; });
+            // Simulate submission (AJAX, fetch, etc. can be added here)
+            console.log(currentLang === 'es'
+                ? 'INFO:join_us/submit: Formulario "Únete a Nosotros" enviado (simulado).'
+                : 'INFO:join_us/submit: Join Us Form submitted (simulated).');
+            console.log("INFO:join_us/submit: Join Us Form data:", data);
+
+            // Feedback to user (success message)
+            const feedbackArea = modalElement.querySelector('.join-us-feedback');
+            if (feedbackArea) {
+                feedbackArea.textContent = currentLang === 'es'
+                    ? '¡Enviado! Gracias por unirte a nosotros.'
+                    : 'Submitted! Thank you for joining us.';
+                feedbackArea.style.display = 'block';
+                setTimeout(() => {
+                    feedbackArea.style.display = 'none';
+                }, 2500);
+            }
+            // Optionally reset form:
+            // joinForm.reset();
+        });
+    } else {
+        console.error("ERROR:join_us/initializeJoinUsModal: #join-us-form-modal not found.");
     }
 
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeJoinUsModal);
-    }
+    // Handle dynamic sections (Skills, Education, etc.)
+    modalElement.querySelectorAll('.form-section').forEach(section => {
+        const addBtn = section.querySelector('.add');
+        const removeBtn = section.querySelector('.remove');
+        const acceptBtn = section.querySelector('.accept-btn');
+        const editBtn = section.querySelector('.edit-btn');
+        const inputsContainer = section.querySelector('.inputs');
+        const titleElement = section.querySelector('h4');
 
-    // Click outside to close
-    joinUsModal.addEventListener('click', (e) => {
-        if (e.target === joinUsModal) closeJoinUsModal();
-    });
-
-    // ESC key closes modal
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && joinUsModal.classList.contains('active')) {
-            closeJoinUsModal();
+        if (!addBtn || !removeBtn || !acceptBtn || !editBtn || !inputsContainer || !titleElement) {
+            console.warn("WARN:join_us/initDynamicSections: Missing elements in a dynamic form section.", section);
+            return;
         }
+
+        addBtn.onclick = () => {
+            const input = document.createElement('input');
+            input.type = 'text';
+            const titleEn = titleElement.dataset.en || 'info';
+            const titleEs = titleElement.dataset.es || 'info';
+            input.placeholder = currentLang === 'es'
+                ? `Ingresa ${titleEs} info`
+                : `Enter ${titleEn} info`;
+            input.setAttribute('data-placeholder-en', `Enter ${titleEn} info`);
+            input.setAttribute('data-placeholder-es', `Ingresa ${titleEs} info`);
+            if (window.updateDynamicContentLanguage) {
+                window.updateDynamicContentLanguage(input);
+            }
+            inputsContainer.appendChild(input);
+            input.focus();
+        };
+
+        removeBtn.onclick = () => {
+            const allInputs = inputsContainer.querySelectorAll('input');
+            if (allInputs.length) {
+                inputsContainer.removeChild(allInputs[allInputs.length - 1]);
+            }
+        };
+
+        acceptBtn.onclick = () => {
+            const sectionInputs = inputsContainer.querySelectorAll('input');
+            if (sectionInputs.length === 0) {
+                // Feedback for no entries
+                const msg = currentLang === 'es'
+                    ? 'Por favor, agrega al menos una entrada.'
+                    : 'Please add at least one entry.';
+                showSectionFeedback(section, msg);
+                return;
+            }
+            sectionInputs.forEach(input => input.disabled = true);
+            acceptBtn.style.display = 'none';
+            editBtn.style.display = 'inline-block';
+            section.classList.add('completed');
+        };
+
+        editBtn.onclick = () => {
+            inputsContainer.querySelectorAll('input').forEach(input => input.disabled = false);
+            acceptBtn.style.display = 'inline-block';
+            editBtn.style.display = 'none';
+            section.classList.remove('completed');
+            const firstInput = inputsContainer.querySelector('input');
+            if (firstInput) {
+                firstInput.focus();
+            }
+        };
     });
 
-    // --- Form submission logic (basic placeholder) ---
-    joinForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        // Add your form submission AJAX logic here
-        alert('Join Us form submission is not implemented in this version. Data logged to console if needed.');
-        // Optionally reset form
-        // joinForm.reset();
-        closeJoinUsModal();
-    });
-});
+    // Initial language update for modal content
+    if (typeof window.updateDynamicContentLanguage === 'function') {
+        window.updateDynamicContentLanguage(modalElement);
+    } else {
+        console.warn("WARN:join_us/initializeJoinUsModal: window.updateDynamicContentLanguage not found.");
+    }
+
+    // Optional helper: Section-level feedback
+    function showSectionFeedback(section, msg) {
+        let feedback = section.querySelector('.section-feedback');
+        if (!feedback) {
+            feedback = document.createElement('div');
+            feedback.className = 'section-feedback';
+            feedback.style.color = '#c00';
+            feedback.style.fontSize = '0.9em';
+            feedback.style.marginTop = '4px';
+            section.appendChild(feedback);
+        }
+        feedback.textContent = msg;
+        feedback.style.display = 'block';
+        setTimeout(() => {
+            feedback.style.display = 'none';
+        }, 2500);
+    }
+
+    console.log('INFO:join_us/initializeJoinUsModal: Join Us modal initialized.');
+}
+
+// Make initializer available globally for main.js
+window.initializeJoinUsModal = initializeJoinUsModal;
