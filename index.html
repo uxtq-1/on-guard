@@ -15,6 +15,8 @@
   <!-- Specific Component CSS -->
   <link rel="stylesheet" href="css/contact_us.css">
   <link rel="stylesheet" href="css/iframe-chat-wrapper.css">
+  <link rel="stylesheet" href="css/join_us_modal.css">
+  <link rel="stylesheet" href="css/chatbot_modal.css">
   <!-- Link to new chatbot CSS files when provided, e.g., css/chatbot_creation/chatbot-container.css -->
   <!-- Font Awesome Stylesheet -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous">
@@ -129,19 +131,19 @@
        Floating Icons
        ================================================================== -->
   <div class="floating-icons">
-    <a href="join_us.html" class="floating-icon"
+    <button class="floating-icon" data-modal="join-us-modal"
             aria-label="Join Us" data-en-label="Join Us" data-es-label="Únete"
             title="Join Us" data-en-title="Join Us" data-es-title="Únete"
             tabindex="0">
       <i class="fas fa-user-plus"></i>
-    </a>
+    </button>
     <button class="floating-icon" data-modal="contact-modal"
             aria-label="Contact Us" data-en-label="Contact Us" data-es-label="Contáctenos"
             title="Contact Us" data-en-title="Contact Us" data-es-title="Contáctenos"
             tabindex="0">
       <i class="fas fa-envelope-open-text"></i>
     </button>
-    <button class="floating-icon" id="chatbot-fab-trigger"
+    <button class="floating-icon" id="chatbot-fab-trigger" data-modal="chatbot-modal"
             aria-label="Open Chat" data-en-label="Open Chat" data-es-label="Abrir Chat"
             title="Open Chat" data-en-title="Open Chat" data-es-title="Abrir Chat"
             tabindex="0">
@@ -246,14 +248,21 @@
   <!-- ==================================================================
        CHATBOT HTML ELEMENTS (Placeholder for iframe chatbot)
        ================================================================== -->
-  <div id="chatbot-placeholder"></div>
+  <!-- Old #chatbot-placeholder div removed as chatbot now loads in a modal -->
+
+  <!-- Placeholder for Join Us Modal -->
+  <div id="join-us-modal-placeholder"></div>
+
+  <!-- Placeholder for AI Chatbot Modal -->
+  <div id="chatbot-modal-placeholder"></div>
+
 
   <!-- ==================================================================
        JavaScript
        ================================================================== -->
   <script src="js/main.js" defer></script>
   <script src="js/contact_us.js" defer></script>
-  <!-- join_us.js is for the standalone join_us.html page, not linked in index.html -->
+  <script src="js/join_us.js" defer></script>
   <!-- join_docs/join-us-form.js was for the old dynamic modal, not needed -->
   <script src="js/chatbot.js" defer></script> <!-- Iframe loader -->
   <!-- adaptable_screen.js (now small-screens.css) and mobile_nav.js functionality largely merged into main.js or CSS -->
