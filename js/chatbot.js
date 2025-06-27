@@ -132,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       //   document.body.removeAttribute('data-theme-observed-by-chatbot');
       //   console.log('INFO:ChatbotLoader/hideChatbot: Theme observer disconnected.');
       // }
+      window.location.href = 'index.html'; // Redirect when chatbot is closed
     }
   }
 
@@ -165,6 +166,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if(document.activeElement === chatbotPlaceholder || chatbotPlaceholder.contains(document.activeElement)){
             if(desktopChatFab) desktopChatFab.focus();
         }
+    }
+  });
+
+  // Add event listener for clicks outside the chatbot modal
+  document.addEventListener('click', (event) => {
+    if (chatbotPlaceholder && chatbotPlaceholder.classList.contains('active')) {
+      const isClickInsideChatbot = chatbotPlaceholder.contains(event.target);
+      const isClickOnMobileLauncher = mobileChatLauncher && mobileChatLauncher.contains(event.target);
+      const isClickOnDesktopFab = desktopChatFab && desktopChatFab.contains(event.target);
+
+      if (!isClickInsideChatbot && !isClickOnMobileLauncher && !isClickOnDesktopFab) {
+        hideChatbot();
+        console.log('EVENT:ChatbotLoader/document#click - Chatbot placeholder closed via click outside.');
+      }
     }
   });
 
