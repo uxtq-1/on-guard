@@ -18,10 +18,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (!humanCheckbox) {
     console.warn('WARN:ChatbotWidget/DOMContentLoaded: Human verification checkbox not found.');
-    // If checkbox is critical and not found, perhaps disable form submission entirely or log a more severe error.
-    // For now, we'll proceed, and the check in the submit handler will prevent submission.
+    // If checkbox is critical, might disable chat functionality here too
   }
 
+  // Function to toggle chat input and send button state
+  const setChatControlsDisabled = (disabled) => {
+    input.disabled = disabled;
+    sendButton.disabled = disabled;
+    if (disabled) {
+      input.placeholder = "Please check 'I am human' to chat.";
+    } else {
+      input.placeholder = "Ask me anything...";
+    }
+  };
+
+  // Initial state: disable chat controls, ensure checkbox is unticked
+  if (humanCheckbox) {
+    humanCheckbox.checked = false; // Ensure it's unticked initially
+    setChatControlsDisabled(true); // Disable controls
+  } else {
+    // If no checkbox, perhaps keep controls enabled or log a more critical error
+    // For now, assuming checkbox is essential as per requirements.
+    // Fallback: disable controls if checkbox is missing, to be safe.
+    setChatControlsDisabled(true);
+    console.error('ERROR:ChatbotWidget/DOMContentLoaded: Human verification checkbox is missing, chat controls disabled.');
+  }
+
+  // Event listener for the human verification checkbox
+  if (humanCheckbox) {
+    humanCheckbox.addEventListener('change', () => {
+      setChatControlsDisabled(!humanCheckbox.checked);
+      if (humanCheckbox.checked) {
+        // Optional: Focus input when checkbox is checked
+        input.focus();
+      }
+    });
+  }
   // Function to enable/disable form elements based on checkbox state
   const updateFormState = () => {
     if (humanCheckbox) {
@@ -143,7 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Reset human checkbox for next interaction
-    if(humanCheckbox) humanCheckbox.checked = false;
+    if(humanCheckbox) {
+      humanCheckbox.checked = false;
+      // Also disable controls as the checkbox is now unticked
+      setChatControlsDisabled(true);
+    }
 
     console.log('EVENT:ChatbotWidget/chatForm#submit: User message processed.');
   });
