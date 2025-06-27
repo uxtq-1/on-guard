@@ -1,14 +1,10 @@
-<!-- chatbot/chatbot-widget.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OPS Chatbot</title>
-
-  <!-- Optional: You may include chatbot.css here -->
   <link rel="stylesheet" href="chatbot.css" />
-
   <style>
     body {
       margin: 0;
@@ -16,36 +12,30 @@
       background-color: var(--bg-current, #fff);
       color: var(--text-color-current, #000);
     }
-
     [data-theme='dark'] {
       background-color: #111;
       color: #eee;
     }
-
     #chat-container {
       display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
     }
-
     #chat-messages {
       flex: 1;
       padding: 1rem;
       overflow-y: auto;
     }
-
     #chat-form {
       display: flex;
       border-top: 1px solid var(--border-color-current, #ccc);
       padding: 0.5rem;
     }
-
     #chat-input {
       flex: 1;
       padding: 0.5rem;
     }
-
     button {
       padding: 0.5rem 1rem;
       cursor: pointer;
@@ -55,7 +45,6 @@
 <body data-theme="light">
   <div id="chat-container" role="region" aria-label="AI Chat Assistant">
     <div id="chat-messages" aria-live="polite"></div>
-
     <form id="chat-form" autocomplete="off">
       <input
         type="text"
@@ -68,38 +57,31 @@
       <button type="submit" id="send-button" aria-label="Send Message">Send</button>
     </form>
   </div>
-
   <script>
     const chatMessages = document.getElementById('chat-messages');
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
-
     const safeText = (input) => {
       const div = document.createElement('div');
       div.textContent = input;
       return div.innerHTML;
     };
-
     function appendMessage(sender, text) {
       const msg = document.createElement('div');
       msg.innerHTML = `<strong>${sender}:</strong> ${safeText(text)}`;
       chatMessages.appendChild(msg);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
     chatForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const userMsg = chatInput.value.trim();
       if (!userMsg) return;
       appendMessage('You', userMsg);
       chatInput.value = '';
-
-      // Simulated bot response
       setTimeout(() => {
         appendMessage('Bot', "Thank you! We're working on your request.");
       }, 500);
     });
-
     // Theme sync from parent
     window.addEventListener('message', (event) => {
       if (typeof event.data === 'string') {
