@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
        ================================================================= */
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
+            navigator.serviceWorker.register('/js/service-worker.js')
                 .then(reg => console.log('INFO:Main/ServiceWorker: Registered. Scope:', reg.scope))
                 .catch(err => console.error('ERROR:Main/ServiceWorker: Registration failed:', err));
         });

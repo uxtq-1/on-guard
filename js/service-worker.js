@@ -6,9 +6,9 @@ const CACHE_NAME = 'ops-solutions-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/css/global.css',
-  '/css/small-screens.css',
-  '/js/main.js'
+  '/css/base/global.css',
+  '/css/base/small-screens.css',
+  '/js/pages/main.js'
   // Add other important assets that should be cached for offline use
 ];
 
