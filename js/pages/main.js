@@ -286,14 +286,14 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (modalId === 'join-us-modal') {
                 targetModal = await loadModalContent(
                     modalId,
-                    'join_us_modal.html',
+                    '../html/modals/join_us_modal.html',
                     'join-us-modal-placeholder',
                     typeof initializeJoinUsModal === 'function' ? initializeJoinUsModal : null
                 );
             } else if (modalId === 'chatbot-modal') {
                 targetModal = await loadModalContent(
                     modalId,
-                    'chatbot_modal.html',
+                    '../html/modals/chatbot_modal.html',
                     'chatbot-modal-placeholder',
                     typeof initializeChatbotModal === 'function' ? initializeChatbotModal : null
                 );

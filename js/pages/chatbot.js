@@ -3,7 +3,7 @@
 let chatbotIframe = null; // Stores the iframe element globally
 let themeObserver = null; // Stores the MutationObserver
 let iframeLoaded = false; // Tracks if iframe has been loaded into the modal
-const chatbotUrl = 'chatbot_creation/chatbot-widget.html'; // Update this if path changes
+const chatbotUrl = '../html/chatbot_creation/chatbot-widget.html'; // Update this if path changes
 
 // ---- Function to apply theme to the iframe's body ----
 function applyThemeToIframe(theme) {

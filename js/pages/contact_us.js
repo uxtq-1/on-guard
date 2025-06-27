@@ -33,9 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('contact_us.html');
+            const response = await fetch('../html/contact_us.html');
             if (!response.ok) {
-                throw new Error(`Failed to fetch contact_us.html: ${response.status} ${response.statusText}`);
+                throw new Error(`Failed to fetch ../html/contact_us.html: ${response.status} ${response.statusText}`);
             }
             const htmlText = await response.text();
             const parser = new DOMParser();
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 console.log('Contact modal loaded and initialized.');
             } else {
-                console.error('Could not find #contact-modal.modal-overlay in fetched contact_us.html');
+                console.error('Could not find #contact-modal.modal-overlay in fetched ../html/contact_us.html');
             }
         } catch (error) {
             console.error('Error loading contact modal:', error);
