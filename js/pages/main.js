@@ -1,5 +1,3 @@
-on-guard/js/main.js
-
 /*****************************************************
  * main.js
  * Handles language switching, theme toggles, modals,
