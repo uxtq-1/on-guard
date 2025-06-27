@@ -1,51 +1,45 @@
 /* css/contact_us.css */
 /* Styles for the Contact Us modal, form, and responsive design */
+/* Leveraging global.css for base modal styles */
 
-.modal-overlay {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.65);
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  overflow-y: auto;
-  backdrop-filter: blur(3px);
+/* Specific overrides for the Contact Us modal overlay, if different from global */
+#contact-modal.modal-overlay { /* Targeting the specific modal ID from index.html */
+  /* display: none; -- Handled by global.css */
+  /* position: fixed; -- Handled by global.css */
+  z-index: 3001; /* Slightly higher than global default if needed, global is 3000 */
+  /* top: 0; left: 0; width: 100vw; height: 100vh; -- Handled by global.css inset:0 */
+  /* background-color: rgba(0, 0, 0, 0.65); -- global.css has rgba(0,0,0,0.7) */
+  /* justify-content: center; align-items: center; -- Handled by global.css */
+  /* padding: 1rem; -- Handled by global.css */
+  /* overflow-y: auto; -- Modal body handles overflow */
+  backdrop-filter: blur(3px); /* Specific stylistic choice */
 }
 
-.modal-overlay.active {
-  display: flex;
+/* #contact-modal.modal-overlay.active { -- Handled by global.css } */
+
+/* Specific overrides for the Contact Us modal content */
+#contact-modal .modal-content {
+  /* background-color, color are themed by global.css vars */
+  /* padding: 0; -- global.css sets this, then modal-header/body/footer add their own */
+  border-radius: 12px; /* Slightly different from global 10px */
+  /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); -- global.css has a shadow */
+  /* max-width: 600px; -- Matches global.css */
+  /* width: 90%; -- Matches global.css */
+  /* position: relative; -- Handled by global.css */
 }
 
-.modal-content {
-  background-color: var(--bg-current, #fff);
-  color: var(--text-color-current, #000);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  width: 100%;
-  position: relative;
+/* Modal header title style if different from global */
+#contact-modal .modal-header h3 { /* global.css uses h3 as well */
+  /* margin-top: 0; -- Default from user agent or reset */
+  /* font-size: 1.5rem; -- Matches global.css */
 }
 
-.modal-content h2 {
-  margin-top: 0;
-  font-size: 1.5rem;
-}
-
-.modal-content .close-modal {
-  position: absolute;
+/* Close button position specific to contact_us modal */
+#contact-modal .modal-header .close-modal {
+  /* background, border, font-size, cursor, color are from global.css */
+  position: absolute; /* Overrides default flow if needed */
   top: 0.75rem;
   right: 0.75rem;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--text-color-current, #000);
 }
 
 #contact-form {
