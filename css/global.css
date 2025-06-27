@@ -85,33 +85,42 @@ header {
   color: var(--header-text-current);
   padding: 15px 20px; /* User's padding */
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Will be adjusted */
   align-items: center;
   position: relative; /* For toggle container positioning */
 }
 
-header nav { /* Assuming this is the main desktop nav */
-    flex-grow: 1;
-    display: flex; /* Added to help center the ul if needed */
-    justify-content: center; /* Center nav ul */
+header nav.desktop-nav { /* Target specific desktop nav */
+    flex-grow: 1; /* Allow nav to take space */
+    display: flex;
+    justify-content: center; /* Center the ul within the nav */
 }
-header nav ul {
+header nav.desktop-nav ul {
   display: flex;
   list-style: none;
   gap: 20px; /* User's gap */
   padding: 0;
   margin: 0;
+  justify-content: center; /* Ensure items are centered if nav itself is wider */
 }
-header nav a { /* Combined from header nav ul li a */
+header nav.desktop-nav a { /* Combined from header nav ul li a */
   color: var(--nav-link-current);
   font-weight: bold; /* User's font-weight */
   text-decoration: none;
+}
+
+/* New wrapper for all header controls to group them on the right */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adjust gap as needed between toggles and menu button */
 }
 
 .toggle-container { /* For desktop lang/theme toggles */
   display: flex;
   gap: 10px; /* User's gap */
   align-items: center;
+  /* Removed margin-left: auto; as .header-controls will handle positioning */
 }
 .toggle-container button {
   background-color: #7e69ab; /* User's specific color, could be themed with a new var */
