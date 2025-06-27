@@ -123,6 +123,7 @@
        ================================================================== -->
   <footer>
     <p>&copy; 2025 OPS Solutions Services. All rights reserved.</p>
+    <button id="footer-contact-us-button" class="btn" data-en="Contact Us" data-es="Contáctenos">Contact Us</button>
   </footer>
 
   <!-- ==================================================================
@@ -141,65 +142,9 @@
   </div>
 
   <!-- ==================================================================
-       Contact Modal
+       Contact Modal Placeholder
        ================================================================== -->
-  <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle" style="display:none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="contactModalTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h3>
-        <button class="close-modal" data-close aria-label="Close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="contact-form">
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-name">Name</label>
-              <input type="text" id="contact-name" name="contact-name" required placeholder="Enter your name">
-            </div>
-            <div class="form-cell">
-              <label for="contact-email">Email</label>
-              <input type="email" id="contact-email" name="contact-email" required placeholder="Enter your email">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-number">Contact Number</label>
-              <input type="tel" id="contact-number" name="contact-number" required placeholder="Enter your contact number">
-            </div>
-            <div class="form-cell">
-              <label for="contact-date">Preferred Date</label>
-              <input type="date" id="contact-date" name="contact-date" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell">
-              <label for="contact-time">Preferred Time</label>
-              <input type="time" id="contact-time" name="contact-time" required>
-            </div>
-            <div class="form-cell">
-              <label for="contact-interest">What are you interested about?</label>
-              <select id="contact-interest" name="contact-interest" required>
-                <option value="" disabled selected>Select an option</option>
-                <option value="business_operations">Business Operations</option>
-                <option value="contact_center">Contact Center</option>
-                <option value="it_support">IT Support</option>
-                <option value="professionals">Professionals</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-cell" style="flex: 1 1 100%;">
-              <label for="contact-comments">Comments</label>
-              <textarea id="contact-comments" name="contact-comments" rows="4" required placeholder="What service are you interested in?"></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" form="contact-form" class="submit-button">Send</button>
-      </div>
-    </div>
-  </div>
+  <div id="contact-modal-placeholder"></div>
 
   <!-- ==================================================================
        Mobile Bottom Navigation & Services Menu
