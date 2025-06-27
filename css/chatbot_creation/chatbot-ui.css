@@ -5,11 +5,11 @@
     flex-grow: 1;
     padding: 10px;
     overflow-y: auto;
-    background-color: ghostwhite; /* Cold White chat log background */
+    background-color: ghostwhite;
     border-bottom: 1px solid #ccc;
 }
 body[data-theme="dark"] .chat-log {
-    background-color: #333; /* Dark mode chat log background - unchanged */
+    background-color: #333;
     border-bottom-color: #555;
 }
 
@@ -22,34 +22,34 @@ body[data-theme="dark"] .chat-log {
 }
 
 .user-message {
-    background-color: #007bff; /* Light mode user message */
+    background-color: #007bff;
     color: white;
     margin-left: auto;
     border-bottom-right-radius: 5px;
 }
 body[data-theme="dark"] .user-message {
-    background-color: #0056b3; /* Dark mode user message */
+    background-color: #0056b3;
 }
 
 .bot-message {
-    background-color: #e9ecef; /* Light mode bot message */
+    background-color: #e9ecef;
     color: #333;
     margin-right: auto;
     border-bottom-left-radius: 5px;
 }
 body[data-theme="dark"] .bot-message {
-    background-color: #555; /* Dark mode bot message */
+    background-color: #555;
     color: #eee;
 }
 
 .chat-form {
     display: flex;
     padding: 10px;
-    background-color: #f8f9fa; /* Light mode form background */
+    background-color: #f8f9fa;
     border-top: 1px solid #ccc;
 }
 body[data-theme="dark"] .chat-form {
-    background-color: #2a2a2a; /* Dark mode form background */
+    background-color: #2a2a2a;
     border-top-color: #555;
 }
 
@@ -59,48 +59,48 @@ body[data-theme="dark"] .chat-form {
     border: 1px solid #ccc;
     border-radius: 20px;
     margin-right: 10px;
-    background-color: ghostwhite; /* Cold White input background */
+    background-color: ghostwhite;
     color: #333;
 }
 body[data-theme="dark"] #chat-input {
-    background-color: #444; /* Dark mode input - unchanged */
+    background-color: #444;
     color: #eee;
     border-color: #666;
 }
 
 #chat-send-button {
     padding: 10px 15px;
-    background-color: lemonchiffon; /* Lemon Yellow send button */
-    color: #333; /* Dark text for contrast */
+    background-color: lemonchiffon;
+    color: #333;
     border: none;
     border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 #chat-send-button:hover {
-    background-color: gold; /* Slightly darker yellow for hover */
+    background-color: gold;
 }
 body[data-theme="dark"] #chat-send-button {
-    background-color: #FFEC8B; /* Lighter lemon/gold for dark mode */
-    color: #222; /* Darker text for dark mode button */
+    background-color: #FFEC8B;
+    color: #222;
 }
 body[data-theme="dark"] #chat-send-button:hover {
-    background-color: #EEDC82; /* Slightly darker for dark mode hover */
+    background-color: #EEDC82;
 }
 
 /* Honeypot field - already styled globally in global.css, but can add specifics if needed */
 .ops-chatbot-honeypot-field {
-    /* display: none !important; */ /* Ensuring it's hidden, though global.css should cover */
+    /* display: none !important; */
 }
 
 /* Basic styling for the reCAPTCHA placeholder */
 .recaptcha-placeholder-container {
     display: flex;
     align-items: center;
-    margin-right: 10px; /* Space before the send button */
+    margin-right: 10px;
     padding: 5px;
     font-size: 0.9em;
-    border: 1px dashed #aaa; /* Visual cue that it's a placeholder area */
+    border: 1px dashed #aaa;
     border-radius: 4px;
 }
 body[data-theme="dark"] .recaptcha-placeholder-container {
