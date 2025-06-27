@@ -1,0 +1,121 @@
+/* css/chatbot_creation/chatbot-ui.css */
+/* Styles for the chat log, messages, form, input, and button */
+
+.chat-log {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #fff; /* Light mode chat log background */
+    border-bottom: 1px solid #ccc;
+}
+body[data-theme="dark"] .chat-log {
+    background-color: #333; /* Dark mode chat log background */
+    border-bottom-color: #555;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 15px;
+    line-height: 1.4;
+    max-width: 80%;
+}
+
+.user-message {
+    background-color: #007bff; /* Light mode user message */
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+body[data-theme="dark"] .user-message {
+    background-color: #0056b3; /* Dark mode user message */
+}
+
+.bot-message {
+    background-color: #e9ecef; /* Light mode bot message */
+    color: #333;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+body[data-theme="dark"] .bot-message {
+    background-color: #555; /* Dark mode bot message */
+    color: #eee;
+}
+
+.chat-form {
+    display: flex;
+    padding: 10px;
+    background-color: #f8f9fa; /* Light mode form background */
+    border-top: 1px solid #ccc;
+}
+body[data-theme="dark"] .chat-form {
+    background-color: #2a2a2a; /* Dark mode form background */
+    border-top-color: #555;
+}
+
+#chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    background-color: #fff; /* Light mode input */
+    color: #333;
+}
+body[data-theme="dark"] #chat-input {
+    background-color: #444; /* Dark mode input */
+    color: #eee;
+    border-color: #666;
+}
+
+#chat-send-button {
+    padding: 10px 15px;
+    background-color: #007bff; /* Light mode send button */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+#chat-send-button:hover {
+    background-color: #0056b3; /* Light mode send button hover */
+}
+body[data-theme="dark"] #chat-send-button {
+    background-color: #0056b3; /* Dark mode send button */
+}
+body[data-theme="dark"] #chat-send-button:hover {
+    background-color: #003d80; /* Dark mode send button hover */
+}
+
+/* Honeypot field - already styled globally in global.css, but can add specifics if needed */
+.ops-chatbot-honeypot-field {
+    /* display: none !important; */ /* Ensuring it's hidden, though global.css should cover */
+}
+
+/* Basic styling for the reCAPTCHA placeholder */
+.recaptcha-placeholder-container {
+    display: flex;
+    align-items: center;
+    margin-right: 10px; /* Space before the send button */
+    padding: 5px;
+    font-size: 0.9em;
+    border: 1px dashed #aaa; /* Visual cue that it's a placeholder area */
+    border-radius: 4px;
+}
+body[data-theme="dark"] .recaptcha-placeholder-container {
+    border-color: #666;
+}
+
+.recaptcha-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+#human-verification-checkbox {
+    margin-right: 5px;
+}
+
+.recaptcha-text {
+    user-select: none;
+}
