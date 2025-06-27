@@ -1,132 +1,174 @@
-on-guard/js/chatbot_creation/chatbot.js
+on-guard/js/chatbot.js
 
-
-// js/chatbot_creation/chatbot.js
-// This script runs *inside* the chatbot-widget.html iframe
+// js/chatbot.js - Iframe Loader for the new chatbot system
 
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('chat-form');
-  const input = document.getElementById('chat-input');
-  const log = document.getElementById('chat-log');
-  const honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
-  const humanCheckbox = document.getElementById('human-verification-checkbox');
+  const chatbotPlaceholder = document.getElementById('chatbot-placeholder');
+  const mobileChatLauncher = document.getElementById('mobileChatLauncher');
+  const desktopChatFab = document.getElementById('chatbot-fab-trigger');
 
-  if (!form || !input || !log) {
-    console.error('ERROR:ChatbotWidget/DOMContentLoaded: Core chatbot UI elements (#chat-form, #chat-input, #chat-log) not found in iframe.');
-    return;
-  }
-  if (!honeypotInput) {
-    console.warn('WARN:ChatbotWidget/DOMContentLoaded: Honeypot field not found.');
-  }
-  if (!humanCheckbox) {
-    console.warn('WARN:ChatbotWidget/DOMContentLoaded: Human verification checkbox not found.');
-  }
+  const chatbotUrl = 'chatbot_creation/chatbot-widget.html'; // Path relative to project root
+  let iframeLoaded = false;
+  let chatbotIframe = null; // Store the iframe element
+  let themeObserver = null; // Store the MutationObserver
 
-  const addMessage = (text, sender = 'user', isHTML = false) => {
-    const msg = document.createElement('div');
-    msg.classList.add('message', sender === 'bot' ? 'bot-message' : 'user-message');
-    if (isHTML) {
-      msg.innerHTML = text; // Use with trusted HTML only
+  // Function to apply theme to iframe
+  function applyThemeToIframe(theme) {
+    if (chatbotIframe && chatbotIframe.contentWindow && chatbotIframe.contentWindow.document && chatbotIframe.contentWindow.document.body) {
+      chatbotIframe.contentWindow.document.body.setAttribute('data-theme', theme);
+      console.log(`INFO:ChatbotLoader/applyThemeToIframe: Applied theme "${theme}" to chatbot iframe.`);
     } else {
-      msg.textContent = text;
+      console.warn('WARN:ChatbotLoader/applyThemeToIframe: Chatbot iframe content not fully accessible yet.');
     }
-    log.appendChild(msg);
-    log.scrollTop = log.scrollHeight;
-  };
+  }
 
-  // Simulate bot responding (replace with actual bot logic / API call)
-  const getSimulatedBotReply = async (userInput) => {
-    console.log(`INFO:ChatbotWidget/getSimulatedBotReply: Simulating bot reply for: "${userInput}"`);
-    const lowerInput = userInput.toLowerCase();
-    let botResponse = "Thanks for your message! A support agent will be with you shortly."; // Default
+  // Function to set up theme synchronization
+  function setupThemeSync() {
+    if (!chatbotIframe) return;
 
-    if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
-      botResponse = "Hello there! How can I assist you today?";
-    } else if (lowerInput.includes('help')) {
-      botResponse = "I can help with general questions. For specific account issues, an agent will assist you. What do you need help with?";
-    } else if (lowerInput.includes('price') || lowerInput.includes('pricing')) {
-      botResponse = "You can find our pricing details on the main website under 'Services' or by contacting sales.";
-    } else if (lowerInput.includes('bye')) {
-      botResponse = "Goodbye! Have a great day.";
-    }
-    await new Promise(resolve => setTimeout(resolve, 600 + Math.random() * 800));
-    addMessage(botResponse, 'bot');
-  };
+    // Initial theme application
+    const currentTheme = document.body.getAttribute('data-theme') || 'light';
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const userInput = input.value.trim();
-    if (!userInput) return;
+    // Wait for iframe to load its content before trying to access its document
+    chatbotIframe.onload = () => {
+        console.log('INFO:ChatbotLoader/setupThemeSync: Chatbot iframe "onload" event triggered.');
+        applyThemeToIframe(currentTheme);
 
-    // 1. Check Honeypot
-    if (honeypotInput && honeypotInput.value !== '') {
-      console.warn('WARN:ChatbotWidget/submit: Honeypot filled. Potential bot. Submission blocked.');
-      // Optionally, you can silently log this and not inform the user, or give a generic error.
-      // addMessage("Submission blocked.", 'bot');
-      return;
-    }
+        // Setup MutationObserver after iframe is loaded and theme initially applied
+        if (themeObserver) themeObserver.disconnect(); // Disconnect previous observer if any
 
-    // 2. Check 'Are you human?' checkbox (placeholder for real reCAPTCHA)
-    if (humanCheckbox && !humanCheckbox.checked) {
-      addMessage("Please confirm you are human by checking the box.", 'bot');
-      return;
-    }
-    // For a real reCAPTCHA v2 Checkbox, you'd get a token here:
-    // const recaptchaToken = grecaptcha.getResponse();
-    // if (!recaptchaToken) { addMessage("Please complete the reCAPTCHA.", 'bot'); return; }
-    // For reCAPTCHA v3, it's a score obtained differently.
+        themeObserver = new MutationObserver((mutationsList) => {
+          for (const mutation of mutationsList) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+              const newTheme = document.body.getAttribute('data-theme') || 'light';
+              applyThemeToIframe(newTheme);
+            }
+          }
+        });
 
-    addMessage(userInput, 'user');
-    input.value = '';
-
-    // 3. Conceptual: Send to worker for intrusion check / pre-processing
-    console.log('INFO:ChatbotWidget/submit: Conceptually sending to worker for intrusion check.');
-    let intrusionCheckPassed = true; // Assume it passes for now
-    const conceptualWorkerEndpoint = '/api/chatbot_message_check'; // This would be a real endpoint
-
-    /* Conceptual fetch to worker:
-    try {
-      const workerResponse = await fetch(conceptualWorkerEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: userInput,
-          // recaptchaToken: recaptchaToken, // If using real reCAPTCHA
-        })
-      });
-      if (!workerResponse.ok) {
-        const errorResult = await workerResponse.json().catch(() => ({}));
-        addMessage(`Security check failed: ${errorResult.message || 'Please try again.'}`, 'bot');
-        intrusionCheckPassed = false;
-      } else {
-        const checkResult = await workerResponse.json();
-        if (!checkResult.success) {
-          addMessage(checkResult.message || "Message could not be processed at this time.", 'bot');
-          intrusionCheckPassed = false;
+        themeObserver.observe(document.body, { attributes: true });
+        console.log('INFO:ChatbotLoader/setupThemeSync: MutationObserver set up for theme changes on parent body.');
+    };
+    // If iframe is already loaded (e.g. from cache, or if onload fired before this was attached)
+    // and contentDocument is accessible, try applying theme.
+     if (chatbotIframe.contentDocument && chatbotIframe.contentDocument.readyState === 'complete') {
+        console.log('INFO:ChatbotLoader/setupThemeSync: Chatbot iframe already loaded, applying theme.');
+        applyThemeToIframe(currentTheme);
+         // Also setup observer here if needed, though onload should ideally handle it.
+        if (!themeObserver && chatbotIframe.contentWindow && chatbotIframe.contentWindow.document) {
+            if (themeObserver) themeObserver.disconnect();
+            themeObserver = new MutationObserver((mutationsList) => {
+              for (const mutation of mutationsList) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                  const newTheme = document.body.getAttribute('data-theme') || 'light';
+                  applyThemeToIframe(newTheme);
+                }
+              }
+            });
+            themeObserver.observe(document.body, { attributes: true });
+            console.log('INFO:ChatbotLoader/setupThemeSync: MutationObserver set up (iframe already loaded case).');
         }
-      }
-    } catch (error) {
-      console.error('ERROR:ChatbotWidget/submit: Error during intrusion check worker call:', error);
-      addMessage("Error connecting to security service. Please try again later.", 'bot');
-      intrusionCheckPassed = false;
     }
-    */
+  }
 
-    if (intrusionCheckPassed) {
-      // 4. If check passes, get bot reply (currently simulated)
-      getSimulatedBotReply(userInput);
+
+  function loadAndShowChatbot() {
+    if (!chatbotPlaceholder) {
+      console.error('ERROR:ChatbotLoader/loadAndShowChatbot: chatbot-placeholder element not found.');
+      return;
     }
 
-    // Reset human checkbox for next interaction
-    if(humanCheckbox) humanCheckbox.checked = false;
+    if (!chatbotPlaceholder.querySelector('.chatbot-placeholder-close-btn')) {
+        const closeButton = document.createElement('button');
+        closeButton.innerHTML = '&times;';
+        closeButton.className = 'chatbot-placeholder-close-btn';
+        closeButton.setAttribute('aria-label', 'Close Chat');
+        closeButton.onclick = hideChatbot;
+        chatbotPlaceholder.appendChild(closeButton);
+    }
 
-    console.log('EVENT:ChatbotWidget/chatForm#submit: User message processed.');
+    if (!iframeLoaded) {
+      const iframe = document.createElement('iframe');
+      iframe.src = chatbotUrl;
+      iframe.title = 'Live Chat Support';
+      // Styling for iframe (width:100%, height:100%, border:none) should be in iframe-chat-wrapper.css
+
+      const currentCloseBtn = chatbotPlaceholder.querySelector('.chatbot-placeholder-close-btn');
+      chatbotPlaceholder.innerHTML = '';
+      if(currentCloseBtn) chatbotPlaceholder.appendChild(currentCloseBtn);
+
+      chatbotPlaceholder.appendChild(iframe);
+      chatbotIframe = iframe; // Store the iframe
+      iframeLoaded = true;
+      console.log('INFO:ChatbotLoader/loadAndShowChatbot: Chatbot iframe created and appended.');
+      setupThemeSync(); // Setup theme synchronization
+    } else if (chatbotIframe) {
+        // If iframe was loaded but maybe hidden and re-shown, ensure theme is current
+        const currentTheme = document.body.getAttribute('data-theme') || 'light';
+        applyThemeToIframe(currentTheme);
+        // Re-ensure observer is active if it was disconnected
+        if (!themeObserver || (themeObserver && themeObserver.takeRecords && themeObserver.takeRecords().length === 0 && !document.body.getAttribute('data-theme-observed-by-chatbot'))) {
+             console.log('INFO:ChatbotLoader/loadAndShowChatbot: Re-initializing theme sync for existing iframe.');
+             setupThemeSync(); // This will re-establish observer if needed
+             document.body.setAttribute('data-theme-observed-by-chatbot', 'true'); // Mark that observer is setup
+        }
+    }
+
+
+    chatbotPlaceholder.classList.add('active');
+    console.log('INFO:ChatbotLoader/loadAndShowChatbot: Chatbot placeholder displayed.');
+    const closeBtn = chatbotPlaceholder.querySelector('.chatbot-placeholder-close-btn');
+    if(closeBtn) closeBtn.focus();
+    else if (chatbotIframe) chatbotIframe.focus();
+  }
+
+  function hideChatbot() {
+    if (chatbotPlaceholder) {
+      chatbotPlaceholder.classList.remove('active');
+      console.log('INFO:ChatbotLoader/hideChatbot: Chatbot placeholder hidden.');
+      // Consider disconnecting observer when hidden if performance is an issue,
+      // but for theme changes it's likely low overhead.
+      // if (themeObserver) {
+      //   themeObserver.disconnect();
+      //   themeObserver = null;
+      //   document.body.removeAttribute('data-theme-observed-by-chatbot');
+      //   console.log('INFO:ChatbotLoader/hideChatbot: Theme observer disconnected.');
+      // }
+    }
+  }
+
+  function toggleChatbot(event) {
+    if(event) event.preventDefault();
+    if (!chatbotPlaceholder) return;
+
+    if (chatbotPlaceholder.classList.contains('active')) {
+      hideChatbot();
+    } else {
+      loadAndShowChatbot();
+    }
+  }
+
+  if (mobileChatLauncher) {
+    mobileChatLauncher.addEventListener('click', toggleChatbot);
+  } else {
+    console.warn('WARN:ChatbotLoader/DOMContentLoaded: Mobile chat launcher (mobileChatLauncher) not found.');
+  }
+
+  if (desktopChatFab) {
+    desktopChatFab.addEventListener('click', toggleChatbot);
+  } else {
+    console.warn('WARN:ChatbotLoader/DOMContentLoaded: Desktop chat FAB (chatbot-fab-trigger) not found.');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && chatbotPlaceholder && chatbotPlaceholder.classList.contains('active')) {
+        hideChatbot();
+        console.log('EVENT:ChatbotLoader/document#keydown[Escape] - Chatbot placeholder closed via ESC.');
+        if(document.activeElement === chatbotPlaceholder || chatbotPlaceholder.contains(document.activeElement)){
+            if(desktopChatFab) desktopChatFab.focus();
+        }
+    }
   });
 
-  // Initial greeting from bot
-  setTimeout(() => {
-    addMessage("Hello! I'm your OPS Solutions assistant. How can I help you today?", 'bot');
-  }, 500);
-
-  console.log('INFO:ChatbotWidget/DOMContentLoaded: Chatbot widget JS initialized inside iframe.');
+  console.log('INFO:ChatbotLoader/DOMContentLoaded: Chatbot loader initialized.');
 });
