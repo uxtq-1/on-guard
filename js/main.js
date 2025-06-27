@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ================================================================
        Contact Form Placeholder Submission
-       ================================================================ */
+       ================================================================= */
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', function(event) {
@@ -22,14 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ================================================================
        1) LANGUAGE TOGGLE (Desktop & Mobile for index.html header)
-       ================================================================ */
+       ================================================================= */
     let currentLanguage = localStorage.getItem("language") || "en";
+
     const langToggleDesktop = document.getElementById("language-toggle-desktop");
     const langToggleMobile  = document.getElementById("language-toggle-mobile");
 
     function updateNodeLanguageTexts(lang, parentNode = document.body) {
-        if (!parentNode) return;
+        if (!parentNode) {
+            console.warn("WARN:Main/updateNodeLanguageTexts: parentNode is null for lang", lang);
+            return;
+        }
         document.documentElement.lang = lang;
+
         const elements = parentNode.matches('[data-en], [data-es], [data-en-placeholder], [data-es-placeholder], [data-en-label], [data-es-label], [data-en-title], [data-es-title]') ?
                          [parentNode, ...parentNode.querySelectorAll('[data-en], [data-es], [data-en-placeholder], [data-es-placeholder], [data-en-label], [data-es-label], [data-en-title], [data-es-title]')] :
                          [...parentNode.querySelectorAll('[data-en], [data-es], [data-en-placeholder], [data-es-placeholder], [data-en-label], [data-es-label], [data-en-title], [data-es-title]')];
@@ -37,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         elements.forEach(el => {
             const targetLang = lang;
             const fallbackLang = 'en';
+
             let textToSet = el.dataset[targetLang] || el.dataset[fallbackLang];
             if (el.placeholder !== undefined) {
                 const placeholderText = el.dataset[targetLang + 'Placeholder'] || el.dataset[fallbackLang + 'Placeholder'] || textToSet;
@@ -61,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             }
+
             const ariaLabelText = el.dataset[targetLang + 'Label'] || el.dataset[fallbackLang + 'Label'];
             if (ariaLabelText) el.setAttribute('aria-label', ariaLabelText);
 
@@ -74,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const newAriaLabel = (currentLanguage === "en") ?
                              (langToggleDesktop?.dataset?.esLabel || "Switch to Spanish") :
                              (langToggleDesktop?.dataset?.enLabel || "Switch to English");
+
         if (langToggleDesktop) {
             langToggleDesktop.textContent = newButtonText;
             if(newAriaLabel) langToggleDesktop.setAttribute('aria-label', newAriaLabel);
@@ -103,13 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
             updateNodeLanguageTexts(currentLanguage, nodeToUpdate);
         }
     };
+
     updateNodeLanguageTexts(currentLanguage, document.body);
     setLanguageButtonVisuals();
     console.log(`INFO:Main/LangInit: Initial language set to ${currentLanguage.toUpperCase()}`);
 
     /* ================================================================
        2) THEME TOGGLE (Desktop & Mobile for index.html header)
-       ================================================================ */
+       ================================================================= */
     const themeToggleDesktop = document.getElementById("theme-toggle-desktop");
     const themeToggleMobile  = document.getElementById("theme-toggle-mobile");
     const bodyElement = document.body;
@@ -147,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ================================================================
        3) Right-Side Main Menu (for index.html)
-       ================================================================ */
+       ================================================================= */
     const menuOpenBtn = document.getElementById('menu-open');
     const menuCloseBtn = document.getElementById('menu-close');
     const rightSideMenu = document.getElementById('rightSideMenu');
@@ -183,9 +192,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ================================================================
        4) Services Sub-Menu in Right-Side Menu (for index.html)
-       ================================================================ */
+       ================================================================= */
     const servicesTriggerBtn = document.querySelector('#rightSideMenu .services-trigger > button');
     const servicesSubMenu = document.getElementById('servicesSubMenu');
+
     if (servicesTriggerBtn && servicesSubMenu) {
         servicesTriggerBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -196,7 +206,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ================================================================
        5) Modals (General Logic for index.html: Contact Us)
-       ================================================================ */
+          Join Us is now a separate page. Chatbot uses iframe system.
+       ================================================================= */
     const modalTriggers = document.querySelectorAll('.floating-icon[data-modal], button[data-modal]');
     const closeModalButtons = document.querySelectorAll('.modal-overlay .close-modal[data-close]');
     const allModalOverlays = document.querySelectorAll('.modal-overlay');
@@ -251,7 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ================================================================
        7) Mobile Services Menu Toggle (for index.html's bottom nav menu)
-       ================================================================ */
+       ================================================================= */
     const mobileServicesToggle = document.getElementById('mobile-services-toggle');
     const mobileServicesMenu = document.getElementById('mobile-services-menu');
     if (mobileServicesToggle && mobileServicesMenu) {
@@ -271,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ================================================================
        8) Service Worker Registration
-       ================================================================ */
+       ================================================================= */
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
@@ -297,6 +308,8 @@ window.sanitizeInput = function(inputString) {
     sanitized = sanitized.replace(/<script[^>]*>.*?<\/script>/gi, "");
     sanitized = sanitized.replace(/\s*on\w+\s*=\s*(".*?"|'.*?'|[^>\s]+)/gi, "");
     sanitized = sanitized.replace(/href\s*=\s*["']?\s*javascript:[^"'\s]+/gi, "href=\"#\"");
+
+    // PII Patterns
     const PII_PATTERNS = [
         /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
         /\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9]{2})[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})\b/g,
@@ -309,3 +322,4 @@ window.sanitizeInput = function(inputString) {
     }
     return sanitized;
 };
+
