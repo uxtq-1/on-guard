@@ -1,0 +1,36 @@
+<!-- contact_us.html -->
+<div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+  <div class="modal-content" tabindex="-1">
+    <button class="close-modal" data-close aria-label="Close Contact Form">&times;</button>
+    
+    <div class="modal-header">
+      <h2 id="contact-modal-title" data-en="Contact Us" data-es="Contáctanos">Contact Us</h2>
+    </div>
+
+    <div class="modal-body">
+      <form id="contact-form" autocomplete="off" novalidate>
+        <!-- Honeypot anti-bot field (hidden from humans) -->
+        <input type="text" name="hp-field" id="hp-field" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;">
+
+        <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
+        <input type="text" id="contact-name" name="name" required placeholder="John Doe" 
+               data-en-placeholder="John Doe" data-es-placeholder="Juan Pérez" 
+               data-en-label="Name" data-es-label="Nombre">
+
+        <label for="contact-email" data-en="Email" data-es="Correo electrónico">Email</label>
+        <input type="email" id="contact-email" name="email" required placeholder="you@example.com" 
+               data-en-placeholder="you@example.com" data-es-placeholder="tu@ejemplo.com" 
+               data-en-label="Email" data-es-label="Correo electrónico">
+
+        <label for="contact-message" data-en="Message" data-es="Mensaje">Message</label>
+        <textarea id="contact-message" name="message" rows="4" required 
+                  data-en-placeholder="Your message here..." 
+                  data-es-placeholder="Tu mensaje aquí..."
+                  data-en-label="Message" data-es-label="Mensaje"
+                  placeholder="Your message here..."></textarea>
+
+        <button type="submit" id="submit-contact" data-en="Send Message" data-es="Enviar Mensaje">Send Message</button>
+      </form>
+    </div>
+  </div>
+</div>
