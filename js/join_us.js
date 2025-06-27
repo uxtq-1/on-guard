@@ -1,80 +1,51 @@
-// js/join_us.js - Handles Join Us modal form logic
+// js/join_us.js
+// Handles modal, language, and theme toggles for join_us.html
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log('INFO:JoinUs/DOMContentLoaded: Initializing Join Us modal logic.');
+document.addEventListener('DOMContentLoaded', () => {
+    // Modal close logic
+    const joinUsModal = document.getElementById('join-us-modal');
+    const closeJoinUsModal = document.getElementById('close-join-us-modal');
+    const fabJoin = document.getElementById('fab-join');
+    let lastFocusedElement = null;
 
-  const joinUsForm = document.getElementById("join-form");
-  const honeypotField = joinUsForm ? joinUsForm.querySelector("[name='join-honeypot']") : null;
-  const submitButton = joinUsForm?.querySelector("button[type='submit']");
-
-  if (!joinUsForm) {
-    console.error("ERROR:JoinUs/DOMContentLoaded: Join Us form element not found.");
-    return;
-  }
-
-  // Validate form fields (basic)
-  function validateJoinUsForm() {
-    const nameField = joinUsForm.querySelector("[name='name']");
-    const emailField = joinUsForm.querySelector("[name='email']");
-    const positionField = joinUsForm.querySelector("[name='position']");
-    const acceptedTerms = joinUsForm.querySelector("[name='terms']");
-
-    if (!nameField || !emailField || !positionField || !acceptedTerms) {
-      console.error("ERROR:JoinUs/validateJoinUsForm: One or more expected fields are missing.");
-      return false;
+    if (fabJoin && joinUsModal) {
+        fabJoin.addEventListener('click', () => {
+            lastFocusedElement = fabJoin;
+            joinUsModal.classList.add('active');
+            // Focus first input if available
+            const focusInput = joinUsModal.querySelector('input:not([type="hidden"]), select, textarea, button');
+            if (focusInput) focusInput.focus();
+        });
     }
 
-    const name = nameField.value.trim();
-    const email = emailField.value.trim();
-    const position = positionField.value.trim();
-    const termsAccepted = acceptedTerms.checked;
-
-    if (!name || !email || !position || !termsAccepted) {
-      alert("Please complete all required fields and accept the terms.");
-      return false;
+    if (closeJoinUsModal && joinUsModal) {
+        closeJoinUsModal.addEventListener('click', () => {
+            joinUsModal.classList.remove('active');
+            if (lastFocusedElement) lastFocusedElement.focus();
+        });
     }
 
-    // Email pattern check (basic)
-    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    if (!emailPattern.test(email)) {
-      alert("Please enter a valid email address.");
-      return false;
+    // Close modal on outside click
+    if (joinUsModal) {
+        joinUsModal.addEventListener('click', (e) => {
+            if (e.target === joinUsModal) {
+                joinUsModal.classList.remove('active');
+                if (lastFocusedElement) lastFocusedElement.focus();
+            }
+        });
     }
 
-    return true;
-  }
+    // Escape key closes modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && joinUsModal && joinUsModal.classList.contains('active')) {
+            joinUsModal.classList.remove('active');
+            if (lastFocusedElement) lastFocusedElement.focus();
+        }
+    });
 
-  // Sanitize input client-side before sending
-  function sanitizeInput(input) {
-    return window.sanitizeInput ? window.sanitizeInput(input) : input;
-  }
-
-  joinUsForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    if (honeypotField && honeypotField.value !== "") {
-      console.warn("WARN:JoinUs/FormSubmit: Honeypot triggered. Bot submission suspected.");
-      return;
-    }
-
-    if (!validateJoinUsForm()) {
-      console.warn("WARN:JoinUs/FormSubmit: Validation failed.");
-      return;
-    }
-
-    const formData = new FormData(joinUsForm);
-    const sanitizedData = {};
-
-    for (const [key, value] of formData.entries()) {
-      sanitizedData[key] = sanitizeInput(value);
-    }
-
-    // Simulate a successful form submission
-    console.log("INFO:JoinUs/FormSubmit: Sanitized form data ready for processing:", sanitizedData);
-
-    alert("Thank you for joining us! Your application has been submitted.");
-    joinUsForm.reset();
-  });
-
-  console.log("INFO:JoinUs/DOMContentLoaded: Join Us form logic initialized.");
-});
+    // Language toggle for Join Us page (uses global if available)
+    const joinUsLangToggle = document.getElementById('join-us-lang-toggle');
+    let currentLanguage = localStorage.getItem("language") || "en";
+    function updateJoinUsLanguage(lang) {
+        document.documentElement.lang = lang;
+        //
