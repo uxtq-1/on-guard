@@ -160,10 +160,8 @@ on-guard/css/small-screens.css
     }
 
     /* Body padding to avoid overlap with fixed mobile nav (for index.html) */
-    /* This should only apply if .mobile-nav is visible */
-    body:has(.mobile-nav) {
-      /* :has selector might not be fully supported, JS fallback might be needed if issues */
-      /* For now, assuming this applies on pages with .mobile-nav like index.html */
+    /* Applied when JavaScript toggles .mobile-nav-active on <body> */
+    body.mobile-nav-active {
       padding-bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
     }
 
