@@ -2,7 +2,7 @@
 // This service worker is intentionally kept simple for now.
 // It can be expanded later for caching strategies, push notifications, etc.
 
-const CACHE_NAME = 'ops-solutions-v1';
+const CACHE_NAME = 'ops-online-support-v1';
 const urlsToCache = [
   '/',
   '/index.html',

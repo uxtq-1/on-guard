@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial greeting from bot
   setTimeout(() => {
-    addMessage("Hello! I'm your OPS Solutions assistant. How can I help you today?", 'bot');
+    addMessage("Hello! I'm your Ops Online Support assistant. How can I help you today?", 'bot');
   }, 500);
 
   console.log('INFO:ChatbotWidget/DOMContentLoaded: Chatbot widget JS initialized inside iframe.');
