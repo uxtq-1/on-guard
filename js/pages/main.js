@@ -256,8 +256,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!loadedModalHTML[modalId]) {
             try {
+                console.log(`INFO:Main/loadModalContent: Fetching ${modalFile}`);
                 const response = await fetch(modalFile);
-                if (!response.ok) throw new Error(`Failed to fetch ${modalFile}: ${response.statusText}`);
+                if (!response.ok) {
+                    console.error(`ERROR:Main/loadModalContent: Fetch failed with status ${response.status} for ${response.url}`);
+                    throw new Error(`Failed to fetch ${modalFile}: ${response.statusText}`);
+                }
                 const html = await response.text();
                 loadedModalHTML[modalId] = html;
                 placeholder.innerHTML = html;
