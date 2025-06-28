@@ -1,10 +1,13 @@
 // js/chatbot.js - Iframe Loader for the new chatbot modal system
 // Loader for chatbot modal: Cloudflare Worker POST & honeypot check
 
+import { ROOT_PATH } from '../utils/rootPath.js';
+
 let chatbotIframe = null;
 let themeObserver = null;
+
 let iframeLoaded = false;
-const chatbotUrl = '../html/chatbot_creation/chatbot-widget.html';
+const chatbotUrl = `${ROOT_PATH}html/chatbot_creation/chatbot-widget.html`;
 const chatbotOrigin = new URL(chatbotUrl, window.location.href).origin;
 
 function postThemeToIframe(theme) {
