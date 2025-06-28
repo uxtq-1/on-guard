@@ -152,6 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   setTimeout(() => {
-    addMessage("Hello! I'm your OPS Solutions assistant. Please confirm you are human to start chatting.", 'bot');
+    addMessage("Hello! I'm Chattia, How can I help you today?", 'bot');
   }, 500);
 });
