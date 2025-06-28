@@ -1,4 +1,4 @@
-# OPS Solutions Services Website
+# OPS Online Solutions Services Website
 
 This repository contains the static website for **OPS Solutions Services**. It showcases the company’s business operations, contact center offerings, IT support services and professional staffing solutions.
 
@@ -10,8 +10,8 @@ The site is a traditional front-end project with HTML, CSS and JavaScript and is
 - `html/` &ndash; secondary pages (About, Careers, Blog, etc.) and `html/modals/` which holds standalone modal fragments such as the contact form.
 - `css/` &ndash; style sheets organised by component:
   - `base/` &ndash; global styles and responsive overrides.
-  - `pages/` &ndash; page specific styles including `contact_us.css`.
-  - `modals/` &ndash; modal specific styles.
+  - `chatbot_creation/` &ndash; styles for the chatbot creation interface.
+  - `modals/` &ndash; modal specific styles such as `contact_us_modal.css`.
 - `js/` &ndash; JavaScript files:
   - `pages/` &ndash; logic for each page, e.g. `contact_us.js` for the contact form.
   - `service-worker.js` &ndash; PWA service worker.
@@ -41,8 +41,6 @@ const workerUrl = "https://your-worker.example.com"; // Cloudflare Worker endpoi
 ```
 
 Leave the value blank to disable submissions. When configured, the form’s data is sent via `POST` to the Worker which should handle the message (e.g. sending an email or storing the data).
-
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

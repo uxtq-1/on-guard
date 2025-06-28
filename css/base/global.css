@@ -369,7 +369,7 @@ body[data-theme="dark"] .close-modal {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-weight: bold; /* Added from user's contact_us.css */
+    font-weight: bold; /* From contact_us_modal.css */
 }
 .submit-button:hover {
   background-color: #7e69ab; /* User's hover for purple buttons */

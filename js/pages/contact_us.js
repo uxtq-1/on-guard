@@ -1,5 +1,6 @@
 // js/contact_us.js
 // Handles loading the contact modal, its display, and form submission.
+import { sanitizeInput } from '../utils/sanitize.js';
 const workerUrl = ""; // Cloudflare Worker endpoint (leave blank to disable submissions)
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -108,13 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Check for global sanitizeInput function (assuming it's provided elsewhere, e.g. main.js)
-        if (typeof window.sanitizeInput !== 'function') {
-            console.warn('WARN:ContactForm/Init: window.sanitizeInput is not defined. Input sanitization will be skipped.');
-            // Define a fallback if not present
-            window.sanitizeInput = (value) => typeof value === 'string' ? value.trim() : value;
-        }
-
         const honeypotField = contactForm.querySelector('input[placeholder="Enter your name"]'); // Example, adjust if honeypot has a specific ID/name
 
         const submitButton = contactForm.querySelector('button[type="submit"]');
@@ -141,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let allRequiredFilled = true;
 
             for (const [key, value] of formData.entries()) {
-                data[key] = window.sanitizeInput(value);
+                data[key] = sanitizeInput(value);
             }
 
             // Simple client-side validation (check required fields based on the new form structure)
@@ -245,12 +239,3 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('INFO:ContactUsScript/DOMContentLoaded: contact_us.js fully processed.');
 });
 
-// Ensure a global sanitizeInput function exists (can be moved to main.js or a utility script)
-if (typeof window.sanitizeInput !== 'function') {
-    window.sanitizeInput = function(text) {
-        if (typeof text !== 'string') return text; // Return non-strings as-is
-        const element = document.createElement('div');
-        element.innerText = text;
-        return element.innerHTML.replace(/<br>/g, '\n'); // Basic sanitization, allows newlines from textareas
-    };
-}
