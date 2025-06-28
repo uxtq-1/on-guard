@@ -4,4 +4,12 @@
   "description": "Static website for OPS Solutions Services",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "dev": "serve -l 8000",
+    "start": "serve -l 8000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
 }
+
