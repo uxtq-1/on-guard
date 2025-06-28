@@ -1,6 +1,6 @@
 # OPS Online Solutions Services Website
 
-This repository contains the static website for **OPS Solutions Services**. It showcases the company’s business operations, contact center offerings, IT support services and professional staffing solutions.
+This repository contains the static website for **OPS Online Solutions Services**. It showcases the company’s business operations, contact center offerings, IT support services and professional staffing solutions.
 
 The site is a traditional front-end project with HTML, CSS and JavaScript and is intended to be hosted on any static web platform such as GitHub Pages, Netlify or Cloudflare Pages.
 
