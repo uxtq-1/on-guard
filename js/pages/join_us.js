@@ -62,8 +62,8 @@ function initializeJoinUsModal(modalElement) {
             input.placeholder = currentLang === 'es'
                 ? `Ingresa ${titleEs} info`
                 : `Enter ${titleEn} info`;
-            input.setAttribute('data-placeholder-en', `Enter ${titleEn} info`);
-            input.setAttribute('data-placeholder-es', `Ingresa ${titleEs} info`);
+            input.setAttribute('data-en-placeholder', `Enter ${titleEn} info`);
+            input.setAttribute('data-es-placeholder', `Ingresa ${titleEs} info`);
             if (window.updateDynamicContentLanguage) {
                 window.updateDynamicContentLanguage(input);
             }
