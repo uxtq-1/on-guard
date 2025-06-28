@@ -1,0 +1,4 @@
+/* Modal styles specific to the Business Operations modal */
+#business-operations-modal .modal-content {
+  max-width: 600px;
+}

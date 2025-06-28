@@ -1,0 +1,4 @@
+/* Modal styles specific to the IT Support modal */
+#it-support-modal .modal-content {
+  max-width: 600px;
+}

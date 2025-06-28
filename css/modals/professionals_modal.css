@@ -1,0 +1,4 @@
+/* Modal styles specific to the Professionals modal */
+#professionals-modal .modal-content {
+  max-width: 600px;
+}
