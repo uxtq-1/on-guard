@@ -7,6 +7,9 @@
 
 import { sanitizeInput } from '../utils/sanitize.js';
 
+// Determine site root based on the location of this script
+const ROOT_PATH = new URL('../..', import.meta.url).pathname;
+
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
 
@@ -219,11 +222,36 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastFocusedElement = null; // To store element that triggered modal
     let loadedModalHTML = {}; // Cache for loaded modal HTML to prevent multiple fetches
 
+    const serviceModalConfig = {
+        'business-operations.html': {
+            id: 'business-operations-modal',
+            file: '/html/modals/business_operations_modal.html',
+            placeholder: 'business-operations-modal-placeholder'
+        },
+        'contact-center.html': {
+            id: 'contact-center-modal',
+            file: '/html/modals/contact_center_modal.html',
+            placeholder: 'contact-center-modal-placeholder'
+        },
+        'it-support.html': {
+            id: 'it-support-modal',
+            file: '/html/modals/it_support_modal.html',
+            placeholder: 'it-support-modal-placeholder'
+        },
+        'professionals.html': {
+            id: 'professionals-modal',
+            file: '/html/modals/professionals_modal.html',
+            placeholder: 'professionals-modal-placeholder'
+        }
+    };
+
     async function loadModalContent(modalId, modalFile, placeholderId, callback) {
-        const placeholder = document.getElementById(placeholderId);
+        let placeholder = document.getElementById(placeholderId);
         if (!placeholder) {
-            console.error(`ERROR:Main/loadModalContent: Placeholder not found: #${placeholderId}`);
-            return null;
+            // Create the placeholder dynamically if it doesn't exist
+            placeholder = document.createElement('div');
+            placeholder.id = placeholderId;
+            document.body.appendChild(placeholder);
         }
 
         if (!loadedModalHTML[modalId]) {
@@ -297,14 +325,14 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (modalId === 'join-us-modal') {
                 targetModal = await loadModalContent(
                     modalId,
-                    '../html/modals/join_us_modal.html',
+                    `${ROOT_PATH}html/modals/join_us_modal.html`,
                     'join-us-modal-placeholder',
                     typeof initializeJoinUsModal === 'function' ? initializeJoinUsModal : null
                 );
             } else if (modalId === 'chatbot-modal') {
                 targetModal = await loadModalContent(
                     modalId,
-                    '../html/modals/chatbot_modal.html',
+                    `${ROOT_PATH}html/modals/chatbot_modal.html`,
                     'chatbot-modal-placeholder',
                     typeof initializeChatbotModal === 'function' ? initializeChatbotModal : null
                 );
@@ -319,10 +347,32 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 setupFocusTrap(targetModal); // Setup focus trap
                 const focusableElement = targetModal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
-                if (focusableElement) focusableElement.focus();
-                else targetModal.focus(); // Fallback to focusing the modal itself
+            if (focusableElement) focusableElement.focus();
+            else targetModal.focus(); // Fallback to focusing the modal itself
+        }
+    });
+
+    document.addEventListener('click', async (e) => {
+        const anchor = e.target.closest('a[href]');
+        if (!anchor) return;
+        const url = new URL(anchor.getAttribute('href'), document.baseURI);
+        const configKey = Object.keys(serviceModalConfig).find(k => url.pathname.endsWith(k));
+        if (!configKey) return;
+        e.preventDefault();
+        lastFocusedElement = anchor;
+        const cfg = serviceModalConfig[configKey];
+        const modal = await loadModalContent(cfg.id, cfg.file, cfg.placeholder, null);
+        if (modal) {
+            modal.classList.add('active');
+            if (window.updateDynamicContentLanguage) {
+                window.updateDynamicContentLanguage(modal);
             }
-        });
+            setupFocusTrap(modal);
+            const focusable = modal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
+            if (focusable) focusable.focus();
+            else modal.focus();
+        }
+    });
     });
 
     let currentTrapHandler = null; // To store the current active trap handler
