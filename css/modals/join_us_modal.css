@@ -6,16 +6,20 @@
 /* Styles for the form grid inside the modal */
 #join-us-modal .modal-body .form-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Default to single column for modal */
+  grid-template-columns: 1fr; /* Single column on small screens */
   gap: 1rem;
 }
 
-/* On larger screens, allow two columns if desired and content fits well */
 @media (min-width: 768px) {
   #join-us-modal .modal-body .form-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; /* Two evenly distributed columns */
     gap: 1.5rem;
   }
+}
+
+/* Widen modal for better viewing */
+#join-us-modal .modal-content {
+  max-width: 800px;
 }
 
 #join-us-modal .form-row,
