@@ -6,9 +6,7 @@
  *****************************************************/
 
 import { sanitizeInput } from '../utils/sanitize.js';
-
-// Determine site root based on the location of this script
-const ROOT_PATH = new URL('../..', import.meta.url).pathname;
+import { ROOT_PATH } from '../utils/rootPath.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');

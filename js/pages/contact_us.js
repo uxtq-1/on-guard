@@ -3,8 +3,8 @@
 // Cloudflare Worker endpoint.  This can be configured globally by defining
 // `window.CONTACT_WORKER_URL` before loading this script.  Leaving it blank
 // disables form submissions.
+import { ROOT_PATH } from '../utils/rootPath.js';
 const workerUrl = window.CONTACT_WORKER_URL || "";
-const ROOT_PATH = new URL('../..', import.meta.url).pathname;
 document.addEventListener('DOMContentLoaded', () => {
     const modalPlaceholder = document.getElementById('contact-modal-placeholder');
     // Trigger elements can be identified by a common class or specific IDs
