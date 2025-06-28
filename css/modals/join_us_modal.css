@@ -6,12 +6,13 @@
 /* Styles for the form grid inside the modal */
 #join-us-modal .modal-body .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 1fr; /* Single column on small screens */
   gap: 1rem;
 }
 
 @media (min-width: 768px) {
   #join-us-modal .modal-body .form-grid {
+    grid-template-columns: 1fr 1fr; /* Two evenly distributed columns */
     gap: 1.5rem;
   }
 }
