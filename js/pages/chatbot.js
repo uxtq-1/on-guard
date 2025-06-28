@@ -4,7 +4,8 @@
 let chatbotIframe = null;
 let themeObserver = null;
 let iframeLoaded = false;
-const chatbotUrl = '../html/chatbot_creation/chatbot-widget.html';
+const ROOT_PATH = new URL('../..', import.meta.url).pathname;
+const chatbotUrl = `${ROOT_PATH}html/chatbot_creation/chatbot-widget.html`;
 
 // Hidden honeypot field for outer loader (not visible in modal)
 function createLoaderHoneypot() {

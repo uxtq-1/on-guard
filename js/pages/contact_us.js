@@ -4,6 +4,7 @@
 // `window.CONTACT_WORKER_URL` before loading this script.  Leaving it blank
 // disables form submissions.
 const workerUrl = window.CONTACT_WORKER_URL || "";
+const ROOT_PATH = new URL('../..', import.meta.url).pathname;
 document.addEventListener('DOMContentLoaded', () => {
     const modalPlaceholder = document.getElementById('contact-modal-placeholder');
     // Trigger elements can be identified by a common class or specific IDs
@@ -36,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('../html/modals/contact_us_modal.html');
+            const response = await fetch(`${ROOT_PATH}html/modals/contact_us_modal.html`);
             if (!response.ok) {
-                throw new Error(`Failed to fetch ../html/modals/contact_us_modal.html: ${response.status} ${response.statusText}`);
+                throw new Error(`Failed to fetch ${ROOT_PATH}html/modals/contact_us_modal.html: ${response.status} ${response.statusText}`);
             }
             const htmlText = await response.text();
             const parser = new DOMParser();
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 console.log('Contact modal loaded and initialized.');
             } else {
-                console.error('Could not find #contact-modal.modal-overlay in fetched ../html/modals/contact_us_modal.html');
+                console.error(`Could not find #contact-modal.modal-overlay in fetched ${ROOT_PATH}html/modals/contact_us_modal.html`);
             }
         } catch (error) {
             console.error('Error loading contact modal:', error);
