@@ -1,5 +1,5 @@
 // js/chatbot_creation/chatbot.js
-// Secure chatbot widget: honeypot, human check, worker check, reCAPTCHA v3 ready
+// Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('chat-form');
@@ -15,6 +15,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let lockedForBot = false;
+
+  // Cloudflare Worker: Notify and block if honeypot triggered
+  async function alertWorkerOfBotActivity(detail = "widget honeypot") {
+    try {
+      await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/widget-bot-alert', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          type: 'honeypot',
+          detail,
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent
+        })
+      });
+      console.info("Bot alert sent to Cloudflare Worker.");
+    } catch (err) {
+      console.warn("Failed to alert worker of bot activity.", err);
+    }
+  }
 
   function lockDownChat(reason = "Bot activity detected. Chat disabled.") {
     input.disabled = true;
@@ -33,34 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
     log.scrollTop = log.scrollHeight;
   }
 
-  async function alertWorkerOfBotActivity(detail = "honeypot") {
-    try {
-      await fetch('/api/bot-alert', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          type: 'honeypot',
-          detail,
-          timestamp: new Date().toISOString(),
-          userAgent: navigator.userAgent
-        })
-      });
-      console.info("Bot alert sent to worker.");
-    } catch (err) {
-      console.warn("Failed to alert worker of bot activity.", err);
-    }
-  }
-
   function setHumanInteractionState(enabled) {
     if (lockedForBot) return;
     input.disabled = !enabled;
     sendBtn && (sendBtn.disabled = !enabled);
   }
 
-  // On load: block chat until human check is confirmed
   setHumanInteractionState(false);
 
-  // Human checkbox must be ticked to enable chat
+  // Human check
   if (humanCheckbox) {
     humanCheckbox.addEventListener('change', () => {
       if (lockedForBot) return;
@@ -69,12 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // If honeypot is filled (at any time), lock chat and alert worker
+  // Honeypot triggers immediate lockdown and worker alert
   if (honeypotInput) {
     honeypotInput.addEventListener('input', () => {
       if (honeypotInput.value !== '' && !lockedForBot) {
         lockDownChat("Suspicious activity detected. Please reload the page.");
-        alertWorkerOfBotActivity("honeypot filled");
+        alertWorkerOfBotActivity("honeypot filled (input)");
       }
     });
   }
@@ -83,45 +83,43 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     if (lockedForBot) return;
 
-    // 1. Honeypot check
+    // Honeypot check
     if (honeypotInput && honeypotInput.value !== '') {
       lockDownChat("Suspicious activity detected. Please reload the page.");
       alertWorkerOfBotActivity("honeypot filled (submit)");
       return;
     }
 
-    // 2. Human verification
+    // Human check
     if (!humanCheckbox || !humanCheckbox.checked) {
       addMessage("Please confirm you are human by checking the box.", 'bot');
       setHumanInteractionState(false);
       return;
     }
 
-    // 3. Prepare reCAPTCHA (v3/invisible, ACTIVE)
+    // Google reCAPTCHA v3 (active, required before POST)
     let recaptchaToken = '';
     try {
-      // IMPORTANT: Replace 'YOUR_SITE_KEY' with your real reCAPTCHA v3 site key
       recaptchaToken = await grecaptcha.execute('YOUR_SITE_KEY', { action: 'chatbot_message' });
     } catch (err) {
       addMessage("reCAPTCHA verification failed. Please try again.", 'bot');
       return;
     }
 
-    // 4. Prepare and validate message
+    // Message
     const userInput = input.value.trim();
     if (!userInput) return;
-
     addMessage(userInput, 'user');
     input.value = '';
 
-    // 5. POST to worker endpoint for message integrity/security check
+    // POST to Cloudflare Worker (chatbot message check)
     try {
-      const response = await fetch('/api/chatbot_message_check', {
+      const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/chatbot_message_check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           message: userInput,
-          recaptchaToken // Always send the token!
+          recaptchaToken
         })
       });
       const result = await response.json();
@@ -134,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // 6. Simulate bot reply (replace with real logic if needed)
+    // Simulated bot reply (replace with your logic)
     getSimulatedBotReply(userInput);
   });
 
@@ -153,7 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => addMessage(botResponse, 'bot'), 700);
   }
 
-  // Initial greeting (optional)
   setTimeout(() => {
     addMessage("Hello! I'm your OPS Solutions assistant. Please confirm you are human to start chatting.", 'bot');
   }, 500);
