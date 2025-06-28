@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (contactForm) {
                     attachFormSubmissionListener();
                 }
+                if (typeof window.updateDynamicContentLanguage === 'function') {
+                    window.updateDynamicContentLanguage(contactModal);
+                }
                 console.log('Contact modal loaded and initialized.');
             } else {
                 console.error('Could not find #contact-modal.modal-overlay in fetched ../html/modals/contact_us_modal.html');
