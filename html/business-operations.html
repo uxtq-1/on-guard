@@ -9,11 +9,56 @@
 </head>
 <body>
     <header>
-        <nav>
-            <a href="../index.html">Home</a>
-            <!-- Add other relevant navigation links if needed -->
-        </nav>
+      <nav class="desktop-nav">
+        <ul>
+          <li><a href="../index.html" data-en="Home" data-es="Inicio">Home</a></li>
+          <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+          <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
+          <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
+          <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+        </ul>
+      </nav>
+      <div class="header-controls">
+        <div class="toggle-container">
+          <button id="theme-toggle-desktop" title="Toggle Theme">Light</button>
+          <button id="language-toggle-desktop" title="Switch Language">EN</button>
+        </div>
+        <button id="menu-open" class="header-menu-trigger" aria-label="Open Main Menu" title="Open Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </header>
+
+    <aside id="rightSideMenu" class="right-side-menu" role="navigation" aria-labelledby="rightSideMenuTitle">
+      <div class="right-side-menu-header">
+        <h2 id="rightSideMenuTitle" class="sr-only">Main Menu</h2>
+        <button id="menu-close" aria-label="Close Main Menu" title="Close Menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="right-side-menu-body">
+        <nav class="right-side-menu-nav">
+          <ul>
+            <li><a href="../index.html" data-en="Home" data-es="Inicio">Home</a></li>
+            <li class="services-trigger">
+              <button aria-expanded="false" aria-controls="servicesSubMenu">
+                <span data-en="Services" data-es="Servicios">Services</span>
+                <i class="fas fa-chevron-down" aria-hidden="true"></i>
+              </button>
+              <ul id="servicesSubMenu" class="sub-menu">
+                <li><a href="business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+                <li><a href="contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
+                <li><a href="it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
+                <li><a href="professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+              </ul>
+            </li>
+            <li><a href="about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+            <li><a href="careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
+            <li><a href="blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
     <main>
         <h1>Business Operations</h1>
         <p>Content for Business Operations will be added here.</p>
