@@ -8,6 +8,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
 
+    // Enable body padding adjustment for pages with a mobile nav
+    const mobileNavElement = document.querySelector('.mobile-nav');
+    if (mobileNavElement) {
+        document.body.classList.add('mobile-nav-active');
+    } else {
+        document.body.classList.remove('mobile-nav-active');
+    }
+
     /* ================================================================
        1) LANGUAGE TOGGLE (Desktop & Mobile for index.html header)
        ================================================================= */
