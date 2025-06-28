@@ -2,10 +2,11 @@
 // This service worker is intentionally kept simple for now.
 // It can be expanded later for caching strategies, push notifications, etc.
 
-const CACHE_NAME = 'ops-solutions-v1';
+const CACHE_NAME = 'ops-online-support-v1';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/offline.html',
   '/css/base/global.css',
   '/css/base/small-screens.css',
   '/js/pages/main.js'
@@ -64,8 +65,9 @@ self.addEventListener('fetch', event => {
       })
       .catch(error => {
         console.error('ServiceWorker: Fetch error:', error);
-        // Optional: Respond with a fallback page for offline if request fails
-        // return caches.match('/offline.html');
+        if (event.request.mode === 'navigate') {
+          return caches.match('/offline.html');
+        }
       })
   );
 });

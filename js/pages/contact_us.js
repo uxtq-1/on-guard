@@ -4,7 +4,6 @@
 // `window.CONTACT_WORKER_URL` before loading this script.  Leaving it blank
 // disables form submissions.
 const workerUrl = window.CONTACT_WORKER_URL || "";
-
 document.addEventListener('DOMContentLoaded', () => {
     const modalPlaceholder = document.getElementById('contact-modal-placeholder');
     // Trigger elements can be identified by a common class or specific IDs
@@ -16,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadModal() {
         if (!modalPlaceholder) {
-            // If there's no placeholder, this script might be running on contact_us.html itself
+            // If there's no placeholder, this script might be running on modals/contact_us_modal.html itself
             // In that case, the modal is already in the DOM.
             contactModal = document.getElementById('contact-modal');
             if (contactModal) {
@@ -25,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Contact form #contact-form not found within #contact-modal on this page.');
                     return; // No form to attach submit listener to
                 }
-                // If on contact_us.html, the modal might be visible by default or styled differently.
+                // If on modals/contact_us_modal.html, the modal might be visible by default or styled differently.
                 // We won't hide it here, assuming its direct page view is intentional.
                 // We WILL attach close listeners if they exist for consistency.
                 attachModalEventListeners();
@@ -37,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('../html/contact_us.html');
+            const response = await fetch('../html/modals/contact_us_modal.html');
             if (!response.ok) {
-                throw new Error(`Failed to fetch ../html/contact_us.html: ${response.status} ${response.statusText}`);
+                throw new Error(`Failed to fetch ../html/modals/contact_us_modal.html: ${response.status} ${response.statusText}`);
             }
             const htmlText = await response.text();
             const parser = new DOMParser();
@@ -59,9 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (contactForm) {
                     attachFormSubmissionListener();
                 }
+                if (typeof window.updateDynamicContentLanguage === 'function') {
+                    window.updateDynamicContentLanguage(contactModal);
+                }
                 console.log('Contact modal loaded and initialized.');
             } else {
-                console.error('Could not find #contact-modal.modal-overlay in fetched ../html/contact_us.html');
+                console.error('Could not find #contact-modal.modal-overlay in fetched ../html/modals/contact_us_modal.html');
             }
         } catch (error) {
             console.error('Error loading contact modal:', error);
@@ -111,13 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Check for global sanitizeInput function (assuming it's provided elsewhere, e.g. main.js)
-        if (typeof window.sanitizeInput !== 'function') {
-            console.warn('WARN:ContactForm/Init: window.sanitizeInput is not defined. Input sanitization will be skipped.');
-            // Define a fallback if not present
-            window.sanitizeInput = (value) => typeof value === 'string' ? value.trim() : value;
-        }
-
         const honeypotField = contactForm.querySelector('input[placeholder="Enter your name"]'); // Example, adjust if honeypot has a specific ID/name
 
         const submitButton = contactForm.querySelector('button[type="submit"]');
@@ -144,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let allRequiredFilled = true;
 
             for (const [key, value] of formData.entries()) {
-                data[key] = window.sanitizeInput(value);
+                data[key] = sanitizeInput(value);
             }
 
             // Simple client-side validation (check required fields based on the new form structure)
@@ -207,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalPlaceholder) {
         loadModal(); // This will load, then attach listeners
     } else {
-        // We might be on contact_us.html directly.
+        // We might be on modals/contact_us_modal.html directly.
         // The modal is already in the DOM. Just find it and attach listeners.
         contactModal = document.getElementById('contact-modal');
         if (contactModal) {
@@ -218,11 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                  console.error('Contact form #contact-form not found within #contact-modal on this page (direct view).');
             }
-            // If on contact_us.html, the modal is likely intended to be always visible or managed by its own page logic
+            // If on modals/contact_us_modal.html, the modal is likely intended to be always visible or managed by its own page logic
             // So, we don't add 'active' class here by default.
             // However, if it's meant to be a modal even on its own page, it should start hidden by CSS
             // and then a trigger specific to that page would open it.
-            // For now, assume it's visible if directly on contact_us.html.
+            // For now, assume it's visible if directly on modals/contact_us_modal.html.
         } else {
             console.log("No modal placeholder and no #contact-modal found directly on this page. contact_us.js will not initialize modal display/loading features.");
         }
@@ -248,12 +243,3 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('INFO:ContactUsScript/DOMContentLoaded: contact_us.js fully processed.');
 });
 
-// Ensure a global sanitizeInput function exists (can be moved to main.js or a utility script)
-if (typeof window.sanitizeInput !== 'function') {
-    window.sanitizeInput = function(text) {
-        if (typeof text !== 'string') return text; // Return non-strings as-is
-        const element = document.createElement('div');
-        element.innerText = text;
-        return element.innerHTML.replace(/<br>/g, '\n'); // Basic sanitization, allows newlines from textareas
-    };
-}
