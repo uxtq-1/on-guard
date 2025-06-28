@@ -1,5 +1,9 @@
 // js/contact_us.js
 // Handles loading the contact modal, its display, and form submission.
+// Cloudflare Worker endpoint.  This can be configured globally by defining
+// `window.CONTACT_WORKER_URL` before loading this script.  Leaving it blank
+// disables form submissions.
+const workerUrl = window.CONTACT_WORKER_URL || "";
 
 document.addEventListener('DOMContentLoaded', () => {
     const modalPlaceholder = document.getElementById('contact-modal-placeholder');
@@ -116,6 +120,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const honeypotField = contactForm.querySelector('input[placeholder="Enter your name"]'); // Example, adjust if honeypot has a specific ID/name
 
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+
+        if (!workerUrl) {
+            console.warn('Contact form submission disabled: workerUrl not configured.');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.title = 'Submission disabled: service unavailable';
+            }
+            contactForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                alert('Form submission is currently unavailable.');
+            });
+            return;
+        }
+
         contactForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             console.log('Contact form submitted.');
@@ -156,46 +175,31 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 console.log("INFO:ContactForm/submit: Submitting sanitized data to Cloudflare Worker:", data);
 
-                const workerUrl = 'YOUR_CLOUDFLARE_WORKER_URL_HERE'; // IMPORTANT: Replace with your actual worker URL
+                const response = await fetch(workerUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
 
-                if (workerUrl === 'YOUR_CLOUDFLARE_WORKER_URL_HERE') {
-                    console.warn("WARN:ContactForm/submit: Cloudflare Worker URL is not set. Using simulation.");
-                    // Simulate sending data if URL is not set
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    alert("Thank you for contacting us! (Simulated: Worker URL not set). We’ll get back to you shortly.");
-                } else {
-                    const response = await fetch(workerUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                    });
-
-                    if (!response.ok) {
-                        const errorData = await response.text(); // Try to get error message from worker
-                        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}. Worker message: ${errorData}`);
-                    }
-
-                    // Assuming worker returns JSON with a success flag or message, e.g., { success: true }
-                    // const result = await response.json();
-                    // if (!result.success) { // Adjust based on your worker's response structure
-                    //    throw new Error(result.message || 'Unknown error from worker');
-                    // }
-
-                    alert("Thank you for contacting us! We’ll get back to you shortly.");
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    throw new Error(`Network response was not ok: ${response.status} ${response.statusText}. Worker message: ${errorData}`);
                 }
+
+                alert("Thank you for contacting us! We’ll get back to you shortly.");
 
                 contactForm.reset();
                 if (contactModal) {
-                    contactModal.classList.remove('active'); // Close modal on successful submission
+                    contactModal.classList.remove('active');
                 }
             } catch (error) {
                 console.error("ERROR:ContactForm/submit:", error);
                 alert(`There was a problem sending your message: ${error.message}. Please try again later.`);
             }
         });
-        console.log('INFO:ContactForm/SubmitListener: Attached to form, configured for Cloudflare Worker (or simulation).');
+        console.log('INFO:ContactForm/SubmitListener: Attached to form, configured for Cloudflare Worker.');
     }
 
     // --- Initialization ---
