@@ -46,3 +46,13 @@ Leave the value blank to disable submissions. When configured, the form’s data
 
 The service worker pre-caches essential assets listed in `urlsToCache`, including a fallback `offline.html` page. If a network request fails, navigation requests return the offline page so the interface remains functional without connectivity.
 
+### Service Worker Path
+
+The registration call in `js/pages/main.js` registers the worker using:
+
+```javascript
+navigator.serviceWorker.register('js/service-worker.js');
+```
+
+This assumes the site is served from the root of your domain with the `js` directory at the same level as `index.html`. If your deployment differs, update the path accordingly so the service worker can be found.
+
