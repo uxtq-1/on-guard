@@ -9,7 +9,9 @@ const urlsToCache = [
   '/offline.html',
   '/css/base/global.css',
   '/css/base/small-screens.css',
-  '/js/pages/main.js'
+  '/js/pages/main.js',
+  '/html/modals/join_us_modal.html',
+  '/html/modals/chatbot_modal.html'
   // Add other important assets that should be cached for offline use
 ];
 
