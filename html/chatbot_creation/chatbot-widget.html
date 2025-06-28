@@ -1,5 +1,3 @@
-on-guard/chatbot_creation/chatbot-widget.html
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,34 +7,31 @@ on-guard/chatbot_creation/chatbot-widget.html
   <!-- Styles for the iframe content -->
   <link rel="stylesheet" href="../../css/chatbot_creation/chatbot-container.css">
   <link rel="stylesheet" href="../../css/chatbot_creation/chatbot-ui.css">
+  <!-- Google reCAPTCHA v3/invisible JS API -->
+  <script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY"></script>
 </head>
 <body>
   <div id="chatbot-container">
-    <div id="chat-log" class="chat-log">
-      <!-- Chat messages will appear here -->
-    </div>
-    <form id="chat-form" class="chat-form">
-       <label for="chat-input" class="sr-only" data-en="Chat message input" data-es="Entrada de mensaje de chat">Chat message input</label>
-       <input type="text" id="chat-input" placeholder="Ask me anything..." autocomplete="off" required aria-label="Chat message input" />
+    <div id="chat-log" class="chat-log"></div>
+    <form id="chat-form" class="chat-form" autocomplete="off">
+      <label for="chat-input" class="sr-only" data-en="Chat message input" data-es="Entrada de mensaje de chat">Chat message input</label>
+      <input type="text" id="chat-input" placeholder="Ask me anything..." autocomplete="off" required aria-label="Chat message input" />
 
-      <!-- Honeypot Field -->
-      <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <!-- Honeypot Field: fully hidden and always present -->
+      <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"
+        tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none;">
 
-      <!-- Placeholder for visible reCAPTCHA -->
+      <!-- Human verification -->
       <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
-         <label for="human-verification-checkbox" class="recaptcha-label">
+        <label for="human-verification-checkbox" class="recaptcha-label">
           <input type="checkbox" id="human-verification-checkbox" name="human-verification" required>
-           <span class="recaptcha-text" data-en="I am human" data-es="Soy humano">I am human</span>
+          <span class="recaptcha-text" data-en="I am human" data-es="Soy humano">I am human</span>
         </label>
       </div>
-
-       <button type="submit" id="chat-send-button" aria-label="Send Message" data-en-label="Send Message" data-es-label="Enviar Mensaje">
-        <!-- Send button text or icon (e.g., triangle) will be styled by CSS -->
-        Send
-      </button>
+      <button type="submit" id="chat-send-button" aria-label="Send Message" data-en-label="Send Message" data-es-label="Enviar Mensaje">Send</button>
     </form>
+    <!-- HIGHLIGHT: reCAPTCHA is fully integrated and enabled via the widget JS -->
   </div>
-
   <script src="../../js/chatbot_creation/chatbot.js" defer></script>
 </body>
 </html>

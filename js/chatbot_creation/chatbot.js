@@ -1,129 +1,157 @@
 // js/chatbot_creation/chatbot.js
-// This script runs *inside* the chatbot-widget.html iframe
+// Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input');
   const log = document.getElementById('chat-log');
+  const sendBtn = form ? form.querySelector('[type="submit"]') : null;
   const honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
   const humanCheckbox = document.getElementById('human-verification-checkbox');
 
   if (!form || !input || !log) {
-    console.error('ERROR:ChatbotWidget/DOMContentLoaded: Core chatbot UI elements (#chat-form, #chat-input, #chat-log) not found in iframe.');
+    console.error('ERROR: Core chatbot UI elements not found in iframe.');
     return;
   }
-  if (!honeypotInput) {
-    console.warn('WARN:ChatbotWidget/DOMContentLoaded: Honeypot field not found.');
-  }
-  if (!humanCheckbox) {
-    console.warn('WARN:ChatbotWidget/DOMContentLoaded: Human verification checkbox not found.');
+
+  let lockedForBot = false;
+
+  // Cloudflare Worker: Notify and block if honeypot triggered
+  async function alertWorkerOfBotActivity(detail = "widget honeypot") {
+    try {
+      await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/widget-bot-alert', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          type: 'honeypot',
+          detail,
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent
+        })
+      });
+      console.info("Bot alert sent to Cloudflare Worker.");
+    } catch (err) {
+      console.warn("Failed to alert worker of bot activity.", err);
+    }
   }
 
-  const addMessage = (text, sender = 'user', isHTML = false) => {
+  function lockDownChat(reason = "Bot activity detected. Chat disabled.") {
+    input.disabled = true;
+    sendBtn && (sendBtn.disabled = true);
+    humanCheckbox && (humanCheckbox.disabled = true);
+    addMessage(reason, 'bot');
+    lockedForBot = true;
+  }
+
+  function addMessage(text, sender = 'user', isHTML = false) {
     const msg = document.createElement('div');
     msg.classList.add('message', sender === 'bot' ? 'bot-message' : 'user-message');
-    if (isHTML) {
-      msg.innerHTML = text; // Use with trusted HTML only
-    } else {
-      msg.textContent = text;
-    }
+    if (isHTML) msg.innerHTML = text;
+    else msg.textContent = text;
     log.appendChild(msg);
     log.scrollTop = log.scrollHeight;
-  };
+  }
 
-  // Simulate bot responding (replace with actual bot logic / API call)
-  const getSimulatedBotReply = async (userInput) => {
-    console.log(`INFO:ChatbotWidget/getSimulatedBotReply: Simulating bot reply for: "${userInput}"`);
-    const lowerInput = userInput.toLowerCase();
-    let botResponse = "Thanks for your message! A support agent will be with you shortly."; // Default
+  function setHumanInteractionState(enabled) {
+    if (lockedForBot) return;
+    input.disabled = !enabled;
+    sendBtn && (sendBtn.disabled = !enabled);
+  }
 
-    if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
-      botResponse = "Hello there! How can I assist you today?";
-    } else if (lowerInput.includes('help')) {
-      botResponse = "I can help with general questions. For specific account issues, an agent will assist you. What do you need help with?";
-    } else if (lowerInput.includes('price') || lowerInput.includes('pricing')) {
-      botResponse = "You can find our pricing details on the main website under 'Services' or by contacting sales.";
-    } else if (lowerInput.includes('bye')) {
-      botResponse = "Goodbye! Have a great day.";
-    }
-    await new Promise(resolve => setTimeout(resolve, 600 + Math.random() * 800));
-    addMessage(botResponse, 'bot');
-  };
+  setHumanInteractionState(false);
+
+  // Human check
+  if (humanCheckbox) {
+    humanCheckbox.addEventListener('change', () => {
+      if (lockedForBot) return;
+      setHumanInteractionState(humanCheckbox.checked);
+      if (humanCheckbox.checked) input.focus();
+    });
+  }
+
+  // Honeypot triggers immediate lockdown and worker alert
+  if (honeypotInput) {
+    honeypotInput.addEventListener('input', () => {
+      if (honeypotInput.value !== '' && !lockedForBot) {
+        lockDownChat("Suspicious activity detected. Please reload the page.");
+        alertWorkerOfBotActivity("honeypot filled (input)");
+      }
+    });
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (lockedForBot) return;
+
+    // Honeypot check
+    if (honeypotInput && honeypotInput.value !== '') {
+      lockDownChat("Suspicious activity detected. Please reload the page.");
+      alertWorkerOfBotActivity("honeypot filled (submit)");
+      return;
+    }
+
+    // Human check
+    if (!humanCheckbox || !humanCheckbox.checked) {
+      addMessage("Please confirm you are human by checking the box.", 'bot');
+      setHumanInteractionState(false);
+      return;
+    }
+
+    // Google reCAPTCHA v3 (active, required before POST)
+    let recaptchaToken = '';
+    try {
+      recaptchaToken = await grecaptcha.execute('YOUR_SITE_KEY', { action: 'chatbot_message' });
+    } catch (err) {
+      addMessage("reCAPTCHA verification failed. Please try again.", 'bot');
+      return;
+    }
+
+    // Message
     const userInput = input.value.trim();
     if (!userInput) return;
-
-    // 1. Check Honeypot
-    if (honeypotInput && honeypotInput.value !== '') {
-      console.warn('WARN:ChatbotWidget/submit: Honeypot filled. Potential bot. Submission blocked.');
-      // Optionally, you can silently log this and not inform the user, or give a generic error.
-      // addMessage("Submission blocked.", 'bot');
-      return;
-    }
-
-    // 2. Check 'Are you human?' checkbox (placeholder for real reCAPTCHA)
-    if (humanCheckbox && !humanCheckbox.checked) {
-      addMessage("Please confirm you are human by checking the box.", 'bot');
-      return;
-    }
-    // For a real reCAPTCHA v2 Checkbox, you'd get a token here:
-    // const recaptchaToken = grecaptcha.getResponse();
-    // if (!recaptchaToken) { addMessage("Please complete the reCAPTCHA.", 'bot'); return; }
-    // For reCAPTCHA v3, it's a score obtained differently.
-
     addMessage(userInput, 'user');
     input.value = '';
 
-    // 3. Conceptual: Send to worker for intrusion check / pre-processing
-    console.log('INFO:ChatbotWidget/submit: Conceptually sending to worker for intrusion check.');
-    let intrusionCheckPassed = true; // Assume it passes for now
-    const conceptualWorkerEndpoint = '/api/chatbot_message_check'; // This would be a real endpoint
-
-    /* Conceptual fetch to worker:
+    // POST to Cloudflare Worker (chatbot message check)
     try {
-      const workerResponse = await fetch(conceptualWorkerEndpoint, {
+      const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/chatbot_message_check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userInput,
-          // recaptchaToken: recaptchaToken, // If using real reCAPTCHA
+          recaptchaToken
         })
       });
-      if (!workerResponse.ok) {
-        const errorResult = await workerResponse.json().catch(() => ({}));
-        addMessage(`Security check failed: ${errorResult.message || 'Please try again.'}`, 'bot');
-        intrusionCheckPassed = false;
-      } else {
-        const checkResult = await workerResponse.json();
-        if (!checkResult.success) {
-          addMessage(checkResult.message || "Message could not be processed at this time.", 'bot');
-          intrusionCheckPassed = false;
-        }
+      const result = await response.json();
+      if (!result.success) {
+        addMessage(result.message || "Message blocked for security reasons.", 'bot');
+        return;
       }
-    } catch (error) {
-      console.error('ERROR:ChatbotWidget/submit: Error during intrusion check worker call:', error);
-      addMessage("Error connecting to security service. Please try again later.", 'bot');
-      intrusionCheckPassed = false;
-    }
-    */
-
-    if (intrusionCheckPassed) {
-      // 4. If check passes, get bot reply (currently simulated)
-      getSimulatedBotReply(userInput);
+    } catch (err) {
+      addMessage("Error verifying message with server. Try again later.", 'bot');
+      return;
     }
 
-    // Reset human checkbox for next interaction
-    if(humanCheckbox) humanCheckbox.checked = false;
-
-    console.log('EVENT:ChatbotWidget/chatForm#submit: User message processed.');
+    // Simulated bot reply (replace with your logic)
+    getSimulatedBotReply(userInput);
   });
 
-  // Initial greeting from bot
-  setTimeout(() => {
-    addMessage("Hello! I'm your Ops Online Support assistant. How can I help you today?", 'bot');
-  }, 500);
+  function getSimulatedBotReply(userInput) {
+    const lowerInput = userInput.toLowerCase();
+    let botResponse = "Thanks for your message! A support agent will be with you shortly.";
+    if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
+      botResponse = "Hello! How can I help you today?";
+    } else if (lowerInput.includes('help')) {
+      botResponse = "I can help with general questions. For specific account issues, an agent will assist you. What do you need help with?";
+    } else if (lowerInput.includes('price') || lowerInput.includes('pricing')) {
+      botResponse = "Please see our pricing on the main website or contact sales.";
+    } else if (lowerInput.includes('bye')) {
+      botResponse = "Goodbye! Have a great day.";
+    }
+    setTimeout(() => addMessage(botResponse, 'bot'), 700);
+  }
 
-  console.log('INFO:ChatbotWidget/DOMContentLoaded: Chatbot widget JS initialized inside iframe.');
+  setTimeout(() => {
+    addMessage("Hello! I'm Chattia, How can I help you today?", 'bot');
+  }, 500);
 });
