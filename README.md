@@ -1,4 +1,4 @@
-# OPS Solutions Services Website
+# OPS Online Solutions Services Website
 
 This repository contains the static website for **OPS Solutions Services**. It showcases the company’s business operations, contact center offerings, IT support services and professional staffing solutions.
 
