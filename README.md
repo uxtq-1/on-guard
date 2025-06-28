@@ -42,3 +42,7 @@ const workerUrl = "https://your-worker.example.com"; // Cloudflare Worker endpoi
 
 Leave the value blank to disable submissions. When configured, the form’s data is sent via `POST` to the Worker which should handle the message (e.g. sending an email or storing the data).
 
+## Offline Caching
+
+The service worker pre-caches essential assets listed in `urlsToCache`, including a fallback `offline.html` page. If a network request fails, navigation requests return the offline page so the interface remains functional without connectivity.
+
