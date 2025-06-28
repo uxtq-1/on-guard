@@ -42,3 +42,8 @@ const workerUrl = "https://your-worker.example.com"; // Cloudflare Worker endpoi
 
 Leave the value blank to disable submissions. When configured, the form’s data is sent via `POST` to the Worker which should handle the message (e.g. sending an email or storing the data).
 
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
