@@ -1,7 +1,25 @@
 // js/chatbot_creation/chatbot.js
 // Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
 
+function applyTheme(theme) {
+  if (theme) document.body.setAttribute('data-theme', theme);
+}
+
+window.addEventListener('message', (event) => {
+  if (event.origin !== window.location.origin) return;
+  const data = event.data || {};
+  if (data.type === 'theme-change') {
+    applyTheme(data.theme);
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const parentTheme = window.parent.document.body.getAttribute('data-theme');
+    applyTheme(parentTheme || 'light');
+  } catch (err) {
+    console.warn('Unable to sync theme with parent on load.', err);
+  }
   const form = document.getElementById('chat-form');
   const input = document.getElementById('chat-input');
   const log = document.getElementById('chat-log');

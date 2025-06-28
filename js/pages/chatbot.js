@@ -5,6 +5,29 @@ let chatbotIframe = null;
 let themeObserver = null;
 let iframeLoaded = false;
 const chatbotUrl = '../html/chatbot_creation/chatbot-widget.html';
+const chatbotOrigin = new URL(chatbotUrl, window.location.href).origin;
+
+function postThemeToIframe(theme) {
+  if (chatbotIframe && chatbotIframe.contentWindow) {
+    chatbotIframe.contentWindow.postMessage({ type: 'theme-change', theme }, chatbotOrigin);
+  }
+}
+
+function setupThemeSync() {
+  if (!chatbotIframe) return;
+  const currentTheme = document.body.getAttribute('data-theme') || 'light';
+  postThemeToIframe(currentTheme);
+  if (themeObserver) return;
+  themeObserver = new MutationObserver(mutations => {
+    for (const m of mutations) {
+      if (m.type === 'attributes' && m.attributeName === 'data-theme') {
+        const newTheme = m.target.getAttribute('data-theme');
+        postThemeToIframe(newTheme);
+      }
+    }
+  });
+  themeObserver.observe(document.body, { attributes: true });
+}
 
 // Hidden honeypot field for outer loader (not visible in modal)
 function createLoaderHoneypot() {
@@ -98,7 +121,6 @@ function initializeChatbotModal(modalElement) {
   console.log('Modal initialized.');
 }
 
-// Theme sync logic omitted for brevity — keep your previous implementation here.
 
 window.initializeChatbotModal = initializeChatbotModal;
 

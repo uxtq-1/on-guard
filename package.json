@@ -1,0 +1,9 @@
+{
+  "name": "on-guard",
+  "version": "1.0.0",
+  "description": "Static site with chatbot widget",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "license": "MIT"
+}
