@@ -1,15 +1,10 @@
 {
-  "name": "ops-online-support",
+  "name": "on-guard",
   "version": "1.0.0",
-  "description": "Static website for OPS Solutions Services",
-  "private": true,
-  "license": "MIT",
+  "description": "Static site with chatbot widget",
   "scripts": {
-    "dev": "serve -l 8000",
-    "start": "serve -l 8000"
+    "test": "echo \"No test specified\" && exit 0"
   },
-  "devDependencies": {
-    "serve": "^14.2.0"
-  }
+  "license": "MIT"
 }
 
