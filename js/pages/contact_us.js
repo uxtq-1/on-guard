@@ -1,8 +1,9 @@
 // js/contact_us.js
 // Handles loading the contact modal, its display, and form submission.
-import { sanitizeInput } from '../utils/sanitize.js';
-const workerUrl = ""; // Cloudflare Worker endpoint (leave blank to disable submissions)
-
+// Cloudflare Worker endpoint.  This can be configured globally by defining
+// `window.CONTACT_WORKER_URL` before loading this script.  Leaving it blank
+// disables form submissions.
+const workerUrl = window.CONTACT_WORKER_URL || "";
 document.addEventListener('DOMContentLoaded', () => {
     const modalPlaceholder = document.getElementById('contact-modal-placeholder');
     // Trigger elements can be identified by a common class or specific IDs
