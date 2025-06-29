@@ -314,45 +314,58 @@ document.addEventListener("DOMContentLoaded", () => {
         return targetModalElement;
     }
 
+    async function openModalById(modalId) {
+        if (!modalId) return null;
+        let targetModal;
+        if (modalId === 'contact-modal') {
+            targetModal = document.getElementById(modalId);
+        } else if (modalId === 'join-us-modal') {
+            targetModal = await loadModalContent(
+                modalId,
+                `${ROOT_PATH}html/modals/join_us_modal.html`,
+                'join-us-modal-placeholder',
+                typeof initializeJoinUsModal === 'function' ? initializeJoinUsModal : null
+            );
+        } else if (modalId === 'chatbot-modal') {
+            targetModal = await loadModalContent(
+                modalId,
+                `${ROOT_PATH}html/modals/chatbot_modal.html`,
+                'chatbot-modal-placeholder',
+                typeof initializeChatbotModal === 'function' ? initializeChatbotModal : null
+            );
+        }
+        // Add other dynamic modals here with else if
+
+        if (targetModal) {
+            targetModal.classList.add('active');
+            if (window.updateDynamicContentLanguage) {
+                window.updateDynamicContentLanguage(targetModal);
+            }
+            setupFocusTrap(targetModal);
+            const focusableElement = targetModal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
+            if (focusableElement) focusableElement.focus();
+            else targetModal.focus();
+        }
+        return targetModal;
+    }
+
     modalTriggers.forEach(trigger => {
         trigger.addEventListener('click', async (event) => {
             lastFocusedElement = event.currentTarget;
             const modalId = event.currentTarget.dataset.modal;
-            if (!modalId) return;
-
-            let targetModal;
-
-            if (modalId === 'contact-modal') { // Existing static modal
-                targetModal = document.getElementById(modalId);
-            } else if (modalId === 'join-us-modal') {
-                targetModal = await loadModalContent(
-                    modalId,
-                    `${ROOT_PATH}html/modals/join_us_modal.html`,
-                    'join-us-modal-placeholder',
-                    typeof initializeJoinUsModal === 'function' ? initializeJoinUsModal : null
-                );
-            } else if (modalId === 'chatbot-modal') {
-                targetModal = await loadModalContent(
-                    modalId,
-                    `${ROOT_PATH}html/modals/chatbot_modal.html`,
-                    'chatbot-modal-placeholder',
-                    typeof initializeChatbotModal === 'function' ? initializeChatbotModal : null
-                );
-            }
-            // Add other dynamic modals here with else if (modalId === 'another-modal') { ... }
-
-            if (targetModal) {
-                targetModal.classList.add('active');
-                // Update language for the newly loaded/shown modal
-                if (window.updateDynamicContentLanguage) {
-                    window.updateDynamicContentLanguage(targetModal);
-                }
-                setupFocusTrap(targetModal); // Setup focus trap
-                const focusableElement = targetModal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
-            if (focusableElement) focusableElement.focus();
-            else targetModal.focus(); // Fallback to focusing the modal itself
-        }
+            await openModalById(modalId);
+        });
     });
+
+    const mobileChatLauncherBtn = document.getElementById('mobileChatLauncher');
+    if (mobileChatLauncherBtn) {
+        mobileChatLauncherBtn.addEventListener('click', async (event) => {
+            lastFocusedElement = event.currentTarget;
+            await openModalById('chatbot-modal');
+        });
+    }
+
+    window.openModalById = openModalById;
 
     document.addEventListener('click', async (e) => {
         const anchor = e.target.closest('a[href]');
