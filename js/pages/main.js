@@ -215,9 +215,8 @@ document.addEventListener("DOMContentLoaded", () => {
        5) Modals (General Logic for index.html: Contact Us)
           Join Us is now a separate page. Chatbot uses iframe system.
        ================================================================== */
-    const modalTriggers = document.querySelectorAll('.floating-icon[data-modal], button[data-modal]');
-    // Note: closeModalButtons and allModalOverlays will be queried dynamically after modal content is loaded.
     let lastFocusedElement = null; // To store element that triggered modal
+    // Note: closeModalButtons and allModalOverlays will be queried dynamically after modal content is loaded.
     let loadedModalHTML = {}; // Cache for loaded modal HTML to prevent multiple fetches
 
     const serviceModalConfig = {
@@ -349,21 +348,16 @@ document.addEventListener("DOMContentLoaded", () => {
         return targetModal;
     }
 
-    modalTriggers.forEach(trigger => {
-        trigger.addEventListener('click', async (event) => {
-            lastFocusedElement = event.currentTarget;
-            const modalId = event.currentTarget.dataset.modal;
+    document.addEventListener('click', async (event) => {
+        const trigger = event.target.closest('[data-modal]');
+        if (trigger) {
+            event.preventDefault();
+            lastFocusedElement = trigger;
+            const modalId = trigger.dataset.modal;
             await openModalById(modalId);
-        });
+            return;
+        }
     });
-
-    const mobileChatLauncherBtn = document.getElementById('mobileChatLauncher');
-    if (mobileChatLauncherBtn) {
-        mobileChatLauncherBtn.addEventListener('click', async (event) => {
-            lastFocusedElement = event.currentTarget;
-            await openModalById('chatbot-modal');
-        });
-    }
 
     window.openModalById = openModalById;
 
