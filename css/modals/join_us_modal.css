@@ -10,6 +10,11 @@
   gap: 1rem;
 }
 
+/* Override global form grid so inner grid can span full width */
+#join-us-modal .modal-body form {
+  display: block;
+}
+
 @media (min-width: 768px) {
   #join-us-modal .modal-body .form-grid {
     grid-template-columns: 1fr 1fr; /* Two evenly distributed columns */
