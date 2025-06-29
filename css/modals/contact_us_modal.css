@@ -80,7 +80,8 @@
 }
 
 .form-cell {
-  flex: 1 1 48%; /* Allows two cells per row, wrapping if needed */
+  /* Evenly distribute two columns without leaving excess space */
+  flex: 1 1 calc(50% - 0.5rem);
   display: flex;
   flex-direction: column;
 }
