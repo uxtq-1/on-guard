@@ -41,6 +41,11 @@ on-guard/css/small-screens.css
 
     /* Form layout stacking (if .form-row/.form-cell is used within general modals) */
     /* User's global.css @media uses grid-template-columns: 1fr for .modal-body form */
+    /* Adding the general rule for modal forms to stack on small screens */
+    .modal-body form {
+        grid-template-columns: 1fr; /* Stack grid items into a single column */
+        gap: 0.75rem; /* Adjust gap for single column layout */
+    }
     /* This .form-row/.form-cell is a flex alternative. If grid is global, this can be removed. */
     /* .form-row {
         flex-direction: column;
