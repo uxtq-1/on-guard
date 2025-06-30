@@ -399,7 +399,6 @@ document.addEventListener("DOMContentLoaded", () => {
         'join-us-modal-placeholder',
         initializeJoinUsModal
     ).catch(err => console.error('ERROR:Main/JoinUsPreload:', err));
-    });
 
     let currentTrapHandler = null; // To store the current active trap handler
 
