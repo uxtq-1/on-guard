@@ -4,10 +4,13 @@ on-guard/css/small-screens.css
 /* Styles primarily for index.html's mobile-specific navigation components and layout adjustments */
 
 @media (max-width: 768px) {
-    /* Hide desktop header navigation and theme/language toggles on index.html */
-    header nav,
-    header .toggle-container {
-        display: none;
+    /* Hide ALL desktop header navigation elements on small screens */
+    header nav.desktop-nav,     /* Hides the main horizontal nav links */
+    header .toggle-container,   /* Hides desktop theme/language toggles */
+    header .header-menu-trigger, /* Hides the trigger for the right-side menu */
+    #rightSideMenu             /* Ensures the right-side menu itself is also hidden */
+    {
+        display: none !important; /* Added !important to ensure override */
     }
 
     /* Specific overrides for .service-item if global.css @media isn't sufficient */
