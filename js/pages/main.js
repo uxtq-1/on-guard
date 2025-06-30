@@ -24,6 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     updateMobileNavStatus();
 
+    // Dynamically set the Home link in the rightSideMenu
+    const homeLinkRightSideMenu = document.querySelector("#rightSideMenu .right-side-menu-nav a[href='../index.html']");
+    if (homeLinkRightSideMenu) {
+        homeLinkRightSideMenu.href = ROOT_PATH + "index.html";
+        console.log('INFO:Main/HomeLinkUpdate: Updated rightSideMenu Home link to:', homeLinkRightSideMenu.href);
+    }
+
+
     /* ================================================================
        1) LANGUAGE TOGGLE (Desktop & Mobile for index.html header)
        ================================================================= */
