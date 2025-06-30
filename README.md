@@ -31,6 +31,9 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/index.html` in your browser.
 
+### Troubleshooting
+When the site is opened directly from the filesystem using `file://`, modals may fail to load. Browsers block `fetch()` requests in this context, which prevents the modal HTML fragments from being retrieved. Run a local static server (e.g. `npx serve` or `python3 -m http.server`) before testing to avoid this issue.
+
 ## Customising the Contact Form `workerUrl`
 
 Form submissions are optionally sent to a Cloudflare Worker. To enable this feature, edit `js/pages/contact_us.js` and set the `workerUrl` constant near the top of the file:
