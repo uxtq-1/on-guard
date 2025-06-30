@@ -8,6 +8,7 @@
 import { sanitizeInput } from '../utils/sanitize.js';
 import { ROOT_PATH } from '../utils/rootPath.js';
 import { initializeJoinUsModal } from './join_us.js';
+import { initializeContactModal } from './contact_us.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
@@ -319,7 +320,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!modalId) return null;
         let targetModal;
         if (modalId === 'contact-modal') {
-            targetModal = document.getElementById(modalId);
+            targetModal = await loadModalContent(
+                modalId,
+                `${ROOT_PATH}html/modals/contact_us_modal.html`,
+                'contact-modal-placeholder',
+                initializeContactModal
+            );
         } else if (modalId === 'join-us-modal') {
             targetModal = await loadModalContent(
                 modalId,
