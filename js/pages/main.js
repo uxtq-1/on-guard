@@ -13,16 +13,110 @@ import { initializeContactModal } from './contact_us.js';
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
 
-    // Enable body padding adjustment for pages with a mobile nav
+    // Function to add padding for fixed mobile nav
     function updateMobileNavStatus() {
         const mobileNavElement = document.querySelector('.mobile-nav');
-        if (mobileNavElement) {
+        if (mobileNavElement && getComputedStyle(mobileNavElement).display !== 'none') {
             document.body.classList.add('mobile-nav-active');
+            console.log('INFO:Main/updateMobileNavStatus: Mobile nav active, body padding applied.');
         } else {
             document.body.classList.remove('mobile-nav-active');
+            console.log('INFO:Main/updateMobileNavStatus: Mobile nav not active or not present, body padding removed.');
         }
     }
-    updateMobileNavStatus();
+
+    // Placeholder for mobile navigation HTML injection
+    const mobileNavPlaceholder = document.getElementById('mobile-nav-placeholder');
+
+    async function loadMobileNavigation() {
+        try {
+            const response = await fetch(`${ROOT_PATH}html/partials/mobile_nav.html`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch mobile_nav.html: ${response.statusText}`);
+            }
+            let html = await response.text();
+
+            // Correct href paths using ROOT_PATH
+            html = html.replace(/href="html\//g, `href="${ROOT_PATH}html/`);
+            html = html.replace(/href="index\.html"/g, `href="${ROOT_PATH}index.html"`);
+
+            if (mobileNavPlaceholder) {
+                mobileNavPlaceholder.innerHTML = html;
+            } else {
+                // Fallback if placeholder is missing, append to body
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                while (tempDiv.firstChild) {
+                    document.body.appendChild(tempDiv.firstChild);
+                }
+            }
+            console.log('INFO:Main/loadMobileNavigation: Mobile navigation HTML loaded and injected.');
+            return true;
+        } catch (error) {
+            console.error('ERROR:Main/loadMobileNavigation:', error);
+            return false;
+        }
+    }
+
+    function initializeMobileNavInteractions() {
+        // Mobile Services Menu Toggle (for index.html's bottom nav menu)
+        const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+        const mobileServicesMenu = document.getElementById('mobile-services-menu');
+        if (mobileServicesToggle && mobileServicesMenu) {
+            mobileServicesToggle.addEventListener('click', () => {
+                const isOpen = mobileServicesMenu.classList.toggle('active');
+                mobileServicesToggle.setAttribute('aria-expanded', isOpen.toString());
+                mobileServicesMenu.setAttribute('aria-hidden', (!isOpen).toString());
+            });
+            document.addEventListener('click', (event) => {
+                if (mobileServicesMenu.classList.contains('active')) {
+                    if (!mobileServicesMenu.contains(event.target) && !mobileServicesToggle.contains(event.target)) {
+                        mobileServicesMenu.classList.remove('active');
+                        mobileServicesToggle.setAttribute('aria-expanded', 'false');
+                        mobileServicesMenu.setAttribute('aria-hidden', 'true');
+                    }
+                }
+            });
+            console.log('INFO:Main/initializeMobileNavInteractions: Mobile services menu initialized.');
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile services toggle/menu not found.');
+        }
+
+        // Mobile Language Toggle (re-query after injection)
+        const langToggleMobile = document.getElementById("mobile-language-toggle");
+        if (langToggleMobile) {
+            langToggleMobile.addEventListener("click", () => window.masterToggleLanguage());
+            console.log('INFO:Main/initializeMobileNavInteractions: Mobile language toggle initialized.');
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile language toggle not found.');
+        }
+
+        // Mobile Theme Toggle (re-query after injection)
+        const themeToggleMobile = document.getElementById("mobile-theme-toggle");
+        if (themeToggleMobile) {
+            themeToggleMobile.addEventListener("click", () => window.masterToggleTheme());
+            console.log('INFO:Main/initializeMobileNavInteractions: Mobile theme toggle initialized.');
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile theme toggle not found.');
+        }
+
+        // Ensure mobile chat launcher is interactive if present
+        const mobileChatLauncher = document.getElementById('mobileChatLauncher');
+        if (mobileChatLauncher) {
+            mobileChatLauncher.addEventListener('click', async (event) => {
+                const trigger = event.currentTarget; // Use currentTarget
+                if (trigger && trigger.dataset.modal) {
+                    event.preventDefault();
+                    lastFocusedElement = trigger; // Assuming lastFocusedElement is globally available
+                    const modalId = trigger.dataset.modal;
+                    await openModalById(modalId); // Assuming openModalById is globally available
+                }
+            });
+            console.log('INFO:Main/initializeMobileNavInteractions: Mobile chat launcher initialized.');
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile chat launcher not found.');
+        }
+    }
 
     // Dynamically set the Home link in the rightSideMenu
     const homeLinkRightSideMenu = document.querySelector("#rightSideMenu .right-side-menu-nav a[href='../index.html']");
@@ -128,15 +222,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Initial language setup on page load
-    updateNodeLanguageTexts(currentLanguage, document.body);
-    setLanguageButtonVisuals();
+    // Initial language setup on page load (will be reapplied/scoped after mobile nav load)
+    updateNodeLanguageTexts(currentLanguage, document.body); // Initial full-page scan
+    setLanguageButtonVisuals(); // For desktop buttons primarily at this stage
     console.log(`INFO:Main/LangInit: Initial language set to ${currentLanguage.toUpperCase()}`);
+
     /* ================================================================
        2) THEME TOGGLE (Desktop & Mobile for index.html header)
        ================================================================= */
     const themeToggleDesktop = document.getElementById("theme-toggle-desktop");
-    const themeToggleMobile  = document.getElementById("theme-toggle-mobile");
+    // const themeToggleMobile  = document.getElementById("theme-toggle-mobile"); // Will be handled in initializeMobileNavInteractions
     const bodyElement = document.body;
     let currentTheme = localStorage.getItem("theme") || "light";
 
@@ -144,16 +239,24 @@ document.addEventListener("DOMContentLoaded", () => {
         bodyElement.setAttribute("data-theme", theme);
         localStorage.setItem("theme", theme);
         const buttonText = (theme === "light") ? "Dark" : "Light";
-        const ariaLabel = (theme === 'light') ?
+
+        // Update desktop toggle
+        const desktopAriaLabel = (theme === 'light') ?
             (themeToggleDesktop?.dataset[currentLanguage + 'LabelDark'] || themeToggleDesktop?.dataset['enLabelDark'] || "Switch to Dark Theme") :
             (themeToggleDesktop?.dataset[currentLanguage + 'LabelLight'] || themeToggleDesktop?.dataset['enLabelLight'] || "Switch to Light Theme");
         if (themeToggleDesktop) {
             themeToggleDesktop.textContent = buttonText;
-            if(ariaLabel) themeToggleDesktop.setAttribute('aria-label', ariaLabel);
+            if(desktopAriaLabel) themeToggleDesktop.setAttribute('aria-label', desktopAriaLabel);
         }
-        if (themeToggleMobile) {
-            themeToggleMobile.textContent = buttonText;
-            if(ariaLabel) themeToggleMobile.setAttribute('aria-label', ariaLabel);
+
+        // Update mobile toggle (if it exists)
+        const mobileThemeToggle = document.getElementById("mobile-theme-toggle");
+        const mobileAriaLabel = (theme === 'light') ?
+            (mobileThemeToggle?.dataset[currentLanguage + 'LabelDark'] || mobileThemeToggle?.dataset['enLabelDark'] || "Switch to Dark Theme") :
+            (mobileThemeToggle?.dataset[currentLanguage + 'LabelLight'] || mobileThemeToggle?.dataset['enLabelLight'] || "Switch to Light Theme");
+        if (mobileThemeToggle) {
+            mobileThemeToggle.textContent = buttonText;
+             if(mobileAriaLabel) mobileThemeToggle.setAttribute('aria-label', mobileAriaLabel);
         }
         console.log(`INFO:Main/applyTheme: Theme set to ${theme}`);
     }
@@ -162,13 +265,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const newTheme = themeToSet ? themeToSet : (bodyElement.getAttribute("data-theme") === "light" ? "dark" : "light");
         if (newTheme !== currentTheme) {
             currentTheme = newTheme;
-            applyTheme(currentTheme);
+            applyTheme(currentTheme); // This will update both desktop and mobile if they exist
         }
     };
 
     if (themeToggleDesktop) themeToggleDesktop.addEventListener("click", () => window.masterToggleTheme());
-    if (themeToggleMobile) themeToggleMobile.addEventListener("click", () => window.masterToggleTheme());
-    applyTheme(currentTheme); // Initial theme application
+    // if (themeToggleMobile) themeToggleMobile.addEventListener("click", () => window.masterToggleTheme()); // Handled in initializeMobileNavInteractions
+    applyTheme(currentTheme); // Initial theme application for desktop and potentially pre-existing mobile
    /* ==================================================================
        3) Right-Side Main Menu (for index.html)
        ================================================================== */
@@ -501,40 +604,48 @@ document.addEventListener("DOMContentLoaded", () => {
        6) Form Submission Logic (DEFERRED to specific component scripts)
        ================================================================ */
     console.log('INFO:Main/FormSubmissions: Form submission logic deferred to specific scripts like contact_us.js and join_us.js.');
-    /* ================================================================
-       7) Mobile Services Menu Toggle (for index.html's bottom nav menu)
-       ================================================================= */
-    const mobileServicesToggle = document.getElementById('mobile-services-toggle');
-    const mobileServicesMenu = document.getElementById('mobile-services-menu');
-    if (mobileServicesToggle && mobileServicesMenu) {
-        mobileServicesToggle.addEventListener('click', () => {
-            const isOpen = mobileServicesMenu.classList.toggle('active');
-            mobileServicesToggle.setAttribute('aria-expanded', isOpen.toString());
-        });
-        document.addEventListener('click', (event) => {
-            if (mobileServicesMenu.classList.contains('active')) {
-                if (!mobileServicesMenu.contains(event.target) && !mobileServicesToggle.contains(event.target)) {
-                    mobileServicesMenu.classList.remove('active');
-                    mobileServicesToggle.setAttribute('aria-expanded', 'false');
-                }
-            }
-        });
-    }
 
     /* ================================================================
-       8) Service Worker Registration
+       7) Mobile Nav Loading and Initialization
        ================================================================= */
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register(`${ROOT_PATH}js/service-worker.js`)
-                .then(reg => console.log('INFO:Main/ServiceWorker: Registered. Scope:', reg.scope))
-                .catch(err => console.error('ERROR:Main/ServiceWorker: Registration failed:', err));
-        });
-    } else {
-        console.warn('WARN:Main/ServiceWorker: Not supported in this browser.');
-    }
+    loadMobileNavigation().then(success => {
+        if (success) {
+            initializeMobileNavInteractions();
+            updateMobileNavStatus(); // Apply body padding if mobile nav is visible
 
-    console.log('INFO:Main/DOMContentLoaded: All core initializations complete.');
+            // Ensure newly injected mobile nav is translated and themed
+            const mobileNavEl = document.querySelector('.mobile-nav');
+            const mobileServicesMenuEl = document.getElementById('mobile-services-menu');
+            if (mobileNavEl) updateNodeLanguageTexts(currentLanguage, mobileNavEl);
+            if (mobileServicesMenuEl) updateNodeLanguageTexts(currentLanguage, mobileServicesMenuEl);
+
+            setLanguageButtonVisuals(); // Update mobile language button text/ARIA
+            applyTheme(currentTheme);   // Update mobile theme button text/ARIA
+
+            console.log('INFO:Main/MobileNavInit: Mobile navigation loaded and initialized.');
+        } else {
+            console.error('ERROR:Main/MobileNavInit: Mobile navigation failed to load. Features relying on it may not work.');
+        }
+
+        // Continue with other initializations that might depend on the page structure
+        // (e.g., service worker, or other non-mobile-nav specific items)
+        /* ================================================================
+           8) Service Worker Registration
+           ================================================================= */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(`${ROOT_PATH}js/service-worker.js`)
+                    .then(reg => console.log('INFO:Main/ServiceWorker: Registered. Scope:', reg.scope))
+                    .catch(err => console.error('ERROR:Main/ServiceWorker: Registration failed:', err));
+            });
+        } else {
+            console.warn('WARN:Main/ServiceWorker: Not supported in this browser.');
+        }
+        console.log('INFO:Main/DOMContentLoaded: All core initializations complete (post mobile nav).');
+    }).catch(error => {
+        console.error("ERROR:Main/MobileNavInit: General error during mobile navigation loading sequence:", error);
+        // Fallback or error handling for when mobile nav loading fails critically
+    });
 });
 
 // Expose global toggle functions if needed by other scripts (like join_us.js for its own toggles)
@@ -543,4 +654,5 @@ document.addEventListener("DOMContentLoaded", () => {
 // window.masterToggleTheme = toggleThemeOnClick; // `toggleThemeOnClick` is not in this scope anymore
 // The language and theme toggles are now self-contained within the main DOMContentLoaded listener.
 // `window.updateDynamicContentLanguage` is already exposed for dynamic content.
+// `window.masterToggleLanguage` and `window.masterToggleTheme` are already exposed.
 
