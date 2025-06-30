@@ -24,7 +24,27 @@
 
 /* Widen modal for better viewing */
 #join-us-modal .modal-content {
-  max-width: 800px;
+  max-width: 800px; /* Default for larger screens */
+}
+
+@media (max-width: 768px) {
+  #join-us-modal .modal-content {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    padding: 0; /* Padding will be handled by modal-body */
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+  }
+  #join-us-modal .modal-body {
+    padding: 1rem; /* Add padding back to body */
+  }
+  /* Ensure form grid is single column if not already by default, though it is */
+  #join-us-modal .modal-body .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 #join-us-modal .form-row,
