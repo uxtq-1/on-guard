@@ -382,6 +382,14 @@ document.addEventListener("DOMContentLoaded", () => {
             else modal.focus();
         }
     });
+
+    // Preload Join Us modal to ensure it is ready when FAB is clicked
+    loadModalContent(
+        'join-us-modal',
+        `${ROOT_PATH}html/modals/join_us_modal.html`,
+        'join-us-modal-placeholder',
+        typeof initializeJoinUsModal === 'function' ? initializeJoinUsModal : null
+    ).catch(err => console.error('ERROR:Main/JoinUsPreload:', err));
     });
 
     let currentTrapHandler = null; // To store the current active trap handler
