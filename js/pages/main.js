@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentLanguage = localStorage.getItem("language") || "en";
 
     const langToggleDesktop = document.getElementById("language-toggle-desktop");
-    const langToggleMobile  = document.getElementById("language-toggle-mobile");
+    // Correct ID for the mobile language toggle
+    const langToggleMobile  = document.getElementById("mobile-language-toggle");
 
     function updateNodeLanguageTexts(lang, parentNode = document.body) {
         if (!parentNode) {
