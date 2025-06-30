@@ -134,5 +134,5 @@ function initializeJoinUsModal(modalElement) {
     console.log('INFO:join_us/initializeJoinUsModal: Join Us modal initialized.');
 }
 
-// Make initializer available globally for main.js
-window.initializeJoinUsModal = initializeJoinUsModal;
+// Export the initializer for use as a module
+export { initializeJoinUsModal };

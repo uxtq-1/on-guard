@@ -4,6 +4,7 @@
 // `window.CONTACT_WORKER_URL` before loading this script.  Leaving it blank
 // disables form submissions.
 import { ROOT_PATH } from '../utils/rootPath.js';
+import { sanitizeInput } from '../utils/sanitize.js';
 const workerUrl = window.CONTACT_WORKER_URL || "";
 document.addEventListener('DOMContentLoaded', () => {
     const modalPlaceholder = document.getElementById('contact-modal-placeholder');
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 attachModalEventListeners();
                 attachFormSubmissionListener();
             } else {
-                console.log('Contact modal placeholder or modal itself not found. Modal functionality may be limited.');
+                console.warn('Contact modal placeholder or modal itself not found. Modal functionality may be limited if not on contact_us_modal.html directly.');
             }
             return; // Exit, as no loading into placeholder is needed
         }
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (typeof window.updateDynamicContentLanguage === 'function') {
                     window.updateDynamicContentLanguage(contactModal);
                 }
-                console.log('Contact modal loaded and initialized.');
+                // console.log('Contact modal loaded and initialized.');
             } else {
                 console.error(`Could not find #contact-modal.modal-overlay in fetched ${ROOT_PATH}html/modals/contact_us_modal.html`);
             }
@@ -133,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         contactForm.addEventListener('submit', async (event) => {
             event.preventDefault();
-            console.log('Contact form submitted.');
+            // console.log('Contact form submitted.');
 
             const formData = new FormData(contactForm);
             const data = {};
@@ -160,16 +161,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Basic Honeypot check (assuming one of the fields could be a honeypot or a specific one is added)
-            // For this example, let's assume 'contact-number' could be misused if a more specific honeypot field isn't there.
-            // This is a placeholder for a real honeypot. The original HTML didn't have a clear one.
-            // if (data['hp-field'] && data['hp-field'].trim() !== '') { // If you add a field like <input name="hp-field" class="hidden">
-            //    console.warn("WARN:ContactForm/submit: Honeypot field filled — likely bot.");
-            //    alert("Your submission could not be processed.");
-            //    return;
-            // }
+            // Honeypot check
+            if (data['hp-field'] && data['hp-field'].trim() !== '') {
+               console.warn("WARN:ContactForm/submit: Honeypot field filled — likely bot. Value:", data['hp-field']);
+               // Silently prevent submission or give a generic error, actual error is logged to console.
+               alert("Your submission could not be processed at this time. Please try again later.");
+               // Optionally, clear the form or take other actions without revealing it was a honeypot.
+               // contactForm.reset();
+               return;
+            }
+            // Remove honeypot field from data sent to server
+            delete data['hp-field'];
+
             try {
-                console.log("INFO:ContactForm/submit: Submitting sanitized data to Cloudflare Worker:", data);
+                // console.log("INFO:ContactForm/submit: Submitting sanitized data to Cloudflare Worker:", data); // Avoid logging PII
 
                 const response = await fetch(workerUrl, {
                     method: 'POST',
@@ -195,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(`There was a problem sending your message: ${error.message}. Please try again later.`);
             }
         });
-        console.log('INFO:ContactForm/SubmitListener: Attached to form, configured for Cloudflare Worker.');
+        // console.log('INFO:ContactForm/SubmitListener: Attached to form, configured for Cloudflare Worker.');
     }
 
     // --- Initialization ---
@@ -220,7 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // and then a trigger specific to that page would open it.
             // For now, assume it's visible if directly on modals/contact_us_modal.html.
         } else {
-            console.log("No modal placeholder and no #contact-modal found directly on this page. contact_us.js will not initialize modal display/loading features.");
+            // This case should be rare if the script is only included where a placeholder or modal exists.
+            // console.log("No modal placeholder and no #contact-modal found directly on this page. contact_us.js will not initialize modal display/loading features.");
         }
     }
 
@@ -241,6 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    console.log('INFO:ContactUsScript/DOMContentLoaded: contact_us.js fully processed.');
+    // console.log('INFO:ContactUsScript/DOMContentLoaded: contact_us.js fully processed.');
 });
 

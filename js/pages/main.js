@@ -7,6 +7,7 @@
 
 import { sanitizeInput } from '../utils/sanitize.js';
 import { ROOT_PATH } from '../utils/rootPath.js';
+import { initializeJoinUsModal } from './join_us.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
@@ -324,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 modalId,
                 `${ROOT_PATH}html/modals/join_us_modal.html`,
                 'join-us-modal-placeholder',
-                typeof initializeJoinUsModal === 'function' ? initializeJoinUsModal : null
+                initializeJoinUsModal
             );
         } else if (modalId === 'chatbot-modal') {
             targetModal = await loadModalContent(
@@ -390,7 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
         'join-us-modal',
         `${ROOT_PATH}html/modals/join_us_modal.html`,
         'join-us-modal-placeholder',
-        typeof initializeJoinUsModal === 'function' ? initializeJoinUsModal : null
+        initializeJoinUsModal
     ).catch(err => console.error('ERROR:Main/JoinUsPreload:', err));
     });
 
