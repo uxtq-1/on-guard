@@ -338,6 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (targetModal) {
             targetModal.classList.add('active');
+            targetModal.setAttribute('aria-hidden', 'false');
             if (window.updateDynamicContentLanguage) {
                 window.updateDynamicContentLanguage(targetModal);
             }
@@ -447,6 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeModal(modalElement) {
         if (modalElement) {
             modalElement.classList.remove('active');
+            modalElement.setAttribute('aria-hidden', 'true');
             removeFocusTrap();
             if (lastFocusedElement) lastFocusedElement.focus();
         }
