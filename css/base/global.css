@@ -611,6 +611,37 @@ body[data-theme="dark"] .right-side-menu-nav .sub-menu {
     transform: rotate(180deg);
 }
 
+/* Styles for Toggles in Right Side Menu */
+.right-side-menu-toggles {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 0;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-color-current);
+}
+
+.right-side-menu-toggles button {
+  background-color: var(--button-bg-current);
+  color: var(--button-text-current);
+  border: 1px solid var(--border-color-current);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.right-side-menu-toggles button:hover {
+  opacity: 0.8;
+}
+
+body[data-theme="dark"] .right-side-menu-toggles button {
+  background-color: var(--button-bg-current); /* Uses dark theme button vars */
+  color: var(--button-text-current);
+  border-color: var(--border-color-current);
+}
+
+
 /* Media query from user's global CSS for hiding mobile nav on desktop */
 /* This rule ensures that mobile navigation elements defined in index.html's specific mobile nav
    and join_us.html's specific mobile menu are hidden on larger screens. */
