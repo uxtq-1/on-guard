@@ -132,10 +132,24 @@ textarea {
 }
 
 /* Responsive adjustments */
-@media (max-width: 600px) {
+/* Using 768px to align with global small-screen modal styles */
+@media (max-width: 768px) {
   .modal-content {
-    padding: 1rem; /* Adjust padding for smaller modals */
+    /* Override desktop settings to match global full-screen small device behavior */
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100vh; /* Use 100vh for viewport height */
+    padding: 0; /* Padding will be handled by modal-body */
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
   }
+  /* Ensure modal-body has padding when modal-content padding is removed */
+  .modal-body {
+    padding: 1rem; /* Add padding back to body */
+  }
+
   .form-cell {
     flex: 1 1 100%; /* Stack form cells vertically on small screens */
   }
