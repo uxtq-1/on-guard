@@ -23,8 +23,7 @@ body[data-theme="dark"] {
     flex-grow: 1;
     overflow: hidden;
     margin: 2px;
-    /* Use a valid CSS color for the border */
-    border: 2px solid rebeccapurple;
+    border: 2px solid royalpurple;
 }
 
 body[data-theme="dark"] #chatbot-container {
