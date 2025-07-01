@@ -104,17 +104,51 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileChatLauncher = document.getElementById('mobileChatLauncher');
         if (mobileChatLauncher) {
             mobileChatLauncher.addEventListener('click', async (event) => {
-                const trigger = event.currentTarget; // Use currentTarget
+                const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
-                    lastFocusedElement = trigger; // Assuming lastFocusedElement is globally available
+                    lastFocusedElement = trigger;
                     const modalId = trigger.dataset.modal;
-                    await openModalById(modalId); // Assuming openModalById is globally available
+                    await openModalById(modalId);
                 }
             });
             console.log('INFO:Main/initializeMobileNavInteractions: Mobile chat launcher initialized.');
         } else {
             console.warn('WARN:Main/initializeMobileNavInteractions: Mobile chat launcher not found.');
+        }
+
+        // Mobile Contact Us Launcher
+        const mobileContactUsLauncher = document.getElementById('mobileContactUsLauncher');
+        if (mobileContactUsLauncher) {
+            mobileContactUsLauncher.addEventListener('click', async (event) => {
+                const trigger = event.currentTarget;
+                if (trigger && trigger.dataset.modal) {
+                    event.preventDefault();
+                    lastFocusedElement = trigger;
+                    const modalId = trigger.dataset.modal;
+                    await openModalById(modalId);
+                }
+            });
+            console.log('INFO:Main/initializeMobileNavInteractions: Mobile Contact Us launcher initialized.');
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile Contact Us launcher not found.');
+        }
+
+        // Mobile Join Us Launcher
+        const mobileJoinUsLauncher = document.getElementById('mobileJoinUsLauncher');
+        if (mobileJoinUsLauncher) {
+            mobileJoinUsLauncher.addEventListener('click', async (event) => {
+                const trigger = event.currentTarget;
+                if (trigger && trigger.dataset.modal) {
+                    event.preventDefault();
+                    lastFocusedElement = trigger;
+                    const modalId = trigger.dataset.modal;
+                    await openModalById(modalId);
+                }
+            });
+            console.log('INFO:Main/initializeMobileNavInteractions: Mobile Join Us launcher initialized.');
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile Join Us launcher not found.');
         }
     }
 
