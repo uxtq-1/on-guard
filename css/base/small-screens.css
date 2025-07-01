@@ -1,95 +1,97 @@
-on-guard/css/small-screens.css
-
-/* css/small-screens.css */
-/* Styles primarily for index.html's mobile-specific navigation components and layout adjustments */
+/* css/base/small-screens.css */
+/* Styles primarily for mobile-specific navigation components and layout adjustments */
 
 @media (max-width: 768px) {
     /* Hide ALL desktop header navigation elements on small screens */
-    header nav.desktop-nav,     /* Hides the main horizontal nav links */
-    header .toggle-container,   /* Hides desktop theme/language toggles */
-    header .header-menu-trigger, /* Hides the trigger for the right-side menu */
-    #rightSideMenu             /* Ensures the right-side menu itself is also hidden */
-    {
-        display: none !important; /* Added !important to ensure override */
+    header nav.desktop-nav,
+    header .toggle-container,
+    header .header-menu-trigger,
+    #rightSideMenu {
+        display: none !important;
     }
 
-    /* Specific overrides for .service-item if global.css @media isn't sufficient */
-    /* User's global.css @media had width: 100% for .service-item */
-    /* My previous adaptable_screen.css had width: 90% and different margin. */
-    /* Assuming global.css's mobile styles for .service-item are now primary. */
-    /* .services {
-        flex-direction: column;
-        align-items: center;
-    }
-    .service-item {
-        width: 90%;
-        margin: 10px 0;
-    } */
-
-    /* Modal content adjustments for small screens - user's global.css has similar */
-    /* This ensures full width and no border radius for modals on small screens */
-    /* This might be redundant if global.css @media already does this effectively */
+    /* Modal content adjustments for small screens - from user's global.css and example */
     .modal-content {
-        width: 100%;
-        max-width: 100%; /* Override any desktop max-width */
-        height: 100%;
+        width: 100%; /* User example had 95%, but full width is common for mobile modals */
+        max-width: 100%;
+        height: 100%; /* User example had 90vh */
         max-height: 100vh;
         border-radius: 0;
-        border: none; /* Remove borders for full-screen feel */
-        box-shadow: none; /* Remove shadow for full-screen feel */
+        border: none;
+        box-shadow: none;
     }
-    .modal-overlay.active { /* Ensure padding is removed if modal content is full screen */
+    .modal-overlay.active {
         padding: 0;
     }
-
-    /* Form layout stacking (if .form-row/.form-cell is used within general modals) */
-    /* User's global.css @media uses grid-template-columns: 1fr for .modal-body form */
-    /* Adding the general rule for modal forms to stack on small screens */
     .modal-body form {
-        grid-template-columns: 1fr; /* Stack grid items into a single column */
-        gap: 0.75rem; /* Adjust gap for single column layout */
+        grid-template-columns: 1fr; /* Stack grid items */
+        gap: 0.75rem;
     }
-    /* This .form-row/.form-cell is a flex alternative. If grid is global, this can be removed. */
-    /* .form-row {
-        flex-direction: column;
-    }
-    .form-cell {
-        flex: 1 1 100%;
-        margin-bottom: 15px;
-    }
-    .form-cell:last-child {
-        margin-bottom: 0;
-    } */
 
-    /* CSS Variables for Mobile Nav Dimensions (specific to index.html mobile nav) */
-    :root { /* Define these here if not globally defined or if specific to this sheet's components */
-        --mobile-nav-base-height: 55px;
+    /* Services Preview Section on index.html for small screens */
+    .services { /* Parent container of service-items */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items if they don't take full width */
+    }
+    .service-item {
+        width: 90%; /* Make items take more width, e.g., 90% */
+        margin-bottom: 1rem; /* Ensure space between stacked items */
+        /* calc(25% - 1rem) from global.css is overridden here */
+    }
+
+    /* Styling for content within the generic service modal on small screens */
+    /* #generic-service-modal is already handled by .modal-overlay and .modal-content rules for sizing */
+    #generic-service-modal .service-modal-body-content {
+        padding: 0.5rem; /* Add some padding inside the content area */
+    }
+    #generic-service-modal .service-modal-body-content h1 {
+        font-size: 1.5rem; /* Adjust down from typical page H1 for modal context */
+        margin-bottom: 0.75rem;
+        color: var(--primary-color); /* Or use text-current if themed differently */
+    }
+    body[data-theme="dark"] #generic-service-modal .service-modal-body-content h1 {
+        color: var(--link-color-current); /* Consistent with other dark theme headings */
+    }
+    #generic-service-modal .service-modal-body-content p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 0.75rem;
+    }
+    /* Add more specific styling for lists, images within service content if needed */
+
+
+    /* Mobile Navigation Variables */
+    :root {
+        /* --mobile-nav-base-height: 55px; /* Will be intrinsic now */
         --mobile-nav-bottom-offset: env(safe-area-inset-bottom, 0px);
+        --mobile-nav-vertical-padding: 0.5rem; /* From user example */
+        /* Estimate nav height for body padding. Actual height will be intrinsic.
+           Approx icon (1.5rem) + span (0.8rem) + padding. Let's use a fixed value for now. */
+        --mobile-nav-estimated-height: 60px;
     }
 
-    /* Mobile Bottom Navigation Bar (for index.html) */
+    /* Mobile Bottom Navigation Bar - Styled as per user example */
     .mobile-nav {
         display: flex;
-        justify-content: space-around;
-        align-items: stretch; /* Stretch items to fill height before their internal padding */
+        justify-content: space-around; /* Distribute items evenly */
+        align-items: center; /* Vertically center items */
         position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
+        bottom: 10px; /* Small gap from bottom */
+        right: 7.5%; /* Centering the 85% width bar */
+        width: 85%;
 
-        background-color: var(--primary-color);
-        border-top: 1px solid var(--border-color-current);
+        background-color: #fff; /* User example */
+        border: 1px solid #ccc; /* User example for border, not just top */
+        border-radius: 20px; /* User example */
 
-        padding-top: 0.5rem; /* Padding for content */
-        padding-left: 0.5rem;
+        padding-top: var(--mobile-nav-vertical-padding);
+        padding-bottom: calc(var(--mobile-nav-vertical-padding) + var(--mobile-nav-bottom-offset));
+        padding-left: 0.5rem; /* Horizontal padding for content inside */
         padding-right: 0.5rem;
-        padding-bottom: calc(0.5rem + var(--mobile-nav-bottom-offset)); /* Apply safe area to bottom padding */
 
-        height: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
-
-        box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.15); /* Slightly more pronounced shadow */
         box-sizing: border-box;
-        z-index: 10002;
+        z-index: 3000; /* User example */
     }
 
     .mobile-nav-item {
@@ -98,51 +100,69 @@ on-guard/css/small-screens.css
         justify-content: center;
         align-items: center;
         text-decoration: none;
-        color: var(--header-text-current);
-        font-size: 0.9rem;
+        color: #333; /* User example */
+        font-size: 0.8rem; /* User example for the span text */
         background: none;
         border: none;
         cursor: pointer;
-        padding: 0.25rem 0.1rem; /* Minimal padding for items themselves */
-        flex: 1;
-        /* height: var(--mobile-nav-base-height); Removed, align-items:stretch on parent handles height distribution */
+        padding: 0.2rem; /* Minimal padding for items themselves */
         text-align: center;
         line-height: 1.2;
+        flex-grow: 1; /* Allow items to grow and share space */
+        flex-basis: 0; /* Ensure flex-grow works from a zero basis */
     }
+
     .mobile-nav-item span {
-        font-size: 0.7rem; /* Smaller text for nav item labels */
-        margin-top: 2px;
+        font-size: 0.75rem; /* Adjusted slightly from user example for clarity */
+        margin-top: 3px; /* Increased spacing */
+        display: block; /* Ensure it takes its own line if text wraps */
     }
 
     .mobile-nav-item i {
-        font-size: 1.2rem;
-        margin-bottom: 0; /* Reduced margin */
+        font-size: 1.5rem; /* User example */
+        margin-bottom: 2px; /* Small space between icon and text */
     }
 
-    .mobile-nav-item.active {
+    /* For indicating current page, if applicable via JS adding this class */
+    .mobile-nav-item.active-page-link {
+        color: var(--accent-color); /* Existing variable, or a new one if specified */
+    }
+    .mobile-nav-item.active-page-link i,
+    .mobile-nav-item.active-page-link span {
         color: var(--accent-color);
     }
 
-    /* Mobile Services Menu (popup for index.html mobile nav) */
+
+    /* Mobile Services Menu - Styled as per user example */
     #mobile-services-menu {
         position: fixed;
-        bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
-        left: 0;
-        width: 100%;
-        background-color: var(--bg-current);
-        padding: 1rem;
-        border-top: 1px solid var(--border-color-current);
+        /* Position it relative to the .mobile-nav bar */
+        bottom: calc(var(--mobile-nav-estimated-height) + 20px + var(--mobile-nav-bottom-offset)); /* Approx nav height + gap + safe area */
+        right: 7.5%; /* Align with the mobile-nav bar */
+        width: 85%; /* Match mobile-nav bar width */
+
+        background-color: #fff; /* User example */
+        border: 1px solid #ccc; /* User example */
+        border-radius: 15px; /* Slightly rounded corners */
+        padding: 1rem; /* User example */
+
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        z-index: 10001;
-        transform: translateY(100%);
-        transition: transform 0.3s ease-in-out;
+        z-index: 2999; /* Below mobile-nav but above other content */
+
+        transform: translateY(110%); /* Start further down to ensure it's hidden */
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        opacity: 0;
+        visibility: hidden; /* Hide when not active */
+
         box-sizing: border-box;
-        max-height: 50%;
+        max-height: 50vh; /* Adjusted from 50% */
         overflow-y: auto;
     }
 
     #mobile-services-menu.active {
         transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
     }
 
     #mobile-services-menu ul {
@@ -152,8 +172,8 @@ on-guard/css/small-screens.css
     }
 
     #mobile-services-menu ul li {
-        margin-bottom: 0.1rem; /* Reduced from 0.5rem */
-        border-bottom: 1px solid var(--border-color-current);
+        margin-bottom: 0; /* Remove default margin */
+        border-bottom: 1px solid #eee; /* User example */
     }
     #mobile-services-menu ul li:last-child {
         border-bottom: none;
@@ -161,41 +181,69 @@ on-guard/css/small-screens.css
 
     #mobile-services-menu ul li a {
         display: block;
-        padding: 0.75rem 0.5rem; /* Adjusted padding */
+        padding: 0.75rem 0.5rem;
         text-decoration: none;
-        color: var(--link-color-current);
-        font-weight: 600;
+        color: #333; /* User example */
+        font-weight: normal; /* User example implies normal weight */
+        font-size: 1rem; /* User example */
     }
+     #mobile-services-menu ul li a:hover {
+        background-color: #f0f0f0;
+     }
 
-    /* Body padding to avoid overlap with fixed mobile nav (for index.html) */
-    /* Applied when JavaScript toggles .mobile-nav-active on <body> */
+    /* Body padding to avoid overlap with fixed mobile nav */
     body.mobile-nav-active {
-      padding-bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset));
+      /* Adjust padding based on the estimated height of the new mobile nav + its bottom offset */
+      padding-bottom: calc(var(--mobile-nav-estimated-height) + 20px + var(--mobile-nav-bottom-offset));
     }
 
-    /* Floating icons adjustments for mobile when the nav bar is present */
-    /* These values are from user's provided adaptable_screen.css */
+    /* Floating icons adjustments (if this class is used elsewhere) */
     body.mobile-nav-active .floating-icons {
-        bottom: calc(var(--mobile-nav-base-height) + var(--mobile-nav-bottom-offset) + 0.5rem);
+        /* Adjust if floating icons need to be aware of the new nav bar height */
+        bottom: calc(var(--mobile-nav-estimated-height) + 30px + var(--mobile-nav-bottom-offset));
     }
 
-    .floating-icons {
-        right: 0.5rem;
-        gap: 0.75rem;
-        z-index: 999; /* Kept from global, ensures it's below modals/menus */
+    /* Dark Mode Styles - Integrated with data-theme from main.js */
+    body[data-theme="dark"] .mobile-nav {
+        background-color: #222; /* User example */
+        border-color: #444; /* User example */
     }
 
-    .floating-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 1.3rem;
+    body[data-theme="dark"] .mobile-nav-item {
+        color: #eee; /* User example */
     }
+     body[data-theme="dark"] .mobile-nav-item i,
+     body[data-theme="dark"] .mobile-nav-item span {
+        /* Ensure icon and span also inherit or get the dark mode color */
+        color: #eee;
+     }
+
+    body[data-theme="dark"] #mobile-services-menu {
+        background-color: #222; /* User example */
+        border-color: #444; /* User example */
+    }
+
+    body[data-theme="dark"] #mobile-services-menu ul li a {
+        color: #eee; /* User example */
+    }
+    body[data-theme="dark"] #mobile-services-menu ul li {
+        border-bottom-color: #444;
+    }
+    body[data-theme="dark"] #mobile-services-menu ul li a:hover {
+        background-color: #333;
+    }
+
+    /* Ensure desktop styles hide mobile nav specific elements */
+} /* End of @media (max-width: 768px) */
+
+/* Rule to hide mobile nav on larger screens (from user example) */
+@media screen and (min-width: 769px) {
+  .mobile-nav,
+  #mobile-services-menu { /* Target by ID for services menu */
+    display: none !important; /* Ensure it's hidden */
+  }
+  /* Remove body padding if it was added */
+  body.mobile-nav-active {
+    padding-bottom: 0;
+  }
 }
-
-/* Tablet view adjustments (if any specific are needed beyond global.css) */
-/* User's global.css handles .service-item for 2-column on tablet (flex: 0 1 45%) */
-/* @media (min-width: 769px) and (max-width: 1024px) {
-    .hero h2 {
-        font-size: 2.2rem;
-    }
-} */

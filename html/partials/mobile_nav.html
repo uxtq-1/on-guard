@@ -1,12 +1,20 @@
 <!-- html/partials/mobile_nav.html -->
 <nav class="mobile-nav">
-  <a href="<!-- Will be replaced by ROOT_PATH -->index.html" class="mobile-nav-item" data-en-text="Home" data-es-text="Inicio">
+  <a href="<!-- Will be replaced by ROOT_PATH -->index.html" class="mobile-nav-item" data-en-text="Home" data-es-text="Inicio" aria-label="Home">
     <i class="fas fa-home"></i>
     <span data-en="Home" data-es="Inicio">Home</span>
   </a>
-  <button class="mobile-nav-item" id="mobile-services-toggle" aria-expanded="false" aria-controls="mobile-services-menu" data-en-text="Services" data-es-text="Servicios">
+  <button class="mobile-nav-item" id="mobile-services-toggle" aria-expanded="false" aria-controls="mobile-services-menu" data-en-text="Services" data-es-text="Servicios" title="Services">
     <i class="fas fa-bars"></i>
     <span data-en="Services" data-es="Servicios">Services</span>
+  </button>
+  <button class="mobile-nav-item" id="mobileContactUsLauncher" data-modal="contact-modal" aria-label="Contact Us" title="Contact Us" data-en-text="Contact Us" data-es-text="Contáctanos">
+    <i class="fas fa-envelope"></i>
+    <span data-en="Contact" data-es="Contacto">Contact</span>
+  </button>
+  <button class="mobile-nav-item" id="mobileJoinUsLauncher" data-modal="join-us-modal" aria-label="Join Us" title="Join Us" data-en-text="Join Us" data-es-text="Únete">
+    <i class="fas fa-user-plus"></i>
+    <span data-en="Join Us" data-es="Únete">Join Us</span>
   </button>
   <button class="mobile-nav-item lang-toggle-btn" id="mobile-language-toggle" aria-label="Switch Language" title="Switch Language" data-en-label="Switch to Spanish" data-es-label="Cambiar a Inglés">EN</button>
   <button class="mobile-nav-item theme-toggle-btn" id="mobile-theme-toggle" aria-label="Toggle Theme" title="Toggle Theme" data-en-label-dark="Switch to Dark Theme" data-es-label-dark="Cambiar a Tema Oscuro" data-en-label-light="Switch to Light Theme" data-es-label-light="Cambiar a Tema Claro">Light</button>
@@ -17,9 +25,9 @@
 </nav>
 <div class="mobile-services-menu" id="mobile-services-menu" aria-hidden="true">
   <ul>
-    <li><a href="<!-- Will be replaced by ROOT_PATH -->html/business-operations.html" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
-    <li><a href="<!-- Will be replaced by ROOT_PATH -->html/contact-center.html" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-    <li><a href="<!-- Will be replaced by ROOT_PATH -->html/it-support.html" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-    <li><a href="<!-- Will be replaced by ROOT_PATH -->html/professionals.html" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+    <li><a role="button" tabindex="0" data-modal="business-operations-service-modal" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+    <li><a role="button" tabindex="0" data-modal="contact-center-service-modal" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
+    <li><a role="button" tabindex="0" data-modal="it-support-service-modal" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
+    <li><a role="button" tabindex="0" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
   </ul>
 </div>
