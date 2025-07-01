@@ -86,9 +86,8 @@
 
         padding-top: var(--mobile-nav-vertical-padding);
         padding-bottom: calc(var(--mobile-nav-vertical-padding) + var(--mobile-nav-bottom-offset));
-        padding-left: 1rem; /* More padding from screen edges */
-        padding-right: 1rem;
-
+        padding-left: 1.15rem; /* Adjusted padding */
+        padding-right: 1.15rem; /* Adjusted padding */
         box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Standard shadow */
         box-sizing: border-box;
         z-index: 3000;
