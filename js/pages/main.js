@@ -107,9 +107,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
-                    lastFocusedElement = trigger;
                     const modalId = trigger.dataset.modal;
-                    await openModalById(modalId);
+                    const modalElement = document.getElementById(modalId);
+                    if (modalElement && modalElement.classList.contains('active')) {
+                        closeModal(modalElement);
+                    } else {
+                        lastFocusedElement = trigger;
+                        await openModalById(modalId);
+                    }
                 }
             });
             console.log('INFO:Main/initializeMobileNavInteractions: Mobile chat launcher initialized.');
@@ -124,9 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
-                    lastFocusedElement = trigger;
                     const modalId = trigger.dataset.modal;
-                    await openModalById(modalId);
+                    const modalElement = document.getElementById(modalId);
+                    if (modalElement && modalElement.classList.contains('active')) {
+                        closeModal(modalElement);
+                    } else {
+                        lastFocusedElement = trigger;
+                        await openModalById(modalId);
+                    }
                 }
             });
             console.log('INFO:Main/initializeMobileNavInteractions: Mobile Contact Us launcher initialized.');
@@ -141,9 +151,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
-                    lastFocusedElement = trigger;
                     const modalId = trigger.dataset.modal;
-                    await openModalById(modalId);
+                    const modalElement = document.getElementById(modalId);
+                    if (modalElement && modalElement.classList.contains('active')) {
+                        closeModal(modalElement);
+                    } else {
+                        lastFocusedElement = trigger;
+                        await openModalById(modalId);
+                    }
                 }
             });
             console.log('INFO:Main/initializeMobileNavInteractions: Mobile Join Us launcher initialized.');
@@ -617,10 +632,49 @@ document.addEventListener("DOMContentLoaded", () => {
         const trigger = event.target.closest('[data-modal]');
         if (trigger) {
             event.preventDefault();
-            lastFocusedElement = trigger;
             const modalId = trigger.dataset.modal;
-            console.log(`INFO:Main/GlobalClickListener: Click detected for data-modal="${modalId}"`);
-            await openModalById(modalId);
+            // For generic service modals, the modalId in the trigger ('business-operations-service-modal')
+            // is different from the actual modal element's ID ('generic-service-modal').
+            // We need to find the active modal that corresponds to this trigger.
+            let modalElement;
+            if (serviceModalDetails[modalId]) { // It's a trigger for a generic service modal
+                modalElement = document.getElementById('generic-service-modal');
+            } else { // It's a trigger for a specific modal (contact, join, chatbot)
+                modalElement = document.getElementById(modalId);
+            }
+
+            if (modalElement && modalElement.classList.contains('active')) {
+                // If the currently active modal is the one triggered, close it.
+                // This is especially important for generic service modals where multiple triggers
+                // can open the same 'generic-service-modal' element. We only close if THIS trigger's
+                // modal content is currently displayed.
+                // For generic modals, we might need a more robust way to check if the *content* matches,
+                // but for now, if 'generic-service-modal' is active, and a service trigger is clicked, we assume it's a toggle.
+                // A safer check for generic modals would be to see if `lastFocusedElement` was this `trigger`.
+                // However, `lastFocusedElement` is set *before* opening.
+                // A simple check: if the generic modal is open, and this trigger is a service modal trigger, then toggle.
+                if (modalId === 'generic-service-modal' || serviceModalDetails[modalId]) {
+                     // If the generic modal is active and this trigger corresponds to a service, close it.
+                    if (document.getElementById('generic-service-modal')?.classList.contains('active')) {
+                        closeModal(document.getElementById('generic-service-modal'));
+                    } else { // If generic modal is not active, or this is a different modal
+                        lastFocusedElement = trigger;
+                        await openModalById(modalId); // This will load/open the correct service content
+                    }
+                } else if (modalElement.id === modalId && modalElement.classList.contains('active')) {
+                    // For specific modals (contact, join, chatbot), if it's active, close it.
+                    closeModal(modalElement);
+                } else {
+                     // Modal is not active or it's a different one, open it.
+                    lastFocusedElement = trigger;
+                    await openModalById(modalId);
+                }
+            } else {
+                // Modal not loaded or not active, open it.
+                lastFocusedElement = trigger;
+                console.log(`INFO:Main/GlobalClickListener: Click detected for data-modal="${modalId}", opening.`);
+                await openModalById(modalId);
+            }
             return; // Stop further processing if modal click was handled.
         }
 
