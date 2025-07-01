@@ -5,6 +5,7 @@ import { ROOT_PATH } from '../utils/rootPath.js';
 
 let chatbotIframe = null;
 let themeObserver = null;
+let langObserver = null;
 
 let iframeLoaded = false;
 const chatbotUrl = `${ROOT_PATH}html/chatbot_creation/chatbot-widget.html`;
@@ -13,6 +14,12 @@ const chatbotOrigin = new URL(chatbotUrl, window.location.href).origin;
 function postThemeToIframe(theme) {
   if (chatbotIframe && chatbotIframe.contentWindow) {
     chatbotIframe.contentWindow.postMessage({ type: 'theme-change', theme }, chatbotOrigin);
+  }
+}
+
+function postLanguageToIframe(lang) {
+  if (chatbotIframe && chatbotIframe.contentWindow) {
+    chatbotIframe.contentWindow.postMessage({ type: 'language-change', lang }, chatbotOrigin);
   }
 }
 
@@ -30,6 +37,22 @@ function setupThemeSync() {
     }
   });
   themeObserver.observe(document.body, { attributes: true });
+}
+
+function setupLanguageSync() {
+  if (!chatbotIframe) return;
+  const currentLang = document.documentElement.getAttribute('lang') || 'en';
+  postLanguageToIframe(currentLang);
+  if (langObserver) return;
+  langObserver = new MutationObserver(mutations => {
+    for (const m of mutations) {
+      if (m.type === 'attributes' && m.attributeName === 'lang') {
+        const newLang = m.target.getAttribute('lang') || 'en';
+        postLanguageToIframe(newLang);
+      }
+    }
+  });
+  langObserver.observe(document.documentElement, { attributes: true });
 }
 
 // Hidden honeypot field for outer loader (not visible in modal)
@@ -106,9 +129,10 @@ function initializeChatbotModal(modalElement) {
     chatbotModalBody.innerHTML = '';
     chatbotModalBody.appendChild(chatbotIframe);
     iframeLoaded = true;
-    chatbotIframe.onload = () => { setupThemeSync(); };
+    chatbotIframe.onload = () => { setupThemeSync(); setupLanguageSync(); };
     if (chatbotIframe.contentDocument && chatbotIframe.contentDocument.readyState === 'complete') {
       setupThemeSync();
+      setupLanguageSync();
     }
     console.log('Chatbot iframe created and appended.');
   } else {
@@ -117,6 +141,7 @@ function initializeChatbotModal(modalElement) {
       chatbotModalBody.appendChild(chatbotIframe);
     }
     setupThemeSync();
+    setupLanguageSync();
   }
   if (typeof window.updateDynamicContentLanguage === 'function') {
     window.updateDynamicContentLanguage(modalElement);
@@ -131,6 +156,10 @@ window.addEventListener('unload', () => {
   if (themeObserver) {
     themeObserver.disconnect();
     themeObserver = null;
+  }
+  if (langObserver) {
+    langObserver.disconnect();
+    langObserver = null;
   }
   chatbotIframe = null;
   iframeLoaded = false;

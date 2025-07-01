@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OPS Chatbot</title>
+  <title data-en="OPS Chatbot" data-es="OPS Chatbot">OPS Chatbot</title>
   <!-- Styles for the iframe content -->
   <link rel="stylesheet" href="../../css/chatbot_creation/chatbot-container.css">
   <link rel="stylesheet" href="../../css/chatbot_creation/chatbot-ui.css">
@@ -14,7 +14,18 @@
   <div id="chatbot-container">
     <div id="chat-log" class="chat-log"></div>
     <form id="chat-form" class="chat-form" autocomplete="off">
-      <input type="text" id="chat-input" placeholder="Verify you are human, then ask me anything" autocomplete="off" required aria-label="Verify you are human, then ask me anything" />
+      <input
+        type="text"
+        id="chat-input"
+        placeholder="Verify you are human, then ask me anything"
+        autocomplete="off"
+        required
+        aria-label="Verify you are human, then ask me anything"
+        data-en-placeholder="Verify you are human, then ask me anything"
+        data-es-placeholder="Verifica que eres humano y luego preguntame lo que sea"
+        data-en-label="Verify you are human, then ask me anything"
+        data-es-label="Verifica que eres humano y luego preguntame lo que sea"
+      />
 
       <!-- Human verification -->
       <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
@@ -27,7 +38,15 @@
       <!-- Honeypot Field: fully hidden and always present -->
       <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"
         tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none;">
-      <button type="submit" id="chat-send-button" aria-label="Send Message" data-en-label="Send Message" data-es-label="Enviar Mensaje">Send</button>
+      <button
+        type="submit"
+        id="chat-send-button"
+        aria-label="Send Message"
+        data-en="Send"
+        data-es="Enviar"
+        data-en-label="Send Message"
+        data-es-label="Enviar Mensaje"
+      >Send</button>
     </form>
     <!-- HIGHLIGHT: reCAPTCHA is fully integrated and enabled via the widget JS -->
   </div>
