@@ -59,6 +59,7 @@
     }
     /* Add more specific styling for lists, images within service content if needed */
 
+
     /* Mobile Navigation Variables */
     :root {
         /* --mobile-nav-base-height: 55px; /* Will be intrinsic now */
@@ -75,22 +76,24 @@
         justify-content: space-around; /* Distribute items evenly */
         align-items: center; /* Vertically center items */
         position: fixed;
-        bottom: 10px; /* Small gap from bottom */
-        right: 7.5%; /* Centering the 85% width bar */
-        width: 85%;
+        bottom: 0; /* Flush to bottom */
+        left: 0;
+        width: 100%;
 
-        background-color: #fff; /* User example */
-        border: 1px solid #ccc; /* User example for border, not just top */
-        border-radius: 20px; /* User example */
+        background-color: #fff; /* User example, can be var(--bg-current) for theme consistency */
+        border-top: 1px solid var(--border-color-current); /* Theme consistent border */
+        /* border-radius: 20px; /* Removed for full-width */
+
         padding-top: var(--mobile-nav-vertical-padding);
         padding-bottom: calc(var(--mobile-nav-vertical-padding) + var(--mobile-nav-bottom-offset));
-        padding-left: 0.5rem; /* Horizontal padding for content inside */
-        padding-right: 0.5rem;
+        padding-left: 1rem; /* More padding from screen edges */
+        padding-right: 1rem;
 
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.15); /* Slightly more pronounced shadow */
+        box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Standard shadow */
         box-sizing: border-box;
-        z-index: 3000; /* User example */
+        z-index: 3000;
     }
+
     .mobile-nav-item {
         display: flex;
         flex-direction: column;
@@ -133,20 +136,19 @@
     /* Mobile Services Menu - Styled as per user example */
     #mobile-services-menu {
         position: fixed;
-        /* Position it relative to the .mobile-nav bar */
-        bottom: calc(var(--mobile-nav-estimated-height) + 20px + var(--mobile-nav-bottom-offset)); /* Approx nav height + gap + safe area */
-        right: 7.5%; /* Align with the mobile-nav bar */
-        width: 85%; /* Match mobile-nav bar width */
+        bottom: calc(var(--mobile-nav-estimated-height) + var(--mobile-nav-bottom-offset)); /* Position directly above nav */
+        left: 0;
+        width: 100%;
 
-        background-color: #fff; /* User example */
-        border: 1px solid #ccc; /* User example */
-        border-radius: 15px; /* Slightly rounded corners */
-        padding: 1rem; /* User example */
+        background-color: #fff; /* Can be var(--bg-current) */
+        border-top: 1px solid var(--border-color-current);
+        /* border-radius: 15px; /* Removed for full-width */
+        padding: 1rem;
 
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        z-index: 2999; /* Below mobile-nav but above other content */
+        z-index: 2999;
 
-        transform: translateY(110%); /* Start further down to ensure it's hidden */
+        transform: translateY(100%); /* Adjusted for standard hide */
         transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
         opacity: 0;
         visibility: hidden; /* Hide when not active */
@@ -190,34 +192,31 @@
 
     /* Body padding to avoid overlap with fixed mobile nav */
     body.mobile-nav-active {
-      /* Adjust padding based on the estimated height of the new mobile nav + its bottom offset */
-      padding-bottom: calc(var(--mobile-nav-estimated-height) + 20px + var(--mobile-nav-bottom-offset));
+      padding-bottom: calc(var(--mobile-nav-estimated-height) + var(--mobile-nav-bottom-offset)); /* Removed the extra 20px gap */
     }
 
     /* Floating icons adjustments (if this class is used elsewhere) */
     body.mobile-nav-active .floating-icons {
-        /* Adjust if floating icons need to be aware of the new nav bar height */
-        bottom: calc(var(--mobile-nav-estimated-height) + 30px + var(--mobile-nav-bottom-offset));
+        bottom: calc(var(--mobile-nav-estimated-height) + 10px + var(--mobile-nav-bottom-offset)); /* Adjusted for new nav position */
     }
 
     /* Dark Mode Styles - Integrated with data-theme from main.js */
     body[data-theme="dark"] .mobile-nav {
-        background-color: #222; /* User example */
-        border-color: #444; /* User example */
+        background-color: #222;
+        border-top-color: #444; /* Ensure only top border color is affected if that's the only border */
     }
 
     body[data-theme="dark"] .mobile-nav-item {
-        color: #eee; /* User example */
+        color: #eee;
     }
      body[data-theme="dark"] .mobile-nav-item i,
      body[data-theme="dark"] .mobile-nav-item span {
-        /* Ensure icon and span also inherit or get the dark mode color */
         color: #eee;
      }
 
     body[data-theme="dark"] #mobile-services-menu {
-        background-color: #222; /* User example */
-        border-color: #444; /* User example */
+        background-color: #222;
+        border-top-color: #444; /* Ensure only top border color is affected */
     }
 
     body[data-theme="dark"] #mobile-services-menu ul li a {
