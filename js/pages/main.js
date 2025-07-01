@@ -287,7 +287,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function applyTheme(theme) {
         bodyElement.setAttribute("data-theme", theme);
         localStorage.setItem("theme", theme);
-        const buttonText = (theme === "light") ? "Dark" : "Light";
+        const buttonText = (theme === "light") ?
+            (themeToggleDesktop?.dataset[currentLanguage + 'Dark'] || (currentLanguage === 'es' ? 'Oscuro' : 'Dark')) :
+            (themeToggleDesktop?.dataset[currentLanguage + 'Light'] || (currentLanguage === 'es' ? 'Claro' : 'Light'));
 
         // Update desktop toggle
         const desktopAriaLabel = (theme === 'light') ?
@@ -303,8 +305,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileAriaLabel = (theme === 'light') ?
             (mobileThemeToggle?.dataset[currentLanguage + 'LabelDark'] || mobileThemeToggle?.dataset['enLabelDark'] || "Switch to Dark Theme") :
             (mobileThemeToggle?.dataset[currentLanguage + 'LabelLight'] || mobileThemeToggle?.dataset['enLabelLight'] || "Switch to Light Theme");
+        const mobileText = (theme === 'light') ?
+            (mobileThemeToggle?.dataset[currentLanguage + 'Dark'] || buttonText) :
+            (mobileThemeToggle?.dataset[currentLanguage + 'Light'] || buttonText);
         if (mobileThemeToggle) {
-            mobileThemeToggle.textContent = buttonText;
+            mobileThemeToggle.textContent = mobileText;
              if(mobileAriaLabel) mobileThemeToggle.setAttribute('aria-label', mobileAriaLabel);
         }
         console.log(`INFO:Main/applyTheme: Theme set to ${theme}`);
