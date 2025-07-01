@@ -51,7 +51,6 @@
         background-color: #fff; /* User example */
         border: 1px solid #ccc; /* User example for border, not just top */
         border-radius: 20px; /* User example */
-
         padding-top: var(--mobile-nav-vertical-padding);
         padding-bottom: calc(var(--mobile-nav-vertical-padding) + var(--mobile-nav-bottom-offset));
         padding-left: 0.5rem; /* Horizontal padding for content inside */
@@ -60,6 +59,10 @@
         box-shadow: 0 -2px 10px rgba(0,0,0,0.15); /* Slightly more pronounced shadow */
         box-sizing: border-box;
         z-index: 3000; /* User example */
+    }
+
+    .mobile-nav::-webkit-scrollbar {
+        display: none;             /* hide scrollbar Chrome/Safari */
     }
 
     .mobile-nav-item {
