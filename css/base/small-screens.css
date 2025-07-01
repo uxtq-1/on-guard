@@ -59,7 +59,6 @@
     }
     /* Add more specific styling for lists, images within service content if needed */
 
-
     /* Mobile Navigation Variables */
     :root {
         /* --mobile-nav-base-height: 55px; /* Will be intrinsic now */
@@ -83,7 +82,6 @@
         background-color: #fff; /* User example */
         border: 1px solid #ccc; /* User example for border, not just top */
         border-radius: 20px; /* User example */
-
         padding-top: var(--mobile-nav-vertical-padding);
         padding-bottom: calc(var(--mobile-nav-vertical-padding) + var(--mobile-nav-bottom-offset));
         padding-left: 0.5rem; /* Horizontal padding for content inside */
@@ -93,7 +91,6 @@
         box-sizing: border-box;
         z-index: 3000; /* User example */
     }
-
     .mobile-nav-item {
         display: flex;
         flex-direction: column;
