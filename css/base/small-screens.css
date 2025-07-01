@@ -70,13 +70,18 @@ on-guard/css/small-screens.css
     /* Mobile Bottom Navigation Bar (for index.html) */
     .mobile-nav {
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-start;
         align-items: stretch; /* Stretch items to fill height before their internal padding */
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
 
+        -ms-overflow-style: none;  /* hide scrollbar IE/Edge */
+        scrollbar-width: none;     /* hide scrollbar Firefox */
         background-color: var(--primary-color);
         border-top: 1px solid var(--border-color-current);
 
@@ -92,6 +97,10 @@ on-guard/css/small-screens.css
         z-index: 10002;
     }
 
+    .mobile-nav::-webkit-scrollbar {
+        display: none;             /* hide scrollbar Chrome/Safari */
+    }
+
     .mobile-nav-item {
         display: flex;
         flex-direction: column;
@@ -104,7 +113,8 @@ on-guard/css/small-screens.css
         border: none;
         cursor: pointer;
         padding: 0.25rem 0.1rem; /* Minimal padding for items themselves */
-        flex: 1;
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
         /* height: var(--mobile-nav-base-height); Removed, align-items:stretch on parent handles height distribution */
         text-align: center;
         line-height: 1.2;
