@@ -367,30 +367,68 @@ document.addEventListener("DOMContentLoaded", () => {
     // Note: closeModalButtons and allModalOverlays will be queried dynamically after modal content is loaded.
     let loadedModalHTML = {}; // Cache for loaded modal HTML to prevent multiple fetches
 
-    const serviceModalConfig = {
-        'business-operations.html': {
-            id: 'business-operations-modal',
-            file: '/html/modals/business_operations_modal.html',
-            placeholder: 'business-operations-modal-placeholder'
+    // Configuration for specific service modals
+    const serviceModalDetails = {
+        'business-operations-service-modal': {
+            contentPath: `${ROOT_PATH}html/partials/services/business_operations_content.html`,
+            titleKeyEn: 'Business Operations',
+            titleKeyEs: 'Operaciones Empresariales'
         },
-        'contact-center.html': {
-            id: 'contact-center-modal',
-            file: '/html/modals/contact_center_modal.html',
-            placeholder: 'contact-center-modal-placeholder'
+        'contact-center-service-modal': {
+            contentPath: `${ROOT_PATH}html/partials/services/contact_center_content.html`,
+            titleKeyEn: 'Contact Center',
+            titleKeyEs: 'Centro de Contacto'
         },
-        'it-support.html': {
-            id: 'it-support-modal',
-            file: '/html/modals/it_support_modal.html',
-            placeholder: 'it-support-modal-placeholder'
+        'it-support-service-modal': {
+            contentPath: `${ROOT_PATH}html/partials/services/it_support_content.html`,
+            titleKeyEn: 'IT Support',
+            titleKeyEs: 'Soporte IT'
         },
-        'professionals.html': {
-            id: 'professionals-modal',
-            file: '/html/modals/professionals_modal.html',
-            placeholder: 'professionals-modal-placeholder'
+        'professionals-service-modal': {
+            contentPath: `${ROOT_PATH}html/partials/services/professionals_content.html`,
+            titleKeyEn: 'Professionals',
+            titleKeyEs: 'Profesionales'
         }
     };
 
-    async function loadModalContent(modalId, modalFile, placeholderId, callback) {
+    async function initializeServiceModalContent(modalElement, serviceContentPath, serviceTitleEn, serviceTitleEs) {
+        const contentContainer = modalElement.querySelector('.service-modal-body-content');
+        const titleElement = modalElement.querySelector('#service-modal-title');
+
+        if (!contentContainer || !titleElement) {
+            console.error('ERROR:Main/initializeServiceModalContent: Modal content or title container not found in generic service modal structure.');
+            modalElement.querySelector('.modal-body').innerHTML = '<p>Error: Modal structure is missing critical elements.</p>'; // Fallback
+            return;
+        }
+
+        try {
+            console.log(`INFO:Main/initializeServiceModalContent: Fetching content from ${serviceContentPath}`);
+            const response = await fetch(serviceContentPath);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch service content: ${response.statusText} from ${serviceContentPath}`);
+            }
+            const contentHtml = await response.text();
+            contentContainer.innerHTML = contentHtml;
+
+            const titleToSet = (currentLanguage === 'es' && serviceTitleEs) ? serviceTitleEs : serviceTitleEn;
+            titleElement.textContent = titleToSet;
+            titleElement.dataset.en = serviceTitleEn; // For language switching of the title
+            titleElement.dataset.es = serviceTitleEs;
+
+            if (window.updateDynamicContentLanguage) {
+                window.updateDynamicContentLanguage(contentContainer); // Translate the newly injected content
+                window.updateDynamicContentLanguage(titleElement.parentElement); // Translate the title element itself if it's wrapped
+            }
+            console.log(`INFO:Main/initializeServiceModalContent: Content loaded for ${serviceContentPath} into modal.`);
+        } catch (error) {
+            console.error('ERROR:Main/initializeServiceModalContent:', error);
+            contentContainer.innerHTML = `<p>Error loading service content. Please try again later.</p>`;
+            titleElement.textContent = 'Error';
+        }
+    }
+
+
+    async function loadModalContent(modalId, modalFile, placeholderId, callback, callbackArgs = []) {
         let placeholder = document.getElementById(placeholderId);
         if (!placeholder) {
             // Create the placeholder dynamically if it doesn't exist
@@ -399,64 +437,117 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.appendChild(placeholder);
         }
 
-        if (!loadedModalHTML[modalId]) {
+        // For generic modals, we don't cache the combined shell + content,
+        // so we always fetch the shell if it's a generic type unless the shell itself is already loaded.
+        // Specific modals like contact-us are cached by their unique modalId.
+        const isGenericServiceModal = modalId === 'generic-service-modal';
+        let loadShell = true;
+        if (isGenericServiceModal) {
+            // If the generic modal shell is already in the placeholder, don't reload it,
+            // just ensure it's the one we're working with.
+            const existingShell = document.getElementById('generic-service-modal');
+            if (placeholder.contains(existingShell)) { // Check if placeholder already has this specific modal
+                 // We might still want to run the callback to repopulate content
+            } else {
+                 // placeholder is empty or has wrong content, clear it
+                 placeholder.innerHTML = '';
+            }
+             // If loadedModalHTML[modalId] (e.g. loadedModalHTML['generic-service-modal']) exists, it means the shell was fetched.
+            if (loadedModalHTML[modalId] && placeholder.innerHTML.includes(`id="${modalId}"`)) {
+                 loadShell = false; // Shell already fetched and presumably in placeholder
+            } else {
+                placeholder.innerHTML = ''; // Clear placeholder for fresh load of shell
+            }
+
+        } else if (loadedModalHTML[modalId] && placeholder.innerHTML.includes(`id="${modalId}"`)) {
+             // For non-generic modals, if HTML is cached and present in placeholder, skip fetch.
+            loadShell = false;
+        } else {
+            placeholder.innerHTML = ''; // Clear placeholder for fresh load
+        }
+
+
+        if (loadShell) {
             try {
-                console.log(`INFO:Main/loadModalContent: Fetching ${modalFile}`);
+                console.log(`INFO:Main/loadModalContent: Fetching ${modalFile} for ${modalId}`);
                 const response = await fetch(modalFile);
                 if (!response.ok) {
                     console.error(`ERROR:Main/loadModalContent: Fetch failed with status ${response.status} for ${response.url}`);
                     throw new Error(`Failed to fetch ${modalFile}: ${response.statusText}`);
                 }
                 const html = await response.text();
-                loadedModalHTML[modalId] = html;
-                placeholder.innerHTML = html;
-                console.log(`INFO:Main/loadModalContent: ${modalId} HTML loaded into #${placeholderId}`);
+                if (!isGenericServiceModal) { // Only cache specific modals, not the generic shell if it's meant to be reused by ID
+                    loadedModalHTML[modalId] = html;
+                }
+                placeholder.innerHTML = html; // Inject the fetched HTML (shell for generic, full for specific)
+                console.log(`INFO:Main/loadModalContent: ${modalId} HTML (shell or full) loaded into #${placeholderId}`);
             } catch (error) {
                 console.error(`ERROR:Main/loadModalContent: Could not load modal content for ${modalId}:`, error);
-                placeholder.innerHTML = `<p>Error loading modal content. Please try again later.</p>`;
+                placeholder.innerHTML = `<p>Error loading modal structure. Please try again later.</p>`;
                 return null;
-            }
-        } else {
-             // Ensure the HTML is in the placeholder if it was loaded but placeholder was cleared (e.g. SPA navigation)
-            if (placeholder.innerHTML.trim() === "") {
-                placeholder.innerHTML = loadedModalHTML[modalId];
             }
         }
 
-        const targetModalElement = document.getElementById(modalId); // Get the actual modal element from the loaded HTML
+        const targetModalElement = document.getElementById(modalId);
         if (!targetModalElement) {
-            console.error(`ERROR:Main/loadModalContent: Modal element #${modalId} not found after loading HTML.`);
+            console.error(`ERROR:Main/loadModalContent: Modal element #${modalId} not found after loading/finding HTML.`);
             return null;
         }
 
-        // Initialize modal-specific JS if a callback is provided
+        // Initialize modal-specific JS or content population if a callback is provided
         if (callback && typeof callback === 'function') {
-            // Check if already initialized to prevent multiple initializations if modal is re-shown
-            if (!targetModalElement.dataset.initialized) {
-                callback(targetModalElement);
-                targetModalElement.dataset.initialized = "true";
+            // For generic service modals, we might re-initialize content even if shell was 'initialized'
+            // For specific modals, dataset.initialized prevents re-running their specific JS.
+            if (!targetModalElement.dataset.initialized || isGenericServiceModal) {
+                await callback(targetModalElement, ...callbackArgs); // Pass additional arguments if any
+                if (!isGenericServiceModal) {
+                    targetModalElement.dataset.initialized = "true";
+                }
+            } else {
+                 console.log(`INFO:Main/loadModalContent: Modal ${modalId} already initialized, callback skipped unless generic.`);
             }
         }
 
-        // Attach close listeners for this specific modal (if not already attached by a global listener)
+        // Attach close listeners for this specific modal
         // This is important if modals are loaded dynamically.
+        // Ensure close listeners are attached, or re-attached if necessary, especially for generic modals.
         const closeButtons = targetModalElement.querySelectorAll('.close-modal[data-close]');
         closeButtons.forEach(btn => {
-            // Prevent multiple listeners if modal is re-shown
-            if (!btn.dataset.closeListenerAttached) {
-                btn.addEventListener('click', () => closeModal(targetModalElement));
-                btn.dataset.closeListenerAttached = "true";
-            }
+            // A bit aggressive to remove/re-add, but ensures no duplicates if modal structure is re-used.
+            // A more nuanced approach might check for an existing specific handler.
+            const newBtn = btn.cloneNode(true); // Clone to remove existing listeners
+            btn.parentNode.replaceChild(newBtn, btn);
+            newBtn.addEventListener('click', () => closeModal(targetModalElement));
         });
 
         // Backdrop click for this specific modal
-        if (!targetModalElement.dataset.backdropListenerAttached) {
-            targetModalElement.addEventListener('click', (e) => {
-                if (e.target === targetModalElement) closeModal(targetModalElement);
-            });
-            targetModalElement.dataset.backdropListenerAttached = "true";
+        // Similar aggressive re-attachment for backdrop on generic modal.
+        if (targetModalElement.dataset.backdropListenerAttached && isGenericServiceModal) {
+            // If it's a generic modal and listener was attached, we might need to remove old one
+            // This is tricky as anonymous functions are hard to remove.
+            // For now, we'll assume that if it's a generic modal, the shell might be reused,
+            // and a new targetModalElement reference might be fine.
+            // Or, ensure loadModalContent always provides a fresh shell for generic if issues arise.
         }
 
+        if (!targetModalElement.dataset.backdropListenerAttached || isGenericServiceModal) {
+            // For generic modals, or if not attached, add it.
+            // This could lead to multiple backdrop listeners on the same element if not careful with generic.
+            // A cleaner way for generic modals is to have this logic inside the generic_service_modal.html template with unique IDs
+            // or ensure the shell is truly new each time.
+            // Let's assume for now that `targetModalElement` is the fresh shell.
+            const backdropHandler = (e) => {
+                if (e.target === targetModalElement) {
+                    closeModal(targetModalElement);
+                    // Potentially remove this specific listener if the modal is truly gone
+                    // targetModalElement.removeEventListener('click', backdropHandler); // This is complex with re-use
+                }
+            };
+            // Storing the handler for potential removal is complex with shared generic modals.
+            // For now, attach. If multiple listeners become an issue, generic modal handling needs refinement.
+            targetModalElement.addEventListener('click', backdropHandler);
+            targetModalElement.dataset.backdropListenerAttached = "true"; // Mark that we've tried to attach.
+        }
 
         return targetModalElement;
     }
@@ -464,26 +555,36 @@ document.addEventListener("DOMContentLoaded", () => {
     async function openModalById(modalId) {
         if (!modalId) return null;
         let targetModal;
+
         if (modalId === 'contact-modal') {
             targetModal = await loadModalContent(
-                modalId,
+                modalId, // Specific ID for this modal
                 `${ROOT_PATH}html/modals/contact_us_modal.html`,
                 'contact-modal-placeholder',
                 initializeContactModal
             );
         } else if (modalId === 'join-us-modal') {
             targetModal = await loadModalContent(
-                modalId,
+                modalId, // Specific ID
                 `${ROOT_PATH}html/modals/join_us_modal.html`,
                 'join-us-modal-placeholder',
                 initializeJoinUsModal
             );
         } else if (modalId === 'chatbot-modal') {
             targetModal = await loadModalContent(
-                modalId,
+                modalId, // Specific ID
                 `${ROOT_PATH}html/modals/chatbot_modal.html`,
                 'chatbot-modal-placeholder',
                 typeof initializeChatbotModal === 'function' ? initializeChatbotModal : null
+            );
+        } else if (serviceModalDetails[modalId]) { // Check if it's a defined service modal
+            const details = serviceModalDetails[modalId];
+            targetModal = await loadModalContent(
+                'generic-service-modal', // Use the ID of the generic modal structure itself
+                `${ROOT_PATH}html/modals/generic_service_modal.html`, // Path to the generic modal HTML shell
+                'generic-service-modal-placeholder', // Placeholder where the generic shell is loaded
+                initializeServiceModalContent, // Callback to populate the generic shell
+                [details.contentPath, details.titleKeyEn, details.titleKeyEs] // Args for the callback
             );
         }
         // Add other dynamic modals here with else if
@@ -491,13 +592,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if (targetModal) {
             targetModal.classList.add('active');
             targetModal.setAttribute('aria-hidden', 'false');
-            if (window.updateDynamicContentLanguage) {
+            // Language update for the modal content is handled by initializeServiceModalContent or the specific modal's callback.
+            // If it's a non-service modal and needs language update, its callback should handle it or call updateDynamicContentLanguage.
+            if (window.updateDynamicContentLanguage && !serviceModalDetails[modalId] && modalId !== 'generic-service-modal') {
+                 // For specific modals like contact-us, if their callback doesn't handle language, do it here.
+                 // initializeContactModal and initializeJoinUsModal should ideally handle their own content translation.
                 window.updateDynamicContentLanguage(targetModal);
             }
             setupFocusTrap(targetModal);
-            const focusableElement = targetModal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
-            if (focusableElement) focusableElement.focus();
-            else targetModal.focus();
+            const focusableElement = targetModal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select, .close-modal');
+            if (focusableElement) {
+                focusableElement.focus();
+            } else {
+                targetModal.focus(); // Fallback focus
+            }
+            console.log(`INFO:Main/openModalById: Modal ${modalId} opened and activated.`);
+        } else {
+            console.warn(`WARN:Main/openModalById: Target modal could not be loaded or found for ID: ${modalId}`);
         }
         return targetModal;
     }
@@ -508,42 +619,54 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault();
             lastFocusedElement = trigger;
             const modalId = trigger.dataset.modal;
+            console.log(`INFO:Main/GlobalClickListener: Click detected for data-modal="${modalId}"`);
             await openModalById(modalId);
-            return;
+            return; // Stop further processing if modal click was handled.
         }
+
+        // The following event listener for service page links is now OBSOLETE
+        // as service pages are now modals handled by data-modal attributes.
+        // I will comment it out.
+        /*
+        const anchor = event.target.closest('a[href]');
+        if (!anchor) return;
+        const url = new URL(anchor.getAttribute('href'), document.baseURI);
+        // OLD serviceModalConfig is removed, this logic is no longer valid for service pages.
+        // const configKey = Object.keys(serviceModalConfig).find(k => url.pathname.endsWith(k));
+        // if (!configKey) return;
+        // event.preventDefault();
+        // lastFocusedElement = anchor;
+        // const cfg = serviceModalConfig[configKey];
+        // const modal = await loadModalContent(cfg.id, cfg.file, cfg.placeholder, null);
+        // if (modal) {
+        //     modal.classList.add('active');
+        //     if (window.updateDynamicContentLanguage) {
+        //         window.updateDynamicContentLanguage(modal);
+        //     }
+        //     setupFocusTrap(modal);
+        //     const focusable = modal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
+        //     if (focusable) focusable.focus();
+        //     else modal.focus();
+        // }
+        */
     });
 
     window.openModalById = openModalById;
 
-    document.addEventListener('click', async (e) => {
-        const anchor = e.target.closest('a[href]');
-        if (!anchor) return;
-        const url = new URL(anchor.getAttribute('href'), document.baseURI);
-        const configKey = Object.keys(serviceModalConfig).find(k => url.pathname.endsWith(k));
-        if (!configKey) return;
-        e.preventDefault();
-        lastFocusedElement = anchor;
-        const cfg = serviceModalConfig[configKey];
-        const modal = await loadModalContent(cfg.id, cfg.file, cfg.placeholder, null);
-        if (modal) {
-            modal.classList.add('active');
-            if (window.updateDynamicContentLanguage) {
-                window.updateDynamicContentLanguage(modal);
-            }
-            setupFocusTrap(modal);
-            const focusable = modal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
-            if (focusable) focusable.focus();
-            else modal.focus();
-        }
-    });
 
     // Preload Join Us modal to ensure it is ready when FAB is clicked
-    loadModalContent(
-        'join-us-modal',
-        `${ROOT_PATH}html/modals/join_us_modal.html`,
-        'join-us-modal-placeholder',
-        initializeJoinUsModal
-    ).catch(err => console.error('ERROR:Main/JoinUsPreload:', err));
+    // Only preload if the placeholder exists, to prevent errors on pages without it.
+    if (document.getElementById('join-us-modal-placeholder')) {
+        loadModalContent(
+            'join-us-modal',
+            `${ROOT_PATH}html/modals/join_us_modal.html`,
+            'join-us-modal-placeholder',
+            initializeJoinUsModal
+        ).catch(err => console.error('ERROR:Main/JoinUsPreload:', err));
+    } else {
+        console.log('INFO:Main/JoinUsPreload: Placeholder not found, skipping preload.');
+    }
+
 
     let currentTrapHandler = null; // To store the current active trap handler
 

@@ -28,6 +28,37 @@
         gap: 0.75rem;
     }
 
+    /* Services Preview Section on index.html for small screens */
+    .services { /* Parent container of service-items */
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items if they don't take full width */
+    }
+    .service-item {
+        width: 90%; /* Make items take more width, e.g., 90% */
+        margin-bottom: 1rem; /* Ensure space between stacked items */
+        /* calc(25% - 1rem) from global.css is overridden here */
+    }
+
+    /* Styling for content within the generic service modal on small screens */
+    /* #generic-service-modal is already handled by .modal-overlay and .modal-content rules for sizing */
+    #generic-service-modal .service-modal-body-content {
+        padding: 0.5rem; /* Add some padding inside the content area */
+    }
+    #generic-service-modal .service-modal-body-content h1 {
+        font-size: 1.5rem; /* Adjust down from typical page H1 for modal context */
+        margin-bottom: 0.75rem;
+        color: var(--primary-color); /* Or use text-current if themed differently */
+    }
+    body[data-theme="dark"] #generic-service-modal .service-modal-body-content h1 {
+        color: var(--link-color-current); /* Consistent with other dark theme headings */
+    }
+    #generic-service-modal .service-modal-body-content p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 0.75rem;
+    }
+    /* Add more specific styling for lists, images within service content if needed */
+
     /* Mobile Navigation Variables */
     :root {
         /* --mobile-nav-base-height: 55px; /* Will be intrinsic now */
@@ -60,11 +91,6 @@
         box-sizing: border-box;
         z-index: 3000; /* User example */
     }
-
-    .mobile-nav::-webkit-scrollbar {
-        display: none;             /* hide scrollbar Chrome/Safari */
-    }
-
     .mobile-nav-item {
         display: flex;
         flex-direction: column;

@@ -80,6 +80,12 @@ a:hover {
   text-decoration: underline;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* Removes bottom space under image */
+}
+
 header {
   background-color: var(--header-bg-current);
   color: var(--header-text-current);
