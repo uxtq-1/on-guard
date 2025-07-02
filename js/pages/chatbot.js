@@ -151,15 +151,22 @@ export function initializeChatbotModal(modalElement) {
 
 // window.initializeChatbotModal = initializeChatbotModal; // Removed: now exported
 
-window.addEventListener('unload', () => {
+window.addEventListener('pagehide', (event) => {
+  // event.persisted is true if the page is being put into the bfcache.
+  // We disconnect observers regardless, as re-initializing them upon page restore
+  // (if it happens) would be part of the main initialization logic if needed.
   if (themeObserver) {
     themeObserver.disconnect();
     themeObserver = null;
+    console.log('INFO:Chatbot/pagehide: Theme observer disconnected.');
   }
   if (langObserver) {
     langObserver.disconnect();
     langObserver = null;
+    console.log('INFO:Chatbot/pagehide: Language observer disconnected.');
   }
+  // Resetting iframe status is good practice if page might be bf-cached.
   chatbotIframe = null;
   iframeLoaded = false;
+  console.log('INFO:Chatbot/pagehide: Chatbot iframe state reset.');
 });

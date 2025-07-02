@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Contact Modal</title>
-  <link rel="stylesheet" href="../../css/modals/contact_us_modal.css">
+  <link rel="stylesheet" href="css/modals/contact_us_modal.css">
 </head>
 <body>
 <div id="contact-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle" aria-hidden="true">
@@ -23,7 +23,7 @@
         <div class="form-row">
           <div class="form-cell">
             <label for="contact-name" data-en="Name" data-es="Nombre">Name</label>
-            <input type="text" id="contact-name"
+            <input type="text" id="contact-name" name="name" autocomplete="name"
                    placeholder="Enter your name"
                    data-en-placeholder="Enter your name"
                    data-es-placeholder="Ingrese su Nombre"
@@ -32,7 +32,7 @@
 
           <div class="form-cell">
             <label for="contact-email" data-en="Email" data-es="Correo Electrónico">Email</label>
-            <input type="email" id="contact-email"
+            <input type="email" id="contact-email" name="email" autocomplete="email"
                    placeholder="Enter your email"
                    data-en-placeholder="Enter your email"
                    data-es-placeholder="Ingrese su correo electrónico"
@@ -44,7 +44,7 @@
         <div class="form-row">
           <div class="form-cell">
             <label for="contact-number" data-en="Contact Number" data-es="Número de Contacto">Your Contact Number</label>
-            <input type="tel" id="contact-number"
+            <input type="tel" id="contact-number" name="tel" autocomplete="tel"
                    placeholder="Enter your contact number"
                    data-en-placeholder="Enter your contact number"
                    data-es-placeholder="Ingrese su número"

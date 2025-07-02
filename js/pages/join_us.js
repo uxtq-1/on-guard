@@ -41,7 +41,7 @@ function initializeJoinUsModal(modalElement) {
     }
 
     // Handle dynamic sections (Skills, Education, etc.)
-    modalElement.querySelectorAll('.form-section').forEach(section => {
+    modalElement.querySelectorAll('.form-section[data-section]').forEach(section => {
         const addBtn = section.querySelector('.add');
         const removeBtn = section.querySelector('.remove');
         const acceptBtn = section.querySelector('.accept-btn');
@@ -89,15 +89,15 @@ function initializeJoinUsModal(modalElement) {
                 return;
             }
             sectionInputs.forEach(input => input.disabled = true);
-            acceptBtn.style.display = 'none';
-            editBtn.style.display = 'inline-block';
+            acceptBtn.classList.add('hidden');
+            editBtn.classList.remove('hidden');
             section.classList.add('completed');
         };
 
         editBtn.onclick = () => {
             inputsContainer.querySelectorAll('input').forEach(input => input.disabled = false);
-            acceptBtn.style.display = 'inline-block';
-            editBtn.style.display = 'none';
+            acceptBtn.classList.remove('hidden');
+            editBtn.classList.add('hidden');
             section.classList.remove('completed');
             const firstInput = inputsContainer.querySelector('input');
             if (firstInput) {

@@ -165,3 +165,8 @@ body[data-theme="dark"] #join-us-modal .form-section .edit-btn {
 #join-us-modal .modal-footer .close-modal:hover {
     background-color: darkgrey;
 }
+
+/* Utility class for initially hidden elements, toggled by JS */
+.hidden {
+  display: none !important;
+}
