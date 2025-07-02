@@ -249,7 +249,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   setTimeout(() => {
-    addMessage(t('intro'), 'bot');
-    addMessage(t('verifyBottom'), 'bot');
+    // The user requested literal strings including the [data=...] parts.
+    if (document.documentElement.lang === 'es') {
+      addMessage("[data=es Hola, soy Chattia]", 'bot');
+    } else {
+      addMessage("[data=en Hello I'm Chattia]", 'bot');
+    }
+    addMessage("[data=en data=es At the bottom; please verify you are human]", 'bot');
   }, 500);
 });

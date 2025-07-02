@@ -14,18 +14,7 @@
   <div id="chatbot-container">
     <div id="chat-log" class="chat-log"></div>
     <form id="chat-form" class="chat-form" autocomplete="off">
-      <input
-        type="text"
-        id="chat-input"
-        placeholder="Verify you are human, then ask me anything"
-        autocomplete="off"
-        required
-        aria-label="Verify you are human, then ask me anything"
-        data-en-placeholder="Verify you are human, then ask me anything"
-        data-es-placeholder="Verifica que eres humano y luego preguntame lo que sea"
-        data-en-label="Verify you are human, then ask me anything"
-        data-es-label="Verifica que eres humano y luego preguntame lo que sea"
-      />
+      <input type="text" id="chat-input" placeholder="Verify you are human, then ask me anything" autocomplete="off" required aria-label="Verify you are human, then ask me anything" />
       <!-- Human verification -->
       <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
         <label for="human-verification-checkbox" class="recaptcha-label"
@@ -39,15 +28,7 @@
       <!-- Honeypot Field: fully hidden and always present -->
       <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"
         tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none;">
-      <button
-        type="submit"
-        id="chat-send-button"
-        aria-label="Send Message"
-        data-en="Send"
-        data-es="Enviar"
-        data-en-label="Send Message"
-        data-es-label="Enviar Mensaje"
-      >Send</button>
+      <button type="submit" id="chat-send-button" aria-label="Send Message" data-en-label="Send Message" data-es-label="Enviar Mensaje">Send</button>
     </form>
     <!-- HIGHLIGHT: reCAPTCHA is fully integrated and enabled via the widget JS -->
   </div>
