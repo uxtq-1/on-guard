@@ -97,7 +97,9 @@ header {
 }
 
 header nav.desktop-nav { /* Target specific desktop nav */
+    -ms-flex-positive: 1; /* IE 10 */
     flex-grow: 1; /* Allow nav to take space */
+    display: -ms-flexbox; /* IE 10 */
     display: flex;
     justify-content: center; /* Center the ul within the nav */
 }
@@ -174,9 +176,12 @@ body[data-theme="dark"] .hero h2 {
 .services {
   padding: 2rem; /* User's padding */
   background-color: #f1f0fb; /* User's specific bg */
+  display: -ms-flexbox; /* IE 10 */
   display: flex;
+  -ms-flex-wrap: wrap; /* IE 10 */
   flex-wrap: wrap;
   gap: 1rem; /* User's gap */
+  -ms-flex-pack: justify; /* IE 10 for space-between */
   justify-content: space-between; /* User's justify */
 }
 body[data-theme="dark"] .services {
@@ -243,7 +248,11 @@ footer {
    ================================================================== */
 .modal-overlay {
     position: fixed;
-    inset: 0; /* top, right, bottom, left = 0 */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /* inset: 0; */ /* Replaced for IE */
     background-color: rgba(0,0,0,0.7);
     display: none;
     justify-content: center;
@@ -265,7 +274,9 @@ footer {
     width: 90%;
     max-width: 600px;
     max-height: 90vh;
+    display: -ms-flexbox; /* IE 10 */
     display: flex;
+    -ms-flex-direction: column; /* IE 10 */
     flex-direction: column;
     position: relative;
     overflow: hidden;
@@ -313,19 +324,24 @@ body[data-theme="dark"] .close-modal {
 
 .modal-body {
   padding: 1rem; /* From user CSS */
+  -ms-flex-positive: 1; /* IE 10 */
   flex-grow: 1;
   overflow-y: auto;
 }
 /* User CSS has form grid inside modal-body form */
 .modal-body form {
+  display: -ms-grid; /* IE 10 */
   display: grid;
+  -ms-grid-columns: 1fr 1fr; /* IE 10, might need adjustment for gap */
   grid-template-columns: 1fr 1fr; /* Default 2 columns for forms in modals */
   gap: 1rem;
 }
 
 
 .form-cell { /* Used by ContactUs form in index.html */
+    display: -ms-flexbox; /* IE 10 */
     display: flex;
+    -ms-flex-direction: column; /* IE 10 */
     flex-direction: column;
     gap: 0.5rem;
 }
@@ -478,7 +494,7 @@ body[data-theme="dark"] [tabindex]:focus {
     height: 0;
     width: 0;
     z-index: -1;
-    pointer-events: none;
+    /* pointer-events: none; */ /* No simple IE < 11 fallback, accept degradation */
 }
 
 /* ==================================================================
