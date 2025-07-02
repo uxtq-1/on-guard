@@ -423,7 +423,7 @@ body[data-theme="dark"] .submit-button:hover {
 }
 body[data-theme="dark"] .floating-icon {
     background-color: #bb86fc; /* User's dark FAB */
-    color: var(--bg-dark);
+    color: var(--text-color-dark-theme); /* Changed to light color for dark mode FAB text */
 }
 body[data-theme="dark"] .floating-icon:hover {
   background-color: #7e69ab;

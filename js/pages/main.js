@@ -185,8 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentLanguage = localStorage.getItem("language") || "en";
 
     const langToggleDesktop = document.getElementById("language-toggle-desktop");
-    // Correct ID for the mobile language toggle
-    const langToggleMobile  = document.getElementById("mobile-language-toggle");
+    // Mobile language toggle will be queried dynamically in setLanguageButtonVisuals
 
     function updateNodeLanguageTexts(lang, parentNode = document.body) {
         if (!parentNode) {
@@ -263,11 +262,15 @@ document.addEventListener("DOMContentLoaded", () => {
             langToggleDesktop.textContent = newButtonText;
             if(newAriaLabel) langToggleDesktop.setAttribute('aria-label', newAriaLabel);
         }
-        if (langToggleMobile) {
-            // If mobile button has a span for text, target it, otherwise the button itself
-            const mobileTextElement = langToggleMobile.querySelector("span") || langToggleMobile;
-            mobileTextElement.textContent = newButtonText;
-            if(newAriaLabel) langToggleMobile.setAttribute('aria-label', newAriaLabel);
+
+        // Query for mobile toggle button each time to ensure it's the latest from DOM
+        const langToggleMobileInstance = document.getElementById("mobile-language-toggle");
+        if (langToggleMobileInstance) {
+            // The mobile button for language does not have a span, text is directly in button
+            langToggleMobileInstance.textContent = newButtonText;
+            // For ARIA label, we can use the same logic as desktop or define specific mobile data attributes if needed
+            // Using the desktop's newAriaLabel for consistency here.
+            if(newAriaLabel) langToggleMobileInstance.setAttribute('aria-label', newAriaLabel);
         }
     }
 

@@ -19,7 +19,6 @@
   <div id="chatbot-container">
     <div id="chat-log" class="chat-log"></div>
     <form id="chat-form" class="chat-form" autocomplete="off">
-      <input type="text" id="chat-input" placeholder="Verify you are human, then ask me anything" autocomplete="off" required aria-label="Verify you are human, then ask me anything" />
       <!-- Human verification -->
       <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
         <label for="human-verification-checkbox" class="recaptcha-label"
@@ -29,6 +28,7 @@
           <span class="recaptcha-text" data-en="I am human" data-es="Soy humano">I am human</span>
         </label>
       </div>
+       <input type="text" id="chat-input" placeholder="Ask me anything..." autocomplete="off" required aria-label="Ask me anything..." />
 
       <!-- Honeypot Field: fully hidden and always present -->
       <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"

@@ -97,7 +97,8 @@ body[data-theme="dark"] #chat-send-button:hover {
 .recaptcha-placeholder-container {
     display: flex;
     align-items: center;
-    margin-right: 10px;
+    flex-basis: 100%; /* Take full width to push input/button to next line */
+    margin-bottom: 10px; /* Add some space below it */
     padding: 5px;
     font-size: 0.9em;
     border: 1px dashed #aaa;
