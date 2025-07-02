@@ -9,6 +9,7 @@ import { sanitizeInput } from '../utils/sanitize.js';
 import { ROOT_PATH } from '../utils/rootPath.js';
 import { initializeJoinUsModal } from './join_us.js';
 import { initializeContactModal } from './contact_us.js';
+import { initializeChatbotModal } from './chatbot.js'; // Import initializeChatbotModal
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
@@ -612,7 +613,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 modalId, // Specific ID
                 `${ROOT_PATH}html/modals/chatbot_modal.html`,
                 'chatbot-modal-placeholder',
-                typeof initializeChatbotModal === 'function' ? initializeChatbotModal : null
+                initializeChatbotModal // Use imported function directly
             );
         } else if (serviceModalDetails[modalId]) { // Check if it's a defined service modal
             const details = serviceModalDetails[modalId];

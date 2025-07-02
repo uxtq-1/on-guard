@@ -91,8 +91,8 @@ async function alertWorkerLoaderBotActivity(detail = "loader honeypot") {
   }
 }
 
-// Main loader function
-function initializeChatbotModal(modalElement) {
+// Main loader function - EXPORT this
+export function initializeChatbotModal(modalElement) {
   const honeypot = createLoaderHoneypot();
 
   // Check honeypot before loading chatbot
@@ -149,8 +149,7 @@ function initializeChatbotModal(modalElement) {
   console.log('Modal initialized.');
 }
 
-
-window.initializeChatbotModal = initializeChatbotModal;
+// window.initializeChatbotModal = initializeChatbotModal; // Removed: now exported
 
 window.addEventListener('unload', () => {
   if (themeObserver) {
