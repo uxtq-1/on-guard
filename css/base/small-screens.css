@@ -24,13 +24,16 @@
         padding: 0;
     }
     .modal-body form {
+        -ms-grid-columns: 1fr; /* IE 10 */
         grid-template-columns: 1fr; /* Stack grid items */
         gap: 0.75rem;
     }
 
     /* Services Preview Section on index.html for small screens */
     .services { /* Parent container of service-items */
+        -ms-flex-direction: column; /* IE 10 */
         flex-direction: column; /* Stack items vertically */
+        -ms-flex-align: center; /* IE 10 */
         align-items: center; /* Center items if they don't take full width */
     }
     .service-item {
@@ -72,8 +75,12 @@
 
     /* Mobile Bottom Navigation Bar - Styled as per user example */
     .mobile-nav {
+        display: -ms-flexbox; /* IE 10 */
         display: flex;
-        justify-content: space-evenly; /* Distribute items evenly */
+        /* justify-content: space-evenly; */ /* Not supported in IE 10 */
+        -ms-flex-pack: distribute; /* IE 10 for space-around, best fallback for space-evenly */
+        justify-content: space-evenly;
+        -ms-flex-align: center; /* IE 10 */
         align-items: center; /* Vertically center items */
         position: fixed;
         bottom: 0; /* Flush to bottom */
@@ -96,7 +103,9 @@
     .mobile-nav-item {
         display: flex;
         flex-direction: column;
+        -ms-flex-pack: center; /* IE 10 */
         justify-content: center;
+        -ms-flex-align: center; /* IE 10 */
         align-items: center;
         text-decoration: none;
         color: #333; /* User example */
@@ -107,7 +116,9 @@
         padding: 0.2rem; /* Minimal padding for items themselves */
         text-align: center;
         line-height: 1.2;
+        -ms-flex-positive: 1; /* IE 10 */
         flex-grow: 1; /* Allow items to grow and share space */
+        -ms-flex-preferred-size: 0px; /* IE 10 (0 or 0px) */
         flex-basis: 0; /* Ensure flex-grow works from a zero basis */
     }
 

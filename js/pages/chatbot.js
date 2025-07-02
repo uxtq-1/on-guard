@@ -152,7 +152,8 @@ export function initializeChatbotModal(modalElement) {
 
 // window.initializeChatbotModal = initializeChatbotModal; // Removed: now exported
 
-window.addEventListener('unload', () => {
+window.addEventListener('pagehide', (event) => {
+  // event.persisted is true if the page is going into the back/forward cache
   if (themeObserver) {
     themeObserver.disconnect();
     themeObserver = null;
