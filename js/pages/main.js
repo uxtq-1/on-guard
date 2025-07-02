@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileChatLauncher = document.getElementById('mobileChatLauncher');
         if (mobileChatLauncher) {
             mobileChatLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
@@ -127,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileContactUsLauncher = document.getElementById('mobileContactUsLauncher');
         if (mobileContactUsLauncher) {
             mobileContactUsLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
@@ -149,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileJoinUsLauncher = document.getElementById('mobileJoinUsLauncher');
         if (mobileJoinUsLauncher) {
             mobileJoinUsLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
@@ -234,6 +237,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function updateHeadLanguageTexts(lang) {
+        const headElements = document.head.querySelectorAll('[data-en], [data-es], [data-en-content], [data-es-content]');
+        headElements.forEach(el => {
+            const targetLang = lang;
+            const fallbackLang = 'en';
+            if (el.tagName === 'TITLE') {
+                const text = el.dataset[targetLang] || el.dataset[fallbackLang];
+                if (text !== undefined) el.textContent = text;
+            } else if (el.tagName === 'META' && el.getAttribute('name') === 'description') {
+                const contentText = el.dataset[targetLang + 'Content'] || el.dataset[fallbackLang + 'Content'];
+                if (contentText !== undefined) el.setAttribute('content', contentText);
+            }
+        });
+    }
+
     function setLanguageButtonVisuals() {
         const newButtonText = (currentLanguage === "en") ? "ES" : "EN";
         // ARIA labels for global toggles should ideally have data-attributes themselves for full translation
@@ -259,6 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
             currentLanguage = newLang;
             localStorage.setItem("language", currentLanguage);
             updateNodeLanguageTexts(currentLanguage, document.body);
+            updateHeadLanguageTexts(currentLanguage);
             setLanguageButtonVisuals(); // Updates global toggle buttons
             console.log(`INFO:Main/masterToggleLanguage: Language changed to ${currentLanguage.toUpperCase()}`);
         }
@@ -274,6 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Initial language setup on page load (will be reapplied/scoped after mobile nav load)
     updateNodeLanguageTexts(currentLanguage, document.body); // Initial full-page scan
+    updateHeadLanguageTexts(currentLanguage);
     setLanguageButtonVisuals(); // For desktop buttons primarily at this stage
     console.log(`INFO:Main/LangInit: Initial language set to ${currentLanguage.toUpperCase()}`);
 
@@ -288,7 +308,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function applyTheme(theme) {
         bodyElement.setAttribute("data-theme", theme);
         localStorage.setItem("theme", theme);
-        const buttonText = (theme === "light") ? "Dark" : "Light";
+        const buttonText = (theme === "light") ?
+            (themeToggleDesktop?.dataset[currentLanguage + 'Dark'] || (currentLanguage === 'es' ? 'Oscuro' : 'Dark')) :
+            (themeToggleDesktop?.dataset[currentLanguage + 'Light'] || (currentLanguage === 'es' ? 'Claro' : 'Light'));
 
         // Update desktop toggle
         const desktopAriaLabel = (theme === 'light') ?
@@ -304,8 +326,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileAriaLabel = (theme === 'light') ?
             (mobileThemeToggle?.dataset[currentLanguage + 'LabelDark'] || mobileThemeToggle?.dataset['enLabelDark'] || "Switch to Dark Theme") :
             (mobileThemeToggle?.dataset[currentLanguage + 'LabelLight'] || mobileThemeToggle?.dataset['enLabelLight'] || "Switch to Light Theme");
+        const mobileText = (theme === 'light') ?
+            (mobileThemeToggle?.dataset[currentLanguage + 'Dark'] || buttonText) :
+            (mobileThemeToggle?.dataset[currentLanguage + 'Light'] || buttonText);
         if (mobileThemeToggle) {
-            mobileThemeToggle.textContent = buttonText;
+            mobileThemeToggle.textContent = mobileText;
              if(mobileAriaLabel) mobileThemeToggle.setAttribute('aria-label', mobileAriaLabel);
         }
         console.log(`INFO:Main/applyTheme: Theme set to ${theme}`);

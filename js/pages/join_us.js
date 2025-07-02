@@ -41,7 +41,7 @@ function initializeJoinUsModal(modalElement) {
     }
 
     // Handle dynamic sections (Skills, Education, etc.)
-    modalElement.querySelectorAll('.form-section').forEach(section => {
+    modalElement.querySelectorAll('.form-section[data-section]').forEach(section => {
         const addBtn = section.querySelector('.add');
         const removeBtn = section.querySelector('.remove');
         const acceptBtn = section.querySelector('.accept-btn');
