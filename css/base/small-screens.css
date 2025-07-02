@@ -75,12 +75,8 @@
 
     /* Mobile Bottom Navigation Bar - Styled as per user example */
     .mobile-nav {
-        display: -ms-flexbox; /* IE 10 */
-        display: flex;
-        /* justify-content: space-evenly; */ /* Not supported in IE 10 */
-        -ms-flex-pack: distribute; /* IE 10 for space-around, best fallback for space-evenly */
-        justify-content: space-evenly;
-        -ms-flex-align: center; /* IE 10 */
+        display: flex !important; /* Added !important for testing CSS override theory */
+        justify-content: space-evenly; /* Distribute items evenly */
         align-items: center; /* Vertically center items */
         position: fixed;
         bottom: 0; /* Flush to bottom */

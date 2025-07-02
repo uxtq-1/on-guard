@@ -606,6 +606,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function openModalById(modalId) {
         if (!modalId) return null;
+        console.log(`INFO:Main/openModalById: Attempting to open modal with ID: ${modalId}`); // Added log
         let targetModal;
 
         if (modalId === 'contact-modal') {
@@ -670,6 +671,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (trigger) {
             event.preventDefault();
             const modalId = trigger.dataset.modal;
+            // Log if the trigger is one of the floating action buttons
+            if (trigger.classList.contains('floating-icon')) {
+                console.log(`INFO:Main/GlobalClickListener: FAB clicked. Trigger ID: ${trigger.id || 'N/A'}, Modal ID: ${modalId}`);
+            }
             // For generic service modals, the modalId in the trigger ('business-operations-service-modal')
             // is different from the actual modal element's ID ('generic-service-modal').
             // We need to find the active modal that corresponds to this trigger.
