@@ -5,18 +5,21 @@
 
 /* Styles for the form grid inside the modal */
 #join-us-modal .modal-body .form-grid {
+  display: -ms-grid; /* IE 10 */
   display: grid;
+  -ms-grid-columns: 1fr; /* IE 10 */
   grid-template-columns: 1fr; /* Single column on small screens */
   gap: 1rem;
 }
 
 /* Override global form grid so inner grid can span full width */
 #join-us-modal .modal-body form {
-  display: block;
+  display: block; /* This overrides the parent form's grid display for this specific modal if needed */
 }
 
 @media (min-width: 768px) {
   #join-us-modal .modal-body .form-grid {
+    -ms-grid-columns: 1fr 1.5rem 1fr; /* IE 10 (value gap value) */
     grid-template-columns: 1fr 1fr; /* Two evenly distributed columns */
     gap: 1.5rem;
   }
@@ -49,19 +52,26 @@
 
 #join-us-modal .form-row,
 #join-us-modal .form-section {
+  display: -ms-flexbox; /* IE 10 */
   display: flex;
+  -ms-flex-direction: column; /* IE 10 */
   flex-direction: column;
   gap: 0.5rem; /* Spacing between label and input, or within sections */
 }
 
 #join-us-modal .form-section.full-width {
+  -ms-grid-column: 1;        /* IE 10 */
+  -ms-grid-column-span: 3; /* IE 10 (assuming 2 columns + 1 gap column = 3 total tracks for -ms-grid-columns: 1fr 1.5rem 1fr;) */
   grid-column: 1 / -1; /* Span full width if in multi-column grid */
 }
 
 
 #join-us-modal .form-section .section-header {
+  display: -ms-flexbox; /* IE 10 */
   display: flex;
+  -ms-flex-pack: justify; /* IE 10 */
   justify-content: space-between;
+  -ms-flex-align: center; /* IE 10 */
   align-items: center;
   margin-bottom: 0.5rem;
   padding-bottom: 0.5rem;

@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
     if (langToggleDesktop) langToggleDesktop.addEventListener("click", () => window.masterToggleLanguage());
-    if (langToggleMobile) langToggleMobile.addEventListener("click", () => window.masterToggleLanguage());
+    // Mobile listener is attached in initializeMobileNavInteractions after mobile nav is loaded.
 
     window.updateDynamicContentLanguage = function(nodeToUpdate) {
         if (nodeToUpdate) {
