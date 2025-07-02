@@ -1,8 +1,82 @@
 // js/chatbot_creation/chatbot.js
 // Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
+import { sanitizeInput } from '../utils/sanitize.js';
 
 function applyTheme(theme) {
   if (theme) document.body.setAttribute('data-theme', theme);
+}
+
+const I18N = {
+  en: {
+    suspiciousActivity: 'Suspicious activity detected. Please reload the page.',
+    lockdownMessage: 'Bot activity detected. Chat disabled.',
+    verifyHuman: 'Please confirm you are human by checking the box.',
+    recaptchaFail: 'reCAPTCHA verification failed. Please try again.',
+    serverError: 'Error verifying message with server. Try again later.',
+    messageBlocked: 'Message blocked for security reasons.',
+    defaultReply: 'Thanks for your message! A support agent will be with you shortly.',
+    hello: 'Hello! How can I help you today?',
+    help: 'I can help with general questions. For specific account issues, an agent will assist you. What do you need help with?',
+    pricing: 'Please see our pricing on the main website or contact sales.',
+    bye: 'Goodbye! Have a great day.',
+    intro: "Hello I'm Chattia",
+    verifyBottom: 'At the bottom; please verify you are human'
+  },
+  es: {
+    suspiciousActivity: 'Actividad sospechosa detectada. Por favor recarga la página.',
+    lockdownMessage: 'Actividad de bot detectada. Chat deshabilitado.',
+    verifyHuman: 'Por favor confirma que eres humano marcando la casilla.',
+    recaptchaFail: 'La verificación reCAPTCHA falló. Inténtalo de nuevo.',
+    serverError: 'Error al verificar el mensaje con el servidor. Intenta de nuevo más tarde.',
+    messageBlocked: 'Mensaje bloqueado por razones de seguridad.',
+    defaultReply: '¡Gracias por tu mensaje! Un agente de soporte te ayudará en breve.',
+    hello: '¡Hola! ¿Cómo puedo ayudarte hoy?',
+    help: 'Puedo ayudar con preguntas generales. Para asuntos de cuenta, un agente te asistirá. ¿Con qué necesitas ayuda?',
+    pricing: 'Consulta nuestros precios en el sitio principal o contacta ventas.',
+    bye: '¡Adiós! Que tengas un gran día.',
+    intro: 'Hola, soy Chattia',
+    verifyBottom: 'Al final, verifica que eres humano'
+  }
+};
+
+let currentLang = document.documentElement.lang || 'en';
+
+let form, input, log, sendBtn, honeypotInput, humanCheckbox;
+
+function t(key) {
+  return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
+}
+
+function applyI18n() {
+  if (typeof input !== 'undefined') {
+    const ph = input.dataset[currentLang + 'Placeholder'] || input.placeholder;
+    input.placeholder = ph;
+    const lab = input.dataset[currentLang + 'Label'];
+    if (lab) input.setAttribute('aria-label', lab);
+  }
+  if (typeof sendBtn !== 'undefined') {
+    const text = sendBtn.dataset[currentLang] || sendBtn.textContent;
+    sendBtn.textContent = text;
+    const label = sendBtn.dataset[currentLang + 'Label'];
+    if (label) sendBtn.setAttribute('aria-label', label);
+  }
+  const recaptchaSpan = document.querySelector('.recaptcha-text');
+  if (recaptchaSpan) {
+    const txt = recaptchaSpan.dataset[currentLang] || recaptchaSpan.textContent;
+    recaptchaSpan.textContent = txt;
+  }
+  const recaptchaLabel = document.querySelector('.recaptcha-label');
+  if (recaptchaLabel) {
+    const aria = recaptchaLabel.dataset[currentLang + 'Label'] || recaptchaLabel.getAttribute('aria-label');
+    if (aria) recaptchaLabel.setAttribute('aria-label', aria);
+  }
+}
+
+function setLanguage(lang) {
+  if (!lang) return;
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  applyI18n();
 }
 
 window.addEventListener('message', (event) => {
@@ -10,6 +84,8 @@ window.addEventListener('message', (event) => {
   const data = event.data || {};
   if (data.type === 'theme-change') {
     applyTheme(data.theme);
+  } else if (data.type === 'language-change') {
+    setLanguage(data.lang);
   }
 });
 
@@ -17,20 +93,24 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     const parentTheme = window.parent.document.body.getAttribute('data-theme');
     applyTheme(parentTheme || 'light');
+    const parentLang = window.parent.document.documentElement.getAttribute('lang');
+    if (parentLang) setLanguage(parentLang);
   } catch (err) {
     console.warn('Unable to sync theme with parent on load.', err);
   }
-  const form = document.getElementById('chat-form');
-  const input = document.getElementById('chat-input');
-  const log = document.getElementById('chat-log');
-  const sendBtn = form ? form.querySelector('[type="submit"]') : null;
-  const honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
-  const humanCheckbox = document.getElementById('human-verification-checkbox');
+  form = document.getElementById('chat-form');
+  input = document.getElementById('chat-input');
+  log = document.getElementById('chat-log');
+  sendBtn = form ? form.querySelector('[type="submit"]') : null;
+  honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
+  humanCheckbox = document.getElementById('human-verification-checkbox');
 
   if (!form || !input || !log) {
     console.error('ERROR: Core chatbot UI elements not found in iframe.');
     return;
   }
+
+  applyI18n();
 
   let lockedForBot = false;
 
@@ -53,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function lockDownChat(reason = "Bot activity detected. Chat disabled.") {
+  function lockDownChat(reason = t('lockdownMessage')) {
     input.disabled = true;
     sendBtn && (sendBtn.disabled = true);
     humanCheckbox && (humanCheckbox.disabled = true);
@@ -91,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (honeypotInput) {
     honeypotInput.addEventListener('input', () => {
       if (honeypotInput.value !== '' && !lockedForBot) {
-        lockDownChat("Suspicious activity detected. Please reload the page.");
+        lockDownChat(t('suspiciousActivity'));
         alertWorkerOfBotActivity("honeypot filled (input)");
       }
     });
@@ -103,14 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Honeypot check
     if (honeypotInput && honeypotInput.value !== '') {
-      lockDownChat("Suspicious activity detected. Please reload the page.");
+      lockDownChat(t('suspiciousActivity'));
       alertWorkerOfBotActivity("honeypot filled (submit)");
       return;
     }
 
     // Human check
     if (!humanCheckbox || !humanCheckbox.checked) {
-      addMessage("Please confirm you are human by checking the box.", 'bot');
+      addMessage(t('verifyHuman'), 'bot');
       setHumanInteractionState(false);
       return;
     }
@@ -120,13 +200,22 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       recaptchaToken = await grecaptcha.execute('YOUR_SITE_KEY', { action: 'chatbot_message' });
     } catch (err) {
-      addMessage("reCAPTCHA verification failed. Please try again.", 'bot');
+      addMessage(t('recaptchaFail'), 'bot');
       return;
     }
 
     // Message
-    const userInput = input.value.trim();
+    let userInput = input.value.trim();
     if (!userInput) return;
+
+    const sanitizedUserMessage = sanitizeInput(userInput);
+    if (userInput !== sanitizedUserMessage) {
+        console.warn("Chatbot: User input was modified by sanitizer.");
+        // Decide if you want to inform the user or just use the sanitized version.
+        // For now, we'll use the sanitized version silently.
+    }
+    userInput = sanitizedUserMessage; // Use the sanitized input
+
     addMessage(userInput, 'user');
     input.value = '';
 
@@ -142,11 +231,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const result = await response.json();
       if (!result.success) {
-        addMessage(result.message || "Message blocked for security reasons.", 'bot');
+        addMessage(result.message || t('messageBlocked'), 'bot');
         return;
       }
     } catch (err) {
-      addMessage("Error verifying message with server. Try again later.", 'bot');
+      addMessage(t('serverError'), 'bot');
       return;
     }
 
@@ -156,15 +245,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getSimulatedBotReply(userInput) {
     const lowerInput = userInput.toLowerCase();
-    let botResponse = "Thanks for your message! A support agent will be with you shortly.";
+    let botResponse = t('defaultReply');
     if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
-      botResponse = "Hello! How can I help you today?";
+      botResponse = t('hello');
     } else if (lowerInput.includes('help')) {
-      botResponse = "I can help with general questions. For specific account issues, an agent will assist you. What do you need help with?";
+      botResponse = t('help');
     } else if (lowerInput.includes('price') || lowerInput.includes('pricing')) {
-      botResponse = "Please see our pricing on the main website or contact sales.";
+      botResponse = t('pricing');
     } else if (lowerInput.includes('bye')) {
-      botResponse = "Goodbye! Have a great day.";
+      botResponse = t('bye');
     }
     setTimeout(() => addMessage(botResponse, 'bot'), 700);
   }

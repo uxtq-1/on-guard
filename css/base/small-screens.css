@@ -73,7 +73,7 @@
     /* Mobile Bottom Navigation Bar - Styled as per user example */
     .mobile-nav {
         display: flex;
-        justify-content: space-around; /* Distribute items evenly */
+        justify-content: space-evenly; /* Distribute items evenly */
         align-items: center; /* Vertically center items */
         position: fixed;
         bottom: 0; /* Flush to bottom */
@@ -120,6 +120,21 @@
     .mobile-nav-item i {
         font-size: 1.5rem; /* User example */
         margin-bottom: 2px; /* Small space between icon and text */
+    }
+
+    .mobile-nav-toggles {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px; /* Space between the stacked buttons */
+    }
+
+    .mobile-nav-toggles button {
+        padding: 0.2rem; /* Minimal padding consistent with other items */
+        font-size: 0.75rem; /* Consistent with other text spans */
+        line-height: 1.2;
+        /* The buttons will inherit flex-grow from mobile-nav-item on the parent div */
+        /* No specific width needed, they should size to content or be handled by flex alignment */
     }
 
     /* For indicating current page, if applicable via JS adding this class */

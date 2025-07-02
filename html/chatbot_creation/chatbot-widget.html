@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>OPS Chatbot</title>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta name="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-src 'self' https://www.google.com;">
+  <title data-en="OPS Chatbot" data-es="OPS Chatbot">OPS Chatbot</title>
   <!-- Styles for the iframe content -->
   <link rel="stylesheet" href="../../css/chatbot_creation/chatbot-container.css">
   <link rel="stylesheet" href="../../css/chatbot_creation/chatbot-ui.css">
@@ -15,10 +20,11 @@
     <div id="chat-log" class="chat-log"></div>
     <form id="chat-form" class="chat-form" autocomplete="off">
       <input type="text" id="chat-input" placeholder="Verify you are human, then ask me anything" autocomplete="off" required aria-label="Verify you are human, then ask me anything" />
-
       <!-- Human verification -->
       <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
-        <label for="human-verification-checkbox" class="recaptcha-label">
+        <label for="human-verification-checkbox" class="recaptcha-label"
+               aria-label="I am human"
+               data-en-label="I am human" data-es-label="Soy humano">
           <input type="checkbox" id="human-verification-checkbox" name="human-verification" required>
           <span class="recaptcha-text" data-en="I am human" data-es="Soy humano">I am human</span>
         </label>
