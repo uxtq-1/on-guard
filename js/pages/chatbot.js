@@ -152,10 +152,7 @@ export function initializeChatbotModal(modalElement) {
 
 // window.initializeChatbotModal = initializeChatbotModal; // Removed: now exported
 
-window.addEventListener('pagehide', (event) => {
-  // event.persisted is true if the page is being put into the bfcache.
-  // We disconnect observers regardless, as re-initializing them upon page restore
-  // (if it happens) would be part of the main initialization logic if needed.
+window.addEventListener('unload', () => {
   if (themeObserver) {
     themeObserver.disconnect();
     themeObserver = null;

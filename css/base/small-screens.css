@@ -211,7 +211,7 @@
 
     /* Floating icons adjustments (if this class is used elsewhere) */
     body.mobile-nav-active .floating-icons {
-        bottom: calc(var(--mobile-nav-estimated-height) + 15px + var(--mobile-nav-bottom-offset)); /* Increased margin to 15px */
+        bottom: calc(var(--mobile-nav-estimated-height) + 45px + var(--mobile-nav-bottom-offset)); /* Increased margin to 45px for more clearance */
     }
 
     /* Dark Mode Styles - Integrated with data-theme from main.js */
