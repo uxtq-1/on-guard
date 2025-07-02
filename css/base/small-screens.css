@@ -66,8 +66,8 @@
         --mobile-nav-bottom-offset: env(safe-area-inset-bottom, 0px);
         --mobile-nav-vertical-padding: 0.5rem; /* From user example */
         /* Estimate nav height for body padding. Actual height will be intrinsic.
-           Approx icon (1.5rem) + span (0.8rem) + padding. Let's use a fixed value for now. */
-        --mobile-nav-estimated-height: 60px;
+           Approx icon (1.5rem) + span (0.8rem) + padding. Calculated ~63.4px, rounding to 64px. */
+        --mobile-nav-estimated-height: 64px;
     }
 
     /* Mobile Bottom Navigation Bar - Styled as per user example */
@@ -196,7 +196,7 @@
 
     /* Floating icons adjustments (if this class is used elsewhere) */
     body.mobile-nav-active .floating-icons {
-        bottom: calc(var(--mobile-nav-estimated-height) + 10px + var(--mobile-nav-bottom-offset)); /* Adjusted for new nav position */
+        bottom: calc(var(--mobile-nav-estimated-height) + 45px + var(--mobile-nav-bottom-offset)); /* Increased margin to 45px for more clearance */
     }
 
     /* Dark Mode Styles - Integrated with data-theme from main.js */
