@@ -247,10 +247,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // The user requested literal strings including the [data=...] parts.
     if (document.documentElement.lang === 'es') {
-      addMessage("[data=es Hola, soy Chattia]", 'bot');
+      addMessage("Hola, soy Chattia", 'bot');
     } else {
-      addMessage("[data=en Hello I'm Chattia]", 'bot');
+      addMessage("Hello I'm Chattia", 'bot');
     }
-    addMessage("verifica que eres humano, luego pregúntame lo que quieras", 'bot');
+    addMessage("Verifica que eres humano, luego pregúntame lo que quieras", 'bot');
   }, 500);
 });
