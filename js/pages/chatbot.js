@@ -126,6 +126,7 @@ export function initializeChatbotModal(modalElement) {
     chatbotIframe.title = 'AI Chatbot';
     chatbotIframe.setAttribute('tabindex', '0');
     chatbotIframe.setAttribute('aria-label', 'AI Chatbot Widget');
+    chatbotIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups');
     chatbotModalBody.innerHTML = '';
     chatbotModalBody.appendChild(chatbotIframe);
     iframeLoaded = true;

@@ -1,5 +1,6 @@
 // js/chatbot_creation/chatbot.js
 // Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
+import { sanitizeInput } from '../utils/sanitize.js';
 
 function applyTheme(theme) {
   if (theme) document.body.setAttribute('data-theme', theme);
@@ -204,8 +205,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Message
-    const userInput = input.value.trim();
+    let userInput = input.value.trim();
     if (!userInput) return;
+
+    const sanitizedUserMessage = sanitizeInput(userInput);
+    if (userInput !== sanitizedUserMessage) {
+        console.warn("Chatbot: User input was modified by sanitizer.");
+        // Decide if you want to inform the user or just use the sanitized version.
+        // For now, we'll use the sanitized version silently.
+    }
+    userInput = sanitizedUserMessage; // Use the sanitized input
+
     addMessage(userInput, 'user');
     input.value = '';
 
