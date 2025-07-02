@@ -72,7 +72,7 @@
 
     /* Mobile Bottom Navigation Bar - Styled as per user example */
     .mobile-nav {
-        display: flex;
+        display: flex !important; /* Added !important for testing CSS override theory */
         justify-content: space-evenly; /* Distribute items evenly */
         align-items: center; /* Vertically center items */
         position: fixed;
