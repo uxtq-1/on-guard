@@ -64,6 +64,11 @@ function applyI18n() {
     const txt = recaptchaSpan.dataset[currentLang] || recaptchaSpan.textContent;
     recaptchaSpan.textContent = txt;
   }
+  const recaptchaLabel = document.querySelector('.recaptcha-label');
+  if (recaptchaLabel) {
+    const aria = recaptchaLabel.dataset[currentLang + 'Label'] || recaptchaLabel.getAttribute('aria-label');
+    if (aria) recaptchaLabel.setAttribute('aria-label', aria);
+  }
 }
 
 function setLanguage(lang) {
@@ -244,13 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   setTimeout(() => {
-
-    // The user requested literal strings including the [data=...] parts.
-    if (document.documentElement.lang === 'es') {
-      addMessage("Hola, soy Chattia", 'bot');
-    } else {
-      addMessage("Hello I'm Chattia", 'bot');
-    }
-    addMessage("Verifica que eres humano, luego pregúntame lo que quieras", 'bot');
+    addMessage(t('intro'), 'bot');
+    addMessage(t('verifyBottom'), 'bot');
   }, 500);
 });
