@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileChatLauncher = document.getElementById('mobileChatLauncher');
         if (mobileChatLauncher) {
             mobileChatLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
@@ -127,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileContactUsLauncher = document.getElementById('mobileContactUsLauncher');
         if (mobileContactUsLauncher) {
             mobileContactUsLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
@@ -149,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mobileJoinUsLauncher = document.getElementById('mobileJoinUsLauncher');
         if (mobileJoinUsLauncher) {
             mobileJoinUsLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
                 const trigger = event.currentTarget;
                 if (trigger && trigger.dataset.modal) {
                     event.preventDefault();
