@@ -14,6 +14,7 @@ import { initializeChatbotModal } from './chatbot.js'; // Import initializeChatb
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
 
+    /* OLD - updateMobileNavStatus - To be removed
     // Function to add padding for fixed mobile nav
     function updateMobileNavStatus() {
         const mobileNavElement = document.querySelector('.mobile-nav');
@@ -25,10 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log('INFO:Main/updateMobileNavStatus: Mobile nav not active or not present, body padding removed.');
         }
     }
+    */ // END OLD - updateMobileNavStatus
 
     // Placeholder for mobile navigation HTML injection
-    const mobileNavPlaceholder = document.getElementById('mobile-nav-placeholder');
+    // const mobileNavPlaceholder = document.getElementById('mobile-nav-placeholder'); // OLD - To be removed
 
+    /* OLD - loadMobileNavigation - To be removed
     async function loadMobileNavigation() {
         try {
             const response = await fetch(`${ROOT_PATH}html/partials/mobile_nav.html`);
@@ -66,7 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
     }
+    */ // END OLD - loadMobileNavigation
 
+    /* OLD - initializeMobileNavInteractions - To be removed
     function initializeMobileNavInteractions() {
         // Mobile Services Menu Toggle (for index.html's bottom nav menu)
         const mobileServicesToggle = document.getElementById('mobile-services-toggle');
@@ -178,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn('WARN:Main/initializeMobileNavInteractions: Mobile Join Us launcher not found.');
         }
     }
+    */ // END OLD - initializeMobileNavInteractions
 
     // Dynamically set the Home link in the rightSideMenu
     const homeLinkRightSideMenu = document.querySelector("#rightSideMenu .right-side-menu-nav a[href='../index.html']");
@@ -271,14 +277,30 @@ document.addEventListener("DOMContentLoaded", () => {
             if(newAriaLabel) langToggleDesktop.setAttribute('aria-label', newAriaLabel);
         }
 
-        // Query for mobile toggle button each time to ensure it's the latest from DOM
+        // Update old mobile nav language toggle, if it exists
         const langToggleMobileInstance = document.getElementById("mobile-language-toggle");
         if (langToggleMobileInstance) {
-            // The mobile button for language does not have a span, text is directly in button
             langToggleMobileInstance.textContent = newButtonText;
-            // For ARIA label, we can use the same logic as desktop or define specific mobile data attributes if needed
-            // Using the desktop's newAriaLabel for consistency here.
             if(newAriaLabel) langToggleMobileInstance.setAttribute('aria-label', newAriaLabel);
+        }
+
+        // Update new FAB menu language toggle, if it exists
+        const fabLangToggleInstance = document.getElementById("fabLanguageToggle");
+        if (fabLangToggleInstance) {
+            // It has a span for text, e.g., <span data-en="EN" data-es="ES">EN</span>
+            const spanElement = fabLangToggleInstance.querySelector('span');
+            if (spanElement) {
+                // We need to set the text based on the *opposite* of currentLanguage for the button label
+                // e.g., if currentLanguage is 'en', button should show 'ES'
+                spanElement.textContent = newButtonText;
+            }
+            // ARIA label should reflect the action based on current language
+            const fabAriaLabel = (currentLanguage === "en") ?
+                                 (fabLangToggleInstance.dataset.esLabel || "Cambiar a Español") :
+                                 (fabLangToggleInstance.dataset.enLabel || "Switch to English");
+            if(fabAriaLabel) fabLangToggleInstance.setAttribute('aria-label', fabAriaLabel);
+            // Title attribute can also be updated
+            if(fabAriaLabel) fabLangToggleInstance.setAttribute('title', fabAriaLabel);
         }
     }
 
@@ -343,6 +365,34 @@ document.addEventListener("DOMContentLoaded", () => {
         if (mobileThemeToggle) {
             mobileThemeToggle.textContent = mobileText;
              if(mobileAriaLabel) mobileThemeToggle.setAttribute('aria-label', mobileAriaLabel);
+        }
+
+        // Update new FAB menu theme toggle, if it exists
+        const fabThemeToggleInstance = document.getElementById("fabThemeToggle");
+        if (fabThemeToggleInstance) {
+            const fabSpanElement = fabThemeToggleInstance.querySelector('span');
+            const fabIconElement = fabThemeToggleInstance.querySelector('i');
+            const fabText = (theme === 'light') ?
+                (fabThemeToggleInstance.dataset[currentLanguage + 'Dark'] || (currentLanguage === 'es' ? 'Oscuro' : 'Dark')) :
+                (fabThemeToggleInstance.dataset[currentLanguage + 'Light'] || (currentLanguage === 'es' ? 'Claro' : 'Light'));
+            const fabAriaLabelText = (theme === 'light') ?
+                (fabThemeToggleInstance.dataset[currentLanguage + 'LabelDark'] || fabThemeToggleInstance.dataset['enLabelDark'] || "Switch to Dark Theme") :
+                (fabThemeToggleInstance.dataset[currentLanguage + 'LabelLight'] || fabThemeToggleInstance.dataset['enLabelLight'] || "Switch to Light Theme");
+
+            if (fabSpanElement) fabSpanElement.textContent = fabText;
+            if (fabAriaLabelText) {
+                fabThemeToggleInstance.setAttribute('aria-label', fabAriaLabelText);
+                fabThemeToggleInstance.setAttribute('title', fabAriaLabelText); // Update title too
+            }
+            if (fabIconElement) { // Optional: change icon based on theme
+                if (theme === 'light') {
+                    fabIconElement.classList.remove('fa-moon'); // Or whatever "dark mode active" icon is
+                    fabIconElement.classList.add('fa-lightbulb');    // Icon for "light mode active, switch to dark"
+                } else {
+                    fabIconElement.classList.remove('fa-lightbulb');
+                    fabIconElement.classList.add('fa-moon');  // Icon for "dark mode active, switch to light"
+                }
+            }
         }
         console.log(`INFO:Main/applyTheme: Theme set to ${theme}`);
     }
@@ -859,12 +909,13 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/FormSubmissions: Form submission logic deferred to specific scripts like contact_us.js and join_us.js.');
 
     /* ================================================================
-       7) Mobile Nav Loading and Initialization
+       7) Mobile Nav Loading and Initialization (OLD - To be removed)
        ================================================================= */
+    /* OLD - loadMobileNavigation call and related logic
     loadMobileNavigation().then(success => {
         if (success) {
             initializeMobileNavInteractions();
-            updateMobileNavStatus(); // Apply body padding if mobile nav is visible
+            // updateMobileNavStatus(); // OLD - Apply body padding if mobile nav is visible
 
             // Ensure newly injected mobile nav is translated and themed
             const mobileNavEl = document.querySelector('.mobile-nav');
@@ -882,8 +933,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Continue with other initializations that might depend on the page structure
         // (e.g., service worker, or other non-mobile-nav specific items)
+
         /* ================================================================
-           8) Service Worker Registration
+           FAB Horizontal Navigation Loading & Initialization
+           ================================================================= */
+        loadFabHorizontalNavigation().then(fabSuccess => {
+            if (fabSuccess) {
+                initializeFabHorizontalNavInteractions(); // Placeholder for now
+                // Language/theme update for FAB nav will be handled within initializeFabHorizontalNavInteractions
+                console.log('INFO:Main/FabNavInit: FAB Horizontal navigation loaded.');
+            } else {
+                console.error('ERROR:Main/FabNavInit: FAB Horizontal navigation failed to load.');
+            }
+
+            /* ================================================================
+               8) Service Worker Registration (Moved here to ensure it's one of the last things)
+               ================================================================= */
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register(`${ROOT_PATH}js/service-worker.js`)
+                        .then(reg => console.log('INFO:Main/ServiceWorker: Registered. Scope:', reg.scope))
+                        .catch(err => console.error('ERROR:Main/ServiceWorker: Registration failed:', err));
+                });
+            } else {
+                console.warn('WARN:Main/ServiceWorker: Not supported in this browser.');
+            }
+            console.log('INFO:Main/DOMContentLoaded: All core initializations complete (post mobile and FAB nav).');
+
+        }).catch(error => {
+            console.error("ERROR:Main/FabNavInit: General error during FAB horizontal navigation loading sequence:", error);
+        });
+
+
+    }).catch(error => {
+        console.error("ERROR:Main/MobileNavInit: General error during mobile navigation loading sequence:", error);
+        // Fallback or error handling for when mobile nav loading fails critically
+    });
+    */ // END OLD - loadMobileNavigation call and related logic
+
+    /* ================================================================
+       FAB Horizontal Navigation - Load and Initialize (NEW Primary Mobile Nav)
+       ================================================================= */
+    loadFabHorizontalNavigation().then(fabSuccess => {
+        if (fabSuccess) {
+            initializeFabHorizontalNavInteractions();
+            console.log('INFO:Main/FabNavInit: FAB Horizontal navigation loaded and initialized.');
+        } else {
+            console.error('ERROR:Main/FabNavInit: FAB Horizontal navigation failed to load.');
+        }
+
+        /* ================================================================
+           8) Service Worker Registration (Ensuring it's one of the last things)
            ================================================================= */
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -894,11 +994,231 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             console.warn('WARN:Main/ServiceWorker: Not supported in this browser.');
         }
-        console.log('INFO:Main/DOMContentLoaded: All core initializations complete (post mobile nav).');
+        console.log('INFO:Main/DOMContentLoaded: All core initializations complete.');
+
     }).catch(error => {
-        console.error("ERROR:Main/MobileNavInit: General error during mobile navigation loading sequence:", error);
-        // Fallback or error handling for when mobile nav loading fails critically
+        console.error("ERROR:Main/FabNavInit: General error during FAB horizontal navigation loading sequence:", error);
     });
+
+
+    /* ================================================================
+       FAB Horizontal Navigation Functions
+       ================================================================= */
+    async function loadFabHorizontalNavigation() {
+        const floatingIconsContainer = document.querySelector('.floating-icons');
+        if (!floatingIconsContainer) {
+            console.warn('WARN:Main/loadFabHorizontalNavigation: .floating-icons container not found. FAB button cannot be added.');
+            // We might still want to load the menu overlays if the placeholder for them exists or if appending to body.
+            // For now, let's consider this a critical failure for the whole FAB nav system.
+            return false;
+        }
+
+        // Placeholder for the NAV and Services Menu parts, if we still use one for them.
+        // Or, we can just append them to document.body directly.
+        // Let's remove the dependency on 'fab-nav-placeholder' for now for the menu parts.
+        // const fabNavOverlaysPlaceholder = document.getElementById('fab-nav-placeholder');
+
+        try {
+            const response = await fetch(`${ROOT_PATH}html/partials/fab_horizontal_nav.html`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch fab_horizontal_nav.html: ${response.statusText}`);
+            }
+            const htmlFragmentText = await response.text();
+
+            if (!htmlFragmentText || htmlFragmentText.trim() === "") {
+                console.error('ERROR:Main/loadFabHorizontalNavigation: Fetched fab_horizontal_nav.html is empty.');
+                throw new Error('Fetched fab_horizontal_nav.html is empty.');
+            }
+
+            // Create a temporary container to parse the fragment
+            const tempContainer = document.createElement('div');
+            tempContainer.innerHTML = htmlFragmentText;
+
+            const fabButton = tempContainer.querySelector('#horizontalNavFab');
+            const horizontalNavMenu = tempContainer.querySelector('#horizontalMobileNav');
+            const servicesSubMenu = tempContainer.querySelector('#horizontalServicesMenu');
+
+            if (fabButton) {
+                floatingIconsContainer.appendChild(fabButton);
+                console.log('INFO:Main/loadFabHorizontalNavigation: #horizontalNavFab appended to .floating-icons');
+            } else {
+                console.warn('WARN:Main/loadFabHorizontalNavigation: #horizontalNavFab not found in fetched HTML.');
+            }
+
+            if (horizontalNavMenu) {
+                document.body.appendChild(horizontalNavMenu);
+                console.log('INFO:Main/loadFabHorizontalNavigation: #horizontalMobileNav appended to body.');
+            } else {
+                console.warn('WARN:Main/loadFabHorizontalNavigation: #horizontalMobileNav not found in fetched HTML.');
+            }
+
+            if (servicesSubMenu) {
+                document.body.appendChild(servicesSubMenu);
+                console.log('INFO:Main/loadFabHorizontalNavigation: #horizontalServicesMenu appended to body.');
+            } else {
+                console.warn('WARN:Main/loadFabHorizontalNavigation: #horizontalServicesMenu not found in fetched HTML.');
+            }
+
+            // If the old placeholder 'fab-nav-placeholder' is now unused, it could be removed from index.html later.
+            // For now, this new logic doesn't rely on it.
+
+            return true;
+        } catch (error) {
+            console.error(`ERROR:Main/loadFabHorizontalNavigation: ${error.message}`);
+            // Avoid writing to fabNavPlaceholder if it's not guaranteed to exist or be relevant.
+            return false;
+        }
+    }
+
+    function initializeFabHorizontalNavInteractions() {
+        console.log('INFO:Main/initializeFabHorizontalNavInteractions: Initializing FAB horizontal nav interactions.');
+
+        const fabToggle = document.getElementById('horizontalNavFab');
+        const fabIcon = fabToggle ? fabToggle.querySelector('i') : null;
+        const horizontalNav = document.getElementById('horizontalMobileNav');
+        const servicesToggle = document.getElementById('horizontalServicesToggle');
+        const servicesMenu = document.getElementById('horizontalServicesMenu');
+
+        if (!fabToggle || !fabIcon || !horizontalNav) {
+            console.error('ERROR:Main/initializeFabHorizontalNavInteractions: Core FAB navigation elements not found. Interactions cannot be initialized.');
+            return;
+        }
+
+        // Main FAB click to toggle horizontal menu
+        fabToggle.addEventListener('click', () => {
+            const isNavActive = horizontalNav.classList.toggle('active');
+            fabToggle.setAttribute('aria-expanded', isNavActive.toString());
+            horizontalNav.setAttribute('aria-hidden', (!isNavActive).toString());
+
+            if (isNavActive) {
+                fabIcon.classList.remove('fa-bars');
+                fabIcon.classList.add('fa-times');
+            } else {
+                fabIcon.classList.remove('fa-times');
+                fabIcon.classList.add('fa-bars');
+                // If services sub-menu is open, close it when main FAB nav closes
+                if (servicesMenu && servicesMenu.classList.contains('active')) {
+                    servicesMenu.classList.remove('active');
+                    if(servicesToggle) servicesToggle.setAttribute('aria-expanded', 'false');
+                    servicesMenu.setAttribute('aria-hidden', 'true');
+                }
+            }
+        });
+
+        // Services toggle button within the horizontal FAB nav
+        if (servicesToggle && servicesMenu) {
+            servicesToggle.addEventListener('click', (event) => {
+                event.stopPropagation(); // Prevent click from bubbling up to document click listener immediately
+                const isServicesActive = servicesMenu.classList.toggle('active');
+                servicesToggle.setAttribute('aria-expanded', isServicesActive.toString());
+                servicesMenu.setAttribute('aria-hidden', (!isServicesActive).toString());
+            });
+        } else {
+            console.warn('WARN:Main/initializeFabHorizontalNavInteractions: Services toggle or menu for FAB nav not found.');
+        }
+
+        // Click outside to close functionality
+        document.addEventListener('click', (event) => {
+            // Close horizontalMobileNav if click is outside it and the FAB itself
+            if (horizontalNav.classList.contains('active') &&
+                !horizontalNav.contains(event.target) &&
+                !fabToggle.contains(event.target) &&
+                !servicesToggle.contains(event.target) /* Prevent closing if clicking services toggle while open */ ) {
+
+                horizontalNav.classList.remove('active');
+                fabIcon.classList.remove('fa-times');
+                fabIcon.classList.add('fa-bars');
+                fabToggle.setAttribute('aria-expanded', 'false');
+                horizontalNav.setAttribute('aria-hidden', 'true');
+
+                if (servicesMenu && servicesMenu.classList.contains('active')) {
+                    servicesMenu.classList.remove('active');
+                    if(servicesToggle) servicesToggle.setAttribute('aria-expanded', 'false');
+                    servicesMenu.setAttribute('aria-hidden', 'true');
+                }
+            }
+            // Close horizontalServicesMenu if click is outside it and its toggle, but not inside main horizontalNav
+            else if (servicesMenu && servicesMenu.classList.contains('active') &&
+                !servicesMenu.contains(event.target) &&
+                !servicesToggle.contains(event.target) &&
+                !horizontalNav.contains(event.target) /* Allow clicks inside main nav if services menu is open */ ) {
+
+                servicesMenu.classList.remove('active');
+                if(servicesToggle) servicesToggle.setAttribute('aria-expanded', 'false');
+                servicesMenu.setAttribute('aria-hidden', 'true');
+            }
+        });
+
+        // Initialize modal launchers within the new FAB nav
+        const fabNavModalLaunchers = horizontalNav.querySelectorAll('[data-modal]');
+        fabNavModalLaunchers.forEach(launcher => {
+            // Check if this specific launcher already has a listener from global modal init
+            // This is a simple check; a more robust way would be a flag or specific class.
+            // For now, we assume the global listener might cover some, but let's ensure these are interactive.
+            // The global listener `document.addEventListener('click', async (event) => { const trigger = event.target.closest('[data-modal]'); ...`
+            // should handle these. We just need to make sure the modals themselves are loaded/available.
+
+            // For service items within the horizontalServicesMenu
+            if (servicesMenu) {
+                const serviceModalLaunchers = servicesMenu.querySelectorAll('[data-modal]');
+                serviceModalLaunchers.forEach(serviceLauncher => {
+                    // These should also be covered by the global modal trigger listener.
+                    // No specific listeners needed here unless special behavior is required.
+                });
+            }
+        });
+        console.log('INFO:Main/initializeFabHorizontalNavInteractions: Event listeners for FAB nav and services menu set up.');
+
+        // Ensure new elements are translated
+        const fabNavHtmlElementsContainer = document.querySelector('#horizontalMobileNav'); // More specific
+        if (fabNavHtmlElementsContainer) { // Check if the main nav container exists
+             // Apply initial language to all children of horizontalMobileNav and horizontalServicesMenu
+            updateNodeLanguageTexts(currentLanguage, fabNavHtmlElementsContainer);
+            if(servicesMenu) updateNodeLanguageTexts(currentLanguage, servicesMenu); // Translate services menu too
+        }
+
+
+        // Initialize Language Toggle in FAB Menu
+        const fabLangToggle = document.getElementById('fabLanguageToggle');
+        if (fabLangToggle) {
+            fabLangToggle.addEventListener('click', () => {
+                window.masterToggleLanguage(); // Call global function
+                // Update button text/ARIA after language change (masterToggleLanguage calls setLanguageButtonVisuals)
+                // We need to ensure setLanguageButtonVisuals also updates this new button.
+            });
+            // Initial text/ARIA update for FAB language toggle will be handled by setLanguageButtonVisuals
+            // when it's called after masterToggleLanguage or during initial page load.
+            // We might need to explicitly call an update for this button here if setLanguageButtonVisuals isn't aware of it.
+            // For now, masterToggleLanguage should trigger the necessary global updates.
+            console.log('INFO:Main/initializeFabHorizontalNavInteractions: FAB Language toggle initialized.');
+        } else {
+            console.warn('WARN:Main/initializeFabHorizontalNavInteractions: FAB Language toggle not found.');
+        }
+
+        // Initialize Theme Toggle in FAB Menu
+        const fabThemeToggle = document.getElementById('fabThemeToggle');
+        if (fabThemeToggle) {
+            fabThemeToggle.addEventListener('click', () => {
+                window.masterToggleTheme(); // Call global function
+                // Update button text/ARIA after theme change (masterToggleTheme calls applyTheme)
+                // We need to ensure applyTheme also updates this new button.
+            });
+            // Initial text/ARIA update for FAB theme toggle will be handled by applyTheme.
+            console.log('INFO:Main/initializeFabHorizontalNavInteractions: FAB Theme toggle initialized.');
+        } else {
+            console.warn('WARN:Main/initializeFabHorizontalNavInteractions: FAB Theme toggle not found.');
+        }
+
+        // Call initial update for these buttons if necessary, though global functions should handle it.
+        // This ensures they reflect the current state when the FAB menu is first opened.
+        // The global setLanguageButtonVisuals and applyTheme should ideally be robust enough
+        // to find these new buttons if they are present in the DOM when those functions run.
+        // If not, we'll need to enhance those global functions.
+        // For now, we rely on the fact that these buttons are added to DOM before this JS runs.
+        // The initial translation of the FAB menu content is handled by updateNodeLanguageTexts above.
+        // The button states (text like "EN" or "Light") should be set by the global updaters.
+    }
+
 });
 
 // Expose global toggle functions if needed by other scripts (like join_us.js for its own toggles)
