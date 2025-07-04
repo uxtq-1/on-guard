@@ -1,33 +1,9 @@
 /* css/join_us_modal.css */
 
-/* Specific styles for the Join Us modal content. */
-/* Many form styles might be inherited from global.css or join_us.css (if its content is merged here or globally). */
+/* Specific styles for the Join Us modal content */
 
-/* Styles for the form grid inside the modal */
-#join-us-modal .modal-body .form-grid {
-  display: -ms-grid; /* IE 10 */
-  display: grid;
-  -ms-grid-columns: 1fr; /* IE 10 */
-  grid-template-columns: 1fr; /* Single column on small screens */
-  gap: 1rem;
-}
-
-/* Override global form grid so inner grid can span full width */
-#join-us-modal .modal-body form {
-  display: block; /* This overrides the parent form's grid display for this specific modal if needed */
-}
-
-@media (min-width: 768px) {
-  #join-us-modal .modal-body .form-grid {
-    -ms-grid-columns: 1fr 1.5rem 1fr; /* IE 10 (value gap value) */
-    grid-template-columns: 1fr 1fr; /* Two evenly distributed columns */
-    gap: 1.5rem;
-  }
-}
-
-/* Widen modal for better viewing */
 #join-us-modal .modal-content {
-  max-width: 800px; /* Default for larger screens */
+  max-width: 800px;
 }
 
 @media (max-width: 768px) {
@@ -36,42 +12,65 @@
     max-width: 100%;
     height: 100%;
     max-height: 100vh;
-    padding: 0; /* Padding will be handled by modal-body */
+    padding: 0;
     border-radius: 0;
     box-shadow: none;
     border: none;
   }
+
   #join-us-modal .modal-body {
-    padding: 1rem; /* Add padding back to body */
+    padding: 1rem;
   }
-  /* Ensure form grid is single column if not already by default, though it is */
+
   #join-us-modal .modal-body .form-grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* === Form Grid Layout === */
+#join-us-modal .modal-body .form-grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  #join-us-modal .modal-body .form-grid {
+    -ms-grid-columns: 1fr 1.5rem 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+#join-us-modal .modal-body form {
+  display: block;
+}
+
+/* === Section Blocks === */
 #join-us-modal .form-row,
 #join-us-modal .form-section {
-  display: -ms-flexbox; /* IE 10 */
+  display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: column; /* IE 10 */
+  -ms-flex-direction: column;
   flex-direction: column;
-  gap: 0.5rem; /* Spacing between label and input, or within sections */
+  gap: 0.5rem;
 }
 
 #join-us-modal .form-section.full-width {
-  -ms-grid-column: 1;        /* IE 10 */
-  -ms-grid-column-span: 3; /* IE 10 (assuming 2 columns + 1 gap column = 3 total tracks for -ms-grid-columns: 1fr 1.5rem 1fr;) */
-  grid-column: 1 / -1; /* Span full width if in multi-column grid */
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 3;
+  grid-column: 1 / -1;
 }
 
-
+/* === Section Headers === */
 #join-us-modal .form-section .section-header {
-  display: -ms-flexbox; /* IE 10 */
+  display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: justify; /* IE 10 */
+  -ms-flex-pack: justify;
   justify-content: space-between;
-  -ms-flex-align: center; /* IE 10 */
+  -ms-flex-align: center;
   align-items: center;
   margin-bottom: 0.5rem;
   padding-bottom: 0.5rem;
@@ -83,11 +82,12 @@
   font-size: 1.1rem;
   color: var(--primary-color);
 }
+
 body[data-theme="dark"] #join-us-modal .form-section .section-header h4 {
-    color: var(--link-color-current);
+  color: var(--link-color-current);
 }
 
-
+/* === Circle Buttons === */
 #join-us-modal .form-section .circle-btn {
   background-color: var(--primary-color);
   color: white;
@@ -102,19 +102,48 @@ body[data-theme="dark"] #join-us-modal .form-section .section-header h4 {
   margin-left: 0.5rem;
   transition: background-color 0.3s;
 }
+
 #join-us-modal .form-section .circle-btn:hover {
   background-color: var(--accent-color);
 }
+
 body[data-theme="dark"] #join-us-modal .form-section .circle-btn {
-    background-color: var(--link-color-current);
-    color: var(--bg-dark);
+  background-color: var(--link-color-current);
+  color: var(--bg-dark);
 }
 
-
+/* === Inputs === */
 #join-us-modal .form-section .inputs input[type="text"] {
-  margin-bottom: 0.5rem; /* Space between dynamically added inputs */
+  margin-bottom: 0.5rem;
 }
 
+#join-us-modal .modal-body label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  color: var(--text-current);
+}
+
+#join-us-modal .modal-body input[type="text"],
+#join-us-modal .modal-body input[type="email"],
+#join-us-modal .modal-body input[type="tel"],
+#join-us-modal .modal-body select,
+#join-us-modal .modal-body textarea {
+  width: 100%;
+  padding: 0.65rem;
+  border: 1px solid var(--input-border-current);
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  background-color: var(--input-bg-current);
+  color: var(--text-current);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* === Action Buttons === */
 #join-us-modal .form-section .accept-btn,
 #join-us-modal .form-section .edit-btn {
   background-color: var(--primary-color);
@@ -126,6 +155,7 @@ body[data-theme="dark"] #join-us-modal .form-section .circle-btn {
   margin-top: 0.5rem;
   font-size: 0.9rem;
 }
+
 #join-us-modal .form-section .accept-btn:hover,
 #join-us-modal .form-section .edit-btn:hover {
   opacity: 0.8;
@@ -133,50 +163,28 @@ body[data-theme="dark"] #join-us-modal .form-section .circle-btn {
 
 body[data-theme="dark"] #join-us-modal .form-section .accept-btn,
 body[data-theme="dark"] #join-us-modal .form-section .edit-btn {
-    background-color: var(--link-color-current);
-    color: var(--bg-dark);
+  background-color: var(--link-color-current);
+  color: var(--bg-dark);
 }
 
-
-/* Ensure labels are distinct */
-#join-us-modal .modal-body label {
-    font-weight: bold;
-    margin-bottom: 0.25rem; /* Add a bit of space below the label */
-    color: var(--text-current);
-}
-
-/* Inputs styling, ensure they inherit from global.css or define here */
-#join-us-modal .modal-body input[type="text"],
-#join-us-modal .modal-body input[type="email"],
-#join-us-modal .modal-body input[type="tel"],
-#join-us-modal .modal-body select,
-#join-us-modal .modal-body textarea {
-    width: 100%;
-    padding: 0.65rem; /* Slightly more padding for better touch */
-    border: 1px solid var(--input-border-current);
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    background-color: var(--input-bg-current);
-    color: var(--text-current);
-}
-
+/* === Footer Close Button === */
 #join-us-modal .modal-footer .close-modal {
-    background-color: grey;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: bold;
-    margin-left: 0.5rem;
-}
-#join-us-modal .modal-footer .close-modal:hover {
-    background-color: darkgrey;
+  background-color: grey;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: bold;
+  margin-left: 0.5rem;
 }
 
-/* Utility class for initially hidden elements, toggled by JS */
+#join-us-modal .modal-footer .close-modal:hover {
+  background-color: darkgrey;
+}
+
+/* === Utility === */
 .hidden {
   display: none !important;
 }
