@@ -12,24 +12,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const html = document.documentElement;
 
-  // Map modal IDs to their corresponding HTML fragment
+  // Map modal triggers to their HTML file and actual overlay ID
   const modalMap = {
-    'contact-modal': 'contact_us_modal.html',
-    'join-us-modal': 'join_us_modal.html',
-    'chatbot-modal': 'chatbot_modal.html',
-    'business-operations-service-modal': 'business_operations_modal.html',
-    'contact-center-service-modal': 'contact_center_modal.html',
-    'it-support-service-modal': 'it_support_modal.html',
-    'professionals-service-modal': 'professionals_modal.html',
-    'generic-service-modal': 'generic_service_modal.html'
+    'contact-modal': {
+      file: 'contact_us_modal.html',
+      id: 'contact-modal'
+    },
+    'join-us-modal': {
+      file: 'join_us_modal.html',
+      id: 'join-us-modal'
+    },
+    'chatbot-modal': {
+      file: 'chatbot_modal.html',
+      id: 'chatbot-modal'
+    },
+    'business-operations-service-modal': {
+      file: 'business_operations_modal.html',
+      id: 'business-operations-modal'
+    },
+    'contact-center-service-modal': {
+      file: 'contact_center_modal.html',
+      id: 'contact-center-modal'
+    },
+    'it-support-service-modal': {
+      file: 'it_support_modal.html',
+      id: 'it-support-modal'
+    },
+    'professionals-service-modal': {
+      file: 'professionals_modal.html',
+      id: 'professionals-modal'
+    },
+    'generic-service-modal': {
+      file: 'generic_service_modal.html',
+      id: 'generic-service-modal'
+    }
   };
 
   async function loadModal(modalId) {
-    const existing = document.getElementById(modalId);
+    const mapEntry = modalMap[modalId];
+    if (!mapEntry) return null;
+
+    const existing = document.getElementById(mapEntry.id);
     if (existing) return existing;
 
-    const file = modalMap[modalId];
-    if (!file) return null;
+    const file = mapEntry.file;
 
     let placeholder = document.getElementById(`${modalId}-placeholder`);
     if (!placeholder) {
@@ -42,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const resp = await fetch(`html/modals/${file}`);
       if (!resp.ok) throw new Error(`Failed to fetch ${file}`);
       placeholder.innerHTML = await resp.text();
-      const modal = document.getElementById(modalId);
+      const modal = document.getElementById(mapEntry.id);
       // Initialize modal specific scripts
       if (modalId === 'contact-modal') initializeContactModal(modal);
       if (modalId === 'join-us-modal') initializeJoinUsModal(modal);
@@ -203,10 +229,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Modals: Open Handler
   document.querySelectorAll('[data-modal]').forEach(button => {
-    const modalId = button.getAttribute('data-modal');
+    const modalKey = button.getAttribute('data-modal');
     button.addEventListener('click', async () => {
-      let modal = document.getElementById(modalId);
-      if (!modal) modal = await loadModal(modalId);
+      const mapEntry = modalMap[modalKey] || { id: modalKey };
+      let modal = document.getElementById(mapEntry.id);
+      if (!modal) modal = await loadModal(modalKey);
       if (modal) {
         modal.classList.add('active');
         setTimeout(() => {
