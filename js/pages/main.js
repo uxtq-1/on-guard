@@ -24,9 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const existing = document.getElementById(modalId);
     if (existing) return existing;
 
-    const placeholder = document.getElementById(`${modalId}-placeholder`);
     const file = modalMap[modalId];
-    if (!placeholder || !file) return null;
+    if (!file) return null;
+
+    let placeholder = document.getElementById(`${modalId}-placeholder`);
+    if (!placeholder) {
+      placeholder = document.createElement('div');
+      placeholder.id = `${modalId}-placeholder`;
+      document.body.appendChild(placeholder);
+    }
 
     try {
       const resp = await fetch(`html/modals/${file}`);
