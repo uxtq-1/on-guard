@@ -12,12 +12,197 @@ import { initializeContactModal } from './contact_us.js';
 import { initializeChatbotModal } from './chatbot.js'; // Import initializeChatbotModal
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Function to add padding for fixed mobile nav - OLD, NOT CALLED
+    function updateMobileNavStatus() {
+        const mobileNavElement = document.querySelector('.mobile-nav');
+        if (mobileNavElement && getComputedStyle(mobileNavElement).display !== 'none') {
+            document.body.classList.add('mobile-nav-active');
+        } else {
+            document.body.classList.remove('mobile-nav-active');
+        }
+    }
+    */ // END OLD - updateMobileNavStatus
+    // Placeholder for mobile navigation HTML injection - OLD, NOT USED
+    const mobileNavPlaceholder = document.getElementById('mobile-nav-placeholder');
+
+    // OLD - loadMobileNavigation - DEFINITION REMAINS BUT NOT CALLED
+    async function loadMobileNavigation() {
+        try {
+            const response = await fetch(`${ROOT_PATH}html/partials/mobile_nav.html`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch mobile_nav.html: ${response.statusText}`);
+            }
+            let html = await response.text();
+
+            if (!html || html.trim() === "") {
+                console.error('ERROR:Main/loadMobileNavigation: Fetched mobile_nav.html is empty or invalid.');
+                throw new Error('Fetched mobile_nav.html is empty or invalid.'); // This will be caught by the catch block
+            }
+
+            // Correct href paths using ROOT_PATH
+            html = html.replace(/href="html\//g, `href="${ROOT_PATH}html/`);
+            html = html.replace(/href="index\.html"/g, `href="${ROOT_PATH}index.html"`);
+
+            if (mobileNavPlaceholder) {
+                mobileNavPlaceholder.innerHTML = html;
+            } else {
+                // Fallback if placeholder is missing, append to body
+                console.warn('WARN:Main/loadMobileNavigation: mobile-nav-placeholder not found, appending to body.');
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                while (tempDiv.firstChild) {
+                    document.body.appendChild(tempDiv.firstChild);
+                }
+            }
+            return true;
+        } catch (error) {
+            // Log the specific error from the try block, or the generic fetch error
+            console.error(`ERROR:Main/loadMobileNavigation: ${error.message}`);
+            return false;
+        }
+    }
+    
+    */ // END OLD - loadMobileNavigation
+    // OLD - initializeMobileNavInteractions - DEFINITION REMAINS BUT NOT CALLED
+    function initializeMobileNavInteractions() {
+        // Mobile Services Menu Toggle (for index.html's bottom nav menu)
+        const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+        const mobileServicesMenu = document.getElementById('mobile-services-menu');
+        if (mobileServicesToggle && mobileServicesMenu) {
+            mobileServicesToggle.addEventListener('click', () => {
+                const isOpen = mobileServicesMenu.classList.toggle('active');
+                mobileServicesToggle.setAttribute('aria-expanded', isOpen.toString());
+                mobileServicesMenu.setAttribute('aria-hidden', (!isOpen).toString());
+            });
+            document.addEventListener('click', (event) => {
+                if (mobileServicesMenu.classList.contains('active')) {
+                    if (!mobileServicesMenu.contains(event.target) && !mobileServicesToggle.contains(event.target)) {
+                        mobileServicesMenu.classList.remove('active');
+                        mobileServicesToggle.setAttribute('aria-expanded', 'false');
+                        mobileServicesMenu.setAttribute('aria-hidden', 'true');
+                    }
+                }
+            });
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile services toggle/menu not found.');
+        }
+
+        // Mobile Language Toggle (re-query after injection)
+        const langToggleMobile = document.getElementById("mobile-language-toggle");
+        if (langToggleMobile) {
+            langToggleMobile.addEventListener("click", () => window.masterToggleLanguage());
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile language toggle not found.');
+        }
+
+        // Mobile Theme Toggle (re-query after injection)
+        const themeToggleMobile = document.getElementById("mobile-theme-toggle");
+        if (themeToggleMobile) {
+            themeToggleMobile.addEventListener("click", () => window.masterToggleTheme());
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile theme toggle not found.');
+        }
+
+        // Ensure mobile chat launcher is interactive if present
+        const mobileChatLauncher = document.getElementById('mobileChatLauncher');
+        if (mobileChatLauncher) {
+            mobileChatLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
+                const trigger = event.currentTarget;
+                if (trigger && trigger.dataset.modal) {
+                    event.preventDefault();
+                    const modalId = trigger.dataset.modal;
+                    const modalElement = document.getElementById(modalId);
+                    if (modalElement && modalElement.classList.contains('active')) {
+                        closeModal(modalElement);
+                    } else {
+                        lastFocusedElement = trigger;
+                        await openModalById(modalId);
+                    }
+                }
+            });
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile chat launcher not found.');
+        }
+
+        // Mobile Contact Us Launcher
+        const mobileContactUsLauncher = document.getElementById('mobileContactUsLauncher');
+        if (mobileContactUsLauncher) {
+            mobileContactUsLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
+                const trigger = event.currentTarget;
+                if (trigger && trigger.dataset.modal) {
+                    event.preventDefault();
+                    const modalId = trigger.dataset.modal;
+                    const modalElement = document.getElementById(modalId);
+                    if (modalElement && modalElement.classList.contains('active')) {
+                        closeModal(modalElement);
+                    } else {
+                        lastFocusedElement = trigger;
+                        await openModalById(modalId);
+                    }
+                }
+            });
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile Contact Us launcher not found.');
+        }
+
+        // Mobile Join Us Launcher
+        const mobileJoinUsLauncher = document.getElementById('mobileJoinUsLauncher');
+        if (mobileJoinUsLauncher) {
+            mobileJoinUsLauncher.addEventListener('click', async (event) => {
+                event.stopPropagation(); // Prevent event from bubbling to global document listener
+                const trigger = event.currentTarget;
+                if (trigger && trigger.dataset.modal) {
+                    event.preventDefault();
+                    const modalId = trigger.dataset.modal;
+                    const modalElement = document.getElementById(modalId);
+                    if (modalElement && modalElement.classList.contains('active')) {
+                        closeModal(modalElement);
+                    } else {
+                        lastFocusedElement = trigger;
+                        await openModalById(modalId);
+                    }
+                }
+            });
+        } else {
+            console.warn('WARN:Main/initializeMobileNavInteractions: Mobile Join Us launcher not found.');
+        }
+    }
+    */ // END OLD - initializeMobileNavInteractions
+
+    // START: MODIFIED FOR STEP 3 - Ensure mobile-services-toggle functionality
+    // Mobile Services Menu Toggle (for the old mobile_nav.html's bottom nav menu)
+    const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+    const mobileServicesMenu = document.getElementById('mobile-services-menu');
+
+    if (mobileServicesToggle && mobileServicesMenu) {
+        mobileServicesToggle.addEventListener('click', () => {
+            const isOpen = mobileServicesMenu.classList.toggle('active');
+            mobileServicesToggle.setAttribute('aria-expanded', isOpen.toString());
+            mobileServicesMenu.setAttribute('aria-hidden', (!isOpen).toString());
+        });
+
+        // Optional: Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (mobileServicesMenu.classList.contains('active')) {
+                if (!mobileServicesMenu.contains(event.target) && !mobileServicesToggle.contains(event.target)) {
+                    mobileServicesMenu.classList.remove('active');
+                    mobileServicesToggle.setAttribute('aria-expanded', 'false');
+                    mobileServicesMenu.setAttribute('aria-hidden', 'true');
+                }
+            }
+        });
+    } else {
+        // console.warn('WARN:Main/MobileServicesToggle: Mobile services toggle or menu not found (mobile_nav.html).');
+        // This warning might appear on pages not using mobile_nav.html, which is fine.
+    }
+    // END: MODIFIED FOR STEP 3
     // Dynamically set the Home link in the rightSideMenu
     const homeLinkRightSideMenu = document.querySelector("#rightSideMenu .right-side-menu-nav a[href='../index.html']");
     if (homeLinkRightSideMenu) {
         homeLinkRightSideMenu.href = ROOT_PATH + "index.html";
     }
-
 
     /* ================================================================
        1) LANGUAGE TOGGLE (Desktop & Mobile for index.html header)
@@ -315,7 +500,6 @@ document.addEventListener("DOMContentLoaded", () => {
             titleElement.textContent = 'Error';
         }
     }
-
 
     async function loadModalContent(modalId, modalFile, placeholderId, callback, callbackArgs = []) {
         let placeholder = document.getElementById(placeholderId);
@@ -622,7 +806,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("ERROR:Main/FabNavInit: General error during FAB horizontal navigation loading sequence:", error);
     });
 
-
     /* ================================================================
        FAB Horizontal Navigation Functions
        ================================================================= */
@@ -784,6 +967,5 @@ document.addEventListener("DOMContentLoaded", () => {
 // The language and theme toggles are now self-contained within the main DOMContentLoaded listener.
 // `window.updateDynamicContentLanguage` is already exposed for dynamic content.
 // `window.masterToggleLanguage` and `window.masterToggleTheme` are already exposed.
-
 
 [end of js/pages/main.js]
