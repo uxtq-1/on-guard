@@ -73,6 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (modalId === 'contact-modal') initializeContactModal(modal);
       if (modalId === 'join-us-modal') initializeJoinUsModal(modal);
       if (modalId === 'chatbot-modal') initializeChatbotModal(modal);
+
+      if (modal && !modal.classList.contains('active')) {
+          modal.setAttribute('aria-hidden', 'true');
+      }
+      // Apply current language to the newly loaded modal content
+      if (modal && typeof updateDynamicContentLanguage === 'function') {
+        updateDynamicContentLanguage(modal);
+      }
       attachModalClose(modal);
       return modal;
     } catch (err) {
@@ -89,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (target === modal || target.classList.contains('modal-overlay') ||
           target.hasAttribute('data-close')) {
         modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
       }
     });
   }
@@ -236,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!modal) modal = await loadModal(modalKey);
       if (modal) {
         modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
         setTimeout(() => {
           const focusable = modal.querySelector('input, textarea, button');
           if (focusable) focusable.focus();
@@ -250,7 +260,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Close active modal on Escape key press
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+      document.querySelectorAll('.modal-overlay.active').forEach(m => {
+        m.classList.remove('active');
+        m.setAttribute('aria-hidden', 'true');
+      });
     }
   });
 
