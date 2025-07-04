@@ -5,7 +5,9 @@
   header nav.desktop-nav,
   header .toggle-container,
   header .header-menu-trigger,
-  #rightSideMenu {
+  #rightSideMenu,
+  .mobile-nav, /* Hide existing bottom mobile nav */
+  #mobile-services-menu /* Hide existing mobile services menu */ {
     display: none !important;
   }
 
@@ -197,11 +199,139 @@
   body[data-theme="dark"] #mobile-services-menu ul li a:hover {
     background-color: #333;
   }
+
+  /* Styles for Horizontal FAB Navigation */
+  #horizontalNavFab {
+    display: block; /* Ensure it's visible on small screens */
+    position: fixed; /* Or absolute, depending on desired behavior relative to header */
+    top: 15px; /* Adjust as needed */
+    right: 15px; /* Adjust as needed */
+    z-index: 3001; /* Higher than mobile-nav, lower than modals if it opens under them */
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px; /* Adjust size */
+    height: 50px; /* Adjust size */
+    font-size: 20px; /* Icon size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  body[data-theme="dark"] #horizontalNavFab {
+    background-color: var(--button-bg-current);
+    color: var(--button-text-current);
+  }
+
+  #horizontalMobileNav {
+    display: none; /* Hidden by default */
+    position: fixed; /* Or absolute. Fixed will keep it on screen when scrolling. */
+    top: 70px; /* Position below the FAB/header, adjust as needed */
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-current); /* Use theme background */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 3000; /* Below the FAB toggle, above general content */
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color-current);
+  }
+
+  #horizontalMobileNav.active { /* Assuming JS will add/remove this class */
+    display: flex; /* Or block, then items would be display: block */
+    flex-direction: column; /* Stack items vertically */
+    align-items: stretch; /* Make items take full width */
+  }
+
+  .horiz-nav-item {
+    display: flex; /* Align icon and text */
+    align-items: center;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--text-current);
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .horiz-nav-item i {
+    margin-right: 0.75rem;
+    width: 20px; /* For alignment */
+  }
+
+  .horiz-nav-item:hover,
+  .horiz-nav-item:focus {
+    background-color: rgba(0,0,0,0.05); /* Subtle hover */
+  }
+
+  body[data-theme="dark"] .horiz-nav-item {
+    color: var(--text-color-dark-theme);
+  }
+
+  body[data-theme="dark"] .horiz-nav-item:hover,
+  body[data-theme="dark"] .horiz-nav-item:focus {
+    background-color: rgba(255,255,255,0.1);
+  }
+
+  /* Horizontal Services Submenu specific styles for mobile */
+  #horizontalServicesMenu {
+    /*display: none; /* Hidden by default, controlled by JS */
+    background-color: var(--bg-current); /* Slightly different bg if needed */
+    padding-left: 1rem; /* Indent submenu items */
+    /* position: static; /* Keep it within the flow of #horizontalMobileNav */
+    /* width: 100%; */
+    /* box-shadow: none; */
+    /* border-top: 1px solid var(--border-color-current); */
+  }
+
+  #horizontalServicesMenu.active { /* Assuming JS will add/remove this class */
+    display: block;
+  }
+
+
+  #horizontalServicesMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #horizontalServicesMenu .horiz-service-item {
+    display: block;
+    padding: 0.75rem 1rem 0.75rem 2rem; /* Further indent */
+    color: var(--text-current);
+    text-decoration: none;
+  }
+  #horizontalServicesMenu .horiz-service-item:hover,
+  #horizontalServicesMenu .horiz-service-item:focus {
+    background-color: rgba(0,0,0,0.05);
+  }
+
+  body[data-theme="dark"] #horizontalServicesMenu {
+    background-color: var(--bg-dark); /* Ensure dark theme consistency */
+  }
+
+  body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item {
+    color: var(--text-color-dark-theme);
+  }
+
+  body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item:hover,
+  body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item:focus {
+    background-color: rgba(255,255,255,0.1);
+  }
+
 }
 
 @media screen and (min-width: 769px) {
   .mobile-nav,
-  #mobile-services-menu {
+  #mobile-services-menu,
+  #horizontalNavFab, /* Hide FAB toggle on larger screens */
+  #horizontalMobileNav, /* Hide FAB menu on larger screens */
+  #horizontalServicesMenu /* Hide FAB submenu on larger screens */ {
     display: none !important;
   }
 
