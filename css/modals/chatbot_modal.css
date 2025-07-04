@@ -1,31 +1,49 @@
 /* css/chatbot_modal.css */
 
+/* === Chatbot Modal Container === */
 #chatbot-modal .modal-content {
-  /* Adjust max-width or width if needed for chatbot typical dimensions, otherwise defaults from global.css */
-  max-width: 500px; /* Default for larger screens */
-  height: 70vh;     /* Default for larger screens */
-  max-height: 600px; /* Default for larger screens */
+  max-width: 500px;
+  width: 95%;
+  height: 70vh;
+  max-height: 600px;
+  margin: 0 auto;
+  background-color: var(--bg-current, #fff);
+  color: var(--text-current, #333);
+  border-radius: 10px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
+body[data-theme="dark"] #chatbot-modal .modal-content {
+  background-color: #222;
+  color: #eee;
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.05);
+}
+
+/* === Responsive Mobile View === */
 @media (max-width: 768px) {
   #chatbot-modal .modal-content {
     width: 100%;
     max-width: 100%;
     height: 100%;
     max-height: 100vh;
-    padding: 0; /* Padding will be handled by modal-body or is zero for iframe */
+    padding: 0;
     border-radius: 0;
-    box-shadow: none;
     border: none;
+    box-shadow: none;
   }
 }
 
+/* === Chatbot Modal Body === */
 #chatbot-modal-body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding: 0; /* Remove padding if iframe is to fill the body - this is good */
-  overflow: hidden; /* Hide overflow if iframe handles its own scrolling - this is good */
+  padding: 0;
+  overflow: hidden;
 }
 
 #chatbot-modal-body iframe {
@@ -35,11 +53,14 @@
   border: none;
 }
 
+/* === Chatbot Modal Footer === */
 #chatbot-modal .modal-footer {
-  /* Styles for the chatbot modal footer, if needed beyond global */
-  padding: 0.75rem; /* Slightly less padding for a simple close button */
-  /* Ensure footer is visible on small screens if modal-content padding is 0 */
-  /* This might require the modal-header and modal-footer to have background colors */
-  /* if they are on top of a 100% height modal-body iframe. */
-  /* Global modal styles should already give them backgrounds. */
+  padding: 0.75rem;
+  background-color: var(--bg-current, #fff);
+  border-top: 1px solid var(--border-color-current, #ccc);
+}
+
+body[data-theme="dark"] #chatbot-modal .modal-footer {
+  background-color: #2a2a2a;
+  border-top-color: #444;
 }
