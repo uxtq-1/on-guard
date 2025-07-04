@@ -135,7 +135,6 @@ export function initializeChatbotModal(modalElement) {
       setupThemeSync();
       setupLanguageSync();
     }
-    console.log('Chatbot iframe created and appended.');
   } else {
     if (!chatbotModalBody.contains(chatbotIframe)) {
       chatbotModalBody.innerHTML = '';
@@ -147,7 +146,6 @@ export function initializeChatbotModal(modalElement) {
   if (typeof window.updateDynamicContentLanguage === 'function') {
     window.updateDynamicContentLanguage(modalElement);
   }
-  console.log('Modal initialized.');
 }
 
 // window.initializeChatbotModal = initializeChatbotModal; // Removed: now exported
@@ -157,15 +155,12 @@ window.addEventListener('pagehide', (event) => {
   if (themeObserver) {
     themeObserver.disconnect();
     themeObserver = null;
-    console.log('INFO:Chatbot/pagehide: Theme observer disconnected.');
   }
   if (langObserver) {
     langObserver.disconnect();
     langObserver = null;
-    console.log('INFO:Chatbot/pagehide: Language observer disconnected.');
   }
   // Resetting iframe status is good practice if page might be bf-cached.
   chatbotIframe = null;
   iframeLoaded = false;
-  console.log('INFO:Chatbot/pagehide: Chatbot iframe state reset.');
 });

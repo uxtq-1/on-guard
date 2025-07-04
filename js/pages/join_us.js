@@ -17,10 +17,7 @@ function initializeJoinUsModal(modalElement) {
             const data = {};
             formData.forEach((value, key) => { data[key] = value; });
             // Simulate submission (AJAX, fetch, etc. can be added here)
-            console.log(currentLang === 'es'
-                ? 'INFO:join_us/submit: Formulario "Únete a Nosotros" enviado (simulado).'
-                : 'INFO:join_us/submit: Join Us Form submitted (simulated).');
-            console.log("INFO:join_us/submit: Join Us Form data:", data);
+            // Submission logic could be added here (AJAX, fetch, etc.)
 
             // Feedback to user (success message)
             const feedbackArea = modalElement.querySelector('.join-us-feedback');
@@ -131,7 +128,6 @@ function initializeJoinUsModal(modalElement) {
         }, 2500);
     }
 
-    console.log('INFO:join_us/initializeJoinUsModal: Join Us modal initialized.');
 }
 
 // Export the initializer for use as a module

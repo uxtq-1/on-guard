@@ -12,16 +12,13 @@ import { initializeContactModal } from './contact_us.js';
 import { initializeChatbotModal } from './chatbot.js'; // Import initializeChatbotModal
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
     // Function to add padding for fixed mobile nav - OLD, NOT CALLED
     function updateMobileNavStatus() {
         const mobileNavElement = document.querySelector('.mobile-nav');
         if (mobileNavElement && getComputedStyle(mobileNavElement).display !== 'none') {
             document.body.classList.add('mobile-nav-active');
-            console.log('INFO:Main/updateMobileNavStatus: Mobile nav active, body padding applied.');
         } else {
             document.body.classList.remove('mobile-nav-active');
-            console.log('INFO:Main/updateMobileNavStatus: Mobile nav not active or not present, body padding removed.');
         }
     }
     */ // END OLD - updateMobileNavStatus
@@ -48,7 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (mobileNavPlaceholder) {
                 mobileNavPlaceholder.innerHTML = html;
-                console.log('INFO:Main/loadMobileNavigation: Mobile navigation HTML injected into placeholder.');
             } else {
                 // Fallback if placeholder is missing, append to body
                 console.warn('WARN:Main/loadMobileNavigation: mobile-nav-placeholder not found, appending to body.');
@@ -57,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 while (tempDiv.firstChild) {
                     document.body.appendChild(tempDiv.firstChild);
                 }
-                console.log('INFO:Main/loadMobileNavigation: Mobile navigation HTML appended to body.');
             }
             return true;
         } catch (error) {
@@ -88,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             });
-            console.log('INFO:Main/initializeMobileNavInteractions: Mobile services menu initialized.');
         } else {
             console.warn('WARN:Main/initializeMobileNavInteractions: Mobile services toggle/menu not found.');
         }
@@ -97,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const langToggleMobile = document.getElementById("mobile-language-toggle");
         if (langToggleMobile) {
             langToggleMobile.addEventListener("click", () => window.masterToggleLanguage());
-            console.log('INFO:Main/initializeMobileNavInteractions: Mobile language toggle initialized.');
         } else {
             console.warn('WARN:Main/initializeMobileNavInteractions: Mobile language toggle not found.');
         }
@@ -106,7 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const themeToggleMobile = document.getElementById("mobile-theme-toggle");
         if (themeToggleMobile) {
             themeToggleMobile.addEventListener("click", () => window.masterToggleTheme());
-            console.log('INFO:Main/initializeMobileNavInteractions: Mobile theme toggle initialized.');
         } else {
             console.warn('WARN:Main/initializeMobileNavInteractions: Mobile theme toggle not found.');
         }
@@ -129,7 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             });
-            console.log('INFO:Main/initializeMobileNavInteractions: Mobile chat launcher initialized.');
         } else {
             console.warn('WARN:Main/initializeMobileNavInteractions: Mobile chat launcher not found.');
         }
@@ -152,7 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             });
-            console.log('INFO:Main/initializeMobileNavInteractions: Mobile Contact Us launcher initialized.');
         } else {
             console.warn('WARN:Main/initializeMobileNavInteractions: Mobile Contact Us launcher not found.');
         }
@@ -175,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             });
-            console.log('INFO:Main/initializeMobileNavInteractions: Mobile Join Us launcher initialized.');
         } else {
             console.warn('WARN:Main/initializeMobileNavInteractions: Mobile Join Us launcher not found.');
         }
@@ -186,7 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const homeLinkRightSideMenu = document.querySelector("#rightSideMenu .right-side-menu-nav a[href='../index.html']");
     if (homeLinkRightSideMenu) {
         homeLinkRightSideMenu.href = ROOT_PATH + "index.html";
-        console.log('INFO:Main/HomeLinkUpdate: Updated rightSideMenu Home link to:', homeLinkRightSideMenu.href);
     }
 
 
@@ -278,12 +266,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       
         const fabLangToggleInstance = document.getElementById("fabLanguageToggle");
-        console.log('DEBUG:Main/setLanguageButtonVisuals: Attempting to update #fabLanguageToggle. Found:', fabLangToggleInstance);
         if (fabLangToggleInstance) {
             const spanElement = fabLangToggleInstance.querySelector('span');
             if (spanElement) {
                 spanElement.textContent = newButtonText;
-                console.log('DEBUG:Main/setLanguageButtonVisuals: #fabLanguageToggle span text set to:', newButtonText);
             } else {
                 console.warn('DEBUG:Main/setLanguageButtonVisuals: Span not found in #fabLanguageToggle.');
             }
@@ -293,7 +279,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if(fabAriaLabel) {
                 fabLangToggleInstance.setAttribute('aria-label', fabAriaLabel);
                 fabLangToggleInstance.setAttribute('title', fabAriaLabel);
-                console.log('DEBUG:Main/setLanguageButtonVisuals: #fabLanguageToggle ARIA label and title set to:', fabAriaLabel);
             }
         }
     }
@@ -306,7 +291,6 @@ document.addEventListener("DOMContentLoaded", () => {
             updateNodeLanguageTexts(currentLanguage, document.body);
             updateHeadLanguageTexts(currentLanguage);
             setLanguageButtonVisuals();
-            console.log(`INFO:Main/masterToggleLanguage: Language changed to ${currentLanguage.toUpperCase()}`);
         }
     };
     if (langToggleDesktop) langToggleDesktop.addEventListener("click", () => window.masterToggleLanguage());
@@ -320,7 +304,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNodeLanguageTexts(currentLanguage, document.body);
     updateHeadLanguageTexts(currentLanguage);
     setLanguageButtonVisuals();
-    console.log(`INFO:Main/LangInit: Initial language set to ${currentLanguage.toUpperCase()}`);
 
     /* ================================================================
        2) THEME TOGGLE (Desktop & Mobile for index.html header)
@@ -357,7 +340,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
       const fabThemeToggleInstance = document.getElementById("fabThemeToggle");
-        console.log('DEBUG:Main/applyTheme: Attempting to update #fabThemeToggle. Found:', fabThemeToggleInstance);
         if (fabThemeToggleInstance) {
             const fabSpanElement = fabThemeToggleInstance.querySelector('span');
             const fabIconElement = fabThemeToggleInstance.querySelector('i');
@@ -369,30 +351,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 (fabThemeToggleInstance.dataset[currentLanguage + 'LabelLight'] || fabThemeToggleInstance.dataset['enLabelLight'] || "Switch to Light Theme");
             if (fabSpanElement) {
                 fabSpanElement.textContent = fabText;
-                console.log('DEBUG:Main/applyTheme: #fabThemeToggle span text set to:', fabText);
             } else {
                 console.warn('DEBUG:Main/applyTheme: Span not found in #fabThemeToggle.');
             }
             if (fabAriaLabelText) {
                 fabThemeToggleInstance.setAttribute('aria-label', fabAriaLabelText);
                 fabThemeToggleInstance.setAttribute('title', fabAriaLabelText);
-                console.log('DEBUG:Main/applyTheme: #fabThemeToggle ARIA label and title set to:', fabAriaLabelText);
             }
             if (fabIconElement) {
                 if (theme === 'light') {
                     fabIconElement.classList.remove('fa-moon');
                     fabIconElement.classList.add('fa-lightbulb');
-                    console.log('DEBUG:Main/applyTheme: #fabThemeToggle icon set to fa-lightbulb.');
                 } else {
                     fabIconElement.classList.remove('fa-lightbulb');
                     fabIconElement.classList.add('fa-moon');
-                    console.log('DEBUG:Main/applyTheme: #fabThemeToggle icon set to fa-moon.');
                 }
             } else {
                 console.warn('DEBUG:Main/applyTheme: Icon element not found in #fabThemeToggle.');
             }
         }
-        console.log(`INFO:Main/applyTheme: Theme set to ${theme}`);
     }
 
     window.masterToggleTheme = function(themeToSet) {
@@ -416,7 +393,6 @@ document.addEventListener("DOMContentLoaded", () => {
             rightSideMenu.classList.add('open');
             menuOpenBtn.setAttribute('aria-expanded', 'true');
             if(menuCloseBtn) menuCloseBtn.focus();
-            console.log('EVENT:Main/menuOpenBtn#click - Right side menu opened.');
         });
     }
     if (menuCloseBtn && rightSideMenu) {
@@ -424,7 +400,6 @@ document.addEventListener("DOMContentLoaded", () => {
             rightSideMenu.classList.remove('open');
             if(menuOpenBtn) menuOpenBtn.setAttribute('aria-expanded', 'false');
             if(menuOpenBtn) menuOpenBtn.focus();
-            console.log('EVENT:Main/menuCloseBtn#click - Right side menu closed.');
             const servicesSubMenuInstance = document.getElementById('servicesSubMenu');
             if (servicesSubMenuInstance) servicesSubMenuInstance.classList.remove('open');
             const servicesTriggerBtnInstance = document.querySelector('.services-trigger > button');
@@ -495,7 +470,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            console.log(`INFO:Main/initializeServiceModalContent: Fetching content from ${serviceContentPath}`);
             const response = await fetch(serviceContentPath);
             if (!response.ok) {
                 throw new Error(`Failed to fetch service content: ${response.statusText} from ${serviceContentPath}`);
@@ -512,7 +486,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.updateDynamicContentLanguage(contentContainer);
                 window.updateDynamicContentLanguage(titleElement.parentElement);
             }
-            console.log(`INFO:Main/initializeServiceModalContent: Content loaded for ${serviceContentPath} into modal.`);
         } catch (error) {
             console.error('ERROR:Main/initializeServiceModalContent:', error);
             contentContainer.innerHTML = `<p>Error loading service content. Please try again later.</p>`;
@@ -552,7 +525,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (loadShell) {
             try {
-                console.log(`INFO:Main/loadModalContent: Fetching ${modalFile} for ${modalId}`);
                 const response = await fetch(modalFile);
                 if (!response.ok) {
                     console.error(`ERROR:Main/loadModalContent: Fetch failed with status ${response.status} for ${response.url}`);
@@ -563,7 +535,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     loadedModalHTML[modalId] = html;
                 }
                 placeholder.innerHTML = html;
-                console.log(`INFO:Main/loadModalContent: ${modalId} HTML (shell or full) loaded into #${placeholderId}`);
             } catch (error) {
                 console.error(`ERROR:Main/loadModalContent: Could not load modal content for ${modalId}:`, error);
                 placeholder.innerHTML = `<p>Error loading modal structure. Please try again later.</p>`;
@@ -584,7 +555,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     targetModalElement.dataset.initialized = "true";
                 }
             } else {
-                 console.log(`INFO:Main/loadModalContent: Modal ${modalId} already initialized, callback skipped unless generic.`);
             }
         }
 
@@ -616,7 +586,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn('DEBUG:Main/openModalById: Called with null or empty modalId.');
             return null;
         }
-        console.log(`DEBUG:Main/openModalById: Attempting to open modal with ID: ${modalId}`);
         let targetModal;
 
         if (modalId === 'contact-modal') {
@@ -664,7 +633,6 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 targetModal.focus();
             }
-            console.log(`INFO:Main/openModalById: Modal ${modalId} opened and activated. targetModal:`, targetModal);
         } else {
             console.warn(`WARN:Main/openModalById: Target modal could not be loaded or found for ID: ${modalId}. targetModal is null.`);
         }
@@ -674,12 +642,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener('click', async (event) => {
         const trigger = event.target.closest('[data-modal]');
         if (trigger) {
-            console.log('DEBUG:Main/GlobalClickListener: [data-modal] trigger clicked:', trigger);
             event.preventDefault();
             const modalId = trigger.dataset.modal;
-            console.log('DEBUG:Main/GlobalClickListener: Modal ID from trigger:', modalId);
             if (trigger.classList.contains('floating-icon') || trigger.classList.contains('horiz-nav-item')) {
-                console.log(`INFO:Main/GlobalClickListener: FAB or Nav Item clicked. Trigger ID: ${trigger.id || 'N/A'}, Classes: ${trigger.className}, Modal ID: ${modalId}`);
             }
             let modalElement;
             if (serviceModalDetails[modalId]) {
@@ -704,12 +669,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } else {
                 lastFocusedElement = trigger;
-                console.log(`INFO:Main/GlobalClickListener: Click detected for data-modal="${modalId}", attempting to open.`);
                 await openModalById(modalId);
             }
             return;
         } else {
-            // console.log('DEBUG:Main/GlobalClickListener: Click did not match a [data-modal] trigger.');
         }
     });
 
@@ -723,7 +686,6 @@ document.addEventListener("DOMContentLoaded", () => {
             initializeJoinUsModal
         ).catch(err => console.error('ERROR:Main/JoinUsPreload:', err));
     } else {
-        console.log('INFO:Main/JoinUsPreload: Placeholder not found, skipping preload.');
     }
 
 
@@ -801,7 +763,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ================================================================
        6) Form Submission Logic (DEFERRED to specific component scripts)
        ================================================================ */
-    console.log('INFO:Main/FormSubmissions: Form submission logic deferred to specific scripts like contact_us.js and join_us.js.');
 
     /* ================================================================
        7) Mobile Nav Loading and Initialization (OLD - To be removed)
@@ -821,7 +782,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //         setLanguageButtonVisuals(); // Update mobile language button text/ARIA
     //         applyTheme(currentTheme);   // Update mobile theme button text/ARIA
     //
-    //         console.log('INFO:Main/MobileNavInit: Mobile navigation loaded and initialized.');
     //     } else {
     //         console.error('ERROR:Main/MobileNavInit: Mobile navigation failed to load. Features relying on it may not work.');
     //     }
@@ -836,7 +796,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //         if (fabSuccess) {
     //             initializeFabHorizontalNavInteractions(); // Placeholder for now
     //             // Language/theme update for FAB nav will be handled within initializeFabHorizontalNavInteractions
-    //             console.log('INFO:Main/FabNavInit: FAB Horizontal navigation loaded.');
     //         } else {
     //             console.error('ERROR:Main/FabNavInit: FAB Horizontal navigation failed to load.');
     //         }
@@ -847,13 +806,11 @@ document.addEventListener("DOMContentLoaded", () => {
     //         if ('serviceWorker' in navigator) {
     //             window.addEventListener('load', () => {
     //                 navigator.serviceWorker.register(`${ROOT_PATH}js/service-worker.js`)
-    //                     .then(reg => console.log('INFO:Main/ServiceWorker: Registered. Scope:', reg.scope))
     //                     .catch(err => console.error('ERROR:Main/ServiceWorker: Registration failed:', err));
     //             });
     //         } else {
     //             console.warn('WARN:Main/ServiceWorker: Not supported in this browser.');
     //         }
-    //         console.log('INFO:Main/DOMContentLoaded: All core initializations complete (post mobile and FAB nav).');
     //
     //     }).catch(error => {
     //         console.error("ERROR:Main/FabNavInit: General error during FAB horizontal navigation loading sequence:", error);
@@ -871,7 +828,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadFabHorizontalNavigation().then(fabSuccess => {
         if (fabSuccess) {
             initializeFabHorizontalNavInteractions();
-            console.log('INFO:Main/FabNavInit: FAB Horizontal navigation loaded and initialized.');
         } else {
             console.error('ERROR:Main/FabNavInit: FAB Horizontal navigation failed to load.');
         }
@@ -882,13 +838,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register(`${ROOT_PATH}js/service-worker.js`)
-                    .then(reg => console.log('INFO:Main/ServiceWorker: Registered. Scope:', reg.scope))
                     .catch(err => console.error('ERROR:Main/ServiceWorker: Registration failed:', err));
             });
         } else {
             console.warn('WARN:Main/ServiceWorker: Not supported in this browser.');
         }
-        console.log('INFO:Main/DOMContentLoaded: All core initializations complete.');
 
     }).catch(error => {
         console.error("ERROR:Main/FabNavInit: General error during FAB horizontal navigation loading sequence:", error);
@@ -925,21 +879,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (fabButton) {
                 floatingIconsContainer.appendChild(fabButton);
-                console.log('INFO:Main/loadFabHorizontalNavigation: #horizontalNavFab appended to .floating-icons');
             } else {
                 console.warn('WARN:Main/loadFabHorizontalNavigation: #horizontalNavFab not found in fetched HTML.');
             }
 
             if (horizontalNavMenu) {
                 document.body.appendChild(horizontalNavMenu);
-                console.log('INFO:Main/loadFabHorizontalNavigation: #horizontalMobileNav appended to body.');
             } else {
                 console.warn('WARN:Main/loadFabHorizontalNavigation: #horizontalMobileNav not found in fetched HTML.');
             }
 
             if (servicesSubMenu) {
                 document.body.appendChild(servicesSubMenu);
-                console.log('INFO:Main/loadFabHorizontalNavigation: #horizontalServicesMenu appended to body.');
             } else {
                 console.warn('WARN:Main/loadFabHorizontalNavigation: #horizontalServicesMenu not found in fetched HTML.');
             }
@@ -952,30 +903,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function initializeFabHorizontalNavInteractions() {
-        console.log('INFO:Main/initializeFabHorizontalNavInteractions: Initializing FAB horizontal nav interactions.');
         const fabToggle = document.getElementById('horizontalNavFab');
         const fabIcon = fabToggle ? fabToggle.querySelector('i') : null;
         const horizontalNav = document.getElementById('horizontalMobileNav');
         const servicesToggle = document.getElementById('horizontalServicesToggle');
         const servicesMenu = document.getElementById('horizontalServicesMenu');
-        console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: fabToggle:', fabToggle, 'fabIcon:', fabIcon, 'horizontalNav:', horizontalNav);
         if (!fabToggle || !fabIcon || !horizontalNav) {
             console.error('ERROR:Main/initializeFabHorizontalNavInteractions: Core FAB navigation elements not found. Interactions cannot be initialized.');
             return;
         }
 
         fabToggle.addEventListener('click', () => {
-            console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: #horizontalNavFab clicked.');
             const isNavActive = horizontalNav.classList.toggle('active');
             fabToggle.setAttribute('aria-expanded', isNavActive.toString());
             horizontalNav.setAttribute('aria-hidden', (!isNavActive).toString());
 
             if (isNavActive) {
-                console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: Nav FAB toggled to active. Changing icon to fa-times.');
                 fabIcon.classList.remove('fa-bars');
                 fabIcon.classList.add('fa-times');
             } else {
-                console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: Nav FAB toggled to inactive. Changing icon to fa-bars.');
                 fabIcon.classList.remove('fa-times');
                 fabIcon.classList.add('fa-bars');
                 if (servicesMenu && servicesMenu.classList.contains('active')) {
@@ -1028,7 +974,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const fabNavModalLaunchers = horizontalNav.querySelectorAll('[data-modal]');
         fabNavModalLaunchers.forEach(launcher => {
         });
-        console.log('INFO:Main/initializeFabHorizontalNavInteractions: Event listeners for FAB nav and services menu set up.');
 
         const fabNavHtmlElementsContainer = document.querySelector('#horizontalMobileNav');
         if (fabNavHtmlElementsContainer) {
@@ -1038,25 +983,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const fabLangToggle = document.getElementById('fabLanguageToggle');
-        console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: fabLangToggle found:', fabLangToggle);
         if (fabLangToggle) {
             fabLangToggle.addEventListener('click', () => {
-                console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: #fabLanguageToggle clicked. Calling window.masterToggleLanguage().');
                 window.masterToggleLanguage();
             });
-            console.log('INFO:Main/initializeFabHorizontalNavInteractions: FAB Language toggle event listener attached.');
         } else {
             console.warn('WARN:Main/initializeFabHorizontalNavInteractions: FAB Language toggle not found.');
         }
 
         const fabThemeToggle = document.getElementById('fabThemeToggle');
-        console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: fabThemeToggle found:', fabThemeToggle);
         if (fabThemeToggle) {
             fabThemeToggle.addEventListener('click', () => {
-                console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: #fabThemeToggle clicked. Calling window.masterToggl_eTheme().'); // Typo here
                 window.masterToggleTheme();
             });
-            console.log('INFO:Main/initializeFabHorizontalNavInteractions: FAB Theme toggle event listener attached.');
         } else {
             console.warn('WARN:Main/initializeFabHorizontalNavInteractions: FAB Theme toggle not found.');
         }
