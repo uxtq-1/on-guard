@@ -1,48 +1,58 @@
 // js/utils/sanitize.js
-
-/**
- * sanitizeInput - Cleans input for security & PII leakage prevention.
- * Applies anti-XSS, neutralizes inline JS, and masks sensitive PII patterns.
- *
- * @param {string} inputString - Raw user input
- * @returns {string} sanitized - Cleaned version of input
- */
 export function sanitizeInput(inputString) {
-  if (typeof inputString !== 'string') return inputString;
+  if (typeof inputString !== 'string') {
+    return { sanitized: inputString, flagged: false };
+  }
 
+  let flagged = false;
   let sanitized = inputString;
 
   // 🚫 Remove <script> tags
-  sanitized = sanitized.replace(/<script[^>]*>.*?<\/script>/gis, "");
+  sanitized = sanitized.replace(/<script[^>]*>.*?<\/script>/gi, '');
 
-  // 🚫 Remove on* event attributes (e.g., onclick, onload)
-  sanitized = sanitized.replace(/\s*on\w+\s*=\s*(".*?"|'.*?'|[^>\s]+)/gi, "");
+  // 🚫 Remove inline on-event attributes (e.g., onclick, onmouseover)
+  sanitized = sanitized.replace(/\s*on\w+\s*=\s*(".*?"|'.*?'|[^>\s]+)/gi, '');
 
-  // 🚫 Remove javascript: from href attributes
+  // 🚫 Remove javascript: hrefs
   sanitized = sanitized.replace(/href\s*=\s*["']?\s*javascript:[^"'\s]+/gi, 'href="#"');
 
-  // 🔐 Mask Personally Identifiable Information (PII)
+  // 🕵️ Redact known PII patterns (Social Security Numbers, credit card numbers, etc.)
   const PII_PATTERNS = [
-    // US Social Security Number
-    /\b\d{3}-\d{2}-\d{4}\b/g,
-
-    // Credit Card patterns (Visa, MasterCard, Amex, Discover, JCB, Diners Club)
-    /\b(?:4[0-9]{12}(?:[0-9]{3})?        # Visa
-       |5[1-5][0-9]{14}                  # MasterCard
-       |3[47][0-9]{13}                   # American Express
-       |3(?:0[0-5]|[68][0-9])[0-9]{11}   # Diners Club
-       |6(?:011|5[0-9]{2})[0-9]{12}      # Discover
-       |(?:2131|1800|35\d{3})\d{11}      # JCB
-    )\b/gsx,
+    /\b\d{3}-\d{2}-\d{4}\b/g, // US SSN
+    /\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9]{2})[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})\b/g // Credit Cards
   ];
 
-  PII_PATTERNS.forEach(pattern => {
-    sanitized = sanitized.replace(pattern, '[REDACTED PII]');
+  PII_PATTERNS.forEach((pattern) => {
+    if (pattern.test(sanitized)) {
+      sanitized = sanitized.replace(pattern, '[REDACTED PII]');
+      flagged = true;
+      console.warn('🔒 sanitizeInput: PII pattern redacted.');
+    }
   });
 
-  if (inputString !== sanitized) {
-    console.warn("sanitizeInput: Input was modified for security/PII compliance.");
+  // 🛡️ Anomaly detection: look for sensitive words like password, token, pin, etc.
+  const suspiciousKeywords = [
+    'password',
+    'token',
+    'pin',
+    'secret',
+    'apikey',
+    'auth',
+    'privatekey',
+    'credential',
+    'key',
+    'passcode',
+    'accesscode',
+    'verification'
+  ];
+  const keywordPattern = new RegExp(`\\b(${suspiciousKeywords.join('|')})\\b`, 'i');
+  if (keywordPattern.test(inputString)) {
+    flagged = true;
+    console.warn('🛡️ Anomaly Detected: Suspicious keyword found in user input.');
   }
 
-  return sanitized;
+  return {
+    sanitized,
+    flagged
+  };
 }
