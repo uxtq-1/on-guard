@@ -3,6 +3,10 @@
 import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
 import { initializeChatbotModal } from './chatbot.js';
+import { updateDynamicContentLanguage } from '../utils/i18n.js';
+
+// Expose the i18n helper globally for pages that expect it
+window.updateDynamicContentLanguage = updateDynamicContentLanguage;
 
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
