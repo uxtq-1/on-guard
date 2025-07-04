@@ -3,6 +3,7 @@
 import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
 import { initializeChatbotModal } from './chatbot.js';
+import { updateDynamicContentLanguage } from '../utils/i18n.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
@@ -114,9 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const theme = body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('language-change', { lang });
-    if (typeof window.updateDynamicContentLanguage === 'function') {
-      window.updateDynamicContentLanguage(document);
-    }
+    updateDynamicContentLanguage(document);
   }
 
   languageButtons.forEach(btn => {
