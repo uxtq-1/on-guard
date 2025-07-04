@@ -54,7 +54,7 @@ body[data-theme="dark"] .bot-message {
 /* Chat Input Form */
 .chat-form {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   padding: 10px;
   background-color: #f8f9fa;
   border-top: 1px solid #ccc;
@@ -68,11 +68,10 @@ body[data-theme="dark"] .chat-form {
 
 /* Text Input */
 #chat-input {
-  flex-grow: 1;
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  margin-right: 10px;
   background-color: ghostwhite;
   color: #333;
   font-size: 0.95rem;
@@ -86,6 +85,7 @@ body[data-theme="dark"] #chat-input {
 
 /* Send Button */
 #chat-send-button {
+  align-self: flex-start;
   padding: 10px 15px;
   background-color: lemonchiffon;
   color: #333;
@@ -153,13 +153,7 @@ body[data-theme="dark"] .recaptcha-placeholder-container {
 /* Responsive Fixes */
 @media (max-width: 480px) {
   .chat-form {
-    flex-direction: column;
     gap: 6px;
-  }
-
-  #chat-input {
-    margin-right: 0;
-    width: 100%;
   }
 
   #chat-send-button {

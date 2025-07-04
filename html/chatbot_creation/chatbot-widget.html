@@ -36,6 +36,11 @@
     <div id="chat-log" class="chat-log" aria-live="polite" aria-label="Chat conversation area"></div>
 
     <form id="chat-form" class="chat-form" autocomplete="off" aria-label="Chatbot form">
+      <!-- User Input -->
+      <input type="text" id="chat-input"
+        placeholder="Ask me anything..."
+        aria-label="Ask me anything..." required />
+
       <!-- Human Verification -->
       <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
         <label for="human-verification-checkbox" class="recaptcha-label"
@@ -46,19 +51,14 @@
         </label>
       </div>
 
-      <!-- User Input -->
-      <input type="text" id="chat-input"
-        placeholder="Ask me anything..."
-        aria-label="Ask me anything..." required />
-
-      <!-- Honeypot Field -->
-      <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"
-        tabindex="-1" aria-hidden="true" />
-
       <!-- Send Button -->
       <button type="submit" id="chat-send-button"
         aria-label="Send Message"
         data-en-label="Send Message" data-es-label="Enviar Mensaje">Send</button>
+
+      <!-- Honeypot Field -->
+      <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"
+        tabindex="-1" aria-hidden="true" />
     </form>
 
     <!-- Future STT placeholder for Whisper.js -->
