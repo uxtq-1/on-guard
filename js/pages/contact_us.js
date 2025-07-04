@@ -138,7 +138,6 @@ function initializeContactModal(modalElement) {
         window.updateDynamicContentLanguage(modalElement);
     }
 
-    console.log('INFO:contact_us/initializeContactModal: Contact modal initialized.');
 }
 
 export { initializeContactModal };

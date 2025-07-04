@@ -34,16 +34,18 @@ Then open `http://localhost:8000/index.html` in your browser.
 ### Troubleshooting
 When the site is opened directly from the filesystem using `file://`, modals may fail to load. Browsers block `fetch()` requests in this context, which prevents the modal HTML fragments from being retrieved. Run a local static server (e.g. `npx serve` or `python3 -m http.server`) before testing to avoid this issue.
 
-## Customising the Contact Form `workerUrl`
+## Customising the Contact Form Endpoint
 
-Form submissions are optionally sent to a Cloudflare Worker. To enable this feature, edit `js/pages/contact_us.js` and set the `workerUrl` constant near the top of the file:
+Form submissions are optionally sent to a Cloudflare Worker. The script `js/pages/contact_us.js` looks for a global variable named `CONTACT_WORKER_URL` and falls back to an empty string if it is not set. Define this variable in the page before the script is loaded, or edit the file directly, to point to your worker:
 
-```javascript
-// js/pages/contact_us.js
-const workerUrl = "https://your-worker.example.com"; // Cloudflare Worker endpoint
+```html
+<script>
+  window.CONTACT_WORKER_URL = "https://your-worker.example.com";
+</script>
+<script type="module" src="js/pages/contact_us.js" defer></script>
 ```
 
-Leave the value blank to disable submissions. When configured, the form’s data is sent via `POST` to the Worker which should handle the message (e.g. sending an email or storing the data).
+When configured, the form’s data is sent via `POST` to the Worker which should handle the message (for example by sending an email or storing the data). Leaving the value unset disables submissions.
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
