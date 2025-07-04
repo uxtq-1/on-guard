@@ -200,130 +200,171 @@
     background-color: #333;
   }
 
-  /* Styles for Horizontal FAB Navigation */
-  #horizontalNavFab {
-    display: block; /* Ensure it's visible on small screens */
-    position: fixed; /* Or absolute, depending on desired behavior relative to header */
-    top: 15px; /* Adjust as needed */
-    right: 15px; /* Adjust as needed */
-    z-index: 3001; /* Higher than mobile-nav, lower than modals if it opens under them */
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
+  /* Styles for Horizontal FAB Navigation based on user example */
+  #horizontalNavFab { /* This is the .fab-toggle in the example */
+    display: flex; /* Changed from block to flex for centering icon */
+    justify-content: center; /* Center icon horizontally */
+    align-items: center; /* Center icon vertically */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    width: 50px; /* Adjust size */
-    height: 50px; /* Adjust size */
-    font-size: 20px; /* Icon size */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #007bff; /* Matching example blue */
+    color: #fff; /* Matching example white text */
+    font-size: 1.5rem; /* Icon size from example */
+    z-index: 4000; /* From example */
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* From example */
+    border: none; /* From example */
   }
 
   body[data-theme="dark"] #horizontalNavFab {
-    background-color: var(--button-bg-current);
+    background-color: var(--primary-color); /* Use existing dark theme variable or a new one */
     color: var(--button-text-current);
+    /* Potentially adjust shadow for dark theme if needed */
   }
 
-  #horizontalMobileNav {
-    display: none; /* Hidden by default */
-    position: fixed; /* Or absolute. Fixed will keep it on screen when scrolling. */
-    top: 70px; /* Position below the FAB/header, adjust as needed */
-    left: 0;
-    width: 100%;
-    background-color: var(--bg-current); /* Use theme background */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    z-index: 3000; /* Below the FAB toggle, above general content */
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--border-color-current);
+  #horizontalMobileNav { /* This is .mobile-nav in the example */
+    position: fixed;
+    bottom: 20px;
+    right: 90px; /* To the left of the FAB */
+    display: flex;
+    flex-direction: row-reverse; /* Items added to the left */
+    gap: 10px; /* Space between items */
+    background: var(--bg-current, #fff); /* Use theme variable, fallback to white */
+    padding: 0.5rem 1rem; /* Padding from example */
+    border-radius: 30px; /* Rounded ends from example */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* From example */
+    z-index: 3000; /* From example */
+    transform: scaleX(0);
+    transform-origin: right; /* Expand from the right */
+    transition: transform 0.3s ease;
+    overflow: hidden; /* Prevents content spill during animation */
   }
 
-  #horizontalMobileNav.active { /* Assuming JS will add/remove this class */
-    display: flex; /* Or block, then items would be display: block */
-    flex-direction: column; /* Stack items vertically */
-    align-items: stretch; /* Make items take full width */
+  #horizontalMobileNav.active {
+    transform: scaleX(1);
   }
 
-  .horiz-nav-item {
-    display: flex; /* Align icon and text */
+  .horiz-nav-item { /* This is .mobile-nav-item in the example */
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 0.75rem 1rem;
     text-decoration: none;
-    color: var(--text-current);
-    border: none;
+    color: var(--text-current, #333); /* Use theme variable */
     background: none;
-    width: 100%;
-    text-align: left;
-    font-size: 1rem;
+    border: none;
+    font-size: 0.75rem; /* Text size from example */
     cursor: pointer;
+    padding: 0; /* Remove previous padding if any */
+    width: auto; /* Fit content */
+    text-align: center;
   }
 
   .horiz-nav-item i {
-    margin-right: 0.75rem;
-    width: 20px; /* For alignment */
+    font-size: 1.4rem; /* Icon size from example */
+    margin-bottom: 2px; /* Space between icon and text, adjust as needed */
+    margin-right: 0; /* Remove previous margin */
+    width: auto;
+  }
+
+  .horiz-nav-item span {
+    display: block; /* Ensure span takes its own line if not already */
+    line-height: 1.2;
   }
 
   .horiz-nav-item:hover,
   .horiz-nav-item:focus {
-    background-color: rgba(0,0,0,0.05); /* Subtle hover */
+    background-color: transparent; /* Example doesn't show hover on items themselves */
+    color: var(--primary-color); /* Optional: change color on hover/focus */
+  }
+  .horiz-nav-item:hover i,
+  .horiz-nav-item:focus i {
+    color: var(--primary-color); /* Optional: change icon color on hover/focus */
+  }
+
+
+  body[data-theme="dark"] #horizontalMobileNav {
+    background: var(--bg-dark, #222); /* Dark theme bg from example */
+    color: var(--text-color-dark-theme, #eee);
+    border-color: var(--border-color-dark, #444); /* If border is added */
   }
 
   body[data-theme="dark"] .horiz-nav-item {
-    color: var(--text-color-dark-theme);
+    color: var(--text-color-dark-theme, #eee); /* Dark theme text from example */
   }
-
   body[data-theme="dark"] .horiz-nav-item:hover,
   body[data-theme="dark"] .horiz-nav-item:focus {
-    background-color: rgba(255,255,255,0.1);
+    color: var(--link-color-dark-theme); /* Optional: dark theme hover color */
   }
+  body[data-theme="dark"] .horiz-nav-item:hover i,
+  body[data-theme="dark"] .horiz-nav-item:focus i {
+    color: var(--link-color-dark-theme); /* Optional: dark theme icon hover color */
+  }
+
 
   /* Horizontal Services Submenu specific styles for mobile */
-  #horizontalServicesMenu {
-    /*display: none; /* Hidden by default, controlled by JS */
-    background-color: var(--bg-current); /* Slightly different bg if needed */
-    padding-left: 1rem; /* Indent submenu items */
-    /* position: static; /* Keep it within the flow of #horizontalMobileNav */
-    /* width: 100%; */
-    /* box-shadow: none; */
-    /* border-top: 1px solid var(--border-color-current); */
+  #horizontalServicesMenu { /* This is .mobile-services-menu in the example */
+    position: fixed;
+    bottom: 90px; /* Above the FAB and main nav, from example */
+    right: 20px; /* Aligned with the FAB, from example */
+    background: var(--bg-current, #fff); /* Use theme variable, fallback to white */
+    border: 1px solid var(--border-color-current, #ccc); /* From example */
+    padding: 1rem; /* From example */
+    display: none; /* Hidden by default, JS toggles .active */
+    z-index: 2000; /* From example */
+    border-radius: 10px; /* From example */
+    max-height: 50%; /* From example */
+    overflow-y: auto; /* From example */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15); /* Adjusted shadow */
   }
 
-  #horizontalServicesMenu.active { /* Assuming JS will add/remove this class */
+  #horizontalServicesMenu.active {
     display: block;
   }
-
 
   #horizontalServicesMenu ul {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
   }
 
-  #horizontalServicesMenu .horiz-service-item {
-    display: block;
-    padding: 0.75rem 1rem 0.75rem 2rem; /* Further indent */
-    color: var(--text-current);
-    text-decoration: none;
+  #horizontalServicesMenu li {
+    margin-bottom: 10px; /* From example */
   }
+
+  #horizontalServicesMenu .horiz-service-item { /* This is .mobile-services-menu a in example */
+    text-decoration: none;
+    color: var(--text-current, #333);
+    font-size: 1rem; /* From example */
+    display: block; /* Make link fill li */
+    padding: 0.25rem 0.5rem; /* Add some padding */
+    border-radius: 4px;
+  }
+
   #horizontalServicesMenu .horiz-service-item:hover,
   #horizontalServicesMenu .horiz-service-item:focus {
-    background-color: rgba(0,0,0,0.05);
+    background-color: rgba(0,0,0,0.05); /* Subtle hover */
+    color: var(--primary-color);
   }
 
   body[data-theme="dark"] #horizontalServicesMenu {
-    background-color: var(--bg-dark); /* Ensure dark theme consistency */
+    background: var(--bg-dark, #222); /* Dark theme bg from example */
+    color: var(--text-color-dark-theme, #eee);
+    border-color: var(--border-color-dark, #444); /* Dark theme border from example */
   }
 
   body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item {
-    color: var(--text-color-dark-theme);
+    color: var(--text-color-dark-theme, #eee); /* Dark theme text from example */
   }
 
   body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item:hover,
   body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item:focus {
     background-color: rgba(255,255,255,0.1);
+    color: var(--link-color-dark-theme);
   }
-
 }
 
 @media screen and (min-width: 769px) {
