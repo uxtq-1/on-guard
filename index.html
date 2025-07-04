@@ -85,69 +85,72 @@
 
   <aside id="rightSideMenu" class="right-side-menu" role="navigation">
     <div class="right-side-menu-header">
-      <h2 class="sr-only">Main Menu</h2>
-      <button id="menu-close" aria-label="Close Menu">
+      <h2 class="sr-only" data-en="Main Menu" data-es="Menú Principal">Main Menu</h2>
+      <button id="menu-close" aria-label="Close Menu" data-en-label="Close Menu" data-es-label="Cerrar Menú">
         <i class="fas fa-times"></i>
       </button>
     </div>
     <div class="right-side-menu-body">
       <nav class="right-side-menu-nav">
         <ul>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
           <li class="services-trigger">
-            <button aria-expanded="false" aria-controls="servicesSubMenu">Services <i class="fas fa-chevron-down"></i></button>
+            <button aria-expanded="false" aria-controls="servicesSubMenu">
+              <span data-en="Services" data-es="Servicios">Services</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
             <ul id="servicesSubMenu" class="sub-menu">
-              <li><a role="button" data-modal="business-operations-service-modal">Business Operations</a></li>
-              <li><a role="button" data-modal="contact-center-service-modal">Contact Center</a></li>
-              <li><a role="button" data-modal="it-support-service-modal">IT Support</a></li>
-              <li><a role="button" data-modal="professionals-service-modal">Professionals</a></li>
+              <li><a role="button" data-modal="business-operations-service-modal" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+              <li><a role="button" data-modal="contact-center-service-modal" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
+              <li><a role="button" data-modal="it-support-service-modal" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
+              <li><a role="button" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
             </ul>
           </li>
-          <li><a href="html/about.html">About Us</a></li>
-          <li><a href="html/careers.html">Careers</a></li>
-          <li><a href="html/blog.html">Blog</a></li>
+          <li><a href="html/about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="html/careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
+          <li><a href="html/blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
         </ul>
       </nav>
     </div>
   </aside>
 
   <section class="hero">
-    <h2>Welcome to Ops Online Support</h2>
-    <p>Empowering remote solutions with cutting-edge strategies.</p>
+    <h2 data-en="Welcome to Ops Online Support" data-es="Bienvenido a Ops Online Support">Welcome to Ops Online Support</h2>
+    <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Potenciando soluciones remotas con estrategias de vanguardia.">Empowering remote solutions with cutting-edge strategies.</p>
   </section>
 
   <section id="services-preview" class="services">
     <div class="service-item">
-      <h3>Business Operations</h3>
-      <p>Discover how we optimize your business processes.</p>
-      <button class="btn" data-modal="business-operations-service-modal">Learn More</button>
+      <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
+      <p data-en="Discover how we optimize your business processes." data-es="Descubra cómo optimizamos sus procesos empresariales.">Discover how we optimize your business processes.</p>
+      <button class="btn" data-modal="business-operations-service-modal" data-en="Learn More" data-es="Más Información">Learn More</button>
     </div>
     <div class="service-item">
-      <h3>Contact Center</h3>
-      <p>Enhance customer interactions with our contact solutions.</p>
-      <button class="btn" data-modal="contact-center-service-modal">Learn More</button>
+      <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
+      <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejore las interacciones con clientes con nuestras soluciones de contacto.">Enhance customer interactions with our contact solutions.</p>
+      <button class="btn" data-modal="contact-center-service-modal" data-en="Learn More" data-es="Más Información">Learn More</button>
     </div>
     <div class="service-item">
-      <h3>IT Support</h3>
-      <p>Ensure seamless IT operations with our expert support.</p>
-      <button class="btn" data-modal="it-support-service-modal">Learn More</button>
+      <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
+      <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantice operaciones de TI sin problemas con nuestro soporte experto.">Ensure seamless IT operations with our expert support.</p>
+      <button class="btn" data-modal="it-support-service-modal" data-en="Learn More" data-es="Más Información">Learn More</button>
     </div>
     <div class="service-item">
-      <h3>Professionals</h3>
-      <p>Access top-tier professionals for your business needs.</p>
-      <button class="btn" data-modal="professionals-service-modal">Learn More</button>
+      <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
+      <p data-en="Access top-tier professionals for your business needs." data-es="Acceda a profesionales de primer nivel para las necesidades de su negocio.">Access top-tier professionals for your business needs.</p>
+      <button class="btn" data-modal="professionals-service-modal" data-en="Learn More" data-es="Más Información">Learn More</button>
     </div>
   </section>
 
   <footer>
-    <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
-    <button id="footer-contact-us-button" class="btn" data-modal="contact-modal">Contact Us</button>
+    <p data-en="&copy; 2025 Ops Online Support. All rights reserved." data-es="&copy; 2025 Ops Online Support. Todos los derechos reservados.">&copy; 2025 Ops Online Support. All rights reserved.</p>
+    <button id="footer-contact-us-button" class="btn" data-modal="contact-modal" data-en="Contact Us" data-es="Contáctenos">Contact Us</button>
   </footer>
 
   <div class="floating-icons">
-    <button class="floating-icon" data-modal="join-us-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
-    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
-    <button class="floating-icon" id="chatbot-fab-trigger" data-modal="chatbot-modal" aria-label="Open Chat"><i class="fas fa-comments"></i></button>
+    <button class="floating-icon" data-modal="join-us-modal" aria-label="Join Us" data-en-label="Join Us" data-es-label="Únete"><i class="fas fa-user-plus"></i></button>
+    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us" data-en-label="Contact Us" data-es-label="Contáctenos"><i class="fas fa-envelope-open-text"></i></button>
+    <button class="floating-icon" id="chatbot-fab-trigger" data-modal="chatbot-modal" aria-label="Open Chat" data-en-label="Open Chat" data-es-label="Abrir Chat"><i class="fas fa-comments"></i></button>
   </div>
 
   <!-- Modal Placeholders -->
