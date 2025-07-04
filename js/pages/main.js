@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.remove('mobile-nav-active');
         }
     }
-    */ // END OLD - updateMobileNavStatus
+   // END OLD - updateMobileNavStatus
     // Placeholder for mobile navigation HTML injection - OLD, NOT USED
     const mobileNavPlaceholder = document.getElementById('mobile-nav-placeholder');
 
