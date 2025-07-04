@@ -57,8 +57,25 @@
     </nav>
     <div class="header-controls">
       <div class="toggle-container">
-        <button id="theme-toggle-desktop">Light</button>
-        <button id="language-toggle-desktop">EN</button>
+        <button id="theme-toggle-desktop"
+                class="theme-toggle-btn"
+                title="Toggle Theme"
+                aria-label="Toggle Theme"
+                data-en-label-dark="Switch to Dark Theme"
+                data-es-label-dark="Cambiar a Tema Oscuro"
+                data-en-label-light="Switch to Light Theme"
+                data-es-label-light="Cambiar a Tema Claro"
+                data-en-dark="Dark"
+                data-es-dark="Oscuro"
+                data-en-light="Light"
+                data-es-light="Claro">Light</button>
+
+        <button id="language-toggle-desktop"
+                class="lang-toggle-btn"
+                title="Switch Language"
+                aria-label="Switch Language"
+                data-en-label="Switch to Spanish"
+                data-es-label="Cambiar a Inglés">EN</button>
       </div>
       <button id="menu-open" class="header-menu-trigger" aria-label="Open Menu">
         <i class="fas fa-bars"></i>
