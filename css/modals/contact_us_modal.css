@@ -1,32 +1,36 @@
-/* === Modal Base === */
+/* css/base/modal.css */
+
+/* === Modal Overlay === */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   background: rgba(0, 0, 0, 0.5);
-  display: none; /* Initially hidden */
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem; /* Added padding for smaller screens not to touch edges */
+  padding: 1rem;
 }
-
 .modal-overlay.active {
-  display: flex; /* Activated by JS */
+  display: flex;
 }
 
+/* === Modal Box === */
 .modal-content {
-  background: #fff; /* Consider var(--bg-current) if theme support is needed */
+  background: var(--bg-current, #fff);
+  color: var(--text-current, #333);
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
   padding: 1.5rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-height: 90vh; /* Added to prevent overflow on short screens */
-  overflow-y: auto; /* Added for scrollability if content exceeds max-height */
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
+/* === Modal Header / Footer === */
 .modal-header,
 .modal-footer {
   display: flex;
@@ -34,72 +38,69 @@
   align-items: center;
   margin-bottom: 1rem;
 }
-
 .modal-header {
-  border-bottom: 1px solid #eee; /* Added for separation */
-  padding-bottom: 1rem; /* Added padding */
+  border-bottom: 1px solid var(--border-color-current, #eee);
+  padding-bottom: 1rem;
 }
-
 .modal-footer {
-  border-top: 1px solid #eee; /* Added for separation */
-  padding-top: 1rem; /* Added padding */
-  margin-top: 1rem; /* Ensure space above footer */
-  margin-bottom: 0; /* Footer is last element */
+  border-top: 1px solid var(--border-color-current, #eee);
+  padding-top: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
 }
-
 .modal-header h3 {
   margin: 0;
   font-size: 1.5rem;
-  color: #333; /* Consider var(--text-color-current) */
+  color: inherit;
 }
 
+/* === Close Button === */
 .close-modal {
   font-size: 1.5rem;
   background: none;
   border: none;
-  color: #666; /* Consider var(--text-color-current-muted) */
+  color: var(--text-muted-current, #666);
   cursor: pointer;
-  padding: 0.5rem; /* Easier to click */
-  line-height: 1; /* Ensure consistent alignment */
+  padding: 0.5rem;
+  line-height: 1;
 }
 
+/* === Modal Body === */
 .modal-body {
   margin-bottom: 1rem;
 }
 
-#contact-form { /* Changed from form to #contact-form for specificity */
-  display: -ms-flexbox; /* IE 10 */
+/* === Form Structure === */
+#contact-form {
+  display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: column; /* IE 10 */
+  -ms-flex-direction: column;
   flex-direction: column;
   gap: 1rem;
 }
-
 .form-row {
-  display: -ms-flexbox; /* IE 10 */
+  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap; /* IE 10 */
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   gap: 1rem;
 }
-
 .form-cell {
-  /* Evenly distribute two columns without leaving excess space */
-  -ms-flex: 1 1 calc(50% - 0.5rem); /* IE 10 */
+  -ms-flex: 1 1 calc(50% - 0.5rem);
   flex: 1 1 calc(50% - 0.5rem);
-  display: -ms-flexbox; /* IE 10 */
+  display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: column; /* IE 10 */
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
+/* === Form Elements === */
 label {
   margin-bottom: 0.3rem;
   font-weight: 600;
-  color: #444; /* Consider var(--text-color-current) */
-  font-size: 0.9rem; /* Slightly smaller label */
+  color: inherit;
+  font-size: 0.9rem;
 }
-
 input[type="text"],
 input[type="email"],
 input[type="tel"],
@@ -108,61 +109,56 @@ input[type="time"],
 select,
 textarea {
   padding: 0.6rem;
-  border: 1px solid #ccc; /* Consider var(--border-color-current) */
+  border: 1px solid var(--border-color-current, #ccc);
   border-radius: 6px;
   font-size: 1rem;
-  width: 100%; /* Ensure inputs take full width of their cell */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  background-color: #fff; /* Consider var(--input-bg-current) */
-  color: #333; /* Consider var(--text-color-current) */
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--input-bg-current, #fff);
+  color: var(--text-current, #333);
 }
-
 textarea {
   resize: vertical;
-  min-height: 80px; /* Set a min-height */
+  min-height: 80px;
 }
 
+/* === Submit Button === */
 .submit-button {
   padding: 0.75rem 1.5rem;
-  background-color: #6a1b9a; /* Consider var(--accent-color) */
-  color: #fff;
+  background-color: var(--accent-color, #6a1b9a);
+  color: var(--button-text-color, #fff);
   font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  font-size: 1rem; /* Ensure consistent font size */
+  font-size: 1rem;
 }
-
 .submit-button:hover {
-  background-color: #4a148c; /* Consider var(--accent-color-hover) */
+  background-color: var(--accent-color-hover, #4a148c);
 }
 
-/* Responsive adjustments */
-/* Using 768px to align with global small-screen modal styles */
+/* === Responsive for Mobile Devices === */
 @media (max-width: 768px) {
   .modal-content {
-    /* Override desktop settings to match global full-screen small device behavior */
     width: 100%;
     max-width: 100%;
     height: 100%;
-    max-height: 100vh; /* Use 100vh for viewport height */
-    padding: 0; /* Padding will be handled by modal-body */
+    max-height: 100vh;
+    padding: 0;
     border-radius: 0;
     box-shadow: none;
     border: none;
   }
-  /* Ensure modal-body has padding when modal-content padding is removed */
   .modal-body {
-    padding: 1rem; /* Add padding back to body */
+    padding: 1rem;
   }
-
   .form-cell {
-    -ms-flex: 1 1 100%; /* IE 10 */
-    flex: 1 1 100%; /* Stack form cells vertically on small screens */
+    -ms-flex: 1 1 100%;
+    flex: 1 1 100%;
   }
   .modal-header h3 {
-    font-size: 1.25rem; /* Adjust header size */
+    font-size: 1.25rem;
   }
   input[type="text"],
   input[type="email"],
@@ -170,34 +166,24 @@ textarea {
   input[type="date"],
   input[type="time"],
   select,
-  textarea {
-    font-size: 0.95rem; /* Adjust font size in inputs for small screens */
-  }
+  textarea,
   .submit-button {
-    font-size: 0.95rem; /* Adjust button font size */
+    font-size: 0.95rem;
   }
 }
 
-/* Ensure theme variables are respected if available in global.css */
-/* For example, if your global.css defines these:
-body.dark-theme .modal-content {
-  background: var(--bg-dark, #333);
-  color: var(--text-dark, #fff);
+/* === Dark Theme Support === */
+body[data-theme="dark"] .modal-content {
+  background-color: #333;
+  color: #eee;
 }
-body.dark-theme .modal-header h3,
-body.dark-theme label,
-body.dark-theme input,
-body.dark-theme select,
-body.dark-theme textarea {
-  color: var(--text-dark, #fff);
+body[data-theme="dark"] input,
+body[data-theme="dark"] select,
+body[data-theme="dark"] textarea {
+  background-color: #444;
+  color: #eee;
+  border-color: #555;
 }
-body.dark-theme input,
-body.dark-theme select,
-body.dark-theme textarea {
-  background-color: var(--input-bg-dark, #444);
-  border-color: var(--border-color-dark, #555);
+body[data-theme="dark"] .close-modal {
+  color: #bbb;
 }
-body.dark-theme .close-modal {
-  color: var(--text-dark-muted, #bbb);
-}
-*/
