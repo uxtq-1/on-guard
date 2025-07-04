@@ -97,11 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (span) span.textContent = text; else btn.textContent = text;
   }
 
-  function updateLanguageButton(btn, lang) {
+  function updateLanguageButton(btn, targetLang) {
     if (!btn) return;
     const span = btn.querySelector('span');
-    const text = lang === 'en' ? (btn.dataset.en || 'EN') : (btn.dataset.es || 'ES');
-    const label = lang === 'en' ? (btn.dataset.enLabel || 'Switch to Spanish') : (btn.dataset.esLabel || 'Cambiar a Inglés');
+    const text = targetLang === 'en' ? (btn.dataset.en || 'EN') : (btn.dataset.es || 'ES');
+    const activeLang = document.documentElement.getAttribute('lang') === 'es' ? 'es' : 'en';
+    const label = activeLang === 'en'
+      ? (btn.dataset.enLabel || 'Switch to Spanish')
+      : (btn.dataset.esLabel || 'Cambiar a Inglés');
     if (label) {
       btn.setAttribute('title', label);
       btn.setAttribute('aria-label', label);
