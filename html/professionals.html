@@ -1,90 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-en="Professional Staffing Services by Ops Online Support" data-es="Servicios de Personal Profesional por Ops Online Support">Professional Staffing Services by Ops Online Support</title>
-    <link rel="stylesheet" href="../css/base/global.css">
-    <meta name="description" content="Access top-tier remote professionals and staffing solutions with Ops Online Support. We connect businesses with skilled talent for various roles." data-en-content="Access top-tier remote professionals and staffing solutions with Ops Online Support. We connect businesses with skilled talent for various roles." data-es-content="Acceda a profesionales remotos de primer nivel y soluciones de personal con Ops Online Support. Conectamos empresas con talento calificado para diversos roles.">
-    <meta name="keywords" content="professional staffing, remote professionals, staffing solutions, skilled talent, ops online support, remote staffing">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta name="Referrer-Policy" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()">
-    <link rel="canonical" href="https://www.opsonlinesupport.com/html/professionals.html" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data:; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self'; frame-src 'self';">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-en="Professional Staffing Services by Ops Online Support" data-es="Servicios de Personal Profesional por Ops Online Support">Professional Staffing Services by Ops Online Support</title>
+
+  <!-- SEO Meta -->
+  <meta name="description" content="Access top-tier remote professionals and staffing solutions with Ops Online Support. We connect businesses with skilled talent for various roles.">
+  <meta name="keywords" content="professional staffing, remote professionals, staffing solutions, skilled talent, ops online support, remote staffing">
+  <link rel="canonical" href="https://www.opsonlinesupport.com/html/professionals.html" />
+
+  <!-- Security Headers -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="DENY" />
+  <meta name="Referrer-Policy" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()" />
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://cdnjs.cloudflare.com;
+    style-src 'self' https://cdnjs.cloudflare.com;
+    img-src 'self' data:;
+    font-src 'self' https://cdnjs.cloudflare.com;
+    connect-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-src 'none';" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/base/global.css" />
 </head>
+
 <body>
-    <header>
-      <nav class="desktop-nav">
+  <header>
+    <nav class="desktop-nav" aria-label="Main Navigation">
+      <ul>
+        <li><a href="../index.html" data-en="Home" data-es="Inicio">Home</a></li>
+        <li><a role="button" tabindex="0" data-modal="business-operations-service-modal" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
+        <li><a role="button" tabindex="0" data-modal="contact-center-service-modal" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
+        <li><a role="button" tabindex="0" data-modal="it-support-service-modal" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
+        <li><a role="button" tabindex="0" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-controls">
+      <div class="toggle-container">
+        <button id="theme-toggle-desktop" title="Toggle Theme"
+          data-en-label-dark="Switch to Dark Theme" data-es-label-dark="Cambiar a Tema Oscuro"
+          data-en-label-light="Switch to Light Theme" data-es-label-light="Cambiar a Tema Claro"
+          data-en-dark="Dark" data-es-dark="Oscuro"
+          data-en-light="Light" data-es-light="Claro">Light</button>
+
+        <button id="language-toggle-desktop" title="Switch Language"
+          data-en-label="Switch to Spanish" data-es-label="Cambiar a Inglés">EN</button>
+      </div>
+
+      <button id="menu-open" class="header-menu-trigger" aria-label="Open Main Menu" title="Open Menu">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <aside id="rightSideMenu" class="right-side-menu" role="navigation" aria-labelledby="rightSideMenuTitle">
+    <div class="right-side-menu-header">
+      <h2 id="rightSideMenuTitle" class="sr-only">Main Menu</h2>
+      <button id="menu-close" aria-label="Close Main Menu" title="Close Menu">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="right-side-menu-body">
+      <nav class="right-side-menu-nav">
         <ul>
           <li><a href="../index.html" data-en="Home" data-es="Inicio">Home</a></li>
-          <li><a role="button" tabindex="0" data-modal="business-operations-service-modal" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
-          <li><a role="button" tabindex="0" data-modal="contact-center-service-modal" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-          <li><a role="button" tabindex="0" data-modal="it-support-service-modal" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-          <li><a role="button" tabindex="0" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-        </ul>
-      </nav>
-      <div class="header-controls">
-        <div class="toggle-container">
-        <button id="theme-toggle-desktop" title="Toggle Theme"
-                data-en-label-dark="Switch to Dark Theme"
-                data-es-label-dark="Cambiar a Tema Oscuro"
-                data-en-label-light="Switch to Light Theme"
-                data-es-label-light="Cambiar a Tema Claro"
-                data-en-dark="Dark" data-es-dark="Oscuro"
-                data-en-light="Light" data-es-light="Claro">Light</button>
-          <button id="language-toggle-desktop" title="Switch Language"
-                data-en-label="Switch to Spanish" data-es-label="Cambiar a Inglés">EN</button>
-        </div>
-        <button id="menu-open" class="header-menu-trigger" aria-label="Open Main Menu" title="Open Menu"
-                data-en-label="Open Main Menu" data-es-label="Abrir Menú Principal"
-                data-en-title="Open Menu" data-es-title="Abrir Menú">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-    </header>
-
-    <aside id="rightSideMenu" class="right-side-menu" role="navigation" aria-labelledby="rightSideMenuTitle">
-      <div class="right-side-menu-header">
-        <h2 id="rightSideMenuTitle" class="sr-only">Main Menu</h2>
-        <button id="menu-close" aria-label="Close Main Menu" title="Close Menu"
-                data-en-label="Close Main Menu" data-es-label="Cerrar Menú Principal"
-                data-en-title="Close Menu" data-es-title="Cerrar Menú">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="right-side-menu-body">
-        <nav class="right-side-menu-nav">
-          <ul>
-            <li><a href="../index.html" data-en="Home" data-es="Inicio">Home</a></li>
-            <li class="services-trigger">
-              <button aria-expanded="false" aria-controls="servicesSubMenu">
-                <span data-en="Services" data-es="Servicios">Services</span>
-                <i class="fas fa-chevron-down" aria-hidden="true"></i>
-              </button>
-              <ul id="servicesSubMenu" class="sub-menu">
+          <li class="services-trigger">
+            <button aria-expanded="false" aria-controls="servicesSubMenu">
+              <span data-en="Services" data-es="Servicios">Services</span>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <ul id="servicesSubMenu" class="sub-menu">
               <li><a role="button" tabindex="0" data-modal="business-operations-service-modal" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
               <li><a role="button" tabindex="0" data-modal="contact-center-service-modal" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
               <li><a role="button" tabindex="0" data-modal="it-support-service-modal" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
               <li><a role="button" tabindex="0" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-              </ul>
-            </li>
-            <li><a href="about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-            <li><a href="careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
-            <li><a href="blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
-          </ul>
-        </nav>
-      </div>
-    </aside>
-    <main>
-        <h1 data-en="Professionals" data-es="Profesionales">Professionals</h1>
-        <p data-en="Content for Professionals services will be added here." data-es="El contenido para los servicios Profesionales se agregará aquí.">Content for Professionals services will be added here.</p>
-        <p><a href="../index.html" data-en="Back to Home" data-es="Volver a Inicio">Back to Home</a></p>
-    </main>
-    <footer>
-        <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
-    </footer>
-    <script type="module" src="../js/pages/main.js" defer></script>
+            </ul>
+          </li>
+          <li><a href="about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
+          <li><a href="blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main id="main-content" tabindex="-1">
+    <h1 data-en="Professionals" data-es="Profesionales">Professionals</h1>
+    <p data-en="Content for Professionals services will be added here." data-es="El contenido para los servicios Profesionales se agregará aquí.">Content for Professionals services will be added here.</p>
+    <p><a href="../index.html" data-en="Back to Home" data-es="Volver a Inicio">Back to Home</a></p>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
+  </footer>
+
+  <script type="module" src="../js/pages/main.js" defer></script>
 </body>
 </html>
