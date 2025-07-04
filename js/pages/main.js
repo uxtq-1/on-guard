@@ -13,9 +13,7 @@ import { initializeChatbotModal } from './chatbot.js'; // Import initializeChatb
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log('INFO:Main/DOMContentLoaded: Initializing core functionalities.');
-
-    /* OLD - updateMobileNavStatus - To be removed
-    // Function to add padding for fixed mobile nav
+    // Function to add padding for fixed mobile nav - OLD, NOT CALLED
     function updateMobileNavStatus() {
         const mobileNavElement = document.querySelector('.mobile-nav');
         if (mobileNavElement && getComputedStyle(mobileNavElement).display !== 'none') {
@@ -27,11 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     */ // END OLD - updateMobileNavStatus
+    // Placeholder for mobile navigation HTML injection - OLD, NOT USED
+    const mobileNavPlaceholder = document.getElementById('mobile-nav-placeholder');
 
-    // Placeholder for mobile navigation HTML injection
-    // const mobileNavPlaceholder = document.getElementById('mobile-nav-placeholder'); // OLD - To be removed
-
-    /* OLD - loadMobileNavigation - To be removed
+    // OLD - loadMobileNavigation - DEFINITION REMAINS BUT NOT CALLED
     async function loadMobileNavigation() {
         try {
             const response = await fetch(`${ROOT_PATH}html/partials/mobile_nav.html`);
@@ -69,9 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
     }
+    
     */ // END OLD - loadMobileNavigation
-
-    /* OLD - initializeMobileNavInteractions - To be removed
+    // OLD - initializeMobileNavInteractions - DEFINITION REMAINS BUT NOT CALLED
     function initializeMobileNavInteractions() {
         // Mobile Services Menu Toggle (for index.html's bottom nav menu)
         const mobileServicesToggle = document.getElementById('mobile-services-toggle');
@@ -199,7 +196,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentLanguage = localStorage.getItem("language") || "en";
 
     const langToggleDesktop = document.getElementById("language-toggle-desktop");
-    // Mobile language toggle will be queried dynamically in setLanguageButtonVisuals
 
     function updateNodeLanguageTexts(lang, parentNode = document.body) {
         if (!parentNode) {
@@ -220,9 +216,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (el.placeholder !== undefined) {
                 const placeholderText = el.dataset[targetLang + 'Placeholder'] || el.dataset[fallbackLang + 'Placeholder'] || textToSet;
                 if (placeholderText !== undefined) el.placeholder = placeholderText;
-            } else if (el.value !== undefined && (el.tagName === 'INPUT' || el.tagName === 'BUTTON') && !el.classList.contains('lang-toggle-btn')) { // Avoid changing lang toggle button text here
+            } else if (el.value !== undefined && (el.tagName === 'INPUT' || el.tagName === 'BUTTON') && !el.classList.contains('lang-toggle-btn')) {
                 if (textToSet !== undefined) el.value = textToSet;
-            } else if (el.tagName !== 'BUTTON' || !el.classList.contains('lang-toggle-btn')) { // Avoid changing lang toggle button text here
+            } else if (el.tagName !== 'BUTTON' || !el.classList.contains('lang-toggle-btn')) {
                 let hasNonTextChildNodes = false;
                 for(let i=0; i < el.childNodes.length; i++) {
                     if(el.childNodes[i].nodeType !== Node.TEXT_NODE && el.childNodes[i].nodeName !== 'I' /* Allow FontAwesome icons */) {
@@ -231,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 if (!hasNonTextChildNodes || el.childNodes.length === 0 || (el.childNodes.length === 1 && el.childNodes[0].nodeName === 'I')) {
                     if (textToSet !== undefined) {
-                        // Preserve icon if present
                         const icon = el.querySelector('i.fas, i.fab, i.far');
                         if (icon) {
                             el.innerHTML = textToSet + ' ' + icon.outerHTML;
@@ -267,7 +262,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setLanguageButtonVisuals() {
         const newButtonText = (currentLanguage === "en") ? "ES" : "EN";
-        // ARIA labels for global toggles should ideally have data-attributes themselves for full translation
         const newAriaLabel = (currentLanguage === "en") ?
                              (langToggleDesktop?.dataset?.esLabel || "Switch to Spanish") :
                              (langToggleDesktop?.dataset?.enLabel || "Switch to English");
@@ -277,30 +271,30 @@ document.addEventListener("DOMContentLoaded", () => {
             if(newAriaLabel) langToggleDesktop.setAttribute('aria-label', newAriaLabel);
         }
 
-        // Update old mobile nav language toggle, if it exists
-        const langToggleMobileInstance = document.getElementById("mobile-language-toggle");
+        const langToggleMobileInstance = document.getElementById("mobile-language-toggle"); // OLD
         if (langToggleMobileInstance) {
             langToggleMobileInstance.textContent = newButtonText;
             if(newAriaLabel) langToggleMobileInstance.setAttribute('aria-label', newAriaLabel);
         }
-
-        // Update new FAB menu language toggle, if it exists
+      
         const fabLangToggleInstance = document.getElementById("fabLanguageToggle");
+        console.log('DEBUG:Main/setLanguageButtonVisuals: Attempting to update #fabLanguageToggle. Found:', fabLangToggleInstance);
         if (fabLangToggleInstance) {
-            // It has a span for text, e.g., <span data-en="EN" data-es="ES">EN</span>
             const spanElement = fabLangToggleInstance.querySelector('span');
             if (spanElement) {
-                // We need to set the text based on the *opposite* of currentLanguage for the button label
-                // e.g., if currentLanguage is 'en', button should show 'ES'
                 spanElement.textContent = newButtonText;
+                console.log('DEBUG:Main/setLanguageButtonVisuals: #fabLanguageToggle span text set to:', newButtonText);
+            } else {
+                console.warn('DEBUG:Main/setLanguageButtonVisuals: Span not found in #fabLanguageToggle.');
             }
-            // ARIA label should reflect the action based on current language
             const fabAriaLabel = (currentLanguage === "en") ?
                                  (fabLangToggleInstance.dataset.esLabel || "Cambiar a Español") :
                                  (fabLangToggleInstance.dataset.enLabel || "Switch to English");
-            if(fabAriaLabel) fabLangToggleInstance.setAttribute('aria-label', fabAriaLabel);
-            // Title attribute can also be updated
-            if(fabAriaLabel) fabLangToggleInstance.setAttribute('title', fabAriaLabel);
+            if(fabAriaLabel) {
+                fabLangToggleInstance.setAttribute('aria-label', fabAriaLabel);
+                fabLangToggleInstance.setAttribute('title', fabAriaLabel);
+                console.log('DEBUG:Main/setLanguageButtonVisuals: #fabLanguageToggle ARIA label and title set to:', fabAriaLabel);
+            }
         }
     }
 
@@ -311,12 +305,11 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("language", currentLanguage);
             updateNodeLanguageTexts(currentLanguage, document.body);
             updateHeadLanguageTexts(currentLanguage);
-            setLanguageButtonVisuals(); // Updates global toggle buttons
+            setLanguageButtonVisuals();
             console.log(`INFO:Main/masterToggleLanguage: Language changed to ${currentLanguage.toUpperCase()}`);
         }
     };
     if (langToggleDesktop) langToggleDesktop.addEventListener("click", () => window.masterToggleLanguage());
-    // Mobile listener is attached in initializeMobileNavInteractions after mobile nav is loaded.
 
     window.updateDynamicContentLanguage = function(nodeToUpdate) {
         if (nodeToUpdate) {
@@ -324,17 +317,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Initial language setup on page load (will be reapplied/scoped after mobile nav load)
-    updateNodeLanguageTexts(currentLanguage, document.body); // Initial full-page scan
+    updateNodeLanguageTexts(currentLanguage, document.body);
     updateHeadLanguageTexts(currentLanguage);
-    setLanguageButtonVisuals(); // For desktop buttons primarily at this stage
+    setLanguageButtonVisuals();
     console.log(`INFO:Main/LangInit: Initial language set to ${currentLanguage.toUpperCase()}`);
 
     /* ================================================================
        2) THEME TOGGLE (Desktop & Mobile for index.html header)
        ================================================================= */
     const themeToggleDesktop = document.getElementById("theme-toggle-desktop");
-    // const themeToggleMobile  = document.getElementById("theme-toggle-mobile"); // Will be handled in initializeMobileNavInteractions
     const bodyElement = document.body;
     let currentTheme = localStorage.getItem("theme") || "light";
 
@@ -345,7 +336,6 @@ document.addEventListener("DOMContentLoaded", () => {
             (themeToggleDesktop?.dataset[currentLanguage + 'Dark'] || (currentLanguage === 'es' ? 'Oscuro' : 'Dark')) :
             (themeToggleDesktop?.dataset[currentLanguage + 'Light'] || (currentLanguage === 'es' ? 'Claro' : 'Light'));
 
-        // Update desktop toggle
         const desktopAriaLabel = (theme === 'light') ?
             (themeToggleDesktop?.dataset[currentLanguage + 'LabelDark'] || themeToggleDesktop?.dataset['enLabelDark'] || "Switch to Dark Theme") :
             (themeToggleDesktop?.dataset[currentLanguage + 'LabelLight'] || themeToggleDesktop?.dataset['enLabelLight'] || "Switch to Light Theme");
@@ -354,8 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if(desktopAriaLabel) themeToggleDesktop.setAttribute('aria-label', desktopAriaLabel);
         }
 
-        // Update mobile toggle (if it exists)
-        const mobileThemeToggle = document.getElementById("mobile-theme-toggle");
+        const mobileThemeToggle = document.getElementById("mobile-theme-toggle"); // OLD
         const mobileAriaLabel = (theme === 'light') ?
             (mobileThemeToggle?.dataset[currentLanguage + 'LabelDark'] || mobileThemeToggle?.dataset['enLabelDark'] || "Switch to Dark Theme") :
             (mobileThemeToggle?.dataset[currentLanguage + 'LabelLight'] || mobileThemeToggle?.dataset['enLabelLight'] || "Switch to Light Theme");
@@ -367,8 +356,8 @@ document.addEventListener("DOMContentLoaded", () => {
              if(mobileAriaLabel) mobileThemeToggle.setAttribute('aria-label', mobileAriaLabel);
         }
 
-        // Update new FAB menu theme toggle, if it exists
-        const fabThemeToggleInstance = document.getElementById("fabThemeToggle");
+      const fabThemeToggleInstance = document.getElementById("fabThemeToggle");
+        console.log('DEBUG:Main/applyTheme: Attempting to update #fabThemeToggle. Found:', fabThemeToggleInstance);
         if (fabThemeToggleInstance) {
             const fabSpanElement = fabThemeToggleInstance.querySelector('span');
             const fabIconElement = fabThemeToggleInstance.querySelector('i');
@@ -378,20 +367,29 @@ document.addEventListener("DOMContentLoaded", () => {
             const fabAriaLabelText = (theme === 'light') ?
                 (fabThemeToggleInstance.dataset[currentLanguage + 'LabelDark'] || fabThemeToggleInstance.dataset['enLabelDark'] || "Switch to Dark Theme") :
                 (fabThemeToggleInstance.dataset[currentLanguage + 'LabelLight'] || fabThemeToggleInstance.dataset['enLabelLight'] || "Switch to Light Theme");
-
-            if (fabSpanElement) fabSpanElement.textContent = fabText;
+            if (fabSpanElement) {
+                fabSpanElement.textContent = fabText;
+                console.log('DEBUG:Main/applyTheme: #fabThemeToggle span text set to:', fabText);
+            } else {
+                console.warn('DEBUG:Main/applyTheme: Span not found in #fabThemeToggle.');
+            }
             if (fabAriaLabelText) {
                 fabThemeToggleInstance.setAttribute('aria-label', fabAriaLabelText);
-                fabThemeToggleInstance.setAttribute('title', fabAriaLabelText); // Update title too
+                fabThemeToggleInstance.setAttribute('title', fabAriaLabelText);
+                console.log('DEBUG:Main/applyTheme: #fabThemeToggle ARIA label and title set to:', fabAriaLabelText);
             }
-            if (fabIconElement) { // Optional: change icon based on theme
+            if (fabIconElement) {
                 if (theme === 'light') {
-                    fabIconElement.classList.remove('fa-moon'); // Or whatever "dark mode active" icon is
-                    fabIconElement.classList.add('fa-lightbulb');    // Icon for "light mode active, switch to dark"
+                    fabIconElement.classList.remove('fa-moon');
+                    fabIconElement.classList.add('fa-lightbulb');
+                    console.log('DEBUG:Main/applyTheme: #fabThemeToggle icon set to fa-lightbulb.');
                 } else {
                     fabIconElement.classList.remove('fa-lightbulb');
-                    fabIconElement.classList.add('fa-moon');  // Icon for "dark mode active, switch to light"
+                    fabIconElement.classList.add('fa-moon');
+                    console.log('DEBUG:Main/applyTheme: #fabThemeToggle icon set to fa-moon.');
                 }
+            } else {
+                console.warn('DEBUG:Main/applyTheme: Icon element not found in #fabThemeToggle.');
             }
         }
         console.log(`INFO:Main/applyTheme: Theme set to ${theme}`);
@@ -401,24 +399,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const newTheme = themeToSet ? themeToSet : (bodyElement.getAttribute("data-theme") === "light" ? "dark" : "light");
         if (newTheme !== currentTheme) {
             currentTheme = newTheme;
-            applyTheme(currentTheme); // This will update both desktop and mobile if they exist
+            applyTheme(currentTheme);
         }
     };
 
     if (themeToggleDesktop) themeToggleDesktop.addEventListener("click", () => window.masterToggleTheme());
-    // if (themeToggleMobile) themeToggleMobile.addEventListener("click", () => window.masterToggleTheme()); // Handled in initializeMobileNavInteractions
-    applyTheme(currentTheme); // Initial theme application for desktop and potentially pre-existing mobile
+    applyTheme(currentTheme);
    /* ==================================================================
        3) Right-Side Main Menu (for index.html)
        ================================================================== */
     const menuOpenBtn = document.getElementById('menu-open');
     const menuCloseBtn = document.getElementById('menu-close');
     const rightSideMenu = document.getElementById('rightSideMenu');
-    if (menuOpenBtn && rightSideMenu) { // menuCloseBtn is inside rightSideMenu
+    if (menuOpenBtn && rightSideMenu) {
         menuOpenBtn.addEventListener('click', () => {
             rightSideMenu.classList.add('open');
             menuOpenBtn.setAttribute('aria-expanded', 'true');
-            if(menuCloseBtn) menuCloseBtn.focus(); // Focus on close button when menu opens
+            if(menuCloseBtn) menuCloseBtn.focus();
             console.log('EVENT:Main/menuOpenBtn#click - Right side menu opened.');
         });
     }
@@ -426,7 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
         menuCloseBtn.addEventListener('click', () => {
             rightSideMenu.classList.remove('open');
             if(menuOpenBtn) menuOpenBtn.setAttribute('aria-expanded', 'false');
-            if(menuOpenBtn) menuOpenBtn.focus(); // Return focus to menu trigger
+            if(menuOpenBtn) menuOpenBtn.focus();
             console.log('EVENT:Main/menuCloseBtn#click - Right side menu closed.');
             const servicesSubMenuInstance = document.getElementById('servicesSubMenu');
             if (servicesSubMenuInstance) servicesSubMenuInstance.classList.remove('open');
@@ -434,7 +431,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if(servicesTriggerBtnInstance) servicesTriggerBtnInstance.setAttribute('aria-expanded', 'false');
         });
     }
-    // Add ESC key to close side menu
     if(rightSideMenu){
         rightSideMenu.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && rightSideMenu.classList.contains('open')) {
@@ -457,19 +453,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const isOpen = servicesSubMenu.classList.toggle('open');
             servicesTriggerBtn.setAttribute('aria-expanded', isOpen.toString());
         });
-        // Click outside to close services sub-menu (within the rightSideMenu)
-        // This is handled by the main menu close button logic for now.
     }
 
     /* ==================================================================
        5) Modals (General Logic for index.html: Contact Us)
-          Join Us is now a separate page. Chatbot uses iframe system.
        ================================================================== */
-    let lastFocusedElement = null; // To store element that triggered modal
-    // Note: closeModalButtons and allModalOverlays will be queried dynamically after modal content is loaded.
-    let loadedModalHTML = {}; // Cache for loaded modal HTML to prevent multiple fetches
+    let lastFocusedElement = null;
+    let loadedModalHTML = {};
 
-    // Configuration for specific service modals
     const serviceModalDetails = {
         'business-operations-service-modal': {
             contentPath: `${ROOT_PATH}html/partials/services/business_operations_content.html`,
@@ -499,7 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!contentContainer || !titleElement) {
             console.error('ERROR:Main/initializeServiceModalContent: Modal content or title container not found in generic service modal structure.');
-            modalElement.querySelector('.modal-body').innerHTML = '<p>Error: Modal structure is missing critical elements.</p>'; // Fallback
+            modalElement.querySelector('.modal-body').innerHTML = '<p>Error: Modal structure is missing critical elements.</p>';
             return;
         }
 
@@ -514,12 +505,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const titleToSet = (currentLanguage === 'es' && serviceTitleEs) ? serviceTitleEs : serviceTitleEn;
             titleElement.textContent = titleToSet;
-            titleElement.dataset.en = serviceTitleEn; // For language switching of the title
+            titleElement.dataset.en = serviceTitleEn;
             titleElement.dataset.es = serviceTitleEs;
 
             if (window.updateDynamicContentLanguage) {
-                window.updateDynamicContentLanguage(contentContainer); // Translate the newly injected content
-                window.updateDynamicContentLanguage(titleElement.parentElement); // Translate the title element itself if it's wrapped
+                window.updateDynamicContentLanguage(contentContainer);
+                window.updateDynamicContentLanguage(titleElement.parentElement);
             }
             console.log(`INFO:Main/initializeServiceModalContent: Content loaded for ${serviceContentPath} into modal.`);
         } catch (error) {
@@ -533,39 +524,29 @@ document.addEventListener("DOMContentLoaded", () => {
     async function loadModalContent(modalId, modalFile, placeholderId, callback, callbackArgs = []) {
         let placeholder = document.getElementById(placeholderId);
         if (!placeholder) {
-            // Create the placeholder dynamically if it doesn't exist
             placeholder = document.createElement('div');
             placeholder.id = placeholderId;
             document.body.appendChild(placeholder);
         }
 
-        // For generic modals, we don't cache the combined shell + content,
-        // so we always fetch the shell if it's a generic type unless the shell itself is already loaded.
-        // Specific modals like contact-us are cached by their unique modalId.
         const isGenericServiceModal = modalId === 'generic-service-modal';
         let loadShell = true;
         if (isGenericServiceModal) {
-            // If the generic modal shell is already in the placeholder, don't reload it,
-            // just ensure it's the one we're working with.
             const existingShell = document.getElementById('generic-service-modal');
-            if (placeholder.contains(existingShell)) { // Check if placeholder already has this specific modal
-                 // We might still want to run the callback to repopulate content
+            if (placeholder.contains(existingShell)) {
             } else {
-                 // placeholder is empty or has wrong content, clear it
                  placeholder.innerHTML = '';
             }
-             // If loadedModalHTML[modalId] (e.g. loadedModalHTML['generic-service-modal']) exists, it means the shell was fetched.
             if (loadedModalHTML[modalId] && placeholder.innerHTML.includes(`id="${modalId}"`)) {
-                 loadShell = false; // Shell already fetched and presumably in placeholder
+                 loadShell = false;
             } else {
-                placeholder.innerHTML = ''; // Clear placeholder for fresh load of shell
+                placeholder.innerHTML = '';
             }
 
         } else if (loadedModalHTML[modalId] && placeholder.innerHTML.includes(`id="${modalId}"`)) {
-             // For non-generic modals, if HTML is cached and present in placeholder, skip fetch.
             loadShell = false;
         } else {
-            placeholder.innerHTML = ''; // Clear placeholder for fresh load
+            placeholder.innerHTML = '';
         }
 
 
@@ -578,10 +559,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     throw new Error(`Failed to fetch ${modalFile}: ${response.statusText}`);
                 }
                 const html = await response.text();
-                if (!isGenericServiceModal) { // Only cache specific modals, not the generic shell if it's meant to be reused by ID
+                if (!isGenericServiceModal) {
                     loadedModalHTML[modalId] = html;
                 }
-                placeholder.innerHTML = html; // Inject the fetched HTML (shell for generic, full for specific)
+                placeholder.innerHTML = html;
                 console.log(`INFO:Main/loadModalContent: ${modalId} HTML (shell or full) loaded into #${placeholderId}`);
             } catch (error) {
                 console.error(`ERROR:Main/loadModalContent: Could not load modal content for ${modalId}:`, error);
@@ -596,12 +577,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return null;
         }
 
-        // Initialize modal-specific JS or content population if a callback is provided
         if (callback && typeof callback === 'function') {
-            // For generic service modals, we might re-initialize content even if shell was 'initialized'
-            // For specific modals, dataset.initialized prevents re-running their specific JS.
             if (!targetModalElement.dataset.initialized || isGenericServiceModal) {
-                await callback(targetModalElement, ...callbackArgs); // Pass additional arguments if any
+                await callback(targetModalElement, ...callbackArgs);
                 if (!isGenericServiceModal) {
                     targetModalElement.dataset.initialized = "true";
                 }
@@ -610,96 +588,73 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Attach close listeners for this specific modal
-        // This is important if modals are loaded dynamically.
-        // Ensure close listeners are attached, or re-attached if necessary, especially for generic modals.
         const closeButtons = targetModalElement.querySelectorAll('.close-modal[data-close]');
         closeButtons.forEach(btn => {
-            // A bit aggressive to remove/re-add, but ensures no duplicates if modal structure is re-used.
-            // A more nuanced approach might check for an existing specific handler.
-            const newBtn = btn.cloneNode(true); // Clone to remove existing listeners
+            const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
             newBtn.addEventListener('click', () => closeModal(targetModalElement));
         });
 
-        // Backdrop click for this specific modal
-        // Similar aggressive re-attachment for backdrop on generic modal.
         if (targetModalElement.dataset.backdropListenerAttached && isGenericServiceModal) {
-            // If it's a generic modal and listener was attached, we might need to remove old one
-            // This is tricky as anonymous functions are hard to remove.
-            // For now, we'll assume that if it's a generic modal, the shell might be reused,
-            // and a new targetModalElement reference might be fine.
-            // Or, ensure loadModalContent always provides a fresh shell for generic if issues arise.
         }
 
         if (!targetModalElement.dataset.backdropListenerAttached || isGenericServiceModal) {
-            // For generic modals, or if not attached, add it.
-            // This could lead to multiple backdrop listeners on the same element if not careful with generic.
-            // A cleaner way for generic modals is to have this logic inside the generic_service_modal.html template with unique IDs
-            // or ensure the shell is truly new each time.
-            // Let's assume for now that `targetModalElement` is the fresh shell.
             const backdropHandler = (e) => {
                 if (e.target === targetModalElement) {
                     closeModal(targetModalElement);
-                    // Potentially remove this specific listener if the modal is truly gone
-                    // targetModalElement.removeEventListener('click', backdropHandler); // This is complex with re-use
                 }
             };
-            // Storing the handler for potential removal is complex with shared generic modals.
-            // For now, attach. If multiple listeners become an issue, generic modal handling needs refinement.
             targetModalElement.addEventListener('click', backdropHandler);
-            targetModalElement.dataset.backdropListenerAttached = "true"; // Mark that we've tried to attach.
+            targetModalElement.dataset.backdropListenerAttached = "true";
         }
 
         return targetModalElement;
     }
 
     async function openModalById(modalId) {
-        if (!modalId) return null;
-        console.log(`INFO:Main/openModalById: Attempting to open modal with ID: ${modalId}`); // Added log
+        if (!modalId) {
+            console.warn('DEBUG:Main/openModalById: Called with null or empty modalId.');
+            return null;
+        }
+        console.log(`DEBUG:Main/openModalById: Attempting to open modal with ID: ${modalId}`);
         let targetModal;
 
         if (modalId === 'contact-modal') {
             targetModal = await loadModalContent(
-                modalId, // Specific ID for this modal
+                modalId,
                 `${ROOT_PATH}html/modals/contact_us_modal.html`,
                 'contact-modal-placeholder',
                 initializeContactModal
             );
         } else if (modalId === 'join-us-modal') {
             targetModal = await loadModalContent(
-                modalId, // Specific ID
+                modalId,
                 `${ROOT_PATH}html/modals/join_us_modal.html`,
                 'join-us-modal-placeholder',
                 initializeJoinUsModal
             );
         } else if (modalId === 'chatbot-modal') {
             targetModal = await loadModalContent(
-                modalId, // Specific ID
+                modalId,
                 `${ROOT_PATH}html/modals/chatbot_modal.html`,
                 'chatbot-modal-placeholder',
-                initializeChatbotModal // Use imported function directly
+                initializeChatbotModal
             );
-        } else if (serviceModalDetails[modalId]) { // Check if it's a defined service modal
+        } else if (serviceModalDetails[modalId]) {
             const details = serviceModalDetails[modalId];
             targetModal = await loadModalContent(
-                'generic-service-modal', // Use the ID of the generic modal structure itself
-                `${ROOT_PATH}html/modals/generic_service_modal.html`, // Path to the generic modal HTML shell
-                'generic-service-modal-placeholder', // Placeholder where the generic shell is loaded
-                initializeServiceModalContent, // Callback to populate the generic shell
-                [details.contentPath, details.titleKeyEn, details.titleKeyEs] // Args for the callback
+                'generic-service-modal',
+                `${ROOT_PATH}html/modals/generic_service_modal.html`,
+                'generic-service-modal-placeholder',
+                initializeServiceModalContent,
+                [details.contentPath, details.titleKeyEn, details.titleKeyEs]
             );
         }
-        // Add other dynamic modals here with else if
 
         if (targetModal) {
             targetModal.classList.add('active');
             targetModal.setAttribute('aria-hidden', 'false');
-            // Language update for the modal content is handled by initializeServiceModalContent or the specific modal's callback.
-            // If it's a non-service modal and needs language update, its callback should handle it or call updateDynamicContentLanguage.
             if (window.updateDynamicContentLanguage && !serviceModalDetails[modalId] && modalId !== 'generic-service-modal') {
-                 // For specific modals like contact-us, if their callback doesn't handle language, do it here.
-                 // initializeContactModal and initializeJoinUsModal should ideally handle their own content translation.
                 window.updateDynamicContentLanguage(targetModal);
             }
             setupFocusTrap(targetModal);
@@ -707,11 +662,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (focusableElement) {
                 focusableElement.focus();
             } else {
-                targetModal.focus(); // Fallback focus
+                targetModal.focus();
             }
-            console.log(`INFO:Main/openModalById: Modal ${modalId} opened and activated.`);
+            console.log(`INFO:Main/openModalById: Modal ${modalId} opened and activated. targetModal:`, targetModal);
         } else {
-            console.warn(`WARN:Main/openModalById: Target modal could not be loaded or found for ID: ${modalId}`);
+            console.warn(`WARN:Main/openModalById: Target modal could not be loaded or found for ID: ${modalId}. targetModal is null.`);
         }
         return targetModal;
     }
@@ -719,89 +674,47 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener('click', async (event) => {
         const trigger = event.target.closest('[data-modal]');
         if (trigger) {
+            console.log('DEBUG:Main/GlobalClickListener: [data-modal] trigger clicked:', trigger);
             event.preventDefault();
             const modalId = trigger.dataset.modal;
-            // Log if the trigger is one of the floating action buttons
-            if (trigger.classList.contains('floating-icon')) {
-                console.log(`INFO:Main/GlobalClickListener: FAB clicked. Trigger ID: ${trigger.id || 'N/A'}, Modal ID: ${modalId}`);
+            console.log('DEBUG:Main/GlobalClickListener: Modal ID from trigger:', modalId);
+            if (trigger.classList.contains('floating-icon') || trigger.classList.contains('horiz-nav-item')) {
+                console.log(`INFO:Main/GlobalClickListener: FAB or Nav Item clicked. Trigger ID: ${trigger.id || 'N/A'}, Classes: ${trigger.className}, Modal ID: ${modalId}`);
             }
-            // For generic service modals, the modalId in the trigger ('business-operations-service-modal')
-            // is different from the actual modal element's ID ('generic-service-modal').
-            // We need to find the active modal that corresponds to this trigger.
             let modalElement;
-            if (serviceModalDetails[modalId]) { // It's a trigger for a generic service modal
+            if (serviceModalDetails[modalId]) {
                 modalElement = document.getElementById('generic-service-modal');
-            } else { // It's a trigger for a specific modal (contact, join, chatbot)
+            } else {
                 modalElement = document.getElementById(modalId);
             }
 
             if (modalElement && modalElement.classList.contains('active')) {
-                // If the currently active modal is the one triggered, close it.
-                // This is especially important for generic service modals where multiple triggers
-                // can open the same 'generic-service-modal' element. We only close if THIS trigger's
-                // modal content is currently displayed.
-                // For generic modals, we might need a more robust way to check if the *content* matches,
-                // but for now, if 'generic-service-modal' is active, and a service trigger is clicked, we assume it's a toggle.
-                // A safer check for generic modals would be to see if `lastFocusedElement` was this `trigger`.
-                // However, `lastFocusedElement` is set *before* opening.
-                // A simple check: if the generic modal is open, and this trigger is a service modal trigger, then toggle.
                 if (modalId === 'generic-service-modal' || serviceModalDetails[modalId]) {
-                     // If the generic modal is active and this trigger corresponds to a service, close it.
                     if (document.getElementById('generic-service-modal')?.classList.contains('active')) {
                         closeModal(document.getElementById('generic-service-modal'));
-                    } else { // If generic modal is not active, or this is a different modal
+                    } else {
                         lastFocusedElement = trigger;
-                        await openModalById(modalId); // This will load/open the correct service content
+                        await openModalById(modalId);
                     }
                 } else if (modalElement.id === modalId && modalElement.classList.contains('active')) {
-                    // For specific modals (contact, join, chatbot), if it's active, close it.
                     closeModal(modalElement);
                 } else {
-                     // Modal is not active or it's a different one, open it.
                     lastFocusedElement = trigger;
                     await openModalById(modalId);
                 }
             } else {
-                // Modal not loaded or not active, open it.
                 lastFocusedElement = trigger;
-                console.log(`INFO:Main/GlobalClickListener: Click detected for data-modal="${modalId}", opening.`);
+                console.log(`INFO:Main/GlobalClickListener: Click detected for data-modal="${modalId}", attempting to open.`);
                 await openModalById(modalId);
             }
-            return; // Stop further processing if modal click was handled.
+            return;
+        } else {
+            // console.log('DEBUG:Main/GlobalClickListener: Click did not match a [data-modal] trigger.');
         }
-
-        // The following event listener for service page links is now OBSOLETE
-        // as service pages are now modals handled by data-modal attributes.
-        // I will comment it out.
-        /*
-        const anchor = event.target.closest('a[href]');
-        if (!anchor) return;
-        const url = new URL(anchor.getAttribute('href'), document.baseURI);
-        // OLD serviceModalConfig is removed, this logic is no longer valid for service pages.
-        // const configKey = Object.keys(serviceModalConfig).find(k => url.pathname.endsWith(k));
-        // if (!configKey) return;
-        // event.preventDefault();
-        // lastFocusedElement = anchor;
-        // const cfg = serviceModalConfig[configKey];
-        // const modal = await loadModalContent(cfg.id, cfg.file, cfg.placeholder, null);
-        // if (modal) {
-        //     modal.classList.add('active');
-        //     if (window.updateDynamicContentLanguage) {
-        //         window.updateDynamicContentLanguage(modal);
-        //     }
-        //     setupFocusTrap(modal);
-        //     const focusable = modal.querySelector('input:not([type="hidden"]), button:not([disabled]), [tabindex]:not([tabindex="-1"]), a[href], textarea, select');
-        //     if (focusable) focusable.focus();
-        //     else modal.focus();
-        // }
-        */
     });
 
     window.openModalById = openModalById;
 
-
-    // Preload Join Us modal to ensure it is ready when FAB is clicked
-    // Only preload if the placeholder exists, to prevent errors on pages without it.
     if (document.getElementById('join-us-modal-placeholder')) {
         loadModalContent(
             'join-us-modal',
@@ -814,7 +727,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    let currentTrapHandler = null; // To store the current active trap handler
+    let currentTrapHandler = null;
 
     function setupFocusTrap(modalElement) {
         const focusableElements = modalElement.querySelectorAll(
@@ -823,7 +736,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const firstFocusableElement = focusableElements[0];
         const lastFocusableElement = focusableElements[focusableElements.length - 1];
 
-        // Remove previous trap handler if any
         if (currentTrapHandler) {
             document.removeEventListener('keydown', currentTrapHandler);
         }
@@ -831,12 +743,12 @@ document.addEventListener("DOMContentLoaded", () => {
         currentTrapHandler = function(e) {
             if (e.key !== 'Tab') return;
 
-            if (e.shiftKey) { // Shift + Tab
+            if (e.shiftKey) {
                 if (document.activeElement === firstFocusableElement) {
                     lastFocusableElement.focus();
                     e.preventDefault();
                 }
-            } else { // Tab
+            } else {
                 if (document.activeElement === lastFocusableElement) {
                     firstFocusableElement.focus();
                     e.preventDefault();
@@ -853,18 +765,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Global ESC key listener for any active modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             const activeModal = document.querySelector('.modal-overlay.active');
             if (activeModal) {
-                // Directly use the generalized closeModal function
                 closeModal(activeModal);
             }
         }
     });
 
-    // Enhanced close function for modals to also remove focus trap
     function closeModal(modalElement) {
         if (modalElement) {
             modalElement.classList.remove('active');
@@ -874,7 +783,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Close buttons for statically loaded modals (like contact-modal)
     document.querySelectorAll('#contact-modal .close-modal[data-close]').forEach(btn => {
         btn.addEventListener('click', (event) => {
             const parentModal = event.currentTarget.closest('.modal-overlay');
@@ -882,7 +790,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Backdrop click for statically loaded modals
     document.querySelectorAll('#contact-modal.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
@@ -890,18 +797,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-
-    // Update dynamic modal close logic in loadModalContent to use closeModal
-    // Modify the close button event listener inside loadModalContent:
-    // btn.addEventListener('click', () => closeModal(targetModalElement));
-    // Modify the backdrop click listener inside loadModalContent:
-    // targetModalElement.addEventListener('click', (e) => { if (e.target === targetModalElement) closeModal(targetModalElement); });
-    // This requires passing closeModal to loadModalContent or making it globally accessible if not already.
-    // For simplicity, the change will be directly in loadModalContent for now.
-    // The following is a conceptual note for the diff that will be generated next for loadModalContent:
-    // Search for: targetModalElement.classList.remove('active');
-    // Replace with: closeModal(targetModalElement);
-    // This will be done in the subsequent diff for js/main.js.
 
     /* ================================================================
        6) Form Submission Logic (DEFERRED to specific component scripts)
@@ -911,66 +806,65 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ================================================================
        7) Mobile Nav Loading and Initialization (OLD - To be removed)
        ================================================================= */
-    /* OLD - loadMobileNavigation call and related logic
-    loadMobileNavigation().then(success => {
-        if (success) {
-            initializeMobileNavInteractions();
-            // updateMobileNavStatus(); // OLD - Apply body padding if mobile nav is visible
-
-            // Ensure newly injected mobile nav is translated and themed
-            const mobileNavEl = document.querySelector('.mobile-nav');
-            const mobileServicesMenuEl = document.getElementById('mobile-services-menu');
-            if (mobileNavEl) updateNodeLanguageTexts(currentLanguage, mobileNavEl);
-            if (mobileServicesMenuEl) updateNodeLanguageTexts(currentLanguage, mobileServicesMenuEl);
-
-            setLanguageButtonVisuals(); // Update mobile language button text/ARIA
-            applyTheme(currentTheme);   // Update mobile theme button text/ARIA
-
-            console.log('INFO:Main/MobileNavInit: Mobile navigation loaded and initialized.');
-        } else {
-            console.error('ERROR:Main/MobileNavInit: Mobile navigation failed to load. Features relying on it may not work.');
-        }
-
-        // Continue with other initializations that might depend on the page structure
-        // (e.g., service worker, or other non-mobile-nav specific items)
-
-        /* ================================================================
-           FAB Horizontal Navigation Loading & Initialization
-           ================================================================= */
-        loadFabHorizontalNavigation().then(fabSuccess => {
-            if (fabSuccess) {
-                initializeFabHorizontalNavInteractions(); // Placeholder for now
-                // Language/theme update for FAB nav will be handled within initializeFabHorizontalNavInteractions
-                console.log('INFO:Main/FabNavInit: FAB Horizontal navigation loaded.');
-            } else {
-                console.error('ERROR:Main/FabNavInit: FAB Horizontal navigation failed to load.');
-            }
-
-            /* ================================================================
-               8) Service Worker Registration (Moved here to ensure it's one of the last things)
-               ================================================================= */
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register(`${ROOT_PATH}js/service-worker.js`)
-                        .then(reg => console.log('INFO:Main/ServiceWorker: Registered. Scope:', reg.scope))
-                        .catch(err => console.error('ERROR:Main/ServiceWorker: Registration failed:', err));
-                });
-            } else {
-                console.warn('WARN:Main/ServiceWorker: Not supported in this browser.');
-            }
-            console.log('INFO:Main/DOMContentLoaded: All core initializations complete (post mobile and FAB nav).');
-
-        }).catch(error => {
-            console.error("ERROR:Main/FabNavInit: General error during FAB horizontal navigation loading sequence:", error);
-        });
-
-
-    }).catch(error => {
-        console.error("ERROR:Main/MobileNavInit: General error during mobile navigation loading sequence:", error);
-        // Fallback or error handling for when mobile nav loading fails critically
-    });
-    */ // END OLD - loadMobileNavigation call and related logic
-
+    // /* OLD - loadMobileNavigation call and related logic
+    // loadMobileNavigation().then(success => {
+    //     if (success) {
+    //         initializeMobileNavInteractions();
+    //         // updateMobileNavStatus(); // OLD - Apply body padding if mobile nav is visible
+    //
+    //         // Ensure newly injected mobile nav is translated and themed
+    //         const mobileNavEl = document.querySelector('.mobile-nav');
+    //         const mobileServicesMenuEl = document.getElementById('mobile-services-menu');
+    //         if (mobileNavEl) updateNodeLanguageTexts(currentLanguage, mobileNavEl);
+    //         if (mobileServicesMenuEl) updateNodeLanguageTexts(currentLanguage, mobileServicesMenuEl);
+    //
+    //         setLanguageButtonVisuals(); // Update mobile language button text/ARIA
+    //         applyTheme(currentTheme);   // Update mobile theme button text/ARIA
+    //
+    //         console.log('INFO:Main/MobileNavInit: Mobile navigation loaded and initialized.');
+    //     } else {
+    //         console.error('ERROR:Main/MobileNavInit: Mobile navigation failed to load. Features relying on it may not work.');
+    //     }
+    //
+    //     // Continue with other initializations that might depend on the page structure
+    //     // (e.g., service worker, or other non-mobile-nav specific items)
+    //
+    //     /* ================================================================
+    //        FAB Horizontal Navigation Loading & Initialization
+    //        ================================================================= */
+    //     loadFabHorizontalNavigation().then(fabSuccess => {
+    //         if (fabSuccess) {
+    //             initializeFabHorizontalNavInteractions(); // Placeholder for now
+    //             // Language/theme update for FAB nav will be handled within initializeFabHorizontalNavInteractions
+    //             console.log('INFO:Main/FabNavInit: FAB Horizontal navigation loaded.');
+    //         } else {
+    //             console.error('ERROR:Main/FabNavInit: FAB Horizontal navigation failed to load.');
+    //         }
+    //
+    //         /* ================================================================
+    //            8) Service Worker Registration (Moved here to ensure it's one of the last things)
+    //            ================================================================= */
+    //         if ('serviceWorker' in navigator) {
+    //             window.addEventListener('load', () => {
+    //                 navigator.serviceWorker.register(`${ROOT_PATH}js/service-worker.js`)
+    //                     .then(reg => console.log('INFO:Main/ServiceWorker: Registered. Scope:', reg.scope))
+    //                     .catch(err => console.error('ERROR:Main/ServiceWorker: Registration failed:', err));
+    //             });
+    //         } else {
+    //             console.warn('WARN:Main/ServiceWorker: Not supported in this browser.');
+    //         }
+    //         console.log('INFO:Main/DOMContentLoaded: All core initializations complete (post mobile and FAB nav).');
+    //
+    //     }).catch(error => {
+    //         console.error("ERROR:Main/FabNavInit: General error during FAB horizontal navigation loading sequence:", error);
+    //     });
+    //
+    //
+    // }).catch(error => {
+    //     console.error("ERROR:Main/MobileNavInit: General error during mobile navigation loading sequence:", error);
+    //     // Fallback or error handling for when mobile nav loading fails critically
+    // });
+    // */ // END OLD - loadMobileNavigation call and related logic
     /* ================================================================
        FAB Horizontal Navigation - Load and Initialize (NEW Primary Mobile Nav)
        ================================================================= */
@@ -1008,17 +902,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const floatingIconsContainer = document.querySelector('.floating-icons');
         if (!floatingIconsContainer) {
             console.warn('WARN:Main/loadFabHorizontalNavigation: .floating-icons container not found. FAB button cannot be added.');
-            // We might still want to load the menu overlays if the placeholder for them exists or if appending to body.
-            // For now, let's consider this a critical failure for the whole FAB nav system.
             return false;
         }
-
-        // Placeholder for the NAV and Services Menu parts, if we still use one for them.
-        // Or, we can just append them to document.body directly.
-        // Let's remove the dependency on 'fab-nav-placeholder' for now for the menu parts.
-        // const fabNavOverlaysPlaceholder = document.getElementById('fab-nav-placeholder');
-
-        try {
+       try {
             const response = await fetch(`${ROOT_PATH}html/partials/fab_horizontal_nav.html`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch fab_horizontal_nav.html: ${response.statusText}`);
@@ -1030,7 +916,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error('Fetched fab_horizontal_nav.html is empty.');
             }
 
-            // Create a temporary container to parse the fragment
             const tempContainer = document.createElement('div');
             tempContainer.innerHTML = htmlFragmentText;
 
@@ -1059,44 +944,40 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.warn('WARN:Main/loadFabHorizontalNavigation: #horizontalServicesMenu not found in fetched HTML.');
             }
 
-            // If the old placeholder 'fab-nav-placeholder' is now unused, it could be removed from index.html later.
-            // For now, this new logic doesn't rely on it.
-
-            return true;
+           return true;
         } catch (error) {
             console.error(`ERROR:Main/loadFabHorizontalNavigation: ${error.message}`);
-            // Avoid writing to fabNavPlaceholder if it's not guaranteed to exist or be relevant.
             return false;
         }
     }
 
     function initializeFabHorizontalNavInteractions() {
         console.log('INFO:Main/initializeFabHorizontalNavInteractions: Initializing FAB horizontal nav interactions.');
-
         const fabToggle = document.getElementById('horizontalNavFab');
         const fabIcon = fabToggle ? fabToggle.querySelector('i') : null;
         const horizontalNav = document.getElementById('horizontalMobileNav');
         const servicesToggle = document.getElementById('horizontalServicesToggle');
         const servicesMenu = document.getElementById('horizontalServicesMenu');
-
+        console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: fabToggle:', fabToggle, 'fabIcon:', fabIcon, 'horizontalNav:', horizontalNav);
         if (!fabToggle || !fabIcon || !horizontalNav) {
             console.error('ERROR:Main/initializeFabHorizontalNavInteractions: Core FAB navigation elements not found. Interactions cannot be initialized.');
             return;
         }
 
-        // Main FAB click to toggle horizontal menu
         fabToggle.addEventListener('click', () => {
+            console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: #horizontalNavFab clicked.');
             const isNavActive = horizontalNav.classList.toggle('active');
             fabToggle.setAttribute('aria-expanded', isNavActive.toString());
             horizontalNav.setAttribute('aria-hidden', (!isNavActive).toString());
 
             if (isNavActive) {
+                console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: Nav FAB toggled to active. Changing icon to fa-times.');
                 fabIcon.classList.remove('fa-bars');
                 fabIcon.classList.add('fa-times');
             } else {
+                console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: Nav FAB toggled to inactive. Changing icon to fa-bars.');
                 fabIcon.classList.remove('fa-times');
                 fabIcon.classList.add('fa-bars');
-                // If services sub-menu is open, close it when main FAB nav closes
                 if (servicesMenu && servicesMenu.classList.contains('active')) {
                     servicesMenu.classList.remove('active');
                     if(servicesToggle) servicesToggle.setAttribute('aria-expanded', 'false');
@@ -1104,11 +985,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         });
-
-        // Services toggle button within the horizontal FAB nav
+          
         if (servicesToggle && servicesMenu) {
             servicesToggle.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent click from bubbling up to document click listener immediately
+                event.stopPropagation();
                 const isServicesActive = servicesMenu.classList.toggle('active');
                 servicesToggle.setAttribute('aria-expanded', isServicesActive.toString());
                 servicesMenu.setAttribute('aria-hidden', (!isServicesActive).toString());
@@ -1117,14 +997,11 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn('WARN:Main/initializeFabHorizontalNavInteractions: Services toggle or menu for FAB nav not found.');
         }
 
-        // Click outside to close functionality
         document.addEventListener('click', (event) => {
-            // Close horizontalMobileNav if click is outside it and the FAB itself
             if (horizontalNav.classList.contains('active') &&
                 !horizontalNav.contains(event.target) &&
                 !fabToggle.contains(event.target) &&
-                !servicesToggle.contains(event.target) /* Prevent closing if clicking services toggle while open */ ) {
-
+                !servicesToggle.contains(event.target) ) {
                 horizontalNav.classList.remove('active');
                 fabIcon.classList.remove('fa-times');
                 fabIcon.classList.add('fa-bars');
@@ -1137,86 +1014,52 @@ document.addEventListener("DOMContentLoaded", () => {
                     servicesMenu.setAttribute('aria-hidden', 'true');
                 }
             }
-            // Close horizontalServicesMenu if click is outside it and its toggle, but not inside main horizontalNav
+
             else if (servicesMenu && servicesMenu.classList.contains('active') &&
                 !servicesMenu.contains(event.target) &&
                 !servicesToggle.contains(event.target) &&
-                !horizontalNav.contains(event.target) /* Allow clicks inside main nav if services menu is open */ ) {
-
+                !horizontalNav.contains(event.target)  ) {
                 servicesMenu.classList.remove('active');
                 if(servicesToggle) servicesToggle.setAttribute('aria-expanded', 'false');
                 servicesMenu.setAttribute('aria-hidden', 'true');
             }
         });
 
-        // Initialize modal launchers within the new FAB nav
         const fabNavModalLaunchers = horizontalNav.querySelectorAll('[data-modal]');
         fabNavModalLaunchers.forEach(launcher => {
-            // Check if this specific launcher already has a listener from global modal init
-            // This is a simple check; a more robust way would be a flag or specific class.
-            // For now, we assume the global listener might cover some, but let's ensure these are interactive.
-            // The global listener `document.addEventListener('click', async (event) => { const trigger = event.target.closest('[data-modal]'); ...`
-            // should handle these. We just need to make sure the modals themselves are loaded/available.
-
-            // For service items within the horizontalServicesMenu
-            if (servicesMenu) {
-                const serviceModalLaunchers = servicesMenu.querySelectorAll('[data-modal]');
-                serviceModalLaunchers.forEach(serviceLauncher => {
-                    // These should also be covered by the global modal trigger listener.
-                    // No specific listeners needed here unless special behavior is required.
-                });
-            }
         });
         console.log('INFO:Main/initializeFabHorizontalNavInteractions: Event listeners for FAB nav and services menu set up.');
 
-        // Ensure new elements are translated
-        const fabNavHtmlElementsContainer = document.querySelector('#horizontalMobileNav'); // More specific
-        if (fabNavHtmlElementsContainer) { // Check if the main nav container exists
-             // Apply initial language to all children of horizontalMobileNav and horizontalServicesMenu
+        const fabNavHtmlElementsContainer = document.querySelector('#horizontalMobileNav');
+        if (fabNavHtmlElementsContainer) {
             updateNodeLanguageTexts(currentLanguage, fabNavHtmlElementsContainer);
-            if(servicesMenu) updateNodeLanguageTexts(currentLanguage, servicesMenu); // Translate services menu too
+            if(servicesMenu) updateNodeLanguageTexts(currentLanguage, servicesMenu);
         }
 
 
-        // Initialize Language Toggle in FAB Menu
         const fabLangToggle = document.getElementById('fabLanguageToggle');
+        console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: fabLangToggle found:', fabLangToggle);
         if (fabLangToggle) {
             fabLangToggle.addEventListener('click', () => {
-                window.masterToggleLanguage(); // Call global function
-                // Update button text/ARIA after language change (masterToggleLanguage calls setLanguageButtonVisuals)
-                // We need to ensure setLanguageButtonVisuals also updates this new button.
+                console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: #fabLanguageToggle clicked. Calling window.masterToggleLanguage().');
+                window.masterToggleLanguage();
             });
-            // Initial text/ARIA update for FAB language toggle will be handled by setLanguageButtonVisuals
-            // when it's called after masterToggleLanguage or during initial page load.
-            // We might need to explicitly call an update for this button here if setLanguageButtonVisuals isn't aware of it.
-            // For now, masterToggleLanguage should trigger the necessary global updates.
-            console.log('INFO:Main/initializeFabHorizontalNavInteractions: FAB Language toggle initialized.');
+            console.log('INFO:Main/initializeFabHorizontalNavInteractions: FAB Language toggle event listener attached.');
         } else {
             console.warn('WARN:Main/initializeFabHorizontalNavInteractions: FAB Language toggle not found.');
         }
 
-        // Initialize Theme Toggle in FAB Menu
         const fabThemeToggle = document.getElementById('fabThemeToggle');
+        console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: fabThemeToggle found:', fabThemeToggle);
         if (fabThemeToggle) {
             fabThemeToggle.addEventListener('click', () => {
-                window.masterToggleTheme(); // Call global function
-                // Update button text/ARIA after theme change (masterToggleTheme calls applyTheme)
-                // We need to ensure applyTheme also updates this new button.
+                console.log('DEBUG:Main/initializeFabHorizontalNavInteractions: #fabThemeToggle clicked. Calling window.masterToggl_eTheme().'); // Typo here
+                window.masterToggleTheme();
             });
-            // Initial text/ARIA update for FAB theme toggle will be handled by applyTheme.
-            console.log('INFO:Main/initializeFabHorizontalNavInteractions: FAB Theme toggle initialized.');
+            console.log('INFO:Main/initializeFabHorizontalNavInteractions: FAB Theme toggle event listener attached.');
         } else {
             console.warn('WARN:Main/initializeFabHorizontalNavInteractions: FAB Theme toggle not found.');
         }
-
-        // Call initial update for these buttons if necessary, though global functions should handle it.
-        // This ensures they reflect the current state when the FAB menu is first opened.
-        // The global setLanguageButtonVisuals and applyTheme should ideally be robust enough
-        // to find these new buttons if they are present in the DOM when those functions run.
-        // If not, we'll need to enhance those global functions.
-        // For now, we rely on the fact that these buttons are added to DOM before this JS runs.
-        // The initial translation of the FAB menu content is handled by updateNodeLanguageTexts above.
-        // The button states (text like "EN" or "Light") should be set by the global updaters.
     }
 
 });
@@ -1229,3 +1072,5 @@ document.addEventListener("DOMContentLoaded", () => {
 // `window.updateDynamicContentLanguage` is already exposed for dynamic content.
 // `window.masterToggleLanguage` and `window.masterToggleTheme` are already exposed.
 
+
+[end of js/pages/main.js]
