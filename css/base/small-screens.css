@@ -258,9 +258,11 @@
     border: none;
     font-size: 0.75rem; /* Text size from example */
     cursor: pointer;
-    padding: 0; /* Remove previous padding if any */
+    padding: 0; /* Override global.css padding */
     width: auto; /* Fit content */
+    min-width: initial; /* Override global.css min-width: 60px */
     text-align: center;
+    flex-shrink: 0; /* Prevent items from shrinking if container is too small */
   }
 
   .horiz-nav-item i {
