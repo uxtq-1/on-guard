@@ -185,14 +185,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Helper function to manage focusable children within a toggled container
+  function setFocusableChildren(container, isVisible) {
+    if (!container) return;
+    const focusableElements = container.querySelectorAll(
+      'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+    );
+    focusableElements.forEach(el => {
+      if (isVisible) {
+        const originalTabIndex = el.dataset.originalTabindex;
+        if (originalTabIndex) {
+          el.setAttribute('tabindex', originalTabIndex);
+          el.removeAttribute('data-original-tabindex');
+        } else {
+          // If there was no specific original tabindex, remove the one we might have set.
+          // This allows elements like <a> or <button> to revert to their default focusable state.
+          // Or if they had tabindex="-1" initially and should remain so (though query excludes this).
+          if (el.getAttribute('tabindex') === '-1' && !el.hasAttribute('data-original-tabindex')) {
+            // This case should ideally not be hit if the element was truly meant to be non-focusable permanently
+          } else {
+            el.removeAttribute('tabindex');
+          }
+        }
+      } else { // isVisible is false, so hide
+        const currentTabIndex = el.getAttribute('tabindex');
+        // Only store and change if not already -1
+        if (currentTabIndex !== '-1') {
+          if (currentTabIndex) { // Store if it's something like "0", "1", etc.
+            el.dataset.originalTabindex = currentTabIndex;
+          } else {
+            // If no tabindex attribute, it's focusable by default (e.g. <a>, <button>)
+            // We don't need to store 'undefined' but will set to -1.
+            // data-original-tabindex will remain unset for these.
+          }
+          el.setAttribute('tabindex', '-1');
+        }
+      }
+    });
+  }
+
   // FAB: Horizontal Nav Toggle
   const horizFab = document.getElementById('horizontalNavFab');
   const horizNav = document.getElementById('horizontalMobileNav');
   if (horizFab && horizNav) {
+    // Initialize focus state based on initial aria-hidden
+    setFocusableChildren(horizNav, horizNav.getAttribute('aria-hidden') === 'false');
+
     horizFab.addEventListener('click', () => {
       const isOpen = horizNav.classList.toggle('active');
       horizFab.setAttribute('aria-expanded', String(isOpen));
       horizNav.setAttribute('aria-hidden', String(!isOpen));
+      setFocusableChildren(horizNav, isOpen);
     });
   }
 
@@ -200,11 +243,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const servicesToggle = document.getElementById('horizontalServicesToggle');
   const servicesMenu = document.getElementById('horizontalServicesMenu');
   if (servicesToggle && servicesMenu) {
+    // Initialize focus state
+    setFocusableChildren(servicesMenu, servicesMenu.getAttribute('aria-hidden') === 'false');
+
     servicesToggle.addEventListener('click', () => {
-      const expanded = servicesToggle.getAttribute('aria-expanded') === 'true';
-      servicesToggle.setAttribute('aria-expanded', String(!expanded));
-      servicesMenu.setAttribute('aria-hidden', String(expanded));
+      const expanded = servicesToggle.getAttribute('aria-expanded') !== 'true'; // Check current state before toggle
+      servicesToggle.setAttribute('aria-expanded', String(expanded));
+      servicesMenu.setAttribute('aria-hidden', String(!expanded));
       servicesMenu.classList.toggle('active');
+      setFocusableChildren(servicesMenu, expanded);
+    });
+  }
+
+  // Mobile Services Sub-Menu Toggle (from mobile_nav.html)
+  const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+  const mobileServicesMenu = document.getElementById('mobile-services-menu');
+
+  if (mobileServicesToggle && mobileServicesMenu) {
+    // Initialize focus state
+    setFocusableChildren(mobileServicesMenu, mobileServicesMenu.getAttribute('aria-hidden') === 'false');
+
+    mobileServicesToggle.addEventListener('click', () => {
+      const isExpanded = mobileServicesToggle.getAttribute('aria-expanded') !== 'true';
+      mobileServicesToggle.setAttribute('aria-expanded', String(isExpanded));
+      mobileServicesMenu.setAttribute('aria-hidden', String(!isExpanded));
+      mobileServicesMenu.classList.toggle('active'); // Assuming 'active' class controls visibility
+      setFocusableChildren(mobileServicesMenu, isExpanded);
     });
   }
 

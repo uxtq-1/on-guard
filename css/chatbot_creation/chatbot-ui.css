@@ -145,6 +145,7 @@ body[data-theme="dark"] .recaptcha-placeholder-container {
 }
 
 .recaptcha-text {
+  -webkit-user-select: none; /* For Safari */
   user-select: none;
   font-weight: 500;
   line-height: 1.4;
