@@ -77,6 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (modal && !modal.classList.contains('active')) {
           modal.setAttribute('aria-hidden', 'true');
       }
+
+      // Apply current language to the newly loaded modal content
+      if (modal && typeof updateDynamicContentLanguage === 'function') {
+        updateDynamicContentLanguage(modal);
+      }
+
       attachModalClose(modal);
       return modal;
     } catch (err) {
