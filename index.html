@@ -1,201 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- ==================================================================
-       Document Metadata & External Resources
-       ================================================================== -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Ops Online Support offers cutting-edge remote business operations, contact center solutions, IT support, and professional staffing." data-en-content="Ops Online Support offers cutting-edge remote business operations, contact center solutions, IT support, and professional staffing." data-es-content="Ops Online Support ofrece operaciones empresariales remotas de vanguardia, soluciones de centro de contacto, soporte IT y personal profesional.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ops Online Support offers cutting-edge remote business operations, contact center solutions, IT support, and professional staffing.">
   <meta name="keywords" content="remote business operations, contact center, IT support, professional staffing, online support, OPS">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <!-- <meta http-equiv="X-Frame-Options" content="DENY"> --> <!-- Removed as it's not effective and replaced by CSP -->
-  <meta name="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://cdnjs.cloudflare.com https://www.gstatic.com https://www.google.com https://www.recaptcha.net;
+    style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+    font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+    connect-src 'self' https://your-worker.example.com https://firebase.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://www.google-analytics.com;
+    img-src 'self' data:;
+    frame-src 'self' https://www.google.com https://www.recaptcha.net;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    manifest-src 'self';
+    upgrade-insecure-requests;
+    block-all-mixed-content;
+  ">
   <link rel="canonical" href="https://www.opsonlinesupport.com/index.html" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://your-worker.example.com; frame-src 'self'; frame-ancestors 'none';">
   <title data-en="Ops Online Support - Remote Business & IT Solutions" data-es="Ops Online Soporte - Soluciones Empresariales y de IT Remotas">Ops Online Support - Remote Business & IT Solutions</title>
-  <!-- Base CSS -->
+
+  <!-- Base Styles -->
   <link rel="stylesheet" href="css/base/global.css">
-  <!-- Responsive Overrides -->
   <link rel="stylesheet" href="css/base/small-screens.css">
-  <!-- Specific Component CSS -->
-  <link rel="stylesheet" href="css/modals/contact_us_modal.css">
   <link rel="stylesheet" href="css/base/iframe-chat-wrapper.css">
+
+  <!-- Modals -->
+  <link rel="stylesheet" href="css/modals/contact_us_modal.css">
   <link rel="stylesheet" href="css/modals/join_us_modal.css">
   <link rel="stylesheet" href="css/modals/chatbot_modal.css">
-  <!-- Font Awesome Stylesheet -->
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha384-blOohCVdhjmtROpu8+CfTnUWham9nkX7P7OZQMst+RUnhtoY/9qemFAkIKOYxDI3" crossorigin="anonymous">
-  <!-- Manifest and Favicon -->
+
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <!-- <link rel="icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA"> -->
-  <!-- TODO: Add a real favicon.ico or favicon.png and link it here -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 
 <body>
-  <!-- ==================================================================
-       Header Section: Navigation & Toggle Buttons
-       ================================================================== -->
   <header>
     <nav class="desktop-nav">
       <ul>
         <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-        <li><a role="button" tabindex="0" data-modal="business-operations-service-modal" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
-        <li><a role="button" tabindex="0" data-modal="contact-center-service-modal" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-        <li><a role="button" tabindex="0" data-modal="it-support-service-modal" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-        <li><a role="button" tabindex="0" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+        <li><a role="button" data-modal="business-operations-service-modal">Business Operations</a></li>
+        <li><a role="button" data-modal="contact-center-service-modal">Contact Center</a></li>
+        <li><a role="button" data-modal="it-support-service-modal">IT Support</a></li>
+        <li><a role="button" data-modal="professionals-service-modal">Professionals</a></li>
       </ul>
     </nav>
     <div class="header-controls">
       <div class="toggle-container">
-        <button id="theme-toggle-desktop"
-                title="Toggle Theme"
-                data-en-label-dark="Switch to Dark Theme"
-                data-es-label-dark="Cambiar a Tema Oscuro"
-                data-en-label-light="Switch to Light Theme"
-                data-es-label-light="Cambiar a Tema Claro"
-                data-en-dark="Dark"
-                data-es-dark="Oscuro"
-                data-en-light="Light"
-                data-es-light="Claro">Light</button>
-        <button id="language-toggle-desktop" title="Switch Language"
-                data-en-label="Switch to Spanish"
-                data-es-label="Cambiar a Inglés">EN</button>
+        <button id="theme-toggle-desktop">Light</button>
+        <button id="language-toggle-desktop">EN</button>
       </div>
-      <button id="menu-open" class="header-menu-trigger"
-              aria-label="Open Main Menu" title="Open Menu"
-              data-en-label="Open Main Menu" data-es-label="Abrir Menú Principal"
-              data-en-title="Open Menu" data-es-title="Abrir Menú">
+      <button id="menu-open" class="header-menu-trigger" aria-label="Open Menu">
         <i class="fas fa-bars"></i>
       </button>
     </div>
   </header>
 
-  <!-- ==================================================================
-       Right Side Main Menu
-       ================================================================== -->
-  <aside id="rightSideMenu" class="right-side-menu" role="navigation" aria-labelledby="rightSideMenuTitle">
+  <aside id="rightSideMenu" class="right-side-menu" role="navigation">
     <div class="right-side-menu-header">
-      <h2 id="rightSideMenuTitle" class="sr-only">Main Menu</h2>
-      <button id="menu-close" aria-label="Close Main Menu" title="Close Menu"
-              data-en-label="Close Main Menu" data-es-label="Cerrar Menú Principal"
-              data-en-title="Close Menu" data-es-title="Cerrar Menú">
+      <h2 class="sr-only">Main Menu</h2>
+      <button id="menu-close" aria-label="Close Menu">
         <i class="fas fa-times"></i>
       </button>
     </div>
     <div class="right-side-menu-body">
       <nav class="right-side-menu-nav">
         <ul>
-          <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li class="services-trigger">
-            <button aria-expanded="false" aria-controls="servicesSubMenu">
-              <span data-en="Services" data-es="Servicios">Services</span>
-              <i class="fas fa-chevron-down" aria-hidden="true"></i>
-            </button>
+            <button aria-expanded="false" aria-controls="servicesSubMenu">Services <i class="fas fa-chevron-down"></i></button>
             <ul id="servicesSubMenu" class="sub-menu">
-              <li><a role="button" tabindex="0" data-modal="business-operations-service-modal" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
-              <li><a role="button" tabindex="0" data-modal="contact-center-service-modal" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-              <li><a role="button" tabindex="0" data-modal="it-support-service-modal" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-              <li><a role="button" tabindex="0" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
+              <li><a role="button" data-modal="business-operations-service-modal">Business Operations</a></li>
+              <li><a role="button" data-modal="contact-center-service-modal">Contact Center</a></li>
+              <li><a role="button" data-modal="it-support-service-modal">IT Support</a></li>
+              <li><a role="button" data-modal="professionals-service-modal">Professionals</a></li>
             </ul>
           </li>
-          <li><a href="html/about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="html/careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
-          <li><a href="html/blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
+          <li><a href="html/about.html">About Us</a></li>
+          <li><a href="html/careers.html">Careers</a></li>
+          <li><a href="html/blog.html">Blog</a></li>
         </ul>
       </nav>
     </div>
   </aside>
 
-  <!-- ==================================================================
-       Hero Section
-       ================================================================== -->
   <section class="hero">
-    <h2 data-en="Welcome to Ops Online Support" data-es="Bienvenido a Ops Online Support">Welcome to Ops Online Support</h2>
-    <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Impulsando soluciones remotas con estrategias innovadoras.">Empowering remote solutions with cutting-edge strategies.</p>
+    <h2>Welcome to Ops Online Support</h2>
+    <p>Empowering remote solutions with cutting-edge strategies.</p>
   </section>
 
-  <!-- ==================================================================
-       Services Preview Section
-       ================================================================== -->
   <section id="services-preview" class="services">
     <div class="service-item">
-      <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
-      <p data-en="Discover how we optimize your business processes." data-es="Descubre cómo optimizamos tus procesos empresariales.">Discover how we optimize your business processes.</p>
-      <button class="btn" data-modal="business-operations-service-modal" data-en="Learn More" data-es="Saber Más">Learn More</button>
+      <h3>Business Operations</h3>
+      <p>Discover how we optimize your business processes.</p>
+      <button class="btn" data-modal="business-operations-service-modal">Learn More</button>
     </div>
     <div class="service-item">
-      <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
-      <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejora la interacción con tus clientes con nuestras soluciones de contacto.">Enhance customer interactions with our contact solutions.</p>
-      <button class="btn" data-modal="contact-center-service-modal" data-en="Learn More" data-es="Saber Más">Learn More</button>
+      <h3>Contact Center</h3>
+      <p>Enhance customer interactions with our contact solutions.</p>
+      <button class="btn" data-modal="contact-center-service-modal">Learn More</button>
     </div>
     <div class="service-item">
-      <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
-      <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantiza operaciones de IT sin problemas con nuestro soporte experto.">Ensure seamless IT operations with our expert support.</p>
-      <button class="btn" data-modal="it-support-service-modal" data-en="Learn More" data-es="Saber Más">Learn More</button>
+      <h3>IT Support</h3>
+      <p>Ensure seamless IT operations with our expert support.</p>
+      <button class="btn" data-modal="it-support-service-modal">Learn More</button>
     </div>
     <div class="service-item">
-      <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
-      <p data-en="Access top-tier professionals for your business needs." data-es="Accede a profesionales de primer nivel para las necesidades de tu negocio.">Access top-tier professionals for your business needs.</p>
-      <button class="btn" data-modal="professionals-service-modal" data-en="Learn More" data-es="Saber Más">Learn More</button>
+      <h3>Professionals</h3>
+      <p>Access top-tier professionals for your business needs.</p>
+      <button class="btn" data-modal="professionals-service-modal">Learn More</button>
     </div>
   </section>
 
-  <!-- ==================================================================
-       Footer Section
-       ================================================================== -->
   <footer>
     <p>&copy; 2025 Ops Online Support. All rights reserved.</p>
-    <button id="footer-contact-us-button" class="btn" data-modal="contact-modal" data-en="Contact Us" data-es="Contáctenos">Contact Us</button>
+    <button id="footer-contact-us-button" class="btn" data-modal="contact-modal">Contact Us</button>
   </footer>
 
-  <!-- ==================================================================
-       Floating Icons
-       ================================================================== -->
   <div class="floating-icons">
-    <button class="floating-icon" data-modal="join-us-modal" aria-label="Join Us" title="Join Us" tabindex="0"
-            data-en-label="Join Us" data-es-label="Únete"
-            data-en-title="Join Us" data-es-title="Únete">
-      <i class="fas fa-user-plus"></i>
-    </button>
-    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us" title="Contact Us" tabindex="0"
-            data-en-label="Contact Us" data-es-label="Contáctanos"
-            data-en-title="Contact Us" data-es-title="Contáctanos">
-      <i class="fas fa-envelope-open-text"></i>
-    </button>
-    <button class="floating-icon" id="chatbot-fab-trigger" data-modal="chatbot-modal" aria-label="Open Chat" title="Open Chat" tabindex="0"
-            data-en-label="Open Chat" data-es-label="Abrir Chat"
-            data-en-title="Open Chat" data-es-title="Abrir Chat">
-      <i class="fas fa-comments"></i>
-    </button>
+    <button class="floating-icon" data-modal="join-us-modal" aria-label="Join Us"><i class="fas fa-user-plus"></i></button>
+    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us"><i class="fas fa-envelope-open-text"></i></button>
+    <button class="floating-icon" id="chatbot-fab-trigger" data-modal="chatbot-modal" aria-label="Open Chat"><i class="fas fa-comments"></i></button>
   </div>
 
-  <!-- ==================================================================
-       Contact Modal Placeholder
-       ================================================================== -->
+  <!-- Modal Placeholders -->
   <div id="contact-modal-placeholder"></div>
-
-  <!-- ==================================================================
-       Mobile Bottom Navigation & Services Menu (will be injected by JS) - OLD System - Placeholder Removed
-       ================================================================== -->
-  <!-- <div id="mobile-nav-placeholder"></div> --> <!-- OLD Placeholder Removed -->
-
-  <!-- ==================================================================
-       Modal Placeholders (for JS-injected modals)
-       ================================================================== -->
   <div id="join-us-modal-placeholder"></div>
   <div id="chatbot-modal-placeholder"></div>
   <div id="generic-service-modal-placeholder"></div>
 
-  <!-- Placeholder for FAB Horizontal Navigation - NO LONGER USED -->
-  <!-- <div id="fab-nav-placeholder"></div> -->
-
-  <!-- ==================================================================
-       JavaScript
-       ================================================================== -->
+  <!-- Main Scripts -->
   <script type="module" src="js/pages/main.js" defer></script>
   <script type="module" src="js/pages/contact_us.js" defer></script>
-   <script type="module" src="js/pages/join_us.js" defer></script>
+  <script type="module" src="js/pages/join_us.js" defer></script>
   <script type="module" src="js/pages/chatbot.js" defer></script>
 </body>
 </html>
