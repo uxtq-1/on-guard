@@ -208,13 +208,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let userInput = input.value.trim();
     if (!userInput) return;
 
-    const sanitizedUserMessage = sanitizeInput(userInput);
-    if (userInput !== sanitizedUserMessage) {
+    const { sanitized, flagged } = sanitizeInput(userInput);
+    if (userInput !== sanitized) {
         console.warn("Chatbot: User input was modified by sanitizer.");
-        // Decide if you want to inform the user or just use the sanitized version.
-        // For now, we'll use the sanitized version silently.
     }
-    userInput = sanitizedUserMessage; // Use the sanitized input
+    if (flagged) {
+        console.warn("Chatbot: user input flagged for potential sensitive content.");
+    }
+    userInput = sanitized; // Use the sanitized input
 
     addMessage(userInput, 'user');
     input.value = '';

@@ -77,7 +77,11 @@ function initializeContactModal(modalElement) {
 
         // Sanitize & collect
         for (const [key, value] of formData.entries()) {
-            data[key] = sanitizeInput(value);
+            const { sanitized, flagged } = sanitizeInput(value);
+            data[key] = sanitized;
+            if (flagged) {
+                console.warn(`sanitizeInput flagged input for field ${key}`);
+            }
         }
 
         // Required field validation
