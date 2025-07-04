@@ -207,6 +207,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Modals: Close Handler
   document.querySelectorAll('.modal-overlay').forEach(attachModalClose);
 
+  // Close active modal on Escape key press
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+    }
+  });
+
   // Sync saved theme
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark' || savedTheme === 'light') {

@@ -198,6 +198,14 @@ body[data-theme="dark"] #join-us-modal .form-section .edit-btn {
   background-color: darkgrey;
 }
 
+body[data-theme="dark"] #join-us-modal .close-modal {
+  color: #bbb;
+}
+
+body[data-theme="dark"] #join-us-modal .modal-footer .close-modal {
+  background-color: grey;
+}
+
 /* === Utility === */
 .hidden {
   display: none !important;
