@@ -49,7 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!modal) return;
     modal.addEventListener('click', (e) => {
       const target = e.target;
-      if (target.classList.contains('modal') || target.hasAttribute('data-close')) {
+      // Close when clicking backdrop or elements with data-close
+      if (target === modal || target.classList.contains('modal-overlay') ||
+          target.hasAttribute('data-close')) {
         modal.classList.remove('active');
       }
     });
@@ -203,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Modals: Close Handler
-  document.querySelectorAll('.modal').forEach(attachModalClose);
+  document.querySelectorAll('.modal-overlay').forEach(attachModalClose);
 
   // Sync saved theme
   const savedTheme = localStorage.getItem('theme');
