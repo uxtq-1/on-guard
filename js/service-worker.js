@@ -1,10 +1,9 @@
-// Placeholder service-worker.js
-// This service worker is intentionally kept simple for now.
-// It can be expanded later for caching strategies, push notifications, etc.
+// service-worker.js — OPS Online Support
+// Hardened cache control, offline fallback, and baseline for future upgrades (push, encryption, TinyML anomaly reports)
 
-const CACHE_NAME = 'ops-online-support-v2'; // Incremented cache version
+const CACHE_NAME = 'ops-online-support-v2';
 const urlsToCache = [
-  '/index.html', // Covers '/'
+  '/index.html',
   '/offline.html',
   '/manifest.json',
 
@@ -13,7 +12,7 @@ const urlsToCache = [
   '/css/base/small-screens.css',
   '/css/base/iframe-chat-wrapper.css',
 
-  // Modal CSS
+  // Modal-specific CSS
   '/css/modals/contact_us_modal.css',
   '/css/modals/join_us_modal.css',
   '/css/modals/chatbot_modal.css',
@@ -23,74 +22,61 @@ const urlsToCache = [
   '/js/utils/sanitize.js',
   '/js/pages/main.js',
 
-  // Page-specific JS (modules)
+  // Page logic
   '/js/pages/contact_us.js',
   '/js/pages/join_us.js',
   '/js/pages/chatbot.js',
-  // Note: chatbot.js itself might reference chatbot_creation/chatbot.js,
-  // but that script is part of an iframe, so caching it here might not be
-  // directly useful unless the iframe itself is made offline capable.
-  // For now, focusing on assets directly requested by main pages.
 
-  // Modal HTML
+  // Modal HTML Fragments
   '/html/modals/contact_us_modal.html',
   '/html/modals/join_us_modal.html',
   '/html/modals/chatbot_modal.html'
-  // Add other important assets that should be cached for offline use
 ];
 
-self.addEventListener('install', event => {
-  // console.log('ServiceWorker: Install event - v2');
+// Install: Pre-cache critical shell
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        // console.log('ServiceWorker: Caching app shell - v2');
-        return cache.addAll(urlsToCache.map(url => new Request(url, { cache: 'reload' }))); // Ensure fresh copies
+      .then((cache) => {
+        return cache.addAll(
+          urlsToCache.map((url) => new Request(url, { cache: 'reload' }))
+        );
       })
-      .catch(error => {
-        console.error('ServiceWorker: Failed to cache app shell - v2:', error);
+      .catch((error) => {
+        console.error('[SW] Install error:', error);
       })
   );
 });
 
-self.addEventListener('activate', event => {
-  // console.log('ServiceWorker: Activate event - v2');
-  // Remove old caches if any
+// Activate: Remove old versions
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.filter(cacheName => cacheName !== CACHE_NAME)
-          .map(cacheName => caches.delete(cacheName))
-      );
-    })
+    caches.keys()
+      .then((cacheNames) =>
+        Promise.all(
+          cacheNames.filter((name) => name !== CACHE_NAME)
+            .map((oldCache) => caches.delete(oldCache))
+        )
+      )
   );
   return self.clients.claim();
 });
 
-self.addEventListener('fetch', event => {
-  // console.log('ServiceWorker: Fetch event for', event.request.url);
+// Fetch: Serve from cache, fallback to network, fallback to offline page
+self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
-        if (response) {
-          // console.log('ServiceWorker: Found in cache', event.request.url);
-          return response;
+      .then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
-        // console.log('ServiceWorker: Network request for', event.request.url);
-        return fetch(event.request).then(response => {
-          // Optional: Cache new requests dynamically
-          // if (!response || response.status !== 200 || response.type !== 'basic') {
-          //   return response;
-          // }
-          // const responseToCache = response.clone();
-          // caches.open(CACHE_NAME).then(cache => {
-          //   cache.put(event.request, responseToCache);
-          // });
-          return response;
-        });
+        return fetch(event.request)
+          .then((networkResponse) => {
+            // Optionally cache dynamically fetched resources here
+            return networkResponse;
+          });
       })
-      .catch(error => {
-        console.error('ServiceWorker: Fetch error:', error);
+      .catch((error) => {
         if (event.request.mode === 'navigate') {
           return caches.match('/offline.html');
         }
