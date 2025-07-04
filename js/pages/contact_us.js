@@ -1,5 +1,5 @@
 // js/contact_us.js
-// Initializes the Contact Us modal and handles form submission.
+// Handles multilingual, secure contact form submission with modal management
 
 import { sanitizeInput } from '../utils/sanitize.js';
 
@@ -8,104 +8,93 @@ const I18N = {
         submissionUnavailable: 'Form submission is currently unavailable.',
         fillRequired: 'Please fill out all required fields.',
         honeypot: 'Your submission could not be processed at this time. Please try again later.',
-        success: 'Thank you for contacting us! We\u2019ll get back to you shortly.',
+        success: 'Thank you for contacting us! We’ll get back to you shortly.',
         error: 'There was a problem sending your message: {{err}}. Please try again later.'
     },
     es: {
-        submissionUnavailable: 'El env\u00edo del formulario no est\u00e1 disponible.',
+        submissionUnavailable: 'El envío del formulario no está disponible.',
         fillRequired: 'Por favor complete todos los campos requeridos.',
-        honeypot: 'No pudimos procesar su env\u00edo en este momento. Por favor intente nuevamente m\u00e1s tarde.',
-        success: '\u00a1Gracias por contactarnos! Nos pondremos en contacto pronto.',
-        error: 'Hubo un problema enviando su mensaje: {{err}}. Por favor intente nuevamente m\u00e1s tarde.'
+        honeypot: 'No pudimos procesar su envío en este momento. Por favor intente nuevamente más tarde.',
+        success: '¡Gracias por contactarnos! Nos pondremos en contacto pronto.',
+        error: 'Hubo un problema enviando su mensaje: {{err}}. Por favor intente nuevamente más tarde.'
     }
 };
 
 let currentLang = localStorage.getItem('language') || 'en';
 
 function t(key, replacements = {}) {
-    const str = (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
-    return str.replace('{{err}}', replacements.err || '');
+    const template = I18N[currentLang]?.[key] || I18N.en[key] || key;
+    return template.replace('{{err}}', replacements.err || '');
 }
 
-const langObserver = new MutationObserver(mutations => {
+// Reactively update language on <html lang> mutation
+new MutationObserver(mutations => {
     for (const m of mutations) {
         if (m.type === 'attributes' && m.attributeName === 'lang') {
             currentLang = document.documentElement.getAttribute('lang') || 'en';
         }
     }
-});
-langObserver.observe(document.documentElement, { attributes: true });
+}).observe(document.documentElement, { attributes: true });
 
 const workerUrl = window.CONTACT_WORKER_URL || "";
 
 function initializeContactModal(modalElement) {
-    if (!modalElement) {
-        console.error('ERROR:initializeContactModal: Modal element not provided.');
-        return;
-    }
-
+    if (!modalElement) return console.error('Modal not provided.');
     const contactForm = modalElement.querySelector('#contact-form');
-    if (!contactForm) {
-        console.error('ERROR:initializeContactModal: #contact-form not found.');
-        return;
-    }
+    if (!contactForm) return console.error('#contact-form not found.');
 
-    // Close buttons within the modal
-    modalElement.querySelectorAll('.close-modal[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            modalElement.classList.remove('active');
-        });
+    // Close modal on backdrop click or close button
+    modalElement.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => modalElement.classList.remove('active'));
+    });
+    modalElement.addEventListener('click', e => {
+        if (e.target === modalElement) modalElement.classList.remove('active');
     });
 
-    // Backdrop click closes the modal
-    modalElement.addEventListener('click', (e) => {
-        if (e.target === modalElement) {
-            modalElement.classList.remove('active');
-        }
-    });
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
 
-    const submitButton = contactForm.querySelector('button[type="submit"]');
-
+    // Handle worker not set
     if (!workerUrl) {
-        console.warn('Contact form submission disabled: workerUrl not configured.');
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.title = t('submissionUnavailable');
+        console.warn('Contact form disabled: workerUrl not configured.');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.title = t('submissionUnavailable');
         }
-        contactForm.addEventListener('submit', (event) => {
-            event.preventDefault();
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
             alert(t('submissionUnavailable'));
         });
         return;
     }
 
-    contactForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    // Submit handler
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
         const formData = new FormData(contactForm);
         const data = {};
-        let allRequiredFilled = true;
+        let allValid = true;
 
+        // Sanitize & collect
         for (const [key, value] of formData.entries()) {
             data[key] = sanitizeInput(value);
         }
 
-        const requiredFields = ['contact-name', 'contact-email', 'contact-number', 'contact-date', 'contact-time', 'contact-interest', 'contact-comments'];
-        requiredFields.forEach(fieldId => {
-            const inputElement = contactForm.querySelector(`#${fieldId}`);
-            if (inputElement && inputElement.required && !data[fieldId]) {
-                allRequiredFilled = false;
-            }
-        });
-
-        if (!allRequiredFilled) {
-            alert(t('fillRequired'));
-            return;
+        // Required field validation
+        const requiredFields = [
+            'contact-name', 'contact-email', 'contact-number',
+            'contact-date', 'contact-time', 'contact-interest', 'contact-comments'
+        ];
+        for (const fieldId of requiredFields) {
+            const field = contactForm.querySelector(`#${fieldId}`);
+            if (field?.required && !data[fieldId]) allValid = false;
         }
 
-        // Honeypot check
-        if (data['hp-field'] && data['hp-field'].trim() !== '') {
-            console.warn('WARN:ContactForm/submit: Honeypot field filled — likely bot.');
+        if (!allValid) return alert(t('fillRequired'));
+
+        // Honeypot protection
+        if (data['hp-field']?.trim()) {
+            console.warn('Honeypot triggered. Possible bot.');
             alert(t('honeypot'));
             return;
         }
@@ -114,40 +103,34 @@ function initializeContactModal(modalElement) {
         try {
             const response = await fetch(workerUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
 
             if (!response.ok) {
-                const errorData = await response.text();
-                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}. Worker message: ${errorData}`);
+                const errorMsg = await response.text();
+                throw new Error(`Worker error ${response.status}: ${response.statusText}. ${errorMsg}`);
             }
 
             alert(t('success'));
             contactForm.reset();
             modalElement.classList.remove('active');
-        } catch (error) {
-            console.error('ERROR:ContactForm/submit:', error);
-            alert(t('error', { err: error.message }));
+        } catch (err) {
+            console.error('Submit error:', err);
+            alert(t('error', { err: err.message }));
         }
     });
 
     if (typeof window.updateDynamicContentLanguage === 'function') {
         window.updateDynamicContentLanguage(modalElement);
     }
-
 }
 
 export { initializeContactModal };
 
-// Auto-initialize when modal is present directly in the DOM (e.g., contact_us_modal.html)
+// Auto-init if modal is present inline (non-placeholder injection)
 document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('contact-modal');
     const placeholder = document.getElementById('contact-modal-placeholder');
-    const directModal = document.getElementById('contact-modal');
-    if (directModal && !placeholder) {
-        initializeContactModal(directModal);
-    }
+    if (modal && !placeholder) initializeContactModal(modal);
 });
-
