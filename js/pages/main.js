@@ -60,6 +60,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Desktop Right Side Menu Toggle
+  const menuOpenBtn = document.getElementById('menu-open');
+  const menuCloseBtn = document.getElementById('menu-close');
+  const rightSideMenu = document.getElementById('rightSideMenu');
+  if (menuOpenBtn && menuCloseBtn && rightSideMenu) {
+    const openMenu = () => {
+      rightSideMenu.classList.add('active');
+      rightSideMenu.setAttribute('aria-hidden', 'false');
+      menuOpenBtn.setAttribute('aria-expanded', 'true');
+    };
+    const closeMenu = () => {
+      rightSideMenu.classList.remove('active');
+      rightSideMenu.setAttribute('aria-hidden', 'true');
+      menuOpenBtn.setAttribute('aria-expanded', 'false');
+    };
+    menuOpenBtn.addEventListener('click', openMenu);
+    menuCloseBtn.addEventListener('click', closeMenu);
+  }
+
+  // Desktop Services Submenu Toggle
+  const deskServicesBtn = document.querySelector('#rightSideMenu .services-trigger > button');
+  const deskServicesMenu = document.querySelector('#rightSideMenu #servicesSubMenu');
+  if (deskServicesBtn && deskServicesMenu) {
+    deskServicesBtn.addEventListener('click', () => {
+      const expanded = deskServicesBtn.getAttribute('aria-expanded') === 'true';
+      deskServicesBtn.setAttribute('aria-expanded', String(!expanded));
+      deskServicesMenu.classList.toggle('active');
+    });
+  }
+
   // Modals: Open Handler
   document.querySelectorAll('[data-modal]').forEach(button => {
     const modalId = button.getAttribute('data-modal');
