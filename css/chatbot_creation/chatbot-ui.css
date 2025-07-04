@@ -1,123 +1,168 @@
 /* css/chatbot_creation/chatbot-ui.css */
-/* Styles for the chat log, messages, form, input, and button */
+/* Styles for the chat log, messages, input, button, and human check */
 
+/* Chat Log Area */
 .chat-log {
-    flex-grow: 1;
-    padding: 10px;
-    overflow-y: auto;
-    background-color: ghostwhite;
-    border-bottom: 1px solid #ccc;
-}
-body[data-theme="dark"] .chat-log {
-    background-color: #333;
-    border-bottom-color: #555;
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: ghostwhite;
+  border-bottom: 1px solid #ccc;
+  font-size: 0.95rem;
+  scroll-behavior: smooth;
 }
 
+body[data-theme="dark"] .chat-log {
+  background-color: #333;
+  border-bottom-color: #555;
+}
+
+/* Message Bubbles */
 .message {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 15px;
-    line-height: 1.4;
-    max-width: 80%;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 15px;
+  line-height: 1.4;
+  max-width: 80%;
+  word-wrap: break-word;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .user-message {
-    background-color: #007bff;
-    color: white;
-    margin-left: auto;
-    border-bottom-right-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 5px;
 }
+
 body[data-theme="dark"] .user-message {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .bot-message {
-    background-color: #e9ecef;
-    color: #333;
-    margin-right: auto;
-    border-bottom-left-radius: 5px;
+  background-color: #e9ecef;
+  color: #333;
+  margin-right: auto;
+  border-bottom-left-radius: 5px;
 }
+
 body[data-theme="dark"] .bot-message {
-    background-color: #555;
-    color: #eee;
+  background-color: #555;
+  color: #eee;
 }
 
+/* Chat Input Form */
 .chat-form {
-    display: flex;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-top: 1px solid #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #ccc;
+  gap: 8px;
 }
+
 body[data-theme="dark"] .chat-form {
-    background-color: #2a2a2a;
-    border-top-color: #555;
+  background-color: #2a2a2a;
+  border-top-color: #555;
 }
 
+/* Text Input */
 #chat-input {
-    flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    margin-right: 10px;
-    background-color: ghostwhite;
-    color: #333;
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin-right: 10px;
+  background-color: ghostwhite;
+  color: #333;
+  font-size: 0.95rem;
 }
+
 body[data-theme="dark"] #chat-input {
-    background-color: #444;
-    color: #eee;
-    border-color: #666;
+  background-color: #444;
+  color: #eee;
+  border-color: #666;
 }
 
+/* Send Button */
 #chat-send-button {
-    padding: 10px 15px;
-    background-color: lemonchiffon;
-    color: #333;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  padding: 10px 15px;
+  background-color: lemonchiffon;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
 }
+
 #chat-send-button:hover {
-    background-color: gold;
+  background-color: gold;
 }
+
 body[data-theme="dark"] #chat-send-button {
-    background-color: #FFEC8B;
-    color: #222;
+  background-color: #FFEC8B;
+  color: #222;
 }
+
 body[data-theme="dark"] #chat-send-button:hover {
-    background-color: #EEDC82;
+  background-color: #EEDC82;
 }
 
-/* Honeypot field - already styled globally in global.css, but can add specifics if needed */
+/* Honeypot field (hidden anti-spam trap) */
 .ops-chatbot-honeypot-field {
-    /* display: none !important; */
+  display: none !important;
 }
 
-/* Basic styling for the reCAPTCHA placeholder */
+/* Human Verification (checkbox placeholder) */
 .recaptcha-placeholder-container {
-    display: flex;
-    align-items: center;
-    flex-basis: 100%; /* Take full width to push input/button to next line */
-    margin-bottom: 10px; /* Add some space below it */
-    padding: 5px;
-    font-size: 0.9em;
-    border: 1px dashed #aaa;
-    border-radius: 4px;
+  display: flex;
+  align-items: center;
+  flex-basis: 100%;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  font-size: 0.9em;
+  border: 1px dashed #aaa;
+  border-radius: 4px;
+  background-color: #fafafa;
 }
+
 body[data-theme="dark"] .recaptcha-placeholder-container {
-    border-color: #666;
+  border-color: #666;
+  background-color: #2e2e2e;
 }
 
 .recaptcha-label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
 }
 
 #human-verification-checkbox {
-    margin-right: 5px;
+  margin-right: 5px;
+  transform: scale(1.2);
 }
 
 .recaptcha-text {
-    user-select: none;
+  user-select: none;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Responsive Fixes */
+@media (max-width: 480px) {
+  .chat-form {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #chat-input {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  #chat-send-button {
+    width: 100%;
+  }
 }
