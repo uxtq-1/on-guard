@@ -8,7 +8,6 @@
   --text-color-light-theme: #333333;
   --text-color-dark-theme: #e0e0e0; /* Light grey from user's new base */
   --font-family: 'Segoe UI', sans-serif; /* User's preferred font */
-
   /* Define color scheme based on theme */
   --bg-current: var(--bg-light);
   --text-current: var(--text-color-light-theme);
@@ -147,7 +146,6 @@ body[data-theme="dark"] .toggle-container button {
     color: var(--button-text-current);
 }
 
-
 .hero {
   text-align: center;
   padding: 4rem 1rem; /* User's padding */
@@ -188,7 +186,6 @@ body[data-theme="dark"] .services {
   background-color: #121212; /* User's dark services bg */
 }
 
-
 .service-item {
   background: var(--service-item-bg-current); /* Was transparent, now themed */
   border: 2px solid var(--primary-color); /* User: currentColor, now primary, themed for dark */
@@ -212,7 +209,6 @@ body[data-theme="dark"] .service-item h3 {
     color: var(--link-color-current);
 }
 
-
 .service-item p {
   margin-bottom: 1rem; /* User's margin */
 }
@@ -233,7 +229,6 @@ body[data-theme="dark"] .service-item .btn {
     background-color: var(--link-color-current);
     color: var(--bg-dark);
 }
-
 
 footer {
   background-color: var(--footer-bg-current); /* User: #7e69ab, now themed */
@@ -287,7 +282,6 @@ body[data-theme="dark"] .modal-content { /* User specific dark modal content */
     box-shadow: 0 8px 40px rgba(255,255,255,0.1); /* User's dark shadow */
 }
 
-
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -299,7 +293,6 @@ body[data-theme="dark"] .modal-content { /* User specific dark modal content */
 body[data-theme="dark"] .modal-header {
     color: var(--text-color-dark-theme); /* Ensure contrast if primary-color doesn't change enough */
 }
-
 
 .modal-header h3 {
     margin: 0;
@@ -321,7 +314,6 @@ body[data-theme="dark"] .close-modal {
     color: var(--text-color-dark-theme);
 }
 
-
 .modal-body {
   padding: 1rem; /* From user CSS */
   -ms-flex-positive: 1; /* IE 10 */
@@ -337,7 +329,6 @@ body[data-theme="dark"] .close-modal {
   gap: 1rem;
 }
 
-
 .form-cell { /* Used by ContactUs form in index.html */
     display: -ms-flexbox; /* IE 10 */
     display: flex;
@@ -350,7 +341,6 @@ body[data-theme="dark"] .close-modal {
     font-weight: bold;
     color: var(--text-current);
 }
-
 
 .modal-body input[type="text"],
 .modal-body input[type="email"],
@@ -404,7 +394,6 @@ body[data-theme="dark"] .submit-button:hover {
     opacity: 0.8;
 }
 
-
 /* ==================================================================
    Floating Action Buttons (FABs) Styles (From user CSS, themed)
    ================================================================== */
@@ -445,7 +434,6 @@ body[data-theme="dark"] .floating-icon:hover {
   background-color: #7e69ab;
 }
 
-
 /* ==================================================================
    Accessibility & Utilities
    ================================================================== */
@@ -461,7 +449,6 @@ body[data-theme="dark"] select:focus,
 body[data-theme="dark"] [tabindex]:focus {
     outline-color: var(--button-bg-current);
 }
-
 
 .sr-only {
   position: absolute;
@@ -578,7 +565,6 @@ body[data-theme="dark"] [tabindex]:focus {
     border-bottom: none;
 }
 
-
 .right-side-menu-nav ul li > button {
     display: flex;
     justify-content: space-between;
@@ -595,7 +581,6 @@ body[data-theme="dark"] .right-side-menu-nav ul li > button:hover {
     background-color: rgba(255,255,255,0.05);
 }
 
-
 .right-side-menu-nav .sub-menu {
     list-style: none;
     padding-left: 1.5rem;
@@ -608,7 +593,6 @@ body[data-theme="dark"] .right-side-menu-nav ul li > button:hover {
 body[data-theme="dark"] .right-side-menu-nav .sub-menu {
     background-color: rgba(255,255,255,0.03);
 }
-
 
 .right-side-menu-nav .sub-menu.open {
     max-height: 500px;
@@ -623,7 +607,6 @@ body[data-theme="dark"] .right-side-menu-nav .sub-menu {
 .right-side-menu-nav .sub-menu li:last-child a {
     padding-bottom: 0.6rem;
 }
-
 
 .services-trigger button .fa-chevron-down {
     transition: transform 0.3s ease-in-out;
@@ -662,7 +645,6 @@ body[data-theme="dark"] .right-side-menu-toggles button {
   color: var(--button-text-current);
   border-color: var(--border-color-current);
 }
-
 
 /* Media query from user's global CSS for hiding mobile nav on desktop */
 /* This rule ensures that mobile navigation elements defined in index.html's specific mobile nav
