@@ -124,6 +124,54 @@ body[data-theme="dark"] .toggle-container button {
   color: var(--button-text-current);
 }
 
+/* Right Side Menu */
+.right-side-menu {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 280px;
+  height: 100%;
+  background-color: var(--bg-current);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  transition: right 0.3s ease-in-out;
+  z-index: 2000;
+}
+
+.right-side-menu.active {
+  right: 0;
+}
+
+.right-side-menu-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color-current);
+}
+
+.right-side-menu-body {
+  padding: 1rem;
+}
+
+.right-side-menu-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.right-side-menu-nav li {
+  margin-bottom: 0.5rem;
+}
+
+.right-side-menu-nav .sub-menu {
+  list-style: none;
+  padding-left: 1rem;
+  display: none;
+}
+
+.right-side-menu-nav .sub-menu.active {
+  display: block;
+}
+
 /* Hero Section */
 .hero {
   text-align: center;
