@@ -171,6 +171,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     */ // END OLD - initializeMobileNavInteractions
 
+    // START: MODIFIED FOR STEP 3 - Ensure mobile-services-toggle functionality
+    // Mobile Services Menu Toggle (for the old mobile_nav.html's bottom nav menu)
+    const mobileServicesToggle = document.getElementById('mobile-services-toggle');
+    const mobileServicesMenu = document.getElementById('mobile-services-menu');
+
+    if (mobileServicesToggle && mobileServicesMenu) {
+        mobileServicesToggle.addEventListener('click', () => {
+            const isOpen = mobileServicesMenu.classList.toggle('active');
+            mobileServicesToggle.setAttribute('aria-expanded', isOpen.toString());
+            mobileServicesMenu.setAttribute('aria-hidden', (!isOpen).toString());
+        });
+
+        // Optional: Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (mobileServicesMenu.classList.contains('active')) {
+                if (!mobileServicesMenu.contains(event.target) && !mobileServicesToggle.contains(event.target)) {
+                    mobileServicesMenu.classList.remove('active');
+                    mobileServicesToggle.setAttribute('aria-expanded', 'false');
+                    mobileServicesMenu.setAttribute('aria-hidden', 'true');
+                }
+            }
+        });
+    } else {
+        // console.warn('WARN:Main/MobileServicesToggle: Mobile services toggle or menu not found (mobile_nav.html).');
+        // This warning might appear on pages not using mobile_nav.html, which is fine.
+    }
+    // END: MODIFIED FOR STEP 3
+
     // Dynamically set the Home link in the rightSideMenu
     const homeLinkRightSideMenu = document.querySelector("#rightSideMenu .right-side-menu-nav a[href='../index.html']");
     if (homeLinkRightSideMenu) {
