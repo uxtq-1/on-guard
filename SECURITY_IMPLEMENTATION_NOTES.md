@@ -18,8 +18,8 @@ CSP has been implemented via `<meta http-equiv="Content-Security-Policy" ...>` t
 
 *   **Main Pages (`index.html`, `about.html`, etc.)**:
     *   `default-src 'self'`: Restricts loading of resources to the same origin by default.
-    *   `script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com`: Allows scripts from self, inline scripts (due to theme/language toggling and dynamic content loading by `main.js`), and Font Awesome's CDN.
-    *   `style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com`: Allows stylesheets from self, inline styles (used for theming and potentially by JS for dynamic styling), and Font Awesome's CDN.
+*   `script-src 'self' https://cdnjs.cloudflare.com`: Allows scripts from self and Font Awesome's CDN.
+*   `style-src 'self' https://cdnjs.cloudflare.com`: Allows stylesheets from self and Font Awesome's CDN.
     *   `img-src 'self' data:`: Allows images from self and data URIs.
     *   `font-src 'self' https://cdnjs.cloudflare.com`: Allows fonts from self and Font Awesome's CDN.
     *   `connect-src 'self' https://your-worker.example.com`: Allows connections to self (for fetching partials) and the specified placeholder for the Cloudflare contact form worker (HTTPS enforced). **Note:** `https://your-worker.example.com` should be replaced with the actual worker URL.
@@ -28,23 +28,23 @@ CSP has been implemented via `<meta http-equiv="Content-Security-Policy" ...>` t
 *   **Chatbot Widget (`html/chatbot_creation/chatbot-widget.html`)**:
     *   `default-src 'self'`: Restricts loading of resources to the same origin by default.
     *   `script-src 'self' https://www.google.com https://www.gstatic.com`: Allows scripts from self and Google's domains for reCAPTCHA.
-    *   `style-src 'self' 'unsafe-inline'`: Allows stylesheets from self and inline styles.
+*   `style-src 'self'`: Allows stylesheets from self.
     *   `img-src 'self' data:`: Allows images from self and data URIs.
     *   `font-src 'self'`: Allows fonts from self.
     *   `frame-src 'self' https://www.google.com`: Allows iframes from self and Google for reCAPTCHA.
 
 *   **Offline Page (`offline.html`)**:
     *   `default-src 'self'`: Restricts loading of resources to the same origin.
-    *   `style-src 'self' 'unsafe-inline'`: Allows stylesheets from self and inline styles.
+*   `style-src 'self'`: Allows stylesheets from self.
     *   `img-src 'self' data:`: Allows images from self and data URIs.
 
-**Note on `'unsafe-inline'`**: While `'unsafe-inline'` reduces some CSP benefits, it was deemed necessary for current functionality related to dynamic theme/language switching and potentially some JavaScript-driven style manipulations. Future work could involve refactoring to eliminate this need.
+**Note**: Previous versions relied on `'unsafe-inline'` for dynamic styling. Inline styles have been eliminated, so the CSP no longer includes this directive.
 
 ## 3. Cross-Origin Resource Sharing (CORS)
 
 *   CORS is primarily a server-side/hosting configuration concern for a static site.
 *   The Font Awesome CDN and Google reCAPTCHA services are expected to have appropriate CORS headers.
-*   **Action Required**: The Cloudflare Worker (`https://your-worker.example.com`) used by the contact form (`js/pages/contact_us.js`) **must** be configured with appropriate CORS headers to allow `POST` requests from the domain where this static site is hosted.
+*   **Action Required**: Configure the Cloudflare Worker (`https://your-worker.example.com`) with CORS headers such as `Access-Control-Allow-Origin: https://www.opsonlinesupport.com` and `Access-Control-Allow-Methods: POST` so that the contact form can send requests securely.
 
 ## 4. PCI DSS, NIST 800, CISA Alignment (Client-Side Best Practices)
 
@@ -74,7 +74,7 @@ Full compliance requires comprehensive measures beyond client-side code. The fol
 
 ## 5. Areas for Further Improvement (Beyond Current Scope)
 
-*   **Eliminate `'unsafe-inline'` from CSP**: Refactor JavaScript and CSS to remove reliance on inline scripts and styles for an even stronger CSP.
+*   **Maintain strict CSP**: Inline styles have been removed; ensure future changes do not reintroduce `'unsafe-inline'`.
 *   **Server-Side Security**: Robust security measures at the Cloudflare Worker (input validation, sanitization, authentication, rate limiting, logging) and at the hosting provider level are critical for full compliance with standards like PCI DSS, NIST 800, and CISA.
 *   **Vulnerability Scanning & Penetration Testing**: Regular security assessments of the live application and infrastructure.
 *   **User Training & Policies**: For handling any PII received through the forms.
