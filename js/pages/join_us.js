@@ -9,6 +9,14 @@ function initializeJoinUsModal(modalElement) {
     const joinForm = modalElement.querySelector('#join-us-form-modal');
     if (!joinForm) return console.error("ERROR:join_us: #join-us-form-modal not found.");
 
+    // Close modal on [data-close] elements or overlay click
+    modalElement.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => modalElement.classList.remove('active'));
+    });
+    modalElement.addEventListener('click', e => {
+        if (e.target === modalElement) modalElement.classList.remove('active');
+    });
+
     joinForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(joinForm);
@@ -115,3 +123,10 @@ function initializeJoinUsModal(modalElement) {
 }
 
 export { initializeJoinUsModal };
+
+// Auto-init if modal is present inline without placeholder injection
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('join-us-modal');
+    const placeholder = document.getElementById('join-us-modal-placeholder');
+    if (modal && !placeholder) initializeJoinUsModal(modal);
+});
