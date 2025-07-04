@@ -251,12 +251,190 @@
     }
 
     /* Ensure desktop styles hide mobile nav specific elements */
+
+    /* ================================================================
+       FAB Horizontal Navigation Styles
+       ================================================================= */
+    /* #horizontalNavFab is now part of .floating-icons, so it inherits positioning from there.
+       We only define its appearance and any necessary margins if .floating-icons uses gap. */
+    #horizontalNavFab {
+        /* position: fixed; REMOVED - Handled by .floating-icons parent */
+        /* bottom: 20px; REMOVED */
+        /* right: 20px; REMOVED */
+        width: 60px; /* Retain size */
+        height: 60px; /* Retain size */
+        border-radius: 50%;
+        background-color: var(--primary-color, #007bff);
+        color: var(--white-color, #fff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        /* z-index might be managed by .floating-icons or individually if needed.
+           If .floating-icons has a z-index, this specific one might not be necessary
+           unless it needs to be above other items within .floating-icons, which is unlikely.
+           Let's assume .floating-icons container handles overall z-index for the group. */
+        /* z-index: 1005; */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        border: none;
+        cursor: pointer;
+        /* If .floating-icons is a flex container with 'column' direction and uses 'gap',
+           no specific margin might be needed. If not, add margin-top if it's not the first item.
+           Example: margin-top: 10px; (if needed for spacing within .floating-icons) */
+    }
+
+    #horizontalMobileNav {
+        position: fixed;
+        /* Adjust 'bottom' and 'right' based on the FAB's new position within .floating-icons.
+           This is tricky because .floating-icons could be anywhere.
+           Let's assume .floating-icons is bottom-right.
+           The Nav FAB will be one of the items. If it's the last, its 'bottom' will be ~20px from viewport edge.
+           If there are other FABs below it, its 'bottom' will be higher.
+           For now, let's keep bottom: 20px; right: 90px; and see.
+           This might need dynamic calculation in JS or more specific CSS if .floating-icons group varies a lot.
+           A common pattern is that .floating-icons itself is fixed bottom-right, and items stack up.
+           If horizontalNavFab is the *topmost* in a visual stack of FABs at bottom-right:
+           - its bottom edge is higher.
+           - The horizontalMobileNav should align with *this* FAB.
+           Simplest for now: keep original fixed positioning relative to viewport, assuming FAB is roughly bottom:20, right:20.
+        */
+        bottom: 20px; /* Align with the typical bottom of the FAB group */
+        right: 90px; /* To the left of typical FAB group right edge (FAB width 60 + gap 10 + container right offset 20) */
+        display: flex;
+        flex-direction: row-reverse; /* Items appear right to left */
+        gap: 10px;
+        background: var(--bg-current, #fff);
+        color: var(--text-current, #333);
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        z-index: 1004; /* Below FAB, above other content */
+        transform: translateX(calc(100% + 30px)); /* Start off-screen (its own width + gap + some buffer) */
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s 0.3s;
+    }
+
+    #horizontalMobileNav.active {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s 0s;
+    }
+
+    .horiz-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: inherit; /* Inherit from #horizontalMobileNav */
+        background: none;
+        border: none;
+        font-size: 0.75rem; /* Text below icon */
+        cursor: pointer;
+        padding: 0.2rem;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    .horiz-nav-item i {
+        font-size: 1.4rem; /* Icon size */
+        margin-bottom: 3px;
+    }
+    .horiz-nav-item span {
+        font-size: 0.7rem; /* Text size */
+    }
+
+    /* Services Sub-Menu for FAB Horizontal Nav */
+    #horizontalServicesMenu {
+        position: fixed;
+        bottom: calc(20px + 60px + 10px); /* FAB bottom + FAB height + gap: approx 90px */
+        right: 20px; /* Align with FAB's right edge */
+        background: var(--bg-current, #fff);
+        color: var(--text-current, #333);
+        border: 1px solid var(--border-color-current, #ccc);
+        padding: 1rem;
+        z-index: 1003; /* Below main horizontal nav items */
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        transform: translateY(calc(100% + 20px)); /* Start off-screen below its final position */
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s 0.3s;
+        min-width: 200px; /* Ensure it has some width */
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+
+    #horizontalServicesMenu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+        transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s 0s;
+    }
+
+    #horizontalServicesMenu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #horizontalServicesMenu li {
+        margin-bottom: 0;
+    }
+     #horizontalServicesMenu li a.horiz-service-item {
+        display: block;
+        padding: 0.6rem 0.5rem;
+        text-decoration: none;
+        color: inherit;
+        font-size: 0.9rem;
+        border-bottom: 1px solid var(--border-light-current, #eee);
+    }
+    #horizontalServicesMenu li:last-child a.horiz-service-item {
+        border-bottom: none;
+    }
+    #horizontalServicesMenu li a.horiz-service-item:hover {
+        background-color: var(--hover-bg-current, #f0f0f0);
+    }
+
+    /* Dark Mode for FAB Horizontal Navigation */
+    body[data-theme="dark"] #horizontalNavFab {
+        background-color: #333; /* Example dark FAB background */
+        color: var(--primary-color, #007bff); /* Example dark FAB icon color */
+    }
+    body[data-theme="dark"] #horizontalMobileNav,
+    body[data-theme="dark"] #horizontalServicesMenu {
+        background: #222;
+        color: #eee;
+        border-color: #444;
+    }
+    body[data-theme="dark"] #horizontalServicesMenu li a.horiz-service-item {
+        border-bottom-color: #444;
+    }
+    body[data-theme="dark"] #horizontalServicesMenu li a.horiz-service-item:hover {
+        background-color: #333;
+    }
+
+    /* Temporarily Hide Old Mobile Navigation System */
+    .mobile-nav,
+    #mobile-services-menu {
+        display: none !important;
+    }
+    body.mobile-nav-active { /* Reset padding effect from old nav */
+        padding-bottom: 0 !important;
+    }
+
+
 } /* End of @media (max-width: 768px) */
 
 /* Rule to hide mobile nav on larger screens (from user example) */
 @media screen and (min-width: 769px) {
   .mobile-nav,
-  #mobile-services-menu { /* Target by ID for services menu */
+  #mobile-services-menu, /* Target by ID for services menu */
+  #horizontalNavFab,
+  #horizontalMobileNav,
+  #horizontalServicesMenu {
     display: none !important; /* Ensure it's hidden */
   }
   /* Remove body padding if it was added */
