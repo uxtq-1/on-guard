@@ -502,79 +502,85 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.appendChild(placeholder);
         }
 
-        const isGenericServiceModal = modalId === 'generic-service-modal';
-        let loadShell = true;
-        if (isGenericServiceModal) {
-            const existingShell = document.getElementById('generic-service-modal');
-            if (placeholder.contains(existingShell)) {
-            } else {
-                 placeholder.innerHTML = '';
-            }
-            if (loadedModalHTML[modalId] && placeholder.innerHTML.includes(`id="${modalId}"`)) {
-                 loadShell = false;
-            } else {
-                placeholder.innerHTML = '';
-            }
+        // Determine if this is for the generic service modal shell or a specific instance of it.
+        // The actual modal ID in the DOM will always be 'generic-service-modal' for these.
+        const isForGenericServiceShell = modalId === 'generic-service-modal' || serviceModalDetails[modalId];
+        const actualDomModalId = isForGenericServiceShell ? 'generic-service-modal' : modalId;
+        let targetModalElement = document.getElementById(actualDomModalId);
 
-        } else if (loadedModalHTML[modalId] && placeholder.innerHTML.includes(`id="${modalId}"`)) {
-            loadShell = false;
-        } else {
-            placeholder.innerHTML = '';
-        }
-
-
-        if (loadShell) {
+        // Load shell if it's not already in the placeholder
+        if (!targetModalElement || !placeholder.contains(targetModalElement)) {
             try {
-                const response = await fetch(modalFile);
+                const response = await fetch(modalFile); // modalFile is generic_service_modal.html for service modals
                 if (!response.ok) {
-                    console.error(`ERROR:Main/loadModalContent: Fetch failed with status ${response.status} for ${response.url}`);
+                    console.error(`ERROR:Main/loadModalContent: Fetch failed for ${modalFile}: ${response.statusText}`);
                     throw new Error(`Failed to fetch ${modalFile}: ${response.statusText}`);
                 }
                 const html = await response.text();
-                if (!isGenericServiceModal) {
-                    loadedModalHTML[modalId] = html;
-                }
+                // Replace placeholder content entirely to avoid duplicate shells
                 placeholder.innerHTML = html;
+                targetModalElement = document.getElementById(actualDomModalId); // Re-select after innerHTML change
+                if (!targetModalElement) {
+                    throw new Error(`Modal element #${actualDomModalId} not found in fetched HTML from ${modalFile}`);
+                }
+                if (!isForGenericServiceShell) {
+                    loadedModalHTML[actualDomModalId] = true; // Mark non-generic modals as loaded
+                }
             } catch (error) {
-                console.error(`ERROR:Main/loadModalContent: Could not load modal content for ${modalId}:`, error);
+                console.error(`ERROR:Main/loadModalContent: Could not load modal HTML for ${actualDomModalId}:`, error);
                 placeholder.innerHTML = `<p>Error loading modal structure. Please try again later.</p>`;
                 return null;
             }
-        }
-
-        const targetModalElement = document.getElementById(modalId);
-        if (!targetModalElement) {
-            console.error(`ERROR:Main/loadModalContent: Modal element #${modalId} not found after loading/finding HTML.`);
-            return null;
-        }
-
-        if (callback && typeof callback === 'function') {
-            if (!targetModalElement.dataset.initialized || isGenericServiceModal) {
-                await callback(targetModalElement, ...callbackArgs);
-                if (!isGenericServiceModal) {
-                    targetModalElement.dataset.initialized = "true";
-                }
-            } else {
+        } else if (isForGenericServiceShell) {
+            // Generic shell exists, clear previous dynamic content before loading new service details
+            const contentContainer = targetModalElement.querySelector('.service-modal-body-content');
+            const titleElement = targetModalElement.querySelector('#service-modal-title');
+            if (contentContainer) contentContainer.innerHTML = '<p>Loading service content...</p>';
+            if (titleElement) {
+                titleElement.textContent = ''; // Clear title before new one is set
+                titleElement.dataset.en = '';
+                titleElement.dataset.es = '';
             }
         }
 
+
+        if (!targetModalElement) {
+            console.error(`ERROR:Main/loadModalContent: Modal element #${actualDomModalId} could not be found or created.`);
+            return null;
+        }
+
+        // Initialization callback (e.g., initializeServiceModalContent, initializeContactModal)
+        // For generic service modals, this will inject the specific service content.
+        // For other modals, it might set up form handlers etc.
+        // We run the callback if it's a generic service modal (to load new content)
+        // or if the modal hasn't been marked as initialized yet.
+        if (callback && typeof callback === 'function') {
+            const needsInitialization = isForGenericServiceShell || !targetModalElement.dataset.initialized;
+            if (needsInitialization) {
+                await callback(targetModalElement, ...callbackArgs);
+                if (!isForGenericServiceShell) {
+                    targetModalElement.dataset.initialized = "true";
+                }
+            }
+        }
+
+        // Event listeners for close buttons (re-attach if necessary or ensure they are present)
+        // Clone and replace to ensure listeners are fresh, especially if modal content was re-rendered.
         const closeButtons = targetModalElement.querySelectorAll('.close-modal[data-close]');
         closeButtons.forEach(btn => {
-            const newBtn = btn.cloneNode(true);
+            const newBtn = btn.cloneNode(true); // Clone to remove old listeners
             btn.parentNode.replaceChild(newBtn, btn);
             newBtn.addEventListener('click', () => closeModal(targetModalElement));
         });
 
-        if (targetModalElement.dataset.backdropListenerAttached && isGenericServiceModal) {
-        }
-
-        if (!targetModalElement.dataset.backdropListenerAttached || isGenericServiceModal) {
-            const backdropHandler = (e) => {
-                if (e.target === targetModalElement) {
+        // Backdrop click listener
+        // Attach only once per modal shell.
+        if (!targetModalElement.dataset.backdropListenerAttached) {
+            targetModalElement.addEventListener('click', (e) => {
+                if (e.target === targetModalElement) { // Clicked on backdrop
                     closeModal(targetModalElement);
                 }
-            };
-            targetModalElement.addEventListener('click', backdropHandler);
+            });
             targetModalElement.dataset.backdropListenerAttached = "true";
         }
 
