@@ -43,6 +43,155 @@
       <i class="fas fa-bars" aria-hidden="true"></i>
     </button>
   </div>
+
+  <!-- Floating Action Button (FAB) Toggle -->
+  <button id="horizontalNavFab"
+          class="fab-toggle horiz-nav-fab"
+          aria-label="Toggle Navigation Menu"
+          data-en-label="Toggle Navigation Menu"
+          data-es-label="Alternar Menú de Navegación"
+          aria-expanded="false"
+          aria-controls="horizontalMobileNav">
+    <i class="fas fa-bars" aria-hidden="true"></i>
+  </button>
+
+  <!-- Horizontal FAB Navigation Menu -->
+  <nav id="horizontalMobileNav"
+       class="mobile-nav-horizontal"
+       aria-hidden="true"
+       role="navigation">
+
+    <a href="../index.html"
+       class="horiz-nav-item"
+       aria-label="Home"
+       data-en-text="Home"
+       data-es-text="Inicio">
+      <i class="fas fa-home" aria-hidden="true"></i>
+      <span data-en="Home" data-es="Inicio">Home</span>
+    </a>
+
+    <button id="horizontalServicesToggle"
+            class="horiz-nav-item"
+            aria-expanded="false"
+            aria-controls="horizontalServicesMenu"
+            data-en-text="Services"
+            data-es-text="Servicios">
+      <i class="fas fa-cogs" aria-hidden="true"></i>
+      <span data-en="Services" data-es="Servicios">Services</span>
+    </button>
+
+    <button id="horizontalContactUsLauncher"
+            class="horiz-nav-item"
+            data-modal="contact-modal"
+            aria-label="Contact Us"
+            data-en-label="Contact Us"
+            data-es-label="Contáctenos"
+            data-en-text="Contact"
+            data-es-text="Contacto">
+      <i class="fas fa-envelope" aria-hidden="true"></i>
+      <span data-en="Contact" data-es="Contacto">Contact</span>
+    </button>
+
+    <button id="horizontalJoinUsLauncher"
+            class="horiz-nav-item"
+            data-modal="join-us-modal"
+            aria-label="Join Us"
+            data-en-label="Join Us"
+            data-es-label="Únete"
+            data-en-text="Join Us"
+            data-es-text="Únete">
+      <i class="fas fa-user-plus" aria-hidden="true"></i>
+      <span data-en="Join Us" data-es="Únete">Join Us</span>
+    </button>
+
+    <button id="horizontalChatLauncher"
+            class="horiz-nav-item"
+            data-modal="chatbot-modal"
+            aria-label="Open Chat"
+            data-en-label="Open Chat"
+            data-es-label="Abrir Chat"
+            data-en-text="Chat"
+            data-es-text="Chat">
+      <i class="fas fa-comment-alt" aria-hidden="true"></i>
+      <span data-en="Chat" data-es="Chat">Chat</span>
+    </button>
+
+    <button id="fabLanguageToggle"
+            class="horiz-nav-item lang-toggle-btn"
+            aria-label="Switch Language"
+            title="Switch Language"
+            data-en-label="Switch to Spanish"
+            data-es-label="Cambiar a Inglés">
+      <i class="fas fa-globe" aria-hidden="true"></i>
+      <span data-en="EN" data-es="ES">EN</span>
+    </button>
+
+    <button id="fabThemeToggle"
+            class="horiz-nav-item theme-toggle-btn"
+            aria-label="Toggle Theme"
+            title="Toggle Theme"
+            data-en-label-dark="Switch to Dark Theme"
+            data-es-label-dark="Cambiar a Tema Oscuro"
+            data-en-label-light="Switch to Light Theme"
+            data-es-label-light="Cambiar a Tema Claro"
+            data-en-dark="Dark"
+            data-es-dark="Oscuro"
+            data-en-light="Light"
+            data-es-light="Claro">
+      <i class="fas fa-lightbulb" aria-hidden="true"></i>
+      <span data-en="Light" data-es="Claro">Light</span>
+    </button>
+  </nav>
+
+  <!-- Horizontal Services Submenu -->
+  <div id="horizontalServicesMenu"
+       class="mobile-services-menu horizontal-variant"
+       aria-hidden="true"
+       role="menu">
+
+    <ul>
+      <li>
+        <a role="menuitem"
+           href="#"
+           data-modal="business-operations-service-modal"
+           class="horiz-service-item"
+           data-en="Business Operations"
+           data-es="Operaciones Empresariales">
+          Business Operations
+        </a>
+      </li>
+      <li>
+        <a role="menuitem"
+           href="#"
+           data-modal="contact-center-service-modal"
+           class="horiz-service-item"
+           data-en="Contact Center"
+           data-es="Centro de Contacto">
+          Contact Center
+        </a>
+      </li>
+      <li>
+        <a role="menuitem"
+           href="#"
+           data-modal="it-support-service-modal"
+           class="horiz-service-item"
+           data-en="IT Support"
+           data-es="Soporte IT">
+          IT Support
+        </a>
+      </li>
+      <li>
+        <a role="menuitem"
+           href="#"
+           data-modal="professionals-service-modal"
+           class="horiz-service-item"
+           data-en="Professionals"
+           data-es="Profesionales">
+          Professionals
+        </a>
+      </li>
+    </ul>
+  </div>
 </header>
 
 <aside id="rightSideMenu"
