@@ -50,3 +50,14 @@ body[data-theme="dark"] #chatbot-modal .modal-footer {
   background-color: #2a2a2a;
   border-top-color: #444;
 }
+
+/* === Responsive for Mobile Devices === */
+@media (max-width: 768px) {
+  #chatbot-modal .modal-content {
+    /* Override specific height settings to align with global small-screen behavior */
+    height: auto;
+    max-height: 80vh; /* Or inherit from .modal-content in small-screens.css if preferred */
+     /* width: 80% and max-width: 80% will be inherited from css/base/small-screens.css */
+     /* Its own max-width: 500px will still apply if screen 80% is larger than 500px */
+  }
+}
