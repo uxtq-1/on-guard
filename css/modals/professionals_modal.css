@@ -47,22 +47,22 @@
 /* Responsive design */
 @media (max-width: 768px) {
   #professionals-modal .modal-content {
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    max-height: 100vh;
-    padding: 0;
-    border-radius: 0;
-    box-shadow: none;
-    border: none;
+    /* width: 100%; */ /* Let global small-screen styles apply */
+    /* max-width: 100%; */ /* Let global small-screen styles apply */
+    /* height: 100%; */ /* Let global small-screen styles apply */
+    /* max-height: 100vh; */ /* Let global small-screen styles apply (80vh) */
+    /* padding: 0; */ /* Base small-screen styles handle padding */
+    /* border-radius: 0; */ /* Base small-screen styles handle border-radius */
+    /* box-shadow: none; */ /* Base small-screen styles handle box-shadow */
+    /* border: none; */ /* Base small-screen styles handle border */
   }
 
   #professionals-modal .modal-body {
-    padding: 1rem;
+    padding: 1rem; /* This specific padding can remain */
   }
 
   #professionals-modal .modal-header h3 {
-    font-size: 1.25rem;
+    font-size: 1.25rem; /* This specific font adjustment can remain */
   }
 }
 
