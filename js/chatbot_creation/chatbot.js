@@ -41,7 +41,7 @@ const I18N = {
 
 let currentLang = document.documentElement.lang || 'en';
 
-let form, input, log, sendBtn, honeypotInput, humanCheckbox;
+let form, input, log, sendBtn, honeypotInput, humanCheckbox, closeButton;
 
 function t(key) {
   return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
@@ -104,13 +104,48 @@ document.addEventListener('DOMContentLoaded', () => {
   sendBtn = form ? form.querySelector('[type="submit"]') : null;
   honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
   humanCheckbox = document.getElementById('human-verification-checkbox');
+  closeButton = document.getElementById('chatbot-close-button');
 
-  if (!form || !input || !log) {
+  if (!form || !input || !log || !closeButton) {
     console.error('ERROR: Core chatbot UI elements not found in iframe.');
+    if (!closeButton) console.error("Missing: closeButton");
     return;
   }
 
   applyI18n();
+
+  // Function to close the chatbot (by notifying the parent window)
+  function closeChatbot() {
+    // Inform the parent window to hide/remove the chatbot iframe
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'chatbot-close' }, window.location.origin);
+    } else {
+      // Fallback if not in an iframe (e.g., direct testing)
+      console.warn("Chatbot close requested, but not in an iframe or parent communication failed. Hiding body.");
+      document.body.style.display = 'none';
+    }
+  }
+
+  // Event listener for the close button
+  closeButton.addEventListener('click', closeChatbot);
+
+  // Event listener for the ESC key
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeChatbot();
+    }
+  });
+
+  // Placeholder for parent window handling "click outside to close"
+  // This needs to be implemented in the script that manages the chatbot iframe on the parent page.
+  // Example message type to listen for from parent:
+  // window.addEventListener('message', (event) => {
+  //   if (event.origin !== window.location.origin) return; // Or specific parent origin
+  //   if (event.data && event.data.type === 'chatbot-request-close-from-parent') {
+  //     closeChatbot(); // Or directly hide if logic allows
+  //   }
+  // });
+
 
   let lockedForBot = false;
 
