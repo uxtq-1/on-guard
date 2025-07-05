@@ -266,7 +266,7 @@
   }
 
   .horiz-nav-item i {
-    font-size: 1.3rem; /* Icon size from example - Reduced from 1.4rem */
+    font-size: 1.2rem; /* Icon size from example - Reduced from 1.4rem */
     margin-bottom: 2px; /* Space between icon and text, adjust as needed */
     margin-right: 0; /* Remove previous margin */
     width: auto;
