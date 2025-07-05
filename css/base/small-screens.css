@@ -232,7 +232,7 @@
     right: 90px; /* To the left of the FAB */
     display: flex;
     flex-direction: row-reverse; /* Items added to the left */
-    gap: 10px; /* Space between items */
+    gap: 8px; /* Space between items - Reduced from 10px */
     background: var(--bg-current, #fff); /* Use theme variable, fallback to white */
     padding: 0.5rem 1rem; /* Padding from example */
     border-radius: 30px; /* Rounded ends from example */
@@ -256,7 +256,7 @@
     color: var(--text-current, #333); /* Use theme variable */
     background: none;
     border: none;
-    font-size: 0.75rem; /* Text size from example */
+    font-size: 0.7rem; /* Text size from example - Reduced from 0.75rem */
     cursor: pointer;
     padding: 0; /* Override global.css padding */
     width: auto; /* Fit content */
@@ -266,7 +266,7 @@
   }
 
   .horiz-nav-item i {
-    font-size: 1.4rem; /* Icon size from example */
+    font-size: 1.2rem; /* Icon size from example - Reduced from 1.4rem */
     margin-bottom: 2px; /* Space between icon and text, adjust as needed */
     margin-right: 0; /* Remove previous margin */
     width: auto;
