@@ -32,14 +32,14 @@ body[data-theme="dark"] #chatbot-close-button:hover {
 
 /* Chat Log Area */
 .chat-log {
-  flex-grow: 10; /* Significantly increased flex-grow for more space */
-  padding: 15px; /* Slightly increased padding */
+  flex-grow: 10; /* Increased to make chat log significantly larger */
+  padding: 10px;
   overflow-y: auto;
   background-color: ghostwhite;
   border-bottom: 1px solid #ccc;
   font-size: 0.95rem;
   scroll-behavior: smooth;
-  min-height: 200px; /* Minimum height to ensure it's substantial */
+  min-height: 200px; /* Ensure a minimum height */
 }
 
 body[data-theme="dark"] .chat-log {
@@ -88,7 +88,8 @@ body[data-theme="dark"] .bot-message {
   padding: 10px;
   background-color: #f8f9fa;
   border-top: 1px solid #ccc;
-  gap: 10px; /* Adjusted Spacing between form elements */
+  gap: 10px; /* Increased gap for better separation */
+  flex-shrink: 0; /* Prevent form from shrinking too much */
 }
 
 body[data-theme="dark"] .chat-form {
@@ -99,14 +100,13 @@ body[data-theme="dark"] .chat-form {
 /* Text Input */
 #chat-input {
   width: 100%; /* Full width */
-  padding: 10px;
+  padding: 12px; /* Slightly larger padding */
   border: 1px solid #ccc;
   border-radius: 20px; /* Rounded corners */
   background-color: ghostwhite;
   color: #333;
-  font-size: 0.95rem;
+  font-size: 1rem; /* Slightly larger font */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  order: 0; /* Default order */
 }
 
 body[data-theme="dark"] #chat-input {
@@ -119,64 +119,55 @@ body[data-theme="dark"] #chat-input {
 .recaptcha-placeholder-container {
   display: flex;
   align-items: center;
-  padding: 5px 0;
+  /* flex-basis: 100%; */ /* Removed to allow natural width or specific width if needed */
+  /* margin-bottom: 10px; */ /* Gap is handled by parent flex */
+  padding: 8px 10px; /* Adjusted padding */
   font-size: 0.9em;
-  order: 1; /* Ensures it's after chat-input */
-  /* Making the label take up most of the space to push button to right */
-  flex-grow: 1;
+  border: 1px dashed #aaa;
+  border-radius: 4px;
+  background-color: #fafafa;
+  order: 1; /* Ensure it's after chat-input and before send button in default flow if not explicitly reordered in HTML */
 }
 
 body[data-theme="dark"] .recaptcha-placeholder-container {
-  /* Styles for dark theme if any specific needed beyond text color */
+  border-color: #666;
+  background-color: #2e2e2e;
 }
 
 .recaptcha-label {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px; /* Increased gap */
   cursor: pointer;
 }
 
 #human-verification-checkbox {
   margin-right: 5px;
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 .recaptcha-text {
-  -webkit-user-select: none;
+  -webkit-user-select: none; /* For Safari */
   user-select: none;
   font-weight: 500;
   line-height: 1.4;
 }
 
-/* Send Button Container - New element for positioning */
-/* We might not need a new container if flex properties on chat-form are managed well.
-   For now, let's try to align the button itself within the form.
-   If more complex positioning involving the checkbox and button on the same line is needed,
-   we'd wrap recaptcha and button in a div with display:flex.
-   The diagram implies checkbox and button are on the same "line" below the input.
-   Let's adjust .chat-form to be a row for the last items, or wrap them.
-*/
-
-/* Adjusting .chat-form to handle the last row items */
-/* The main .chat-form is column. We need a wrapper for the last row. */
-/* Let's modify HTML first for that, then CSS. For now, simple right align for button. */
-
 /* Send Button */
 #chat-send-button {
-  align-self: flex-end; /* Aligns button to the right of the form container */
-  padding: 8px 12px; /* Made smaller */
+  /* align-self: flex-start; */ /* Changed to allow full width or align to end */
+  align-self: flex-end; /* Align to the right by default */
+  padding: 12px 20px; /* Larger padding */
   background-color: lemonchiffon;
   color: #333;
   border: none;
-  border-radius: 18px; /* Adjusted border-radius */
+  border-radius: 20px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.2s ease;
-  font-size: 0.9rem; /* Smaller font */
-  order: 2; /* Ensures it's after recaptcha placeholder */
-  min-width: 80px;
-  margin-left: auto; /* Pushes button to the right if recaptcha doesn't fill space */
+  font-size: 1rem; /* Slightly larger font */
+  order: 2; /* Ensure it's last in the default flow */
+  min-width: 100px; /* Ensure button has a decent width */
 }
 
 #chat-send-button:hover {
@@ -204,26 +195,22 @@ body[data-theme="dark"] #chat-send-button:hover {
     padding: 10px;
   }
   .chat-form {
-    gap: 12px; /* Adjusted gap for mobile for better spacing */
-  }
-
-  #chat-input {
-    font-size: 1rem; /* Slightly larger for mobile readability */
-  }
-
-  .recaptcha-placeholder-container {
-    padding: 8px 0; /* More vertical padding on mobile */
-    /* On mobile, checkbox might be above button if they don't fit side-by-side */
-    /* align-self: flex-start; /* Reset alignment if needed */
+    gap: 10px; /* Consistent gap */
   }
 
   #chat-input,
   .recaptcha-placeholder-container,
   #chat-send-button {
-    width: 100%; /* Full width button on small screens for easier tapping */
-    padding: 10px 15px;
-    font-size: 0.95rem;
-    align-self: stretch; /* Make it full width */
-    margin-left: 0; /* Reset margin for full width */
+    width: 100%; /* Make all form elements full width */
+    box-sizing: border-box; /* Ensure padding/border don't break layout */
+  }
+
+  #chat-send-button {
+    align-self: center; /* Center button on small screens */
+    margin-top: 5px; /* Add some space above the send button */
+  }
+
+  .recaptcha-placeholder-container {
+     justify-content: center; /* Center checkbox content */
   }
 }
