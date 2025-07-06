@@ -1,6 +1,7 @@
 // js/chatbot_creation/chatbot.js
 // Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
 import { sanitizeInput } from '../utils/sanitize.js';
+import { updateDynamicContentLanguage } from '../utils/i18n.js';
 
 function applyTheme(theme) {
   if (theme) document.body.setAttribute('data-theme', theme);
@@ -107,6 +108,7 @@ function setLanguage(lang) {
   }
   document.documentElement.lang = currentLang;
   applyI18n();
+  updateDynamicContentLanguage(document);
 }
 
 window.addEventListener('message', (event) => {
