@@ -350,56 +350,76 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
   }
 
   // Modals: Open/Toggle Handler
-  document.querySelectorAll('[data-modal]').forEach(button => {
-    const modalKey = button.getAttribute('data-modal');
-    // Ensure button has an ID for focus management, generate if missing (less ideal)
-    if (!button.id) {
-        console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
-        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
+  // Ensure this runs after other initializations if it depends on them.
+  // Adding a try-catch around the forEach setup for modal triggers
+  try {
+    const modalTriggers = document.querySelectorAll('[data-modal]');
+    if (modalTriggers.length === 0) {
+      console.warn("No modal trigger buttons found with [data-modal] attribute.");
     }
 
-    button.addEventListener('click', async () => {
-      const mapEntry = modalMap[modalKey] || { id: modalKey }; // mapEntry.id is the actual ID of the modal DOM element
-      let modal = document.getElementById(mapEntry.id);
-
-      if (modal && modal.classList.contains('active')) {
-        // Modal is already open and active, so close it
-        closeModalUtility(modal, button); // Pass the trigger button for focus return
-      } else {
-        // Modal is not active or not loaded yet, so open/load it
-        if (!modal) {
-            modal = await loadModal(modalKey, button.id); // Pass button.id to loadModal
-        } else {
-            // If modal was already loaded but not active, ensure triggerId is set
-            modal.dataset.triggerId = button.id;
-        }
-
-        if (modal) {
-          // Ensure attachModalHandlers has been called for this modal, especially if loaded but not active previously
-          // loadModal calls it for newly loaded modals. If pre-existing, it might need it.
-          // However, attachModalHandlers in modal.js is now designed to be safe if called multiple times.
-          attachModalHandlers(modal);
-
-
-          modal.classList.add('active');
-          modal.setAttribute('aria-hidden', 'false');
-          // Focus on the first focusable element in the modal
-          setTimeout(() => {
-            const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
-            if (focusable) focusable.focus();
-          }, 100); // Timeout helps ensure modal is fully rendered and visible
-        }
+    modalTriggers.forEach(button => {
+      const modalKey = button.getAttribute('data-modal');
+      if (!modalKey) {
+        console.warn('Button found with [data-modal] attribute but no value for the attribute.', button);
+        return; // Skip this button
       }
-    });
-  });
 
-  // Initial attachment of handlers for any modals already in DOM (e.g. not lazy-loaded)
-  // This is less critical if all modals are lazy-loaded via data-modal clicks
-  // document.querySelectorAll('.modal-overlay').forEach(modal => {
-  //   // We need to know its trigger. This generic attachment might be problematic
-  //   // without knowing the trigger. Best handled at load/activation time.
-  //   // attachModalHandlers(modal);
-  // });
+      // Ensure button has an ID for focus management, generate if missing (less ideal but helpful for debugging)
+      if (!button.id) {
+        console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
+        // Using a more predictable ID generation for consistency if needed
+        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substring(2, 9)}`;
+      }
+
+      button.addEventListener('click', async (event) => {
+        event.preventDefault(); // Prevent default action, especially for <a> tags used as triggers
+
+        const mapEntry = modalMap[modalKey];
+        if (!mapEntry || !mapEntry.id) {
+            console.error(`Modal configuration not found or incomplete for modalKey: ${modalKey}`, button);
+            return;
+        }
+
+        let modal = document.getElementById(mapEntry.id);
+
+        if (modal && modal.classList.contains('active')) {
+          closeModalUtility(modal, button);
+        } else {
+          if (!modal) {
+            modal = await loadModal(modalKey, button.id);
+          } else {
+            modal.dataset.triggerId = button.id; // Ensure triggerId is set for pre-loaded modals
+          }
+
+          if (modal) { // Check if modal was successfully loaded/found
+            // Ensure handlers are attached. loadModal calls this for new modals.
+            // For pre-existing modals, ensure it's called or was called.
+            // attachModalHandlers is designed to be safe if called multiple times.
+            attachModalHandlers(modal);
+
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            updateDynamicContentLanguage(modal); // Ensure language is applied on open
+
+            setTimeout(() => {
+              const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
+              if (focusable) {
+                focusable.focus();
+              } else {
+                // Fallback focus to the modal itself if no focusable elements are found
+                modal.focus();
+              }
+            }, 100);
+          } else {
+            console.error(`Modal element could not be found or loaded for modalKey: ${modalKey}`, button);
+          }
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error setting up modal trigger listeners:", error);
+  }
 
 
   // Sync saved theme
