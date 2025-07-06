@@ -1,6 +1,8 @@
 // js/join_us.js
 // Handles Join Us modal dynamic interaction securely
 
+import { attachModalHandlers } from '../utils/modal.js';
+
 function initializeJoinUsModal(modalElement) {
     if (!modalElement) return console.error("ERROR:join_us/initializeJoinUsModal: Modal element not provided.");
 
@@ -9,13 +11,8 @@ function initializeJoinUsModal(modalElement) {
     const joinForm = modalElement.querySelector('#join-us-form-modal');
     if (!joinForm) return console.error("ERROR:join_us: #join-us-form-modal not found.");
 
-    // Close modal on [data-close] elements or overlay click
-    modalElement.querySelectorAll('[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => modalElement.classList.remove('active'));
-    });
-    modalElement.addEventListener('click', e => {
-        if (e.target === modalElement) modalElement.classList.remove('active');
-    });
+    // Enable closing via buttons, overlay click and Escape key
+    attachModalHandlers(modalElement);
 
     joinForm.addEventListener('submit', (e) => {
         e.preventDefault();
