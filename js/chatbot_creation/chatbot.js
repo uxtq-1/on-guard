@@ -100,6 +100,10 @@ function applyI18n() {
 }
 
 function setLanguage(lang) {
+  // LOGGING POINT 2
+  const startTime = performance.now();
+  console.log(`[Chatbot Perf] setLanguage START for lang: ${lang} at ${startTime}ms`);
+
   if (!lang || (lang !== 'en' && lang !== 'es')) {
     console.warn(`Unsupported language: ${lang}. Defaulting to 'en'.`);
     currentLang = 'en';
@@ -109,6 +113,10 @@ function setLanguage(lang) {
   document.documentElement.lang = currentLang;
   applyI18n();
   updateDynamicContentLanguage(document);
+
+  // LOGGING POINT 3
+  const endTime = performance.now();
+  console.log(`[Chatbot Perf] setLanguage END. Duration: ${endTime - startTime}ms`);
 }
 
 window.addEventListener('message', (event) => {
@@ -120,6 +128,8 @@ window.addEventListener('message', (event) => {
   if (data.type === 'theme-change') {
     applyTheme(data.theme);
   } else if (data.type === 'language-change') {
+    // LOGGING POINT 1
+    console.log(`[Chatbot Perf] Received language-change message for lang: ${data.lang} at ${performance.now()}ms`);
     setLanguage(data.lang);
   }
 });
