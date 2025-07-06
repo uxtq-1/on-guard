@@ -24,6 +24,11 @@ function postLanguageToIframe(lang) {
   }
 }
 
+// Allow other modules to push language changes directly
+export function notifyChatbotLanguageChange(lang) {
+  postLanguageToIframe(lang);
+}
+
 // Sync theme with iframe
 function setupThemeSync() {
   if (!chatbotIframe) return;
