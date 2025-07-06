@@ -5,7 +5,6 @@ export function closeModal(modal) {
 }
 
 let escapeHandlerAttached = false;
-
 export function attachModalHandlers(modal) {
   if (!modal) return;
   modal.addEventListener('click', (e) => {
