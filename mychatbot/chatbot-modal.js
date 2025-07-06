@@ -1,6 +1,7 @@
 // js/chatbot.js — Chatbot modal loader with hardened iframe security
 
-import { ROOT_PATH } from '../../js/utils/rootPath.js';
+import { ROOT_PATH } from '../js/utils/rootPath.js';
+import { closeModal as closeModalUtility } from '../../js/utils/modal.js';
 
 let chatbotIframe = null;
 let themeObserver = null;
@@ -152,6 +153,26 @@ export function initializeChatbotModal(modalElement) {
     window.updateDynamicContentLanguage(modalElement);
   }
 }
+
+// Listen for close messages from the iframe
+window.addEventListener('message', (event) => {
+  // Ensure message is from our chatbot iframe and has the correct origin
+  if (event.source !== chatbotIframe?.contentWindow || (event.origin !== chatbotOrigin && event.origin !== window.location.origin)) {
+    // Allow same origin for local file testing where chatbotOrigin might be "null" but window.location.origin is also "null"
+    if (!(event.origin === "null" && window.location.origin === "null" && event.source === chatbotIframe?.contentWindow)) {
+        return;
+    }
+  }
+
+  const data = event.data || {};
+  if (data.type === 'chatbot-close') {
+    const chatbotModalElement = document.getElementById('chatbot-modal'); // Get the modal shell
+    if (chatbotModalElement && chatbotModalElement.classList.contains('active')) {
+      const triggerButton = document.getElementById('chatbot-fab-trigger'); // Assuming this is the main trigger
+      closeModalUtility(chatbotModalElement, triggerButton);
+    }
+  }
+});
 
 // Cleanup on navigation
 window.addEventListener('pagehide', () => {

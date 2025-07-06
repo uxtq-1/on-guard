@@ -2,7 +2,7 @@
 
 import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
-import { initializeChatbotModal, notifyChatbotLanguageChange } from './chatbot.js';
+import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js'; // Corrected path
 import { updateDynamicContentLanguage } from '../utils/i18n.js';
 import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
 
@@ -24,8 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
       id: 'join-us-modal'
     },
     'chatbot-modal': {
-      file: 'chatbot_modal.html',
-      id: 'chatbot-modal'
+      file: 'mychatbot/chatbot-modal.html', // Corrected path from root
+      id: 'chatbot-modal',
+      isFullPath: true // Flag to indicate the path is from root
     },
     'business-operations-service-modal': {
       file: 'business_operations_modal.html',
@@ -71,8 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const resp = await fetch(`html/modals/${file}`);
-      if (!resp.ok) throw new Error(`Failed to fetch ${file}`);
+      const filePath = mapEntry.isFullPath ? file : `html/modals/${file}`;
+      const resp = await fetch(filePath);
+      if (!resp.ok) throw new Error(`Failed to fetch ${filePath}`);
       placeholder.innerHTML = await resp.text();
       modal = document.getElementById(mapEntry.id); // Assign to modal after loading
       if (!modal) { // Check if modal was successfully loaded into DOM
@@ -307,42 +309,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Modals: Open/Toggle Handler
   document.querySelectorAll('[data-modal]').forEach(button => {
     const modalKey = button.getAttribute('data-modal');
-    // Ensure button has an ID for focus management, generate if missing (less ideal)
     if (!button.id) {
         console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
         button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
     }
 
     button.addEventListener('click', async () => {
-      const mapEntry = modalMap[modalKey] || { id: modalKey }; // mapEntry.id is the actual ID of the modal DOM element
-      let modal = document.getElementById(mapEntry.id);
+      const mapEntry = modalMap[modalKey] || { id: modalKey };
+      let modal = document.getElementById(mapEntry.id); // Try to find existing modal
 
       if (modal && modal.classList.contains('active')) {
         // Modal is already open and active, so close it
-        closeModalUtility(modal, button); // Pass the trigger button for focus return
+        closeModalUtility(modal, button);
       } else {
-        // Modal is not active or not loaded yet, so open/load it
-        if (!modal) {
-            modal = await loadModal(modalKey, button.id); // Pass button.id to loadModal
-        } else {
-            // If modal was already loaded but not active, ensure triggerId is set
-            modal.dataset.triggerId = button.id;
+        // Modal is not active or not loaded yet.
+        if (!modal) { // If not in DOM, load it
+            modal = await loadModal(modalKey, button.id);
+        } else { // Modal exists in DOM but is not active
+            modal.dataset.triggerId = button.id; // Ensure trigger ID is set
         }
 
-        if (modal) {
-          // Ensure attachModalHandlers has been called for this modal, especially if loaded but not active previously
-          // loadModal calls it for newly loaded modals. If pre-existing, it might need it.
-          // However, attachModalHandlers in modal.js is now designed to be safe if called multiple times.
-          attachModalHandlers(modal);
-
-
+        if (modal) { // If modal now exists (either found or loaded)
+          attachModalHandlers(modal); // Ensure handlers are attached (idempotent)
           modal.classList.add('active');
           modal.setAttribute('aria-hidden', 'false');
-          // Focus on the first focusable element in the modal
+
           setTimeout(() => {
             const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
             if (focusable) focusable.focus();
           }, 100); // Timeout helps ensure modal is fully rendered and visible
+        } else {
+          console.error(`Modal with key ${modalKey} could not be found or loaded.`);
         }
       }
     });

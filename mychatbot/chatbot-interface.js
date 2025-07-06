@@ -1,7 +1,7 @@
 // js/chatbot_creation/chatbot.js
 // Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
-import { sanitizeInput } from '../../js/utils/sanitize.js';
-import { updateDynamicContentLanguage } from '../../js/utils/i18n.js';
+import { sanitizeInput } from '../js/utils/sanitize.js';
+import { updateDynamicContentLanguage } from '../js/utils/i18n.js';
 
 function applyTheme(theme) {
   if (theme) document.body.setAttribute('data-theme', theme);
