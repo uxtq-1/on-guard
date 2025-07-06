@@ -387,7 +387,6 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
           console.error(`Modal with key ${modalKey} could not be found or loaded.`);
         }
       });
-    });
   } catch (error) {
     console.error("Error setting up modal trigger listeners:", error);
   }
