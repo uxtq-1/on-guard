@@ -1,6 +1,6 @@
 # Security Implementation Notes
 
-This document summarizes the security enhancements implemented in the OPS Online Solutions Services static website to align with SEO best practices and security guidelines related to PCI DSS, NIST 800, and CISA (from a client-side perspective).
+This document summarizes the security enhancements implemented in the Ops Online Support Services static website to align with SEO best practices and security guidelines related to PCI DSS, NIST 800, and CISA (from a client-side perspective).
 
 ## 1. Search Engine Optimization (SEO)
 
