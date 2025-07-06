@@ -124,31 +124,69 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateThemeButton(btn, theme, lang) {
     if (!btn) return;
     const span = btn.querySelector('span');
-    const labelKey = theme === 'dark' ? `${lang}LabelLight` : `${lang}LabelDark`;
-    const textKey = theme === 'dark' ? `${lang}Light` : `${lang}Dark`;
-    const label = btn.dataset[labelKey] || btn.dataset[`enLabel${theme === 'dark' ? 'Light' : 'Dark'}`];
-    const text = btn.dataset[textKey] || btn.dataset[`en${theme === 'dark' ? 'Light' : 'Dark'}`] || (theme === 'dark' ? 'Light' : 'Dark');
+  // Ensure `dataset` is accessed correctly and provide default fallbacks.
+  const labelKey = theme === 'dark' ? `dataset.esLabelLight` : `dataset.esLabelDark`; // Example default, adjust as needed
+  const textKey = theme === 'dark' ? `dataset.esLight` : `dataset.esDark`; // Example default, adjust as needed
+
+  // Construct the dataset keys for English and the current language
+  const enLabelKey = theme === 'dark' ? 'enLabelLight' : 'enLabelDark';
+  const currentLangLabelKey = theme === 'dark' ? `${lang}LabelLight` : `${lang}LabelDark`;
+  const enTextKey = theme === 'dark' ? 'enLight' : 'enDark';
+  const currentLangTextKey = theme === 'dark' ? `${lang}Light` : `${lang}Dark`;
+
+  // Determine the label and text, falling back to English if the current language's version isn't available.
+  const label = btn.dataset[currentLangLabelKey] || btn.dataset[enLabelKey] || (theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme');
+  const text = btn.dataset[currentLangTextKey] || btn.dataset[enTextKey] || (theme === 'dark' ? 'Light' : 'Dark');
+
+
     if (label) {
       btn.setAttribute('title', label);
       btn.setAttribute('aria-label', label);
     }
-    if (span) span.textContent = text; else btn.textContent = text;
+  if (span) {
+    span.textContent = text;
+  } else {
+    // If there's no span, assume the button's text content itself should be updated.
+    // This is a fallback and might need adjustment based on actual button structure.
+    btn.textContent = text;
+  }
   }
 
-  function updateLanguageButton(btn, targetLang) {
+function updateLanguageButton(btn, targetLang) { // targetLang is the language to switch TO (e.g., 'es' if current is 'en')
     if (!btn) return;
     const span = btn.querySelector('span');
-    const text = targetLang === 'en' ? (btn.dataset.en || 'EN') : (btn.dataset.es || 'ES');
-    const activeLang = document.documentElement.getAttribute('lang') === 'es' ? 'es' : 'en';
-    const label = activeLang === 'en'
-      ? (btn.dataset.enLabel || 'Switch to Spanish')
-      : (btn.dataset.esLabel || 'Cambiar a Inglés');
+  const currentLang = document.documentElement.lang || 'en';
+
+  // Text for the button itself (e.g., "ES" when switching to Spanish)
+  // The button should show the language it will switch TO if clicked.
+  // So if currentLang is 'en', targetLang is 'es', the button shows 'ES'.
+  // If currentLang is 'es', targetLang is 'en', the button shows 'EN'.
+  const buttonText = targetLang === 'es' ? (btn.dataset.es || 'ES') : (btn.dataset.en || 'EN');
+
+
+  // Label for accessibility (e.g., "Switch to Spanish" or "Cambiar a Inglés")
+  // This should reflect the action of clicking the button.
+  // If currentLang is 'en', the action is "Switch to Spanish".
+  // If currentLang is 'es', the action is "Switch to English".
+  let label;
+  if (currentLang === 'en') {
+    label = btn.dataset.enLabel || 'Switch to Spanish'; // Fallback to a sensible default
+  } else { // currentLang is 'es'
+    label = btn.dataset.esLabel || 'Cambiar a Inglés'; // Fallback to a sensible default
+  }
+
     if (label) {
       btn.setAttribute('title', label);
       btn.setAttribute('aria-label', label);
     }
-    if (span) span.textContent = text; else btn.textContent = text;
+
+  if (span) {
+    span.textContent = buttonText;
+  } else {
+    btn.textContent = buttonText; // Fallback if no span
   }
+  }
+
 
   function applyTheme(theme) {
     body.setAttribute('data-theme', theme);
@@ -156,13 +194,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const lang = html.getAttribute('lang') || 'en';
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('theme-change', { theme });
+  // Ensure dynamic content language is updated after theme change, as some text might be theme-dependent.
+  if (typeof window.updateDynamicContentLanguage === 'function') {
+    window.updateDynamicContentLanguage(document);
+  }
   }
 
   function applyLanguage(lang) {
     html.setAttribute('lang', lang);
     localStorage.setItem('language', lang);
+  // For each language button, update its text to show the *other* language.
+  // e.g., if we just switched to 'es', the button should now offer to switch to 'en'.
     languageButtons.forEach(btn => updateLanguageButton(btn, lang === 'en' ? 'es' : 'en'));
     const theme = body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  // Update theme button labels for the new language
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('language-change', { lang });
     notifyChatbotLanguageChange(lang);
@@ -305,56 +350,76 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Modals: Open/Toggle Handler
-  document.querySelectorAll('[data-modal]').forEach(button => {
-    const modalKey = button.getAttribute('data-modal');
-    // Ensure button has an ID for focus management, generate if missing (less ideal)
-    if (!button.id) {
-        console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
-        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
+  // Ensure this runs after other initializations if it depends on them.
+  // Adding a try-catch around the forEach setup for modal triggers
+  try {
+    const modalTriggers = document.querySelectorAll('[data-modal]');
+    if (modalTriggers.length === 0) {
+      console.warn("No modal trigger buttons found with [data-modal] attribute.");
     }
 
-    button.addEventListener('click', async () => {
-      const mapEntry = modalMap[modalKey] || { id: modalKey }; // mapEntry.id is the actual ID of the modal DOM element
-      let modal = document.getElementById(mapEntry.id);
-
-      if (modal && modal.classList.contains('active')) {
-        // Modal is already open and active, so close it
-        closeModalUtility(modal, button); // Pass the trigger button for focus return
-      } else {
-        // Modal is not active or not loaded yet, so open/load it
-        if (!modal) {
-            modal = await loadModal(modalKey, button.id); // Pass button.id to loadModal
-        } else {
-            // If modal was already loaded but not active, ensure triggerId is set
-            modal.dataset.triggerId = button.id;
-        }
-
-        if (modal) {
-          // Ensure attachModalHandlers has been called for this modal, especially if loaded but not active previously
-          // loadModal calls it for newly loaded modals. If pre-existing, it might need it.
-          // However, attachModalHandlers in modal.js is now designed to be safe if called multiple times.
-          attachModalHandlers(modal);
-
-
-          modal.classList.add('active');
-          modal.setAttribute('aria-hidden', 'false');
-          // Focus on the first focusable element in the modal
-          setTimeout(() => {
-            const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
-            if (focusable) focusable.focus();
-          }, 100); // Timeout helps ensure modal is fully rendered and visible
-        }
+    modalTriggers.forEach(button => {
+      const modalKey = button.getAttribute('data-modal');
+      if (!modalKey) {
+        console.warn('Button found with [data-modal] attribute but no value for the attribute.', button);
+        return; // Skip this button
       }
-    });
-  });
 
-  // Initial attachment of handlers for any modals already in DOM (e.g. not lazy-loaded)
-  // This is less critical if all modals are lazy-loaded via data-modal clicks
-  // document.querySelectorAll('.modal-overlay').forEach(modal => {
-  //   // We need to know its trigger. This generic attachment might be problematic
-  //   // without knowing the trigger. Best handled at load/activation time.
-  //   // attachModalHandlers(modal);
-  // });
+      // Ensure button has an ID for focus management, generate if missing (less ideal but helpful for debugging)
+      if (!button.id) {
+        console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
+        // Using a more predictable ID generation for consistency if needed
+        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substring(2, 9)}`;
+      }
+
+      button.addEventListener('click', async (event) => {
+        event.preventDefault(); // Prevent default action, especially for <a> tags used as triggers
+
+        const mapEntry = modalMap[modalKey];
+        if (!mapEntry || !mapEntry.id) {
+            console.error(`Modal configuration not found or incomplete for modalKey: ${modalKey}`, button);
+            return;
+        }
+
+        let modal = document.getElementById(mapEntry.id);
+
+        if (modal && modal.classList.contains('active')) {
+          closeModalUtility(modal, button);
+        } else {
+          if (!modal) {
+            modal = await loadModal(modalKey, button.id);
+          } else {
+            modal.dataset.triggerId = button.id; // Ensure triggerId is set for pre-loaded modals
+          }
+
+          if (modal) { // Check if modal was successfully loaded/found
+            // Ensure handlers are attached. loadModal calls this for new modals.
+            // For pre-existing modals, ensure it's called or was called.
+            // attachModalHandlers is designed to be safe if called multiple times.
+            attachModalHandlers(modal);
+
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            updateDynamicContentLanguage(modal); // Ensure language is applied on open
+
+            setTimeout(() => {
+              const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
+              if (focusable) {
+                focusable.focus();
+              } else {
+                // Fallback focus to the modal itself if no focusable elements are found
+                modal.focus();
+              }
+            }, 100);
+          } else {
+            console.error(`Modal element could not be found or loaded for modalKey: ${modalKey}`, button);
+          }
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error setting up modal trigger listeners:", error);
+  }
 
 
   // Sync saved theme
