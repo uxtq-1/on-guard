@@ -124,31 +124,69 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateThemeButton(btn, theme, lang) {
     if (!btn) return;
     const span = btn.querySelector('span');
-    const labelKey = theme === 'dark' ? `${lang}LabelLight` : `${lang}LabelDark`;
-    const textKey = theme === 'dark' ? `${lang}Light` : `${lang}Dark`;
-    const label = btn.dataset[labelKey] || btn.dataset[`enLabel${theme === 'dark' ? 'Light' : 'Dark'}`];
-    const text = btn.dataset[textKey] || btn.dataset[`en${theme === 'dark' ? 'Light' : 'Dark'}`] || (theme === 'dark' ? 'Light' : 'Dark');
+  // Ensure `dataset` is accessed correctly and provide default fallbacks.
+  const labelKey = theme === 'dark' ? `dataset.esLabelLight` : `dataset.esLabelDark`; // Example default, adjust as needed
+  const textKey = theme === 'dark' ? `dataset.esLight` : `dataset.esDark`; // Example default, adjust as needed
+
+  // Construct the dataset keys for English and the current language
+  const enLabelKey = theme === 'dark' ? 'enLabelLight' : 'enLabelDark';
+  const currentLangLabelKey = theme === 'dark' ? `${lang}LabelLight` : `${lang}LabelDark`;
+  const enTextKey = theme === 'dark' ? 'enLight' : 'enDark';
+  const currentLangTextKey = theme === 'dark' ? `${lang}Light` : `${lang}Dark`;
+
+  // Determine the label and text, falling back to English if the current language's version isn't available.
+  const label = btn.dataset[currentLangLabelKey] || btn.dataset[enLabelKey] || (theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme');
+  const text = btn.dataset[currentLangTextKey] || btn.dataset[enTextKey] || (theme === 'dark' ? 'Light' : 'Dark');
+
+
     if (label) {
       btn.setAttribute('title', label);
       btn.setAttribute('aria-label', label);
     }
-    if (span) span.textContent = text; else btn.textContent = text;
+  if (span) {
+    span.textContent = text;
+  } else {
+    // If there's no span, assume the button's text content itself should be updated.
+    // This is a fallback and might need adjustment based on actual button structure.
+    btn.textContent = text;
+  }
   }
 
-  function updateLanguageButton(btn, targetLang) {
+function updateLanguageButton(btn, targetLang) { // targetLang is the language to switch TO (e.g., 'es' if current is 'en')
     if (!btn) return;
     const span = btn.querySelector('span');
-    const text = targetLang === 'en' ? (btn.dataset.en || 'EN') : (btn.dataset.es || 'ES');
-    const activeLang = document.documentElement.getAttribute('lang') === 'es' ? 'es' : 'en';
-    const label = activeLang === 'en'
-      ? (btn.dataset.enLabel || 'Switch to Spanish')
-      : (btn.dataset.esLabel || 'Cambiar a Inglés');
+  const currentLang = document.documentElement.lang || 'en';
+
+  // Text for the button itself (e.g., "ES" when switching to Spanish)
+  // The button should show the language it will switch TO if clicked.
+  // So if currentLang is 'en', targetLang is 'es', the button shows 'ES'.
+  // If currentLang is 'es', targetLang is 'en', the button shows 'EN'.
+  const buttonText = targetLang === 'es' ? (btn.dataset.es || 'ES') : (btn.dataset.en || 'EN');
+
+
+  // Label for accessibility (e.g., "Switch to Spanish" or "Cambiar a Inglés")
+  // This should reflect the action of clicking the button.
+  // If currentLang is 'en', the action is "Switch to Spanish".
+  // If currentLang is 'es', the action is "Switch to English".
+  let label;
+  if (currentLang === 'en') {
+    label = btn.dataset.enLabel || 'Switch to Spanish'; // Fallback to a sensible default
+  } else { // currentLang is 'es'
+    label = btn.dataset.esLabel || 'Cambiar a Inglés'; // Fallback to a sensible default
+  }
+
     if (label) {
       btn.setAttribute('title', label);
       btn.setAttribute('aria-label', label);
     }
-    if (span) span.textContent = text; else btn.textContent = text;
+
+  if (span) {
+    span.textContent = buttonText;
+  } else {
+    btn.textContent = buttonText; // Fallback if no span
   }
+  }
+
 
   function applyTheme(theme) {
     body.setAttribute('data-theme', theme);
@@ -156,13 +194,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const lang = html.getAttribute('lang') || 'en';
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('theme-change', { theme });
+  // Ensure dynamic content language is updated after theme change, as some text might be theme-dependent.
+  if (typeof window.updateDynamicContentLanguage === 'function') {
+    window.updateDynamicContentLanguage(document);
+  }
   }
 
   function applyLanguage(lang) {
     html.setAttribute('lang', lang);
     localStorage.setItem('language', lang);
+  // For each language button, update its text to show the *other* language.
+  // e.g., if we just switched to 'es', the button should now offer to switch to 'en'.
     languageButtons.forEach(btn => updateLanguageButton(btn, lang === 'en' ? 'es' : 'en'));
     const theme = body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  // Update theme button labels for the new language
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('language-change', { lang });
     notifyChatbotLanguageChange(lang);
