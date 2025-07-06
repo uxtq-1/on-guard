@@ -28,7 +28,9 @@ const I18N = {
     sendButtonText: "Send",
     sendButtonLabel: "Send Message",
     iAmHumanText: "I am human",
-    iAmHumanLabel: "I am human"
+    iAmHumanLabel: "I am human",
+    toggleLanguageButton: "Español",
+    toggleLanguageButtonAriaLabel: "Switch to Spanish"
   },
   es: {
     suspiciousActivity: 'Actividad sospechosa detectada. Por favor recarga la página.',
@@ -50,13 +52,15 @@ const I18N = {
     sendButtonText: "Enviar",
     sendButtonLabel: "Enviar Mensaje",
     iAmHumanText: "Soy humano",
-    iAmHumanLabel: "Soy humano"
+    iAmHumanLabel: "Soy humano",
+    toggleLanguageButton: "English",
+    toggleLanguageButtonAriaLabel: "Cambiar a Inglés"
   }
 };
 
 let currentLang = 'en'; // Default, will be updated by sync logic
 
-let form, input, log, sendBtn, honeypotInput, humanCheckbox, closeButton;
+let form, input, log, sendBtn, honeypotInput, humanCheckbox, closeButton, langToggleButton;
 
 function t(key) {
   return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
@@ -96,6 +100,14 @@ function applyI18n() {
     const recaptchaLabelKey = currentLang + 'Label'; // data-en-label="I am human"
     const recaptchaLabelText = recaptchaLabelElement.dataset[recaptchaLabelKey] || t('iAmHumanLabel');
     recaptchaLabelElement.setAttribute('aria-label', recaptchaLabelText);
+  }
+
+  // Language toggle button
+  if (langToggleButton) {
+    const buttonText = t('toggleLanguageButton');
+    const buttonAriaLabel = t('toggleLanguageButtonAriaLabel');
+    langToggleButton.textContent = buttonText;
+    langToggleButton.setAttribute('aria-label', buttonAriaLabel);
   }
 }
 
@@ -143,9 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
   honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
   humanCheckbox = document.getElementById('human-verification-checkbox');
   closeButton = document.getElementById('chatbot-close-button');
+  // Initialize the new language toggle button
+  langToggleButton = document.getElementById('lang-toggle-btn');
+
   if (!form || !input || !log || !closeButton) {
     console.error('ERROR: Core chatbot UI elements not found in iframe.');
     if (!closeButton) console.error("Missing: closeButton");
+    // Note: langToggleButton is optional, so we don't error out if it's missing.
     return;
   }
 
@@ -228,6 +244,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   // ---- End language toggle for chat input ----
+
+  // ---- Language toggle button handler ----
+  if (langToggleButton) {
+    langToggleButton.addEventListener('click', () => {
+      const targetLang = currentLang === 'en' ? 'es' : 'en';
+      setLanguage(targetLang);
+      // Optionally, send a message to parent if parent also needs to know about user-initiated change
+      // if (window.parent && window.parent !== window) {
+      //   window.parent.postMessage({ type: 'language-change-initiated-by-chatbot', lang: targetLang }, window.location.origin);
+      // }
+    });
+  }
+  // ---- End language toggle button handler ----
 
   // Function to close the chatbot (by notifying the parent window)
   function closeChatbot() {
