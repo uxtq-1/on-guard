@@ -25,7 +25,7 @@ CSP has been implemented via `<meta http-equiv="Content-Security-Policy" ...>` t
     *   `connect-src 'self' https://your-worker.example.com`: Allows connections to self (for fetching partials) and the specified placeholder for the Cloudflare contact form worker (HTTPS enforced). **Note:** `https://your-worker.example.com` should be replaced with the actual worker URL.
     *   `frame-src 'self'`: Allows iframes from the same origin (used for the chatbot modal).
 
-*   **Chatbot Widget (`html/chatbot_creation/chatbot-widget.html`)**:
+*   **Chatbot Widget (`mychatbot/chatbot-landingpage.html`)**:
     *   `default-src 'self'`: Restricts loading of resources to the same origin by default.
     *   `script-src 'self' https://www.google.com https://www.gstatic.com`: Allows scripts from self and Google's domains for reCAPTCHA.
 *   `style-src 'self'`: Allows stylesheets from self.
@@ -68,7 +68,7 @@ Full compliance requires comprehensive measures beyond client-side code. The fol
     *   Reviewed and found to be secure for its current scope (caching static assets, offline page fallback).
     *   Uses cache-first strategy, deletes old caches on activation.
 *   **Iframe Sandboxing**:
-    *   The chatbot iframe created in `js/pages/chatbot.js` now includes the `sandbox="allow-scripts allow-same-origin allow-forms allow-popups"` attribute. This restricts the iframe's capabilities, enhancing security if its content were ever compromised.
+    *   The chatbot iframe created in `mychatbot/chatbot-modal.js` now includes the `sandbox="allow-scripts allow-same-origin allow-forms allow-popups"` attribute. This restricts the iframe's capabilities, enhancing security if its content were ever compromised.
 *   **HTTPS**: Strongly recommended for the entire site (hosting configuration).
 *   **HSTS**: `Strict-Transport-Security` header is strongly recommended to be set server-side (hosting configuration) to enforce HTTPS.
 
