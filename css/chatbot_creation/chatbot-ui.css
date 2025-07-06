@@ -1,6 +1,35 @@
 /* css/chatbot_creation/chatbot-ui.css */
 /* Styles for the chat log, messages, input, button, and human check */
 
+/* Close Button */
+#chatbot-close-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #777;
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+  z-index: 10;
+}
+
+#chatbot-close-button:hover {
+  color: #333;
+}
+
+body[data-theme="dark"] #chatbot-close-button {
+  color: #aaa;
+}
+
+body[data-theme="dark"] #chatbot-close-button:hover {
+  color: #eee;
+}
+
+
 /* Chat Log Area */
 .chat-log {
   flex-grow: 10; /* Significantly increased flex-grow for more space */
@@ -188,6 +217,8 @@ body[data-theme="dark"] #chat-send-button:hover {
     /* align-self: flex-start; /* Reset alignment if needed */
   }
 
+  #chat-input,
+  .recaptcha-placeholder-container,
   #chat-send-button {
     width: 100%; /* Full width button on small screens for easier tapping */
     padding: 10px 15px;
