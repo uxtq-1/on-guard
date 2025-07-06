@@ -44,18 +44,17 @@
         data-en-label="Ask me anything..."
         data-es-label="Pregúntame lo que sea..." required />
 
-      <!-- Human Verification -->
+      <!-- Human Verification (moved below input) -->
       <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
         <label for="human-verification-checkbox" class="recaptcha-label"
           data-en-label="I am human" data-es-label="Soy humano"
-          aria-label="I am human"
-          data-en-label="I am human" data-es-label="Soy humano">
+          aria-label="I am human">
           <input type="checkbox" id="human-verification-checkbox" name="human-verification" required />
           <span class="recaptcha-text" data-en="I am human" data-es="Soy humano">I am human</span>
         </label>
       </div>
 
-      <!-- Send Button -->
+      <!-- Send Button (moved below human verification) -->
       <button type="submit" id="chat-send-button"
         aria-label="Send Message"
         data-en-label="Send Message" data-es-label="Enviar Mensaje"

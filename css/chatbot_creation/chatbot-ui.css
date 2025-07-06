@@ -3,13 +3,14 @@
 
 /* Chat Log Area */
 .chat-log {
-  flex-grow: 1;
-  padding: 10px;
+  flex-grow: 10; /* Significantly increased flex-grow for more space */
+  padding: 15px; /* Slightly increased padding */
   overflow-y: auto;
   background-color: ghostwhite;
   border-bottom: 1px solid #ccc;
   font-size: 0.95rem;
   scroll-behavior: smooth;
+  min-height: 200px; /* Minimum height to ensure it's substantial */
 }
 
 body[data-theme="dark"] .chat-log {
@@ -54,11 +55,11 @@ body[data-theme="dark"] .bot-message {
 /* Chat Input Form */
 .chat-form {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Ensures items stack vertically */
   padding: 10px;
   background-color: #f8f9fa;
   border-top: 1px solid #ccc;
-  gap: 8px;
+  gap: 10px; /* Adjusted Spacing between form elements */
 }
 
 body[data-theme="dark"] .chat-form {
@@ -68,13 +69,15 @@ body[data-theme="dark"] .chat-form {
 
 /* Text Input */
 #chat-input {
-  width: 100%;
+  width: 100%; /* Full width */
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 20px;
+  border-radius: 20px; /* Rounded corners */
   background-color: ghostwhite;
   color: #333;
   font-size: 0.95rem;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  order: 0; /* Default order */
 }
 
 body[data-theme="dark"] #chat-input {
@@ -83,17 +86,68 @@ body[data-theme="dark"] #chat-input {
   border-color: #666;
 }
 
+/* Human Verification (checkbox placeholder) */
+.recaptcha-placeholder-container {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 0.9em;
+  order: 1; /* Ensures it's after chat-input */
+  /* Making the label take up most of the space to push button to right */
+  flex-grow: 1;
+}
+
+body[data-theme="dark"] .recaptcha-placeholder-container {
+  /* Styles for dark theme if any specific needed beyond text color */
+}
+
+.recaptcha-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+#human-verification-checkbox {
+  margin-right: 5px;
+  transform: scale(1.1);
+}
+
+.recaptcha-text {
+  -webkit-user-select: none;
+  user-select: none;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Send Button Container - New element for positioning */
+/* We might not need a new container if flex properties on chat-form are managed well.
+   For now, let's try to align the button itself within the form.
+   If more complex positioning involving the checkbox and button on the same line is needed,
+   we'd wrap recaptcha and button in a div with display:flex.
+   The diagram implies checkbox and button are on the same "line" below the input.
+   Let's adjust .chat-form to be a row for the last items, or wrap them.
+*/
+
+/* Adjusting .chat-form to handle the last row items */
+/* The main .chat-form is column. We need a wrapper for the last row. */
+/* Let's modify HTML first for that, then CSS. For now, simple right align for button. */
+
 /* Send Button */
 #chat-send-button {
-  align-self: flex-start;
-  padding: 10px 15px;
+  align-self: flex-end; /* Aligns button to the right of the form container */
+  padding: 8px 12px; /* Made smaller */
   background-color: lemonchiffon;
   color: #333;
   border: none;
-  border-radius: 20px;
+  border-radius: 18px; /* Adjusted border-radius */
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.2s ease;
+  font-size: 0.9rem; /* Smaller font */
+  order: 2; /* Ensures it's after recaptcha placeholder */
+  min-width: 80px;
+  margin-left: auto; /* Pushes button to the right if recaptcha doesn't fill space */
 }
 
 #chat-send-button:hover {
@@ -114,50 +168,31 @@ body[data-theme="dark"] #chat-send-button:hover {
   display: none !important;
 }
 
-/* Human Verification (checkbox placeholder) */
-.recaptcha-placeholder-container {
-  display: flex;
-  align-items: center;
-  flex-basis: 100%;
-  margin-bottom: 10px;
-  padding: 5px 10px;
-  font-size: 0.9em;
-  border: 1px dashed #aaa;
-  border-radius: 4px;
-  background-color: #fafafa;
-}
-
-body[data-theme="dark"] .recaptcha-placeholder-container {
-  border-color: #666;
-  background-color: #2e2e2e;
-}
-
-.recaptcha-label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-}
-
-#human-verification-checkbox {
-  margin-right: 5px;
-  transform: scale(1.2);
-}
-
-.recaptcha-text {
-  -webkit-user-select: none; /* For Safari */
-  user-select: none;
-  font-weight: 500;
-  line-height: 1.4;
-}
-
 /* Responsive Fixes */
 @media (max-width: 480px) {
+  .chat-log {
+    min-height: 150px; /* Adjust min-height for mobile */
+    padding: 10px;
+  }
   .chat-form {
-    gap: 6px;
+    gap: 12px; /* Adjusted gap for mobile for better spacing */
+  }
+
+  #chat-input {
+    font-size: 1rem; /* Slightly larger for mobile readability */
+  }
+
+  .recaptcha-placeholder-container {
+    padding: 8px 0; /* More vertical padding on mobile */
+    /* On mobile, checkbox might be above button if they don't fit side-by-side */
+    /* align-self: flex-start; /* Reset alignment if needed */
   }
 
   #chat-send-button {
-    width: 100%;
+    width: 100%; /* Full width button on small screens for easier tapping */
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    align-self: stretch; /* Make it full width */
+    margin-left: 0; /* Reset margin for full width */
   }
 }

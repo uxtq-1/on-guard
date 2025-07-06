@@ -20,7 +20,14 @@ const I18N = {
     pricing: 'Please see our pricing on the main website or contact sales.',
     bye: 'Goodbye! Have a great day.',
     intro: "Hello I'm Chattia",
-    verifyBottom: 'At the bottom; please verify you are human'
+    verifyBottom: 'At the bottom; please verify you are human',
+    // Fallbacks for applyI18n if dataset attributes are missing
+    askAnythingPlaceholder: "Ask me anything...",
+    askAnythingLabel: "Ask me anything...",
+    sendButtonText: "Send",
+    sendButtonLabel: "Send Message",
+    iAmHumanText: "I am human",
+    iAmHumanLabel: "I am human"
   },
   es: {
     suspiciousActivity: 'Actividad sospechosa detectada. Por favor recarga la página.',
@@ -35,11 +42,18 @@ const I18N = {
     pricing: 'Consulta nuestros precios en el sitio principal o contacta ventas.',
     bye: '¡Adiós! Que tengas un gran día.',
     intro: 'Hola, soy Chattia',
-    verifyBottom: 'Al final, verifica que eres humano'
+    verifyBottom: 'Al final, verifica que eres humano',
+    // Fallbacks for applyI18n if dataset attributes are missing
+    askAnythingPlaceholder: "Pregúntame lo que sea...",
+    askAnythingLabel: "Pregúntame lo que sea...",
+    sendButtonText: "Enviar",
+    sendButtonLabel: "Enviar Mensaje",
+    iAmHumanText: "Soy humano",
+    iAmHumanLabel: "Soy humano"
   }
 };
 
-let currentLang = document.documentElement.lang || 'en';
+let currentLang = 'en'; // Default, will be updated by sync logic
 
 let form, input, log, sendBtn, honeypotInput, humanCheckbox;
 
@@ -48,39 +62,58 @@ function t(key) {
 }
 
 function applyI18n() {
-  if (typeof input !== 'undefined') {
-    const ph = input.dataset[currentLang + 'Placeholder'] || input.placeholder;
-    input.placeholder = ph;
-    const lab = input.dataset[currentLang + 'Label'];
-    if (lab) input.setAttribute('aria-label', lab);
+  if (!input || !input.dataset || !sendBtn || !sendBtn.dataset) {
+    // Elements might not be ready yet if called too early by a rapid language change message
+    // console.warn("applyI18n called before elements were fully initialized.");
+    return;
   }
-  if (typeof sendBtn !== 'undefined') {
-    const text = sendBtn.dataset[currentLang] || sendBtn.textContent;
-    sendBtn.textContent = text;
-    const label = sendBtn.dataset[currentLang + 'Label'];
-    if (label) sendBtn.setAttribute('aria-label', label);
-  }
+
+  // Input field
+  const phKey = currentLang + 'Placeholder';
+  const inputLabelKey = currentLang + 'Label';
+  input.placeholder = input.dataset[phKey] || t('askAnythingPlaceholder');
+  const inputLabelText = input.dataset[inputLabelKey] || t('askAnythingLabel');
+  input.setAttribute('aria-label', inputLabelText);
+
+  // Send button
+  const buttonTextKey = currentLang; // dataset stores 'en' or 'es' directly for button text from HTML (e.g. data-en="Send")
+  const buttonLabelKey = currentLang + 'Label';
+  sendBtn.textContent = sendBtn.dataset[buttonTextKey] || t('sendButtonText');
+  const buttonLabelText = sendBtn.dataset[buttonLabelKey] || t('sendButtonLabel');
+  sendBtn.setAttribute('aria-label', buttonLabelText);
+
+  // Recaptcha text
   const recaptchaSpan = document.querySelector('.recaptcha-text');
-  if (recaptchaSpan) {
-    const txt = recaptchaSpan.dataset[currentLang] || recaptchaSpan.textContent;
-    recaptchaSpan.textContent = txt;
+  if (recaptchaSpan && recaptchaSpan.dataset) {
+    const recaptchaTextKey = currentLang; // data-en="I am human"
+    recaptchaSpan.textContent = recaptchaSpan.dataset[recaptchaTextKey] || t('iAmHumanText');
   }
-  const recaptchaLabel = document.querySelector('.recaptcha-label');
-  if (recaptchaLabel) {
-    const aria = recaptchaLabel.dataset[currentLang + 'Label'] || recaptchaLabel.getAttribute('aria-label');
-    if (aria) recaptchaLabel.setAttribute('aria-label', aria);
+
+  // Recaptcha label
+  const recaptchaLabelElement = document.querySelector('.recaptcha-label');
+  if (recaptchaLabelElement && recaptchaLabelElement.dataset) {
+    const recaptchaLabelKey = currentLang + 'Label'; // data-en-label="I am human"
+    const recaptchaLabelText = recaptchaLabelElement.dataset[recaptchaLabelKey] || t('iAmHumanLabel');
+    recaptchaLabelElement.setAttribute('aria-label', recaptchaLabelText);
   }
 }
 
 function setLanguage(lang) {
-  if (!lang) return;
-  currentLang = lang;
-  document.documentElement.lang = lang;
+  if (!lang || (lang !== 'en' && lang !== 'es')) {
+    console.warn(`Unsupported language: ${lang}. Defaulting to 'en'.`);
+    currentLang = 'en';
+  } else {
+    currentLang = lang;
+  }
+  document.documentElement.lang = currentLang;
   applyI18n();
 }
 
 window.addEventListener('message', (event) => {
-  if (event.origin !== window.location.origin) return;
+  if (event.origin !== window.location.origin && event.origin !== "null") { // "null" for local file testing
+    // console.warn('Blocked message from different origin:', event.origin);
+    return;
+  }
   const data = event.data || {};
   if (data.type === 'theme-change') {
     applyTheme(data.theme);
@@ -90,14 +123,7 @@ window.addEventListener('message', (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  try {
-    const parentTheme = window.parent.document.body.getAttribute('data-theme');
-    applyTheme(parentTheme || 'light');
-    const parentLang = window.parent.document.documentElement.getAttribute('lang');
-    if (parentLang) setLanguage(parentLang);
-  } catch (err) {
-    console.warn('Unable to sync theme with parent on load.', err);
-  }
+  // Initialize elements first
   form = document.getElementById('chat-form');
   input = document.getElementById('chat-input');
   log = document.getElementById('chat-log');
@@ -105,12 +131,90 @@ document.addEventListener('DOMContentLoaded', () => {
   honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
   humanCheckbox = document.getElementById('human-verification-checkbox');
 
-  if (!form || !input || !log) {
+  if (!form || !input || !log || !sendBtn) {
     console.error('ERROR: Core chatbot UI elements not found in iframe.');
     return;
   }
 
-  applyI18n();
+  // Attempt to set language from parent first.
+  let initialLangSet = false;
+  try {
+    // Important: Accessing window.parent properties can fail due to cross-origin restrictions
+    // if the iframe and parent are not same-origin. Check this if issues persist.
+    const parentLang = window.parent.document.documentElement.getAttribute('lang');
+    if (parentLang && (parentLang === 'en' || parentLang === 'es')) {
+      setLanguage(parentLang); // This calls applyI18n()
+      initialLangSet = true;
+    }
+  } catch (err) {
+    // This catch block will be hit if parent is cross-origin.
+    console.warn('Unable to sync language with parent on load (cross-origin or parent not ready). Falling back.', err.message);
+  }
+
+  // If not set by parent, try to use the iframe's HTML lang attribute, then default to 'en'.
+  if (!initialLangSet) {
+    const docLang = document.documentElement.lang;
+    if (docLang && (docLang === 'en' || docLang === 'es')) {
+      setLanguage(docLang);
+    } else {
+      setLanguage('en'); // Default if no valid lang found
+    }
+  }
+  // applyI18n() is called by setLanguage, so no need for an extra call here.
+
+  // Theme syncing (similar cross-origin caveats apply)
+  try {
+    const parentTheme = window.parent.document.body.getAttribute('data-theme');
+    applyTheme(parentTheme || 'light');
+  } catch (err) {
+    console.warn('Unable to sync theme with parent on load (cross-origin or parent not ready).', err.message);
+  }
+
+  // ---- Language toggle for chat input placeholder on click ----
+  let isInputPlaceholderAlternate = false; // false = currentLang, true = other lang
+
+  if (input) {
+    input.addEventListener('click', () => {
+      if (!input.dataset) return;
+
+      let placeholderLangToSet;
+      let ariaLabelLangToSet;
+
+      if (isInputPlaceholderAlternate) {
+        // Switch back to current global language for placeholder
+        placeholderLangToSet = currentLang;
+      } else {
+        // Switch to the other language for placeholder
+        placeholderLangToSet = (currentLang === 'en') ? 'es' : 'en';
+      }
+
+      // The aria-label should ideally also toggle, or consistently match the global language.
+      // For this implementation, let's make aria-label also toggle with the placeholder.
+      ariaLabelLangToSet = placeholderLangToSet;
+
+      const placeholderKey = placeholderLangToSet + 'Placeholder';
+      const ariaLabelKey = ariaLabelLangToSet + 'Label';
+
+      input.placeholder = input.dataset[placeholderKey] || I18N[placeholderLangToSet]?.askAnythingPlaceholder || input.placeholder;
+      const newAriaLabel = input.dataset[ariaLabelKey] || I18N[ariaLabelLangToSet]?.askAnythingLabel || input.getAttribute('aria-label');
+      input.setAttribute('aria-label', newAriaLabel);
+
+      isInputPlaceholderAlternate = !isInputPlaceholderAlternate;
+    });
+
+    // Optional: Reset placeholder to match global lang when input loses focus (blur)
+    // This prevents confusion if user clicks, changes placeholder, then parent lang changes.
+    input.addEventListener('blur', () => {
+      if (!input.dataset) return;
+      // Reset placeholder and aria-label to match current global language
+      const placeholderKey = currentLang + 'Placeholder';
+      const ariaLabelKey = currentLang + 'Label';
+      input.placeholder = input.dataset[placeholderKey] || t('askAnythingPlaceholder');
+      input.setAttribute('aria-label', input.dataset[ariaLabelKey] || t('askAnythingLabel'));
+      isInputPlaceholderAlternate = false; // Reset toggle state
+    });
+  }
+  // ---- End language toggle for chat input ----
 
   let lockedForBot = false;
 
@@ -260,12 +364,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   setTimeout(() => {
-    // The user requested literal strings including the [data=...] parts.
-    if (document.documentElement.lang === 'es') {
-      addMessage("[data=es Hola, soy Chattia]", 'bot');
-    } else {
-      addMessage("[data=en Hello I'm Chattia]", 'bot');
-    }
-    addMessage("[data=en data=es At the bottom; please verify you are human]", 'bot');
+    // Use t() function to get translated intro and verifyBottom messages
+    addMessage(t('intro'), 'bot');
+    addMessage(t('verifyBottom'), 'bot');
   }, 500);
 });
