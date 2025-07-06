@@ -4,6 +4,7 @@ import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
 import { initializeChatbotModal } from './chatbot.js';
 import { updateDynamicContentLanguage } from '../utils/i18n.js';
+import { attachModalHandlers } from '../utils/modal.js';
 
 // Expose the i18n helper globally for pages that expect it
 window.updateDynamicContentLanguage = updateDynamicContentLanguage;
@@ -83,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDynamicContentLanguage(modal);
       }
 
-      attachModalClose(modal);
+      attachModalHandlers(modal);
       return modal;
     } catch (err) {
       console.error('Modal load failed:', err);
@@ -91,18 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function attachModalClose(modal) {
-    if (!modal) return;
-    modal.addEventListener('click', (e) => {
-      const target = e.target;
-      // Close when clicking backdrop or elements with data-close
-      if (target === modal || target.classList.contains('modal-overlay') ||
-          target.hasAttribute('data-close')) {
-        modal.classList.remove('active');
-        modal.setAttribute('aria-hidden', 'true');
-      }
-    });
-  }
 
   // Safe utility to dispatch custom events
   function dispatchSafeEvent(name, detail = {}) {
@@ -321,17 +310,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Modals: Close Handler
-  document.querySelectorAll('.modal-overlay').forEach(attachModalClose);
+  document.querySelectorAll('.modal-overlay').forEach(attachModalHandlers);
 
-  // Close active modal on Escape key press
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-overlay.active').forEach(m => {
-        m.classList.remove('active');
-        m.setAttribute('aria-hidden', 'true');
-      });
-    }
-  });
 
   // Sync saved theme
   const savedTheme = localStorage.getItem('theme');
