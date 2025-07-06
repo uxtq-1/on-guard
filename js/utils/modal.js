@@ -4,6 +4,7 @@ export function closeModal(modal) {
   modal.setAttribute('aria-hidden', 'true');
 }
 
+let escapeHandlerAttached = false;
 export function attachModalHandlers(modal) {
   if (!modal) return;
   modal.addEventListener('click', (e) => {
@@ -12,9 +13,13 @@ export function attachModalHandlers(modal) {
       closeModal(modal);
     }
   });
-  modal.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeModal(modal);
-    }
-  });
+
+  if (!escapeHandlerAttached) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(closeModal);
+      }
+    });
+    escapeHandlerAttached = true;
+  }
 }
