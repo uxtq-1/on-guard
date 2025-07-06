@@ -84,7 +84,7 @@ body[data-theme="dark"] .bot-message {
 /* Chat Input Form */
 .chat-form {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Ensures items stack vertically */
   padding: 10px;
   background-color: #f8f9fa;
   border-top: 1px solid #ccc;
@@ -102,7 +102,7 @@ body[data-theme="dark"] .chat-form {
   width: 100%; /* Full width */
   padding: 12px; /* Slightly larger padding */
   border: 1px solid #ccc;
-  border-radius: 20px;
+  border-radius: 20px; /* Rounded corners */
   background-color: ghostwhite;
   color: #333;
   font-size: 1rem; /* Slightly larger font */
@@ -183,15 +183,17 @@ body[data-theme="dark"] #chat-send-button:hover {
   background-color: #EEDC82;
 }
 
-
 /* Honeypot field (hidden anti-spam trap) */
 .ops-chatbot-honeypot-field {
   display: none !important;
 }
 
-
 /* Responsive Fixes */
 @media (max-width: 480px) {
+  .chat-log {
+    min-height: 150px; /* Adjust min-height for mobile */
+    padding: 10px;
+  }
   .chat-form {
     gap: 10px; /* Consistent gap */
   }
