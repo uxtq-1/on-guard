@@ -1,74 +1,7 @@
-/* css/base/modal.css */
-
-/* === Modal Overlay === */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-}
-.modal-overlay.active {
-  display: flex;
-}
-
-/* === Modal Box === */
-.modal-content {
-  background: var(--bg-current, #fff);
-  color: var(--text-current, #333);
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-  padding: 1.5rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-/* === Modal Header / Footer === */
-.modal-header,
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-.modal-header {
-  border-bottom: 1px solid var(--border-color-current, #eee);
-  padding-bottom: 1rem;
-}
-.modal-footer {
-  border-top: 1px solid var(--border-color-current, #eee);
-  padding-top: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 0;
-}
-.modal-header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: inherit;
-}
-
-/* === Close Button === */
-.close-modal {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: var(--text-muted-current, #666);
-  cursor: pointer;
-  padding: 0.5rem;
-  line-height: 1;
-}
-
-/* === Modal Body === */
-.modal-body {
-  margin-bottom: 1rem;
-}
+/* css/modals/contact_us_modal.css */
+/* Styles specific to the Contact Us modal content. */
+/* Base modal structure (overlay, content box, header, footer, close button)
+   is defined in css/base/global.css */
 
 /* === Form Structure === */
 #contact-form {
@@ -173,18 +106,15 @@ textarea {
   }
 }
 
-/* === Dark Theme Support === */
-body[data-theme="dark"] .modal-content {
-  background-color: #333;
-  color: #eee;
-}
-body[data-theme="dark"] input,
-body[data-theme="dark"] select,
-body[data-theme="dark"] textarea {
-  background-color: #444;
-  color: #eee;
-  border-color: #555;
-}
-body[data-theme="dark"] .close-modal {
-  color: #bbb;
-}
+/* Specific dark theme adjustments for contact form elements, if needed,
+   beyond what global theme variables provide for inputs.
+   Global.css already handles --input-bg-current, --text-current, etc.
+   So, most general .modal-content dark themes are not needed here.
+*/
+/* Example: If contact form inputs need a slightly different dark theme color */
+/* body[data-theme="dark"] #contact-form input,
+body[data-theme="dark"] #contact-form select,
+body[data-theme="dark"] #contact-form textarea {
+  background-color: #4a4a4a; Slightly different from global #444
+  border-color: #5a5a5a;
+} */

@@ -2,7 +2,7 @@
 
 import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
-import { initializeChatbotModal, notifyChatbotLanguageChange } from './chatbot.js';
+import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js'; // Corrected path
 import { updateDynamicContentLanguage } from '../utils/i18n.js';
 import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
 
@@ -24,8 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
       id: 'join-us-modal'
     },
     'chatbot-modal': {
-      file: 'chatbot_modal.html',
-      id: 'chatbot-modal'
+      file: 'mychatbot/chatbot-modal.html', // Corrected path from root
+      id: 'chatbot-modal',
+      isFullPath: true // Flag to indicate the path is from root
     },
     'business-operations-service-modal': {
       file: 'business_operations_modal.html',
@@ -71,8 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const resp = await fetch(`html/modals/${file}`);
-      if (!resp.ok) throw new Error(`Failed to fetch ${file}`);
+      const filePath = mapEntry.isFullPath ? file : `html/modals/${file}`;
+      const resp = await fetch(filePath);
+      if (!resp.ok) throw new Error(`Failed to fetch ${filePath}`);
       placeholder.innerHTML = await resp.text();
       modal = document.getElementById(mapEntry.id); // Assign to modal after loading
       if (!modal) { // Check if modal was successfully loaded into DOM
@@ -350,77 +352,45 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
   }
 
   // Modals: Open/Toggle Handler
-  // Ensure this runs after other initializations if it depends on them.
-  // Adding a try-catch around the forEach setup for modal triggers
-  try {
-    const modalTriggers = document.querySelectorAll('[data-modal]');
-    if (modalTriggers.length === 0) {
-      console.warn("No modal trigger buttons found with [data-modal] attribute.");
+  document.querySelectorAll('[data-modal]').forEach(button => {
+    const modalKey = button.getAttribute('data-modal');
+    if (!button.id) {
+        console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
+        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
     }
 
-    modalTriggers.forEach(button => {
-      const modalKey = button.getAttribute('data-modal');
-      if (!modalKey) {
-        console.warn('Button found with [data-modal] attribute but no value for the attribute.', button);
-        return; // Skip this button
-      }
+    button.addEventListener('click', async () => {
+      const mapEntry = modalMap[modalKey] || { id: modalKey };
+      let modal = document.getElementById(mapEntry.id); // Try to find existing modal
 
-      // Ensure button has an ID for focus management, generate if missing (less ideal but helpful for debugging)
-      if (!button.id) {
-        console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
-        // Using a more predictable ID generation for consistency if needed
-        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substring(2, 9)}`;
-      }
-
-      button.addEventListener('click', async (event) => {
-        event.preventDefault(); // Prevent default action, especially for <a> tags used as triggers
-
-        const mapEntry = modalMap[modalKey];
-        if (!mapEntry || !mapEntry.id) {
-            console.error(`Modal configuration not found or incomplete for modalKey: ${modalKey}`, button);
-            return;
+      if (modal && modal.classList.contains('active')) {
+        // Modal is already open and active, so close it
+        closeModalUtility(modal, button);
+      } else {
+        // Modal is not active or not loaded yet.
+        if (!modal) { // If not in DOM, load it
+            modal = await loadModal(modalKey, button.id);
+        } else { // Modal exists in DOM but is not active
+            modal.dataset.triggerId = button.id; // Ensure trigger ID is set
         }
 
-        let modal = document.getElementById(mapEntry.id);
+        if (modal) { // If modal now exists (either found or loaded)
+          attachModalHandlers(modal); // Ensure handlers are attached (idempotent)
+          modal.classList.add('active');
+          modal.setAttribute('aria-hidden', 'false');
 
-        if (modal && modal.classList.contains('active')) {
-          closeModalUtility(modal, button);
+          setTimeout(() => {
+            const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
+            if (focusable) focusable.focus();
+          }, 100); // Timeout helps ensure modal is fully rendered and visible
         } else {
-          if (!modal) {
-            modal = await loadModal(modalKey, button.id);
-          } else {
-            modal.dataset.triggerId = button.id; // Ensure triggerId is set for pre-loaded modals
-          }
-
-          if (modal) { // Check if modal was successfully loaded/found
-            // Ensure handlers are attached. loadModal calls this for new modals.
-            // For pre-existing modals, ensure it's called or was called.
-            // attachModalHandlers is designed to be safe if called multiple times.
-            attachModalHandlers(modal);
-
-            modal.classList.add('active');
-            modal.setAttribute('aria-hidden', 'false');
-            updateDynamicContentLanguage(modal); // Ensure language is applied on open
-
-            setTimeout(() => {
-              const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
-              if (focusable) {
-                focusable.focus();
-              } else {
-                // Fallback focus to the modal itself if no focusable elements are found
-                modal.focus();
-              }
-            }, 100);
-          } else {
-            console.error(`Modal element could not be found or loaded for modalKey: ${modalKey}`, button);
-          }
+          console.error(`Modal with key ${modalKey} could not be found or loaded.`);
         }
       });
     });
   } catch (error) {
     console.error("Error setting up modal trigger listeners:", error);
   }
-
 
   // Sync saved theme
   const savedTheme = localStorage.getItem('theme');
