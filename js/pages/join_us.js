@@ -1,7 +1,7 @@
-// join-us-modal/join-us-modal.js
+// js/join_us.js
 // Handles Join Us modal dynamic interaction securely
 
-import { attachModalHandlers } from '../js/core/modal-handler.js';
+import { attachModalHandlers } from '../utils/modal.js';
 
 function initializeJoinUsModal(modalElement) {
     if (!modalElement) return console.error("ERROR:join_us/initializeJoinUsModal: Modal element not provided.");

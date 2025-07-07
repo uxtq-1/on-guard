@@ -21,6 +21,7 @@
     font-src 'self';
     frame-src 'self' https://www.google.com;">
   <link rel="canonical" href="https://www.opsonlinesupport.com/html/chattia.html" />
+
   <!-- Styles -->
   <link rel="stylesheet" href="./chatbot-interface.css">
 
@@ -34,34 +35,31 @@
     <div id="chat-log" class="chat-log" aria-live="polite" aria-label="Chat conversation area"></div>
 
     <form id="chat-form" class="chat-form" autocomplete="off" aria-label="Chatbot form">
-      <!-- User Input -->
-      <input type="text" id="chat-input" name="chat-input"
-        placeholder="Ask me anything..."
-        aria-label="Ask me anything..."
-        data-en-placeholder="Ask me anything..."
-        data-es-placeholder="Pregúntame lo que sea..."
-        data-en-label="Ask me anything..."
-        data-es-label="Pregúntame lo que sea..." required />
+      <footer class="chat-footer">
+        <!-- text input + send button -->
+        <div class="input-row">
+          <input
+            id="chat-input"
+            name="chat-input"
+            type="text"
+            placeholder="Ask me anything..."
+            aria-label="Ask me anything..."
+            data-en-placeholder="Ask me anything..."
+            data-es-placeholder="Pregúntame lo que sea..."
+            required
+          >
+          <button id="send-btn" type="button" aria-label="Send message" data-en-label="Send Message" data-es-label="Enviar Mensaje">➤</button>
+        </div>
 
-      <!-- Human Verification (moved below input) -->
-      <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
-        <label for="human-verification-checkbox" class="recaptcha-label"
-          data-en-label="I am human" data-es-label="Soy humano"
-          aria-label="I am human">
-          <input type="checkbox" id="human-verification-checkbox" name="human-verification" required />
-          <span class="recaptcha-text" data-en="I am human" data-es="Soy humano">I am human</span>
+        <!-- human verification -->
+        <label class="human-check">
+          <input type="checkbox" id="human-check" name="human-verification" required>
+          <span data-en="I am human" data-es="Soy humano">I am human</span>
         </label>
-      </div>
-
-      <!-- Send Button (moved below human verification) -->
-      <button type="submit" id="chat-send-button"
-        aria-label="Send Message"
-        data-en-label="Send Message" data-es-label="Enviar Mensaje"
-        data-en="Send" data-es="Enviar">Send</button>
-
-      <!-- Honeypot Field -->
-      <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"
-        tabindex="-1" aria-hidden="true" />
+        <!-- Honeypot Field -->
+        <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"
+               style="display:none;" tabindex="-1" aria-hidden="true" autocomplete="off">
+      </footer>
     </form>
 
     <!-- Future STT placeholder for Whisper.js -->
