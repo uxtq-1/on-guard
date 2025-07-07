@@ -245,7 +245,9 @@
   }
 
   #horizontalMobileNav.active {
-    transform: scaleX(1);
+  transform: scaleX(1) !important;
+  visibility: visible !important; /* Added for robustness */
+  opacity: 1 !important; /* Added for robustness */
   }
 
   .horiz-nav-item { /* This is .mobile-nav-item in the example */
@@ -324,7 +326,9 @@
   }
 
   #horizontalServicesMenu.active {
-    display: block;
+  display: block !important;
+  visibility: visible !important; /* Added for robustness */
+  opacity: 1 !important; /* Added for robustness */
   }
 
   #horizontalServicesMenu ul {
