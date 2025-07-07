@@ -27,8 +27,8 @@
   <title data-en="Ops Online Support - Remote Business & IT Solutions" data-es="Ops Online Soporte - Soluciones Empresariales y de IT Remotas">Ops Online Support - Remote Business & IT Solutions</title>
 
   <!-- Base Styles -->
-  <link rel="stylesheet" href="css/base/global.css">
-  <link rel="stylesheet" href="css/base/small-screens.css">
+  <link rel="stylesheet" href="css/global/global.css">
+  <link rel="stylesheet" href="css/responsive/small-screens.css">
 
   <!-- Modals -->
   <link rel="stylesheet" href="css/modals/contact_us_modal.css">
@@ -39,7 +39,6 @@
   <link rel="stylesheet" href="css/modals/contact_center_modal.css">
   <link rel="stylesheet" href="css/modals/it_support_modal.css">
   <link rel="stylesheet" href="css/modals/professionals_modal.css">
-
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha384-blOohCVdhjmtROpu8+CfTnUWham9nkX7P7OZQMst+RUnhtoY/9qemFAkIKOYxDI3" crossorigin="anonymous">
 
@@ -263,11 +262,39 @@
               <li><a role="button" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
             </ul>
           </li>
-          <li><a href="html/about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="html/careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
-          <li><a href="html/blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
+          <li><a href="pages/about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
+          <li><a href="pages/careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
+          <li><a href="pages/blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
         </ul>
       </nav>
+      <div class="right-side-menu-toggles">
+        <button id="mobile-language-toggle"
+                class="lang-toggle-btn"
+                aria-label="Switch Language"
+                title="Switch Language"
+                data-en-label="Switch Language"
+                data-es-label="Cambiar Idioma"
+                data-en-title="Switch Language"
+                data-es-title="Cambiar Idioma"
+                data-en="EN"
+                data-es="ES">
+          EN
+        </button>
+        <button id="theme-toggle-mobile"
+                class="theme-toggle-btn"
+                aria-label="Toggle Theme"
+                title="Toggle Theme"
+                data-en-label="Toggle Theme"
+                data-es-label="Alternar Tema"
+                data-en-title="Toggle Theme"
+                data-es-title="Alternar Tema"
+                data-en-light="Light"
+                data-es-light="Claro"
+                data-en-dark="Dark"
+                data-es-dark="Oscuro">
+          Light
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -317,9 +344,9 @@
   <div id="generic-service-modal-placeholder"></div>
 
   <!-- Main Scripts -->
-  <script type="module" src="js/pages/main.js" defer></script>
-  <script type="module" src="js/pages/contact_us.js" defer></script>
-  <script type="module" src="js/pages/join_us.js" defer></script>
-  <script type="module" src="mychatbot/chatbot-modal.js" defer></script>
+  <script type="module" src="js/core/main.js" defer></script>
+  <script type="module" src="contact-us-modal/contact-us-modal.js" defer></script>
+  <script type="module" src="join-us-modal/join-us-modal.js" defer></script>
+  <script type="module" src="chatbot-modal/chatbot-modal.js" defer></script>
 </body>
 </html>

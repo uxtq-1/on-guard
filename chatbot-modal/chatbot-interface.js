@@ -409,8 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // The main enable/disable is handled by the checkbox's own event listener.
     // However, if they submit WITHOUT checking, we disable here. If they then check and resubmit,
     // the checkbox listener would have re-enabled. So this specific re-enable might be redundant
-    // if the checkbox listener is robust. Let's assume checkbox listener handles enabling.
-
+    // if the checkbox listener is robust. Let's assume checkbox listener handles enabling
     // Google reCAPTCHA v3 (active, required before POST)
     let recaptchaToken = '';
     try {
@@ -431,11 +430,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (flagged) {
         console.warn("Chatbot: user input flagged for potential sensitive content.");
     }
-    userInputText = sanitized; // Use the sanitized input
 
+    userInputText = sanitized; // Use the sanitized input
     addMessage(userInputText, 'user');
     input.value = ''; // Clear the input field
-
     // POST to Cloudflare Worker (chatbot message check)
     try {
       const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/chatbot_message_check', {

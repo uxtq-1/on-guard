@@ -1,10 +1,10 @@
-// js/pages/main.js
+// js/core/main.js
 
-import { initializeContactModal } from './contact_us.js';
-import { initializeJoinUsModal } from './join_us.js';
-import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js'; // Corrected path
-import { updateDynamicContentLanguage } from '../utils/i18n.js';
-import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
+import { initializeContactModal } from '../../contact-us-modal/contact-us-modal.js';
+import { initializeJoinUsModal } from '../../join-us-modal/join-us-modal.js';
+import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../chatbot-modal/chatbot-modal.js';
+import { updateDynamicContentLanguage } from '../language_toggle/language-toggle.js';
+import { attachModalHandlers, closeModal as closeModalUtility } from './modal-handler.js'; // Import closeModalUtility
 
 // Expose the i18n helper globally for pages that expect it
 window.updateDynamicContentLanguage = updateDynamicContentLanguage;
@@ -16,37 +16,44 @@ document.addEventListener('DOMContentLoaded', () => {
   // Map modal triggers to their HTML file and actual overlay ID
   const modalMap = {
     'contact-modal': {
-      file: 'contact_us_modal.html',
-      id: 'contact-modal'
+      file: 'contact-us-modal/contact-us-modal.html',
+      id: 'contact-modal',
+      isFullPath: true
     },
     'join-us-modal': {
-      file: 'join_us_modal.html',
-      id: 'join-us-modal'
+      file: 'join-us-modal/join-us-modal.html',
+      id: 'join-us-modal',
+      isFullPath: true
     },
     'chatbot-modal': {
-      file: 'mychatbot/chatbot-modal.html', // Corrected path from root
+      file: 'chatbot-modal/chatbot-modal.html',
       id: 'chatbot-modal',
-      isFullPath: true // Flag to indicate the path is from root
+      isFullPath: true
     },
     'business-operations-service-modal': {
-      file: 'business_operations_modal.html',
-      id: 'business-operations-modal'
+      file: 'services-modal/business-operations/business-operations-modal.html',
+      id: 'business-operations-modal',
+      isFullPath: true
     },
     'contact-center-service-modal': {
-      file: 'contact_center_modal.html',
-      id: 'contact-center-modal'
+      file: 'services-modal/contact-center/contact-center-modal.html',
+      id: 'contact-center-modal',
+      isFullPath: true
     },
     'it-support-service-modal': {
-      file: 'it_support_modal.html',
-      id: 'it-support-modal'
+      file: 'services-modal/it-support/it-support-modal.html',
+      id: 'it-support-modal',
+      isFullPath: true
     },
     'professionals-service-modal': {
-      file: 'professionals_modal.html',
-      id: 'professionals-modal'
+      file: 'services-modal/professionals/professionals-modal.html',
+      id: 'professionals-modal',
+      isFullPath: true
     },
     'generic-service-modal': {
-      file: 'generic_service_modal.html',
-      id: 'generic-service-modal'
+      file: 'services-modal/generic-service-modal.html',
+      id: 'generic-service-modal',
+      isFullPath: true
     }
   };
 
@@ -63,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return modal;
     }
 
-    const file = mapEntry.file;
+    const file = mapEntry.file; // All paths are now full paths from root
     let placeholder = document.getElementById(`${modalId}-placeholder`);
     if (!placeholder) {
       placeholder = document.createElement('div');
@@ -72,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const filePath = mapEntry.isFullPath ? file : `html/modals/${file}`;
+      // const filePath = mapEntry.isFullPath ? file : `html/modals/${file}`; // Old logic
+      const filePath = file; // Simplified: all files in modalMap are root-relative
       const resp = await fetch(filePath);
       if (!resp.ok) throw new Error(`Failed to fetch ${filePath}`);
       placeholder.innerHTML = await resp.text();
@@ -408,5 +416,18 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
     applyLanguage(savedLang);
   } else {
     applyLanguage(html.getAttribute('lang') === 'es' ? 'es' : 'en');
+  }
+
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/js/service-worker.js')
+        .then(registration => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        })
+        .catch(error => {
+          console.log('ServiceWorker registration failed: ', error);
+        });
+    });
   }
 });
