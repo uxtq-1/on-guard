@@ -352,7 +352,8 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
   }
 
   // Modals: Open/Toggle Handler
-  document.querySelectorAll('[data-modal]').forEach(button => {
+  try {
+    document.querySelectorAll('[data-modal]').forEach(button => {
     const modalKey = button.getAttribute('data-modal');
     if (!button.id) {
         console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
@@ -386,7 +387,9 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
         } else {
           console.error(`Modal with key ${modalKey} could not be found or loaded.`);
         }
-      });
+      }
+    });
+  });
   } catch (error) {
     console.error("Error setting up modal trigger listeners:", error);
   }
