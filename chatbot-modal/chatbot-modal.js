@@ -105,7 +105,8 @@ async function alertWorkerLoaderBotActivity(detail = "loader honeypot") {
 }
 
 // Main initializer
-export function initializeChatbotModal(modalElement) {
+// Parameter changed from modalElement to containerElement, which will be #chatbot-window-container
+export function initializeChatbotModal(containerElement) {
   const honeypot = createLoaderHoneypot();
 
   if (honeypot.value?.trim() !== '') {
@@ -121,37 +122,46 @@ export function initializeChatbotModal(modalElement) {
     }
   });
 
-  if (!modalElement) return console.error("ERROR: Chatbot modal element not provided.");
+  if (!containerElement) return console.error("ERROR: Chatbot container element not provided.");
 
-  const chatbotModalBody = modalElement.querySelector('#chatbot-modal-body');
-  if (!chatbotModalBody) return console.error("ERROR: #chatbot-modal-body not found.");
+  // The iframe will be a direct child of containerElement, so no need for chatbotModalBody
+  // const chatbotModalBody = modalElement.querySelector('#chatbot-modal-body');
+  // if (!chatbotModalBody) return console.error("ERROR: #chatbot-modal-body not found.");
 
   if (!iframeLoaded) {
     chatbotIframe = document.createElement('iframe');
     chatbotIframe.src = chatbotUrl;
-    chatbotIframe.title = 'AI Chatbot';
+    chatbotIframe.title = 'AI Chatbot'; // Remains as is
+    // tabindex and aria-label might be better set on the container by main.js,
+    // but can also be on iframe if it's the primary focus target within the window.
     chatbotIframe.setAttribute('tabindex', '0');
     chatbotIframe.setAttribute('aria-label', 'AI Chatbot Widget');
     chatbotIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups');
     chatbotIframe.setAttribute('referrerpolicy', 'no-referrer');
-    chatbotModalBody.replaceChildren(chatbotIframe);
+
+    containerElement.replaceChildren(chatbotIframe); // Append iframe to the container
     iframeLoaded = true;
 
     chatbotIframe.onload = () => {
       setupThemeSync();
       setupLanguageSync();
+      // Try to focus the iframe content after load
+      // chatbotIframe.contentWindow.focus(); // This might be blocked by cross-origin policies
     };
   } else {
-    if (!chatbotModalBody.contains(chatbotIframe)) {
-      chatbotModalBody.replaceChildren(chatbotIframe);
+    // If iframe already exists but is not in the container (e.g., if container was cleared and rebuilt)
+    if (!containerElement.contains(chatbotIframe)) {
+      containerElement.replaceChildren(chatbotIframe);
     }
     setupThemeSync();
     setupLanguageSync();
   }
 
-  if (typeof window.updateDynamicContentLanguage === 'function') {
-    window.updateDynamicContentLanguage(modalElement);
-  }
+  // updateDynamicContentLanguage might not be relevant for the container itself
+  // if all dynamic content is within the iframe.
+  // if (typeof window.updateDynamicContentLanguage === 'function') {
+  //   window.updateDynamicContentLanguage(containerElement);
+  // }
 }
 
 // Listen for close messages from the iframe
@@ -166,11 +176,8 @@ window.addEventListener('message', (event) => {
 
   const data = event.data || {};
   if (data.type === 'chatbot-close') {
-    const chatbotModalElement = document.getElementById('chatbot-modal'); // Get the modal shell
-    if (chatbotModalElement && chatbotModalElement.classList.contains('active')) {
-      const triggerButton = document.getElementById('chatbot-fab-trigger'); // Assuming this is the main trigger
-      closeModalUtility(chatbotModalElement, triggerButton);
-    }
+    // Dispatch a custom event that main.js will listen for to handle closing the chatbot window
+    window.dispatchEvent(new CustomEvent('request-chatbot-window-close'));
   }
 });
 

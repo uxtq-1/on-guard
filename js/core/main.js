@@ -362,45 +362,117 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
   // Modals: Open/Toggle Handler
   try {
     document.querySelectorAll('[data-modal]').forEach(button => {
-    const modalKey = button.getAttribute('data-modal');
-    if (!button.id) {
-        console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
-        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
-    }
-
-    button.addEventListener('click', async () => {
-      const mapEntry = modalMap[modalKey] || { id: modalKey };
-      let modal = document.getElementById(mapEntry.id); // Try to find existing modal
-
-      if (modal && modal.classList.contains('active')) {
-        // Modal is already open and active, so close it
-        closeModalUtility(modal, button);
-      } else {
-        // Modal is not active or not loaded yet.
-        if (!modal) { // If not in DOM, load it
-            modal = await loadModal(modalKey, button.id);
-        } else { // Modal exists in DOM but is not active
-            modal.dataset.triggerId = button.id; // Ensure trigger ID is set
-        }
-
-        if (modal) { // If modal now exists (either found or loaded)
-          attachModalHandlers(modal); // Ensure handlers are attached (idempotent)
-          modal.classList.add('active');
-          modal.setAttribute('aria-hidden', 'false');
-
-          setTimeout(() => {
-            const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
-            if (focusable) focusable.focus();
-          }, 100); // Timeout helps ensure modal is fully rendered and visible
-        } else {
-          console.error(`Modal with key ${modalKey} could not be found or loaded.`);
-        }
+      const modalKey = button.getAttribute('data-modal');
+      if (!button.id) {
+          console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
+          button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
       }
+
+      // Special handling for the new chatbot window trigger
+      if (button.id === 'chatbot-fab-trigger') {
+        // This button will be handled by specific chatbot window logic below
+        return;
+      }
+
+      button.addEventListener('click', async () => {
+        const mapEntry = modalMap[modalKey] || { id: modalKey };
+        let modal = document.getElementById(mapEntry.id); // Try to find existing modal
+
+        if (modal && modal.classList.contains('active')) {
+          // Modal is already open and active, so close it
+          closeModalUtility(modal, button);
+        } else {
+          // Modal is not active or not loaded yet.
+          if (!modal) { // If not in DOM, load it
+              modal = await loadModal(modalKey, button.id);
+          } else { // Modal exists in DOM but is not active
+              modal.dataset.triggerId = button.id; // Ensure trigger ID is set
+          }
+
+          if (modal) { // If modal now exists (either found or loaded)
+            attachModalHandlers(modal); // Ensure handlers are attached (idempotent)
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+
+            setTimeout(() => {
+              const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
+              if (focusable) focusable.focus();
+            }, 100); // Timeout helps ensure modal is fully rendered and visible
+          } else {
+            console.error(`Modal with key ${modalKey} could not be found or loaded.`);
+          }
+        }
+      });
     });
-  });
   } catch (error) {
     console.error("Error setting up modal trigger listeners:", error);
   }
+
+  // Chatbot Window Logic
+  const chatbotFabTrigger = document.getElementById('chatbot-fab-trigger');
+  const chatbotWindowContainer = document.getElementById('chatbot-window-container');
+  let isChatbotIframeLoaded = false;
+
+  if (chatbotFabTrigger && chatbotWindowContainer) {
+    chatbotFabTrigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      const isActive = chatbotWindowContainer.classList.toggle('active');
+      chatbotFabTrigger.setAttribute('aria-expanded', isActive.toString());
+
+      if (isActive && !isChatbotIframeLoaded) {
+        // initializeChatbotModal expects the modal *shell* element,
+        // but we want to inject directly into chatbotWindowContainer or a designated child.
+        // For now, we'll pass chatbotWindowContainer and adapt initializeChatbotModal later.
+        // It will be responsible for creating/managing the iframe within this container.
+        initializeChatbotModal(chatbotWindowContainer); // This function will need modification (Step 6)
+        isChatbotIframeLoaded = true; // Assume it loads once
+      }
+
+      // Manage focus for chatbot window (simplified: focus container or first element)
+      if(isActive) {
+        chatbotWindowContainer.focus(); // Or a specific focusable element within
+        // Make sure elements inside are focusable
+        setFocusableChildren(chatbotWindowContainer, true);
+      } else {
+        // Make elements inside non-focusable when hidden
+        setFocusableChildren(chatbotWindowContainer, false);
+        chatbotFabTrigger.focus(); // Return focus to the trigger
+      }
+    });
+
+    // Close chatbot window with Escape key
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && chatbotWindowContainer.classList.contains('active')) {
+        chatbotWindowContainer.classList.remove('active');
+        chatbotFabTrigger.setAttribute('aria-expanded', 'false');
+        setFocusableChildren(chatbotWindowContainer, false);
+        chatbotFabTrigger.focus();
+      }
+    });
+
+    // Close chatbot window on click outside
+    document.addEventListener('click', (event) => {
+      if (chatbotWindowContainer.classList.contains('active') &&
+          !chatbotWindowContainer.contains(event.target) &&
+          !chatbotFabTrigger.contains(event.target)) {
+        chatbotWindowContainer.classList.remove('active');
+        chatbotFabTrigger.setAttribute('aria-expanded', 'false');
+        setFocusableChildren(chatbotWindowContainer, false);
+        // Optionally return focus to fab trigger if it's not what was clicked
+      }
+    });
+
+    // Listen for custom event from chatbot-modal.js to close the window
+    window.addEventListener('request-chatbot-window-close', () => {
+      if (chatbotWindowContainer.classList.contains('active')) {
+        chatbotWindowContainer.classList.remove('active');
+        chatbotFabTrigger.setAttribute('aria-expanded', 'false');
+        setFocusableChildren(chatbotWindowContainer, false);
+        chatbotFabTrigger.focus(); // Return focus to the trigger
+      }
+    });
+  }
+
 
   // Sync saved theme
   const savedTheme = localStorage.getItem('theme');

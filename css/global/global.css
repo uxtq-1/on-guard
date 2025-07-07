@@ -422,3 +422,39 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus, [tabindex]:foc
     display: none !important;
   }
 }
+
+/* Chatbot Window Container */
+#chatbot-window-container {
+  position: fixed;
+  bottom: 20px; /* Align with .floating-icons */
+  right: 90px; /* Positioned to the left of .floating-icons (20px FAB offset + 60px FAB width + 10px spacing) */
+  width: 420px;
+  height: 600px;
+  background-color: var(--bg-current, #fff); /* Adapting from chatbot-modal.css */
+  color: var(--text-current, #333); /* Adapting from chatbot-modal.css */
+  border-radius: 18px; /* From your sample */
+  box-shadow: 0 8px 32px rgba(0,0,0,0.37); /* From your sample (0 8px 32px #0006) */
+  display: none; /* Initially hidden, JS will toggle by adding/removing .active class */
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 998; /* Below .floating-icons (999) but above most other content */
+  border: 2px solid #ae7cff; /* From your sample */
+}
+
+#chatbot-window-container.active {
+  display: flex;
+}
+
+/* Ensure dark theme compatibility for chatbot window */
+body[data-theme="dark"] #chatbot-window-container {
+  background-color: #2e1852; /* From your sample */
+  color: #fff; /* From your sample */
+  border-color: #ae7cff; /* From your sample, assuming it's consistent */
+  /* box-shadow default should be fine, but can be adjusted if needed for dark theme visibility */
+}
+
+#chatbot-window-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}

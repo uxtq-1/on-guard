@@ -2,73 +2,210 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-en="CHATTIA" data-es="CHATTIA">CHATTIA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OPS AI Chatbot</title>
+  <style>
+    /* —— Layout & theme —— */
+    body{
+      margin:0;font-family:'Segoe UI',Arial,sans-serif;background:#20103a;
+      display:flex;align-items:center;justify-content:center;height:100vh;
+      box-sizing: border-box; /* Ensure padding/border don't affect overall size for 100vh */
+    }
+    #chatbot-container{
+      width:100%; /* Fill the iframe */
+      height:100%; /* Fill the iframe */
+      background:#2e1852;
+      /* border-radius:18px; /* Rounded corners are on the parent #chatbot-window-container */
+      box-shadow:none; /* Shadow is on the parent #chatbot-window-container */
+      display:flex;flex-direction:column;
+      overflow:hidden;
+      border:none; /* Border is on the parent #chatbot-window-container */
+    }
+    #chatbot-header{
+      background:#ae7cff;color:#fff;padding:1rem;font-weight:bold;
+      font-size:1.25rem;text-align:center;
+    }
+    #chat-log{
+      flex:1;padding:1rem;overflow-y:auto;background:#1b0e2d;color:#fff;
+      font-size:1rem;
+    }
+    .chat-msg{margin-bottom:0.7rem;}
+    .user{text-align:right;color:#e7e7e7;}
+    .bot{text-align:left;color:#ae7cff;}
 
-  <!-- Metadata & SEO -->
-  <meta name="description" content="Multilingual chatbot CHATTIA by OPS Online Support - securely powered with reCAPTCHA, honeypot, and human verification.">
-  <meta name="keywords" content="chatbot, CHATTIA, OPS Online Support, multilingual AI, reCAPTCHA, secure chatbot">
+    /* —— Input & buttons —— */
+    #chatbot-form-container{
+      background:#220f3a;border-top:1px solid #ae7cff;
+      padding:0.5rem;display:flex;flex-direction:column;position:relative;
+    }
+    #chatbot-input-row{display:flex;margin-bottom:0.5rem;}
+    #chatbot-input{
+      flex:1;padding:0.7rem;border:none;background:transparent;
+      color:#fff;font-size:1rem;
+    }
 
-  <!-- Security Headers -->
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta name="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()" />
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' https://www.google.com https://www.gstatic.com;
-    style-src 'self';
-    img-src 'self' data:;
-    font-src 'self';
-    frame-src 'self' https://www.google.com;">
-  <link rel="canonical" href="https://www.opsonlinesupport.com/html/chattia.html" />
-  <!-- Styles -->
-  <link rel="stylesheet" href="./chatbot-interface.css">
+    /* new compact “Send >” button */
+    #chatbot-send{
+      width:44px;height:44px;border:none;background:#ae7cff;
+      color:#fff;font-size:1.25rem;font-weight:bold;padding:0;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      border-radius:6px;transition:background .2s;
+    }
+    #chatbot-send:hover:enabled{background:#7d51c2;}
+    #chatbot-send:disabled{background:#555;cursor:not-allowed;}
 
-  <!-- Google reCAPTCHA -->
-  <script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY"></script>
+    /* Close button (slightly smaller) */
+    #chatbot-close{
+      position:absolute;right:0.5rem;bottom:0.5rem; /* This was for the old layout */
+      /* For new layout, it's in the form container, not absolutely positioned on the whole chat */
+      border:none;border-radius:4px;padding:0.25rem 0.9rem;
+      font-size:0.9rem;font-weight:bold;cursor:pointer;
+      background:#444;color:#fff;transition:background .2s;
+      /* Adjusting positioning for the new layout */
+      align-self: flex-end; /* Align to the right if it's a direct child of a flex column */
+      margin-top: 0.5rem; /* Add some space if needed */
+    }
+    #chatbot-close:hover{background:#666;}
+
+    /* Human-check */
+    .human-check{color:#ddd;font-size:0.9rem;display:flex;align-items:center;}
+    .human-check input{margin-right:0.5rem;}
+
+    /* —— Responsiveness: shrink to 80 % on small screens —— */
+    /* This might not be needed if the parent iframe is controlled */
+    /* @media(max-width:600px){
+      #chatbot-container{width:80%;height:80%;}
+    } */
+
+    /* Custom scrollbar for webkit browsers */
+    #chat-log::-webkit-scrollbar {
+      width: 8px;
+    }
+    #chat-log::-webkit-scrollbar-track {
+      background: #1b0e2d;
+    }
+    #chat-log::-webkit-scrollbar-thumb {
+      background-color: #ae7cff;
+      border-radius: 10px;
+      border: 2px solid #1b0e2d;
+    }
+    #chat-log::-webkit-scrollbar-thumb:hover {
+      background-color: #7d51c2;
+    }
+
+  </style>
 </head>
-
 <body>
   <div id="chatbot-container">
-    <button id="chatbot-close-button" aria-label="Close Chat" data-en-label="Close Chat" data-es-label="Cerrar Chat">&times;</button>
-    <div id="chat-log" class="chat-log" aria-live="polite" aria-label="Chat conversation area"></div>
+    <div id="chatbot-header">OPS AI Chatbot</div>
+    <div id="chat-log">
+        <!-- Example initial message -->
+        <div class="chat-msg bot">Hello! How can I help you today?</div>
+    </div>
 
-    <form id="chat-form" class="chat-form" autocomplete="off" aria-label="Chatbot form">
-      <!-- User Input -->
-      <input type="text" id="chat-input" name="chat-input"
-        placeholder="Ask me anything..."
-        aria-label="Ask me anything..."
-        data-en-placeholder="Ask me anything..."
-        data-es-placeholder="Pregúntame lo que sea..."
-        data-en-label="Ask me anything..."
-        data-es-label="Pregúntame lo que sea..." required />
+    <div id="chatbot-form-container">
+      <form id="chatbot-input-row" autocomplete="off">
+        <input id="chatbot-input" type="text" placeholder="Type your message..." required maxlength="256" />
+        <button id="chatbot-send" type="submit" disabled>&gt;</button>
+      </form>
 
-      <!-- Human Verification (moved below input) -->
-      <div class="recaptcha-placeholder-container" id="recaptcha-inline-placeholder">
-        <label for="human-verification-checkbox" class="recaptcha-label"
-          data-en-label="I am human" data-es-label="Soy humano"
-          aria-label="I am human">
-          <input type="checkbox" id="human-verification-checkbox" name="human-verification" required />
-          <span class="recaptcha-text" data-en="I am human" data-es="Soy humano">I am human</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+        <label class="human-check">
+          <input type="checkbox" id="human-check" />
+          I am human
         </label>
+        <!-- The "Close" button is now part of this bottom row structure -->
       </div>
-
-      <!-- Send Button (moved below human verification) -->
-      <button type="submit" id="chat-send-button"
-        aria-label="Send Message"
-        data-en-label="Send Message" data-es-label="Enviar Mensaje"
-        data-en="Send" data-es="Enviar">Send</button>
-
-      <!-- Honeypot Field -->
-      <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field"
-        tabindex="-1" aria-hidden="true" />
-    </form>
-
-    <!-- Future STT placeholder for Whisper.js -->
-    <!-- <button id="mic-button" title="Voice Input (Coming Soon)">🎙️</button> -->
+      <button id="chatbot-close" aria-label="Close Chat">Close</button>
+    </div>
   </div>
 
-  <!-- Main JS -->
-  <script type="module" src="./chatbot-interface.js" defer></script>
+  <script>
+    const API_ENDPOINT = "https://your-cloudflare-worker-1.example.com/chat"; // Placeholder
+    const chatLog   = document.getElementById("chat-log");
+    const chatInput = document.getElementById("chatbot-input");
+    const chatForm  = document.getElementById("chatbot-input-row");
+    const sendBtn   = document.getElementById("chatbot-send");
+    const humanCheck= document.getElementById("human-check");
+    const closeBtn  = document.getElementById("chatbot-close");
+
+    /* Enable-Send only if human verified */
+    humanCheck.addEventListener("change", () => {
+      sendBtn.disabled = !humanCheck.checked;
+    });
+
+    /* Append messages to log */
+    function addMessage(text, sender) {
+      const div = document.createElement("div");
+      div.className = `chat-msg ${sender}`;
+      div.textContent = text;
+      chatLog.appendChild(div);
+      chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to bottom
+    }
+
+    /* Handle send */
+    chatForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      if (!humanCheck.checked) {
+        addMessage("Please verify you are human before sending a message.", "bot");
+        return;
+      }
+      const userText = chatInput.value.trim();
+      if (!userText) return;
+
+      addMessage(userText, "user");
+      chatInput.value = "";
+      sendBtn.disabled = true; // Disable send button after sending until new input + human check re-verified
+      // humanCheck.checked = false; // Optionally uncheck human verification
+
+      addMessage("...", "bot"); // Thinking indicator
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: "POST",
+          headers:{ "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userText })
+        });
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({reply: "Error processing your request."}));
+            chatLog.lastChild.textContent = `Error: ${res.status} ${errorData.reply || res.statusText}`;
+            return;
+        }
+        const data = await res.json();
+        chatLog.lastChild.textContent = data.reply || "No reply received from the AI.";
+      } catch(error) {
+        console.error("Chatbot API Error:", error);
+        chatLog.lastChild.textContent = "Error: Could not connect to the AI service.";
+      }
+    });
+
+    /* Request parent to close widget */
+    closeBtn.addEventListener("click", () => {
+      // Post message to parent window to request close
+      parent.postMessage({ type: 'chatbot-close' }, '*'); // Use a specific targetOrigin in production instead of '*'
+    });
+
+    // Handle theme and language changes from parent
+    window.addEventListener('message', (event) => {
+        // It's good practice to check event.origin for security,
+        // but for local file:// development or if origin is unpredictable, this might be relaxed.
+        // For production, ensure this matches the parent window's origin.
+        // Example: if (event.origin !== 'https://yourdomain.com') return;
+
+        if (event.data && event.data.type === 'theme-change') {
+            // You might want to change iframe's internal theme based on this.
+            // For this example, the chatbot has its own fixed theme.
+            // document.body.setAttribute('data-theme', event.data.theme);
+            console.log('Theme change event received in iframe:', event.data.theme);
+        }
+        if (event.data && event.data.type === 'language-change') {
+            // You might want to change iframe's internal language based on this.
+            // For this example, the chatbot text is hardcoded in English.
+            console.log('Language change event received in iframe:', event.data.lang);
+            // Example: updateUIText(event.data.lang);
+        }
+    });
+
+  </script>
 </body>
 </html>

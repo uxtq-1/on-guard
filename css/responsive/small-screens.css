@@ -11,6 +11,12 @@
     display: none !important;
   }
 
+  /* Hide chatbot FAB and window on small screens */
+  #chatbot-fab-trigger,
+  #chatbot-window-container {
+    display: none !important;
+  }
+
   .modal-content {
     width: 80%;
     max-width: 80%;
