@@ -19,7 +19,7 @@ const urlsToCache = [
 
   // Core JS
   '/js/utils/rootPath.js',
-  '/js/utils/sanitize.js',
+  '/js/core/sanitize-input.js',
   '/js/pages/main.js',
 
   // Page logic

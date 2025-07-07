@@ -3,7 +3,7 @@
 import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
 import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js'; // Corrected path
-import { updateDynamicContentLanguage } from '../utils/i18n.js';
+import { updateDynamicContentLanguage } from '../language_toggle/language-toggle.js';
 import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
 
 // Expose the i18n helper globally for pages that expect it

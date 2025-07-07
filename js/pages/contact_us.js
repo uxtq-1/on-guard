@@ -1,7 +1,7 @@
 // js/contact_us.js
 // Handles multilingual, secure contact form submission with modal management
 
-import { sanitizeInput } from '../utils/sanitize.js';
+import { sanitizeInput } from '../core/sanitize-input.js';
 import { attachModalHandlers, closeModal } from '../utils/modal.js';
 
 const I18N = {
