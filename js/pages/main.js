@@ -5,109 +5,85 @@ import { initializeJoinUsModal } from './join_us.js';
 import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js'; // Corrected path
 import { updateDynamicContentLanguage } from '../language_toggle/language-toggle.js';
 import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
-
-// Expose the i18n helper globally for pages that expect it
 window.updateDynamicContentLanguage = updateDynamicContentLanguage;
-
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const html = document.documentElement;
 
-  // Map modal triggers to their HTML file and actual overlay ID
   const modalMap = {
-    'contact-modal': {
-      file: 'contact_us_modal.html',
-      id: 'contact-modal'
-    },
-    'join-us-modal': {
-      file: 'join_us_modal.html',
-      id: 'join-us-modal'
-    },
-    'chatbot-modal': {
-      file: 'mychatbot/chatbot-modal.html', // Corrected path from root
-      id: 'chatbot-modal',
-      isFullPath: true // Flag to indicate the path is from root
-    },
-    'business-operations-service-modal': {
-      file: 'business_operations_modal.html',
-      id: 'business-operations-modal'
-    },
-    'contact-center-service-modal': {
-      file: 'contact_center_modal.html',
-      id: 'contact-center-modal'
-    },
-    'it-support-service-modal': {
-      file: 'it_support_modal.html',
-      id: 'it-support-modal'
-    },
-    'professionals-service-modal': {
-      file: 'professionals_modal.html',
-      id: 'professionals-modal'
-    },
-    'generic-service-modal': {
-      file: 'generic_service_modal.html',
-      id: 'generic-service-modal'
-    }
+    'contact-modal': { file: 'contact_us_modal.html', id: 'contact-modal' },
+    'join-us-modal': { file: 'join_us_modal.html', id: 'join-us-modal' },
+    'chatbot-modal': { file: 'mychatbot/chatbot-modal.html', id: 'chatbot-modal', isFullPath: true },
+    'business-operations-service-modal': { file: 'business_operations_modal.html', id: 'business-operations-modal' },
+    'contact-center-service-modal': { file: 'contact_center_modal.html', id: 'contact-center-modal' },
+    'it-support-service-modal': { file: 'it_support_modal.html', id: 'it-support-modal' },
+    'professionals-service-modal': { file: 'professionals_modal.html', id: 'professionals-modal' },
+    'generic-service-modal': { file: 'generic_service_modal.html', id: 'generic-service-modal' }
   };
 
-  async function loadModal(modalId, triggerButtonId) { // Added triggerButtonId
-    const mapEntry = modalMap[modalId];
-    if (!mapEntry) return null;
-
-    let modal = document.getElementById(mapEntry.id); // Corrected: Check for existing modal first
-    if (modal) { // If modal exists, ensure it's correctly initialized
-        if (triggerButtonId) modal.dataset.triggerId = triggerButtonId;
-        // Re-attach handlers if necessary, or ensure they are robust to multiple calls
-        // attachModalHandlers(modal) is called after this function returns if modal was loaded
-        // if it already exists, handlers should already be attached.
-        return modal;
+  async function loadModal(modalKey, triggerButtonId) {
+    const mapEntry = modalMap[modalKey];
+    if (!mapEntry) {
+      console.error(`Modal key "${modalKey}" not found in modalMap.`);
+      return null;
     }
 
-    const file = mapEntry.file;
-    let placeholder = document.getElementById(`${modalId}-placeholder`);
+    let modalElement = document.getElementById(mapEntry.id);
+    if (modalElement) {
+      console.log(`Modal "${mapEntry.id}" already exists in DOM.`);
+      if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
+      // Ensure handlers are attached, attachModalHandlers should be idempotent
+      attachModalHandlers(modalElement);
+      return modalElement;
+    }
+
+    const filePath = mapEntry.isFullPath ? mapEntry.file : `html/modals/${mapEntry.file}`;
+    let placeholder = document.getElementById(`${modalKey}-placeholder`); // Use modalKey for placeholder ID
     if (!placeholder) {
       placeholder = document.createElement('div');
-      placeholder.id = `${modalId}-placeholder`;
+      // It's better to use mapEntry.id for the placeholder if it's unique and consistent
+      // For now, using modalKey as per original, but this could be a point of failure if IDs don't match expectations.
+      placeholder.id = `${modalKey}-placeholder`;
       document.body.appendChild(placeholder);
     }
 
     try {
-      const filePath = mapEntry.isFullPath ? file : `html/modals/${file}`;
+      console.log(`Fetching modal HTML from: ${filePath}`);
       const resp = await fetch(filePath);
-      if (!resp.ok) throw new Error(`Failed to fetch ${filePath}`);
-      placeholder.innerHTML = await resp.text();
-      modal = document.getElementById(mapEntry.id); // Assign to modal after loading
-      if (!modal) { // Check if modal was successfully loaded into DOM
-          console.error(`Modal with ID ${mapEntry.id} not found after loading ${file}.`);
-          return null;
+      if (!resp.ok) {
+        console.error(`Failed to fetch modal HTML for "${modalKey}" from ${filePath}. Status: ${resp.status}`);
+        placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Could not load content for ${modalKey}.</p>`;
+        return null;
+      }
+      const modalHTML = await resp.text();
+      placeholder.innerHTML = modalHTML; // Inject the HTML
+
+      modalElement = document.getElementById(mapEntry.id); // Get the actual modal element by its ID
+      if (!modalElement) {
+        console.error(`Modal element with ID "${mapEntry.id}" not found in fetched HTML for "${modalKey}". Check the modal HTML file.`);
+        return null;
       }
 
-      if (triggerButtonId) modal.dataset.triggerId = triggerButtonId;
+      console.log(`Modal "${mapEntry.id}" loaded successfully.`);
+      if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
 
-      // Initialize modal specific scripts
-      if (modalId === 'contact-modal') initializeContactModal(modal);
-      if (modalId === 'join-us-modal') initializeJoinUsModal(modal);
-      if (modalId === 'chatbot-modal') initializeChatbotModal(modal);
+      if (modalKey === 'contact-modal') initializeContactModal(modalElement);
+      if (modalKey === 'join-us-modal') initializeJoinUsModal(modalElement);
+      if (modalKey === 'chatbot-modal') initializeChatbotModal(modalElement);
 
-      if (!modal.classList.contains('active')) {
-          modal.setAttribute('aria-hidden', 'true');
-      }
-
-      // Apply current language to the newly loaded modal content
       if (typeof updateDynamicContentLanguage === 'function') {
-        updateDynamicContentLanguage(modal);
+        updateDynamicContentLanguage(modalElement);
       }
 
-      attachModalHandlers(modal); // This should be robust to multiple calls or only called once
-      return modal;
+      attachModalHandlers(modalElement); // Attach generic modal handlers (close button, overlay click)
+      return modalElement;
     } catch (err) {
-      console.error('Modal load failed:', err);
+      console.error(`Error loading modal "${modalKey}":`, err);
+      placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Exception while loading ${modalKey}.</p>`;
       return null;
     }
   }
 
-
-  // Safe utility to dispatch custom events
   function dispatchSafeEvent(name, detail = {}) {
     try {
       window.dispatchEvent(new CustomEvent(name, { detail }));
@@ -116,79 +92,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const themeButtons = document.querySelectorAll(
-    '#fabThemeToggle, #theme-toggle-desktop, #theme-toggle-mobile, #mobile-theme-toggle'
-  );
-  const languageButtons = document.querySelectorAll(
-    '#fabLanguageToggle, #language-toggle-desktop, #mobile-language-toggle'
-  );
+  const themeButtons = document.querySelectorAll('#fabThemeToggle, #theme-toggle-desktop, #theme-toggle-mobile, #mobile-theme-toggle');
+  const languageButtons = document.querySelectorAll('#fabLanguageToggle, #language-toggle-desktop, #mobile-language-toggle');
 
   function updateThemeButton(btn, theme, lang) {
     if (!btn) return;
     const span = btn.querySelector('span');
-  // Ensure `dataset` is accessed correctly and provide default fallbacks.
-  const labelKey = theme === 'dark' ? `dataset.esLabelLight` : `dataset.esLabelDark`; // Example default, adjust as needed
-  const textKey = theme === 'dark' ? `dataset.esLight` : `dataset.esDark`; // Example default, adjust as needed
+    const enLabelKey = theme === 'dark' ? 'enLabelLight' : 'enLabelDark';
+    const currentLangLabelKey = theme === 'dark' ? `${lang}LabelLight` : `${lang}LabelDark`;
+    const enTextKey = theme === 'dark' ? 'enLight' : 'enDark';
+    const currentLangTextKey = theme === 'dark' ? `${lang}Light` : `${lang}Dark`;
 
-  // Construct the dataset keys for English and the current language
-  const enLabelKey = theme === 'dark' ? 'enLabelLight' : 'enLabelDark';
-  const currentLangLabelKey = theme === 'dark' ? `${lang}LabelLight` : `${lang}LabelDark`;
-  const enTextKey = theme === 'dark' ? 'enLight' : 'enDark';
-  const currentLangTextKey = theme === 'dark' ? `${lang}Light` : `${lang}Dark`;
-
-  // Determine the label and text, falling back to English if the current language's version isn't available.
-  const label = btn.dataset[currentLangLabelKey] || btn.dataset[enLabelKey] || (theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme');
-  const text = btn.dataset[currentLangTextKey] || btn.dataset[enTextKey] || (theme === 'dark' ? 'Light' : 'Dark');
-
+    const label = btn.dataset[currentLangLabelKey] || btn.dataset[enLabelKey] || (theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme');
+    const text = btn.dataset[currentLangTextKey] || btn.dataset[enTextKey] || (theme === 'dark' ? 'Light' : 'Dark');
 
     if (label) {
       btn.setAttribute('title', label);
       btn.setAttribute('aria-label', label);
     }
-  if (span) {
-    span.textContent = text;
-  } else {
-    // If there's no span, assume the button's text content itself should be updated.
-    // This is a fallback and might need adjustment based on actual button structure.
-    btn.textContent = text;
-  }
+    if (span) {
+      span.textContent = text;
+    } else {
+      btn.textContent = text;
+    }
   }
 
-function updateLanguageButton(btn, targetLang) { // targetLang is the language to switch TO (e.g., 'es' if current is 'en')
+  function updateLanguageButton(btn, targetLang) {
     if (!btn) return;
     const span = btn.querySelector('span');
-  const currentLang = document.documentElement.lang || 'en';
-
-  // Text for the button itself (e.g., "ES" when switching to Spanish)
-  // The button should show the language it will switch TO if clicked.
-  // So if currentLang is 'en', targetLang is 'es', the button shows 'ES'.
-  // If currentLang is 'es', targetLang is 'en', the button shows 'EN'.
-  const buttonText = targetLang === 'es' ? (btn.dataset.es || 'ES') : (btn.dataset.en || 'EN');
-
-
-  // Label for accessibility (e.g., "Switch to Spanish" or "Cambiar a Inglés")
-  // This should reflect the action of clicking the button.
-  // If currentLang is 'en', the action is "Switch to Spanish".
-  // If currentLang is 'es', the action is "Switch to English".
-  let label;
-  if (currentLang === 'en') {
-    label = btn.dataset.enLabel || 'Switch to Spanish'; // Fallback to a sensible default
-  } else { // currentLang is 'es'
-    label = btn.dataset.esLabel || 'Cambiar a Inglés'; // Fallback to a sensible default
-  }
+    const currentLang = document.documentElement.lang || 'en';
+    const buttonText = targetLang === 'es' ? (btn.dataset.es || 'ES') : (btn.dataset.en || 'EN');
+    let label;
+    if (currentLang === 'en') {
+      label = btn.dataset.enLabel || 'Switch to Spanish';
+    } else {
+      label = btn.dataset.esLabel || 'Cambiar a Inglés';
+    }
 
     if (label) {
       btn.setAttribute('title', label);
       btn.setAttribute('aria-label', label);
     }
-
-  if (span) {
-    span.textContent = buttonText;
-  } else {
-    btn.textContent = buttonText; // Fallback if no span
+    if (span) {
+      span.textContent = buttonText;
+    } else {
+      btn.textContent = buttonText;
+    }
   }
-  }
-
 
   function applyTheme(theme) {
     body.setAttribute('data-theme', theme);
@@ -196,20 +146,16 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
     const lang = html.getAttribute('lang') || 'en';
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('theme-change', { theme });
-  // Ensure dynamic content language is updated after theme change, as some text might be theme-dependent.
-  if (typeof window.updateDynamicContentLanguage === 'function') {
-    window.updateDynamicContentLanguage(document);
-  }
+    if (typeof window.updateDynamicContentLanguage === 'function') {
+      window.updateDynamicContentLanguage(document);
+    }
   }
 
   function applyLanguage(lang) {
     html.setAttribute('lang', lang);
     localStorage.setItem('language', lang);
-  // For each language button, update its text to show the *other* language.
-  // e.g., if we just switched to 'es', the button should now offer to switch to 'en'.
     languageButtons.forEach(btn => updateLanguageButton(btn, lang === 'en' ? 'es' : 'en'));
     const theme = body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  // Update theme button labels for the new language
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('language-change', { lang });
     notifyChatbotLanguageChange(lang);
@@ -234,7 +180,6 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
     });
   });
 
-  // Helper function to manage focusable children within a toggled container
   function setFocusableChildren(container, isVisible) {
     if (!container) return;
     const focusableElements = container.querySelectorAll(
@@ -247,25 +192,13 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
           el.setAttribute('tabindex', originalTabIndex);
           el.removeAttribute('data-original-tabindex');
         } else {
-          // If there was no specific original tabindex, remove the one we might have set.
-          // This allows elements like <a> or <button> to revert to their default focusable state.
-          // Or if they had tabindex="-1" initially and should remain so (though query excludes this).
-          if (el.getAttribute('tabindex') === '-1' && !el.hasAttribute('data-original-tabindex')) {
-            // This case should ideally not be hit if the element was truly meant to be non-focusable permanently
-          } else {
-            el.removeAttribute('tabindex');
-          }
+          el.removeAttribute('tabindex');
         }
-      } else { // isVisible is false, so hide
+      } else {
         const currentTabIndex = el.getAttribute('tabindex');
-        // Only store and change if not already -1
         if (currentTabIndex !== '-1') {
-          if (currentTabIndex) { // Store if it's something like "0", "1", etc.
+          if (currentTabIndex) {
             el.dataset.originalTabindex = currentTabIndex;
-          } else {
-            // If no tabindex attribute, it's focusable by default (e.g. <a>, <button>)
-            // We don't need to store 'undefined' but will set to -1.
-            // data-original-tabindex will remain unset for these.
           }
           el.setAttribute('tabindex', '-1');
         }
@@ -273,55 +206,58 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
     });
   }
 
-  // FAB: Horizontal Nav Toggle
   const horizFab = document.getElementById('horizontalNavFab');
   const horizNav = document.getElementById('horizontalMobileNav');
   if (horizFab && horizNav) {
-    // Initialize focus state based on initial aria-hidden
-    setFocusableChildren(horizNav, horizNav.getAttribute('aria-hidden') === 'false');
-
+    setFocusableChildren(horizNav, horizNav.classList.contains('active')); // Sync with class
     horizFab.addEventListener('click', () => {
       const isOpen = horizNav.classList.toggle('active');
       horizFab.setAttribute('aria-expanded', String(isOpen));
-      horizNav.setAttribute('aria-hidden', String(!isOpen));
+      horizNav.setAttribute('aria-hidden', String(!isOpen)); // Keep aria-hidden
       setFocusableChildren(horizNav, isOpen);
+       if (isOpen) { // Auto-close services menu if horizNav opens
+        if (servicesMenu && servicesMenu.classList.contains('active')) {
+            servicesToggle.click(); // Simulate click to close it
+        }
+      }
     });
   }
 
-  // FAB: Services Submenu Toggle
   const servicesToggle = document.getElementById('horizontalServicesToggle');
   const servicesMenu = document.getElementById('horizontalServicesMenu');
   if (servicesToggle && servicesMenu) {
-    // Initialize focus state
-    setFocusableChildren(servicesMenu, servicesMenu.getAttribute('aria-hidden') === 'false');
-
+    setFocusableChildren(servicesMenu, servicesMenu.classList.contains('active')); // Sync with class
     servicesToggle.addEventListener('click', () => {
-      const expanded = servicesToggle.getAttribute('aria-expanded') !== 'true'; // Check current state before toggle
-      servicesToggle.setAttribute('aria-expanded', String(expanded));
-      servicesMenu.setAttribute('aria-hidden', String(!expanded));
-      servicesMenu.classList.toggle('active');
-      setFocusableChildren(servicesMenu, expanded);
+      const isOpen = servicesMenu.classList.toggle('active');
+      servicesToggle.setAttribute('aria-expanded', String(isOpen));
+      servicesMenu.setAttribute('aria-hidden', String(!isOpen)); // Keep aria-hidden
+      setFocusableChildren(servicesMenu, isOpen);
     });
   }
 
-  // Mobile Services Sub-Menu Toggle (from mobile_nav.html)
+  // Close FAB menus if clicking outside
+  document.addEventListener('click', (event) => {
+    if (horizNav && horizNav.classList.contains('active') && !horizFab.contains(event.target) && !horizNav.contains(event.target)) {
+        horizFab.click(); // Simulate click to close
+    }
+    if (servicesMenu && servicesMenu.classList.contains('active') && !servicesToggle.contains(event.target) && !servicesMenu.contains(event.target)) {
+        servicesToggle.click(); // Simulate click to close
+    }
+  });
+
+
   const mobileServicesToggle = document.getElementById('mobile-services-toggle');
   const mobileServicesMenu = document.getElementById('mobile-services-menu');
-
   if (mobileServicesToggle && mobileServicesMenu) {
-    // Initialize focus state
-    setFocusableChildren(mobileServicesMenu, mobileServicesMenu.getAttribute('aria-hidden') === 'false');
-
+    setFocusableChildren(mobileServicesMenu, mobileServicesMenu.classList.contains('active'));
     mobileServicesToggle.addEventListener('click', () => {
-      const isExpanded = mobileServicesToggle.getAttribute('aria-expanded') !== 'true';
+      const isExpanded = mobileServicesMenu.classList.toggle('active');
       mobileServicesToggle.setAttribute('aria-expanded', String(isExpanded));
       mobileServicesMenu.setAttribute('aria-hidden', String(!isExpanded));
-      mobileServicesMenu.classList.toggle('active'); // Assuming 'active' class controls visibility
       setFocusableChildren(mobileServicesMenu, isExpanded);
     });
   }
 
-  // Desktop Right Side Menu Toggle
   const menuOpenBtn = document.getElementById('menu-open');
   const menuCloseBtn = document.getElementById('menu-close');
   const rightSideMenu = document.getElementById('rightSideMenu');
@@ -330,83 +266,99 @@ function updateLanguageButton(btn, targetLang) { // targetLang is the language t
       rightSideMenu.classList.add('active');
       rightSideMenu.setAttribute('aria-hidden', 'false');
       menuOpenBtn.setAttribute('aria-expanded', 'true');
+      setFocusableChildren(rightSideMenu, true);
     };
     const closeMenu = () => {
       rightSideMenu.classList.remove('active');
       rightSideMenu.setAttribute('aria-hidden', 'true');
       menuOpenBtn.setAttribute('aria-expanded', 'false');
+      setFocusableChildren(rightSideMenu, false);
     };
     menuOpenBtn.addEventListener('click', openMenu);
     menuCloseBtn.addEventListener('click', closeMenu);
+    // Initialize focus state for rightSideMenu
+    setFocusableChildren(rightSideMenu, rightSideMenu.classList.contains('active'));
   }
 
-  // Desktop Services Submenu Toggle
   const deskServicesBtn = document.querySelector('#rightSideMenu .services-trigger > button');
   const deskServicesMenu = document.querySelector('#rightSideMenu #servicesSubMenu');
   if (deskServicesBtn && deskServicesMenu) {
+    // Initialize focus state for deskServicesMenu
+    setFocusableChildren(deskServicesMenu, deskServicesMenu.classList.contains('active'));
     deskServicesBtn.addEventListener('click', () => {
-      const expanded = deskServicesBtn.getAttribute('aria-expanded') === 'true';
-      deskServicesBtn.setAttribute('aria-expanded', String(!expanded));
-      deskServicesMenu.classList.toggle('active');
+      const isExpanded = deskServicesMenu.classList.toggle('active');
+      deskServicesBtn.setAttribute('aria-expanded', String(isExpanded));
+      // No aria-hidden needed if visibility is controlled by parent's state or CSS display
+      setFocusableChildren(deskServicesMenu, isExpanded);
     });
   }
 
   // Modals: Open/Toggle Handler
   try {
     document.querySelectorAll('[data-modal]').forEach(button => {
-    const modalKey = button.getAttribute('data-modal');
-    if (!button.id) {
-        console.warn('Modal trigger button is missing an ID. Auto-generating one for focus management.', button);
-        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
-    }
-
-    button.addEventListener('click', async () => {
-      const mapEntry = modalMap[modalKey] || { id: modalKey };
-      let modal = document.getElementById(mapEntry.id); // Try to find existing modal
-
-      if (modal && modal.classList.contains('active')) {
-        // Modal is already open and active, so close it
-        closeModalUtility(modal, button);
-      } else {
-        // Modal is not active or not loaded yet.
-        if (!modal) { // If not in DOM, load it
-            modal = await loadModal(modalKey, button.id);
-        } else { // Modal exists in DOM but is not active
-            modal.dataset.triggerId = button.id; // Ensure trigger ID is set
-        }
-
-        if (modal) { // If modal now exists (either found or loaded)
-          attachModalHandlers(modal); // Ensure handlers are attached (idempotent)
-          modal.classList.add('active');
-          modal.setAttribute('aria-hidden', 'false');
-
-          setTimeout(() => {
-            const focusable = modal.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
-            if (focusable) focusable.focus();
-          }, 100); // Timeout helps ensure modal is fully rendered and visible
-        } else {
-          console.error(`Modal with key ${modalKey} could not be found or loaded.`);
-        }
+      const modalKey = button.getAttribute('data-modal');
+      if (!modalKey) {
+          console.warn('Button has data-modal attribute but no value.', button);
+          return;
       }
+      if (!button.id) {
+        button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
+      }
+
+      button.addEventListener('click', async () => {
+        console.log(`Modal trigger clicked for: ${modalKey}, button ID: ${button.id}`);
+        const mapEntry = modalMap[modalKey];
+        if (!mapEntry) {
+            console.error(`No modalMap entry for modalKey: ${modalKey}`);
+            return;
+        }
+
+        let modalElement = document.getElementById(mapEntry.id);
+
+        if (modalElement && modalElement.classList.contains('active')) {
+          console.log(`Modal ${mapEntry.id} is active, calling closeModalUtility.`);
+          closeModalUtility(modalElement, button); // Pass button as the trigger
+        } else {
+          console.log(`Modal ${mapEntry.id} is not active or not loaded. Attempting to load/show.`);
+          if (!modalElement) {
+            modalElement = await loadModal(modalKey, button.id);
+          } else {
+            // Modal exists but is not active, ensure triggerId is set
+            modalElement.dataset.triggerId = button.id;
+            // Ensure handlers are attached if it was already in DOM but hidden
+            attachModalHandlers(modalElement);
+          }
+
+          if (modalElement) {
+            console.log(`Showing modal ${mapEntry.id}.`);
+            modalElement.classList.add('active');
+            modalElement.setAttribute('aria-hidden', 'false');
+            // attachModalHandlers should have been called by loadModal or above
+            // It's important that attachModalHandlers also sets up focus trap or initial focus.
+            // For now, direct focus setting:
+            setTimeout(() => {
+              const focusable = modalElement.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
+              if (focusable) {
+                focusable.focus();
+              } else {
+                 // Fallback focus to the modal itself if no focusable children found
+                 modalElement.setAttribute('tabindex', '-1'); // Make modal focusable
+                 modalElement.focus();
+              }
+            }, 100);
+          } else {
+            console.error(`Modal with key ${modalKey} (ID: ${mapEntry.id}) could not be found or loaded.`);
+          }
+        }
+      });
     });
-  });
   } catch (error) {
     console.error("Error setting up modal trigger listeners:", error);
   }
 
-  // Sync saved theme
   const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'dark' || savedTheme === 'light') {
-    applyTheme(savedTheme);
-  } else {
-    applyTheme(body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
-  }
+  applyTheme(savedTheme || (body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'));
 
-  // Sync saved language
   const savedLang = localStorage.getItem('language');
-  if (savedLang === 'es' || savedLang === 'en') {
-    applyLanguage(savedLang);
-  } else {
-    applyLanguage(html.getAttribute('lang') === 'es' ? 'es' : 'en');
-  }
+  applyLanguage(savedLang || (html.getAttribute('lang') === 'es' ? 'es' : 'en'));
 });
