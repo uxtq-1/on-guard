@@ -1,7 +1,7 @@
-// js/chatbot_creation/chatbot.js
+// chatbot-modal/chatbot-interface.js
 // Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
-import { sanitizeInput } from '../js/utils/sanitize.js';
-import { updateDynamicContentLanguage } from '../js/utils/i18n.js';
+import { sanitizeInput } from '../js/core/sanitize-input.js';
+import { updateDynamicContentLanguage } from '../js/language_toggle/language-toggle.js';
 
 function applyTheme(theme) {
   if (theme) document.body.setAttribute('data-theme', theme);
@@ -20,8 +20,8 @@ const I18N = {
     help: 'I can help with general questions. For specific account issues, an agent will assist you. What do you need help with?',
     pricing: 'Please see our pricing on the main website or contact sales.',
     bye: 'Goodbye! Have a great day.',
-    intro: "Hello I'm Chattia",
-    verifyBottom: 'At the bottom; please verify you are human',
+    // intro: "Hello I'm Chattia", // Removed
+    // verifyBottom: 'At the bottom; please verify you are human', // Removed
     // Fallbacks for applyI18n if dataset attributes are missing
     askAnythingPlaceholder: "Ask me anything...",
     askAnythingLabel: "Ask me anything...",
@@ -44,8 +44,8 @@ const I18N = {
     help: 'Puedo ayudar con preguntas generales. Para asuntos de cuenta, un agente te asistirá. ¿Con qué necesitas ayuda?',
     pricing: 'Consulta nuestros precios en el sitio principal o contacta ventas.',
     bye: '¡Adiós! Que tengas un gran día.',
-    intro: 'Hola, soy Chattia',
-    verifyBottom: 'Al final, verifica que eres humano',
+    // intro: 'Hola, soy Chattia', // Removed
+    // verifyBottom: 'Al final, verifica que eres humano', // Removed
     // Fallbacks for applyI18n if dataset attributes are missing
     askAnythingPlaceholder: "Pregúntame lo que sea...",
     askAnythingLabel: "Pregúntame lo que sea...",
@@ -151,14 +151,12 @@ document.addEventListener('DOMContentLoaded', () => {
   form = document.getElementById('chat-form');
   input = document.getElementById('chat-input');
   log = document.getElementById('chat-log');
-  sendBtn = form ? form.querySelector('[type="submit"]') : null;
-  honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null;
-  humanCheckbox = document.getElementById('human-verification-checkbox');
+  sendBtn = document.getElementById('send-btn'); // New ID for the send button
+  honeypotInput = form ? form.querySelector('[name="chatbot-honeypot"]') : null; // Should still be in the form
+  humanCheckbox = document.getElementById('human-check'); // New ID for the human check
   closeButton = document.getElementById('chatbot-close-button');
-  // Initialize the new language toggle button
-  langToggleButton = document.getElementById('lang-toggle-btn');
 
-  if (!form || !input || !log || !closeButton) {
+  if (!form || !input || !log || !closeButton || !sendBtn || !humanCheckbox) { // Added sendBtn and humanCheckbox to check
     console.error('ERROR: Core chatbot UI elements not found in iframe.');
     if (!closeButton) console.error("Missing: closeButton");
     // Note: langToggleButton is optional, so we don't error out if it's missing.
@@ -389,8 +387,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  async function handleSendMessage(event) {
+    if (event) event.preventDefault(); // In case it's ever called from a submit event
     if (lockedForBot) return;
 
     // Honeypot check
@@ -403,9 +401,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Human check
     if (!humanCheckbox || !humanCheckbox.checked) {
       addMessage(t('verifyHuman'), 'bot');
-      setHumanInteractionState(false);
+      setHumanInteractionState(false); // Keep input disabled if check fails
       return;
     }
+    // If human check passes, but was previously set to false by this function, re-enable.
+    // This is important because the human can uncheck then recheck the box.
+    // The main enable/disable is handled by the checkbox's own event listener.
+    // However, if they submit WITHOUT checking, we disable here. If they then check and resubmit,
+    // the checkbox listener would have re-enabled. So this specific re-enable might be redundant
+    // if the checkbox listener is robust. Let's assume checkbox listener handles enabling.
 
     // Google reCAPTCHA v3 (active, required before POST)
     let recaptchaToken = '';
@@ -417,20 +421,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Message
-    let userInput = input.value.trim();
-    if (!userInput) return;
+    let userInputText = input.value.trim(); // Use input.value directly
+    if (!userInputText) return;
 
-    const { sanitized, flagged } = sanitizeInput(userInput);
-    if (userInput !== sanitized) {
+    const { sanitized, flagged } = sanitizeInput(userInputText);
+    if (userInputText !== sanitized) {
         console.warn("Chatbot: User input was modified by sanitizer.");
     }
     if (flagged) {
         console.warn("Chatbot: user input flagged for potential sensitive content.");
     }
-    userInput = sanitized; // Use the sanitized input
+    userInputText = sanitized; // Use the sanitized input
 
-    addMessage(userInput, 'user');
-    input.value = '';
+    addMessage(userInputText, 'user');
+    input.value = ''; // Clear the input field
 
     // POST to Cloudflare Worker (chatbot message check)
     try {
@@ -453,11 +457,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Simulated bot reply (replace with your logic)
-    getSimulatedBotReply(userInput);
-  });
+    getSimulatedBotReply(userInputText); // Pass the sanitized text
+  } // End of handleSendMessage
 
-  function getSimulatedBotReply(userInput) {
-    const lowerInput = userInput.toLowerCase();
+  if (sendBtn) { // Check if sendBtn was found
+    sendBtn.addEventListener('click', handleSendMessage);
+  } else {
+    console.error("Send button not found, cannot attach click listener.");
+  }
+  // The old form.addEventListener('submit', ...) should be removed or commented if no longer primary.
+  // For now, we assume the click on sendBtn is the main way to send.
+
+  function getSimulatedBotReply(userInputText) { // Parameter name updated for clarity
+    const lowerInput = userInputText.toLowerCase();
     let botResponse = t('defaultReply');
     if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
       botResponse = t('hello');
@@ -471,8 +483,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => addMessage(botResponse, 'bot'), 700);
   }
 
-  setTimeout(() => {
+  /*setTimeout(() => {
     addMessage(t('intro'), 'bot');
     addMessage(t('verifyBottom'), 'bot');
-  }, 500);
+  }, 500);*/
 });
