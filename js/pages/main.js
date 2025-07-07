@@ -2,12 +2,10 @@
 
 import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
-import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js';
-import { updateDynamicContentLanguage } from '../utils/i18n.js'; // Assuming i18n.js is in utils
-import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js';
-
+import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js'; // Corrected path
+import { updateDynamicContentLanguage } from '../language_toggle/language-toggle.js';
+import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
 window.updateDynamicContentLanguage = updateDynamicContentLanguage;
-
 document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const html = document.documentElement;

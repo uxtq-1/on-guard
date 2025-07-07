@@ -1,7 +1,7 @@
 // js/chatbot.js — Chatbot modal loader with hardened iframe security
 
 import { ROOT_PATH } from '../js/utils/rootPath.js';
-import { closeModal as closeModalUtility } from '../../js/utils/modal.js';
+import { closeModal as closeModalUtility } from '../js/utils/modal.js';
 
 let chatbotIframe = null;
 let themeObserver = null;
