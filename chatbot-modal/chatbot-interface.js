@@ -20,8 +20,8 @@ const I18N = {
     help: 'I can help with general questions. For specific account issues, an agent will assist you. What do you need help with?',
     pricing: 'Please see our pricing on the main website or contact sales.',
     bye: 'Goodbye! Have a great day.',
-    intro: "Hello I'm Chattia",
-    verifyBottom: 'At the bottom; please verify you are human',
+    // intro: "Hello I'm Chattia", // Removed
+    // verifyBottom: 'At the bottom; please verify you are human', // Removed
     // Fallbacks for applyI18n if dataset attributes are missing
     askAnythingPlaceholder: "Ask me anything...",
     askAnythingLabel: "Ask me anything...",
@@ -44,8 +44,8 @@ const I18N = {
     help: 'Puedo ayudar con preguntas generales. Para asuntos de cuenta, un agente te asistirá. ¿Con qué necesitas ayuda?',
     pricing: 'Consulta nuestros precios en el sitio principal o contacta ventas.',
     bye: '¡Adiós! Que tengas un gran día.',
-    intro: 'Hola, soy Chattia',
-    verifyBottom: 'Al final, verifica que eres humano',
+    // intro: 'Hola, soy Chattia', // Removed
+    // verifyBottom: 'Al final, verifica que eres humano', // Removed
     // Fallbacks for applyI18n if dataset attributes are missing
     askAnythingPlaceholder: "Pregúntame lo que sea...",
     askAnythingLabel: "Pregúntame lo que sea...",
@@ -409,7 +409,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // The main enable/disable is handled by the checkbox's own event listener.
     // However, if they submit WITHOUT checking, we disable here. If they then check and resubmit,
     // the checkbox listener would have re-enabled. So this specific re-enable might be redundant
-    // if the checkbox listener is robust. Let's assume checkbox listener handles enabling
+    // if the checkbox listener is robust. Let's assume checkbox listener handles enabling.
+
     // Google reCAPTCHA v3 (active, required before POST)
     let recaptchaToken = '';
     try {
@@ -430,10 +431,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (flagged) {
         console.warn("Chatbot: user input flagged for potential sensitive content.");
     }
-
     userInputText = sanitized; // Use the sanitized input
+
     addMessage(userInputText, 'user');
     input.value = ''; // Clear the input field
+
     // POST to Cloudflare Worker (chatbot message check)
     try {
       const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/chatbot_message_check', {
@@ -481,8 +483,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => addMessage(botResponse, 'bot'), 700);
   }
 
-  setTimeout(() => {
+  /*setTimeout(() => {
     addMessage(t('intro'), 'bot');
     addMessage(t('verifyBottom'), 'bot');
-  }, 500);
+  }, 500);*/
 });

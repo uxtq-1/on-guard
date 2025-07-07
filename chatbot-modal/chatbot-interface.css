@@ -272,6 +272,8 @@ body[data-theme="dark"] #chat-send-button:hover {
      justify-content: center; /* Center checkbox content */
   }
 }
+/* END CONTENT FROM css/chatbot_creation/chatbot-ui.css */
+
 /* —— footer layout —— */
 .chat-footer {
   padding: .75rem;

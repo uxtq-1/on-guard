@@ -1,14 +1,14 @@
-// chatbot-modal/chatbot-modal.js — Chatbot modal loader with hardened iframe security
+// js/chatbot.js — Chatbot modal loader with hardened iframe security
 
-import { ROOT_PATH } from '../js/core/root-path-handler.js';
-import { closeModal as closeModalUtility } from '../js/core/modal-handler.js';
+import { ROOT_PATH } from '../js/utils/rootPath.js';
+import { closeModal as closeModalUtility } from '../../js/utils/modal.js';
 
 let chatbotIframe = null;
 let themeObserver = null;
 let langObserver = null;
 let iframeLoaded = false;
 
-const chatbotUrl = `${ROOT_PATH}chatbot-modal/chatbot-landingpage.html`;
+const chatbotUrl = `${ROOT_PATH}mychatbot/chatbot-landingpage.html`;
 const chatbotOrigin = new URL(chatbotUrl, window.location.href).origin;
 
 // Send theme to iframe

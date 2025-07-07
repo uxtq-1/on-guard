@@ -8,37 +8,29 @@ const urlsToCache = [
   '/manifest.json',
 
   // Core CSS
-  '/css/global/global.css',
-  '/css/responsive/small-screens.css',
-  '/chatbot-modal/chatbot-fixed-widget.css',
+  '/css/base/global.css',
+  '/css/base/small-screens.css',
+  '/mychatbot/chatbot-fixed-widget.css',
 
   // Modal-specific CSS
-  '/contact-us-modal/contact-us-modal.css',
-  '/join-us-modal/join-us-modal.css',
-  '/chatbot-modal/chatbot-modal.css',
+  '/css/modals/contact_us_modal.css',
+  '/css/modals/join_us_modal.css',
+  '/mychatbot/chatbot-modal.css',
 
   // Core JS
-  '/js/core/root-path-handler.js',
-  '/js/core/sanitize-input.js',
-  '/js/core/main.js',
+  '/js/utils/rootPath.js',
+  '/js/utils/sanitize.js',
+  '/js/pages/main.js',
 
   // Page logic
-  '/contact-us-modal/contact-us-modal.js',
-  '/join-us-modal/join-us-modal.js',
-  '/chatbot-modal/chatbot-modal.js',
+  '/js/pages/contact_us.js',
+  '/js/pages/join_us.js',
+  '/mychatbot/chatbot-modal.js',
 
   // Modal HTML Fragments
-  '/contact-us-modal/contact-us-modal.html',
-  '/join-us-modal/join-us-modal.html',
-  '/chatbot-modal/chatbot-modal.html'
-  // It would be good to also cache:
-  // - /pages/*.html
-  // - /services-modal/*/*.html
-  // - /services-modal/*.html
-  // - /ui-components/*/*.html
-  // - /js/language_toggle/language-toggle.js
-  // - /js/core/modal-handler.js
-  // - CSS files from services-modal/*/*.css
+  '/html/modals/contact_us_modal.html',
+  '/html/modals/join_us_modal.html',
+  '/mychatbot/chatbot-modal.html'
 ];
 
 // Install: Pre-cache critical shell
