@@ -7,6 +7,17 @@ import { updateDynamicContentLanguage } from '../language_toggle/language-toggle
 import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
 window.updateDynamicContentLanguage = updateDynamicContentLanguage;
 document.addEventListener('DOMContentLoaded', () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('js/service-worker.js')
+      .then(reg => {
+        console.log('[SW] Registration successful:', reg.scope);
+      })
+      .catch(err => {
+        console.error('[SW] Registration failed:', err);
+      });
+  } else {
+    console.log('[SW] Service workers are not supported in this browser.');
+  }
   const body = document.body;
   const html = document.documentElement;
 
