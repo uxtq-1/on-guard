@@ -46,11 +46,6 @@
       <label class="human-check"><input id="human-check" type="checkbox" /> <span id="human-label" data-en="I am human" data-es="Soy humano">I am human</span></label>
     </div>
   </div>
-  <script type="module" src="../js/pages/chatbot.js"></script>
-  <script>
-    document.getElementById('closeCtrl').onclick = function () {
-      parent.postMessage({ type: 'chatbot-close' }, '*');
-    };
-  </script>
+  <script src="../js/pages/simple-chatbot.js" defer></script>
 </body>
 </html>
