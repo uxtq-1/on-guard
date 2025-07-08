@@ -10,6 +10,8 @@ let iframeLoaded = false;
 
 const chatbotUrl = `${ROOT_PATH}mychatbot/chatbot-landingpage.html`;
 const chatbotOrigin = new URL(chatbotUrl, window.location.href).origin;
+// Base URL for backend worker integration
+const CHATBOT_WORKER_URL = window.CHATBOT_WORKER_URL || '';
 
 // Send theme to iframe
 function postThemeToIframe(theme) {
@@ -88,7 +90,8 @@ function createLoaderHoneypot() {
 // Alert Cloudflare Worker of suspicious bot
 async function alertWorkerLoaderBotActivity(detail = "loader honeypot") {
   try {
-    await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/loader-bot-alert', {
+    if (!CHATBOT_WORKER_URL) throw new Error('CHATBOT_WORKER_URL not set');
+    await fetch(`${CHATBOT_WORKER_URL}/loader-bot-alert`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
