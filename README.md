@@ -36,16 +36,23 @@ When the site is opened directly from the filesystem using `file://`, modals may
 
 ## Customising the Contact Form Endpoint
 
-Form submissions are optionally sent to a Cloudflare Worker. The script `js/pages/contact_us.js` looks for a global variable named `CONTACT_WORKER_URL` and falls back to an empty string if it is not set. Define this variable in the page before the script is loaded, or edit the file directly, to point to your worker:
+The script `js/pages/contact_us.js` looks for a global variable named `CONTACT_WORKER_URL` and falls back to an empty string if it is not set. To enable form submissions, define this variable in the `index.html` page (or whichever page hosts the contact form) before the `contact_us.js` script is loaded. Point it to your configured Cloudflare Worker URL:
 
 ```html
 <script>
-  window.CONTACT_WORKER_URL = "https://your-worker.example.com";
+  // Example:
+  // window.CONTACT_WORKER_URL = "https://your-actual-worker.your-domain.com";
 </script>
 <script type="module" src="js/pages/contact_us.js" defer></script>
 ```
 
-When configured, the form’s data is sent via `POST` to the Worker which should handle the message (for example by sending an email or storing the data). Leaving the value unset disables submissions.
+When `CONTACT_WORKER_URL` is set, the form’s data is sent via `POST` to the specified Worker. This Worker is responsible for handling the message (e.g., sending an email or storing the data). If `CONTACT_WORKER_URL` is not set or is an empty string, submissions will be disabled.
+
+**Important Security Note:** For the contact form to function with a worker, the site administrator must:
+1. Define the `CONTACT_WORKER_URL` global variable with a valid Cloudflare Worker URL.
+2. Add this specific worker URL to the `connect-src` directive of the Content Security Policy (CSP) in `index.html`. The placeholder `https://your-worker.example.com` has been removed from the default CSP.
+
+Failure to correctly configure both the variable and the CSP will prevent the contact form from submitting data to the worker.
 
 ## License
 
