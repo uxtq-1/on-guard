@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (modalKey === 'contact-modal') initializeContactModal(modalElement);
       if (modalKey === 'join-us-modal') initializeJoinUsModal(modalElement);
-
       if (typeof updateDynamicContentLanguage === 'function') {
         updateDynamicContentLanguage(modalElement);
       }
