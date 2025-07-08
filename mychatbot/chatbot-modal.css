@@ -1,7 +1,7 @@
 /* css/chatbot_modal.css */
 
 /* === Chatbot Modal Container === */
-#chatbot-modal .modal-content {
+#chatbot-modal {
   max-width: 500px;
   width: 95%;
   height: 70vh;
@@ -17,7 +17,7 @@
   transition: all 0.3s ease;
 }
 
-body[data-theme="dark"] #chatbot-modal .modal-content {
+body[data-theme="dark"] #chatbot-modal {
   background-color: #222;
   color: #eee;
   box-shadow: 0 4px 25px rgba(255, 255, 255, 0.05);
@@ -53,10 +53,10 @@ body[data-theme="dark"] #chatbot-modal .modal-footer {
 
 /* === Responsive for Mobile Devices === */
 @media (max-width: 768px) {
-  #chatbot-modal .modal-content {
+  #chatbot-modal {
     /* Override specific height settings to align with global small-screen behavior */
     height: auto;
-    max-height: 80vh; /* Or inherit from .modal-content in small-screens.css if preferred */
+    max-height: 80vh; /* Or inherit from global modal settings if preferred */
      /* width: 80% and max-width: 80% will be inherited from css/base/small-screens.css */
      /* Its own max-width: 500px will still apply if screen 80% is larger than 500px */
   }
