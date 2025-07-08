@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (modalKey === 'contact-modal') initializeContactModal(modalElement);
       if (modalKey === 'join-us-modal') initializeJoinUsModal(modalElement);
-
       if (typeof updateDynamicContentLanguage === 'function') {
         updateDynamicContentLanguage(modalElement);
       }
@@ -166,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const theme = body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('language-change', { lang });
-    // notifyChatbotLanguageChange(lang);
     if (typeof window.updateDynamicContentLanguage === 'function') {
       window.updateDynamicContentLanguage(document);
     }
