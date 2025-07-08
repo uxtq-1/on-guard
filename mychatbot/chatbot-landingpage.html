@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()" />
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://www.google.com https://www.gstatic.com;
+    style-src 'self';
+    img-src 'self' data:;
+    font-src 'self';
+    frame-src 'self' https://www.google.com;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    upgrade-insecure-requests;
+    block-all-mixed-content;
+  ">
+  <title data-en="Chatbot" data-es="Chatbot">Chatbot</title>
+  <link rel="stylesheet" href="../css/chatbot/simple-chatbot.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha384-blOohCVdhjmtROpu8+CfTnUWham9nkX7P7OZQMst+RUnhtoY/9qemFAkIKOYxDI3" crossorigin="anonymous" />
+</head>
+<body>
+  <div id="chatbot-container">
+    <div id="chatbot-header">
+      <span>Chattia</span>
+      <div>
+        <span id="themeCtrl" class="ctrl" data-en="Dark" data-es="Oscuro">Dark</span>
+        <span id="langCtrl" class="ctrl" data-en="ES" data-es="EN">ES</span>
+        <span id="closeCtrl" class="ctrl" aria-label="Close" tabindex="0">&times;</span>
+      </div>
+    </div>
+    <div id="chat-log"></div>
+    <div id="chatbot-form-container">
+      <form id="chatbot-input-row">
+        <input id="chatbot-input" type="text" placeholder="Type a message" data-en-ph="Type a message" data-es-ph="Escribe un mensaje" autocomplete="off" />
+        <button id="chatbot-send" type="submit" disabled>
+          <i class="fas fa-paper-plane"></i>
+          <span data-en="Send" data-es="Enviar">Send</span>
+        </button>
+      </form>
+      <label class="human-check"><input id="human-check" type="checkbox" /> <span id="human-label" data-en="I am human" data-es="Soy humano">I am human</span></label>
+    </div>
+  </div>
+  <script type="module" src="../js/pages/chatbot.js"></script>
+  <script>
+    document.getElementById('closeCtrl').onclick = function () {
+      parent.postMessage({ type: 'chatbot-close' }, '*');
+    };
+  </script>
+</body>
+</html>
