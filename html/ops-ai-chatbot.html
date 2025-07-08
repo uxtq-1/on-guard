@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Standalone interface for the OPS AI Chatbot." />
+  <meta name="keywords" content="OPS AI Chatbot" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://use.fontawesome.com; font-src 'self' https://use.fontawesome.com; connect-src 'self' https://your-cloudflare-worker.example.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content;" />
+  <link rel="canonical" href="https://www.opsonlinesupport.com/html/ops-ai-chatbot.html" />
+  <title>OPS AI Chatbot — Stand-alone</title>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.0/css/all.css" />
+  <link rel="stylesheet" href="../css/chatbot/simple-chatbot.css" />
+</head>
+<body>
+<div id="chatbot-container" role="dialog" aria-modal="true" aria-label="OPS AI Chatbot">
+  <div id="chatbot-header">OPS&nbsp;AI&nbsp;Chatbot</div>
+  <div id="chat-log" aria-live="polite"></div>
+  <div id="chatbot-form-container">
+    <form id="chatbot-input-row" autocomplete="off">
+      <input id="chatbot-input" type="text" placeholder="Type your message..." required maxlength="256" />
+      <button id="chatbot-send" type="submit" disabled aria-label="Send">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </form>
+    <label class="human-check">
+      <input type="checkbox" id="human-check" />
+      <span>I am human</span>
+    </label>
+  </div>
+</div>
+<script src="../js/pages/simple-chatbot.js"></script>
+</body>
+</html>
