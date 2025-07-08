@@ -22,11 +22,9 @@ CSP has been implemented via `<meta http-equiv="Content-Security-Policy" ...>` t
     *   `style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com;`: Allows stylesheets from self, Font Awesome, and Google Fonts.
     *   `img-src 'self' data:`: Allows images from self and data URIs.
     *   `font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;`: Allows fonts from self, Font Awesome, and Google Fonts.
-    *   `connect-src 'self' https://firebase.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://www.google-analytics.com;`: Allows connections to self (for fetching partials) and Google services. For the contact form worker, the administrator must add its specific URL here.
-    *   `frame-src 'self' https://www.google.com https://www.recaptcha.net;`: Allows iframes from self (if any are used by non-chatbot features) and Google for reCAPTCHA.
-*   **Other pages (`about.html`, `blog.html`, etc.)** generally use a stricter CSP, e.g., `connect-src 'self';`.
-
-*   **Offline Page (`offline.html`)**:
+    *   `connect-src 'self' https://your-worker.example.com https://firebase.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://www.google-analytics.com;`: Allows connections to self (for fetching partials), the contact form worker, and Google services. **Note:** `https://your-worker.example.com` should be replaced.
+    *   `frame-src 'self' https://www.google.com https://www.recaptcha.net;`: Allows iframes from self (for any features that use them) and Google for reCAPTCHA.
+   **Offline Page (`offline.html`)**:
     *   `default-src 'self'`: Restricts loading of resources to the same origin.
 *   `style-src 'self'`: Allows stylesheets from self.
     *   `img-src 'self' data:`: Allows images from self and data URIs.
@@ -56,7 +54,7 @@ Full compliance requires comprehensive measures beyond client-side code. The fol
     *   **Subresource Integrity (SRI)**: Added for Font Awesome CSS in `index.html` (`integrity="sha384-blOohCVdhjmtROpu8+CfTnUWham9nkX7P7OZQMst+RUnhtoY/9qemFAkIKOYxDI3"`). Google reCAPTCHA scripts are not suitable for SRI due to their dynamic loading.
 *   **Secure Headers (via Meta Tags)**: Added to all user-facing HTML pages:
     *   `X-Content-Type-Options: nosniff`
-    *   `X-Frame-Options: DENY` (for all pages, as no same-origin iframes are currently used by the application itself post-chatbot removal).
+    *   `X-Frame-Options: DENY` (for all pages, as no same-origin iframes are currently used by the application itself).
     *   `Referrer-Policy: strict-origin-when-cross-origin`
     *   `Permissions-Policy: geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()` (disables unused browser features).
 *   **Service Worker (`js/service-worker.js`)**:

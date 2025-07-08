@@ -10,7 +10,6 @@ The site is a traditional front-end project with HTML, CSS and JavaScript and is
 - `html/` &ndash; secondary pages (About, Careers, Blog, etc.) and `html/modals/` which holds standalone modal fragments such as the contact form.
 - `css/` &ndash; style sheets organised by component:
   - `base/` &ndash; global styles and responsive overrides.
-  - `chatbot_creation/` &ndash; styles for the chatbot creation interface.
   - `modals/` &ndash; styles for the individual modals such as `contact_us_modal.css`.
 - `js/` &ndash; JavaScript files:
   - `pages/` &ndash; logic for each page, e.g. `contact_us.js` for the contact form.
