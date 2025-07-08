@@ -1,63 +1,103 @@
 /* css/chatbot_modal.css */
 
 /* === Chatbot Modal Container === */
-#chatbot-modal {
-  max-width: 500px;
-  width: 95%;
-  height: 70vh;
-  max-height: 600px;
-  margin: 0 auto;
-  background-color: var(--bg-current, #fff);
-  color: var(--text-current, #333);
-  border-radius: 10px;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transition: all 0.3s ease;
+/* ======================  OPS Chatbot Modal — Complete CSS  ====================== */
+
+/* ---------- DESIGN TOKENS ---------- */
+:root{
+  --p:#00c4ff;     /* spring-cyan */
+  --a:#ff3bdb;     /* electric-pink */
+  --bg:#ffffff;
+  --bgd:#121212;
+  --tx:#333;
+  --txd:#f0f0f0;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:var(--bgd); --tx:var(--txd);}
+}
+html[data-theme="dark"]{--bg:var(--bgd); --tx:var(--txd);}
+
+/* ---------- BACKDROP ---------- */
+#modal-backdrop{
+  position:fixed; inset:0;
+  background:#0006; backdrop-filter:blur(2px);
+  opacity:0; pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:999;
+}
+#modal-backdrop.open{
+  opacity:1; pointer-events:auto;
 }
 
-body[data-theme="dark"] #chatbot-modal {
-  background-color: #222;
-  color: #eee;
-  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.05);
+/* ---------- CHATBOT MODAL ---------- */
+#chatbot-modal{
+  position:fixed;
+  top:50%; left:50%;
+  transform:translate(-50%, -50%) scale(.9);
+  opacity:0; pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease;
+  z-index:1000;
+
+  max-width:500px; width:95%;
+  height:70vh; max-height:600px;
+  background:var(--bg); color:var(--tx);
+  border-radius:10px;
+  box-shadow:0 4px 25px rgba(0,0,0,.2);
+
+  display:flex; flex-direction:column; overflow:hidden;
+}
+#chatbot-modal.open{
+  opacity:1; pointer-events:auto;
+  transform:translate(-50%, -50%) scale(1);
 }
 
-/* === Chatbot Modal Body === */
-#chatbot-modal-body {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  overflow: hidden;
+/* ---------- DARK THEME VARIANT ---------- */
+html[data-theme="dark"] #chatbot-modal{
+  background:#222; color:#eee;
+  box-shadow:0 4px 25px rgba(255,255,255,.05);
 }
 
-#chatbot-modal-body iframe {
-  flex-grow: 1;
-  width: 100%;
-  height: 100%;
-  border: none;
+/* ---------- HEADER ---------- */
+#bot-head{
+  background:linear-gradient(135deg, var(--p) 0%, var(--a) 100%);
+  color:#fff; padding:1rem;
+  font-weight:600; font-size:1.2rem;
+
+  display:flex; justify-content:space-between; align-items:center;
+}
+#close-bot{
+  background:none; border:none; color:#fff;
+  font-size:1.25rem; cursor:pointer; line-height:1;
 }
 
-/* === Chatbot Modal Footer === */
-#chatbot-modal .modal-footer {
-  padding: 0.75rem;
-  background-color: var(--bg-current, #fff);
-  border-top: 1px solid var(--border-color-current, #ccc);
+/* ---------- BODY (iframe placeholder) ---------- */
+#bot-body{flex:1; display:flex; flex-direction:column; overflow:hidden;}
+#bot-body iframe{flex:1; width:100%; height:100%; border:none;}
+
+/* ---------- FOOTER ---------- */
+#bot-foot{
+  padding:.75rem;
+  background:var(--bg);
+  border-top:1px solid #ccc;
+}
+html[data-theme="dark"] #bot-foot{
+  background:#2a2a2a;
+  border-top-color:#444;
 }
 
-body[data-theme="dark"] #chatbot-modal .modal-footer {
-  background-color: #2a2a2a;
-  border-top-color: #444;
+/* ---------- TRIGGER BUTTON (demo) ---------- */
+#open-bot{
+  background:var(--a); border:none; color:#fff;
+  font-weight:600; padding:.75rem 1.2rem;
+  border-radius:10px; cursor:pointer;
+  display:flex; align-items:center; gap:8px; font-size:1rem;
 }
 
-/* === Responsive for Mobile Devices === */
-@media (max-width: 768px) {
-  #chatbot-modal {
-    /* Override specific height settings to align with global small-screen behavior */
-    height: auto;
-    max-height: 80vh; /* Or inherit from .modal-content in small-screens.css if preferred */
-     /* width: 80% and max-width: 80% will be inherited from css/base/small-screens.css */
-     /* Its own max-width: 500px will still apply if screen 80% is larger than 500px */
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px){
+  #chatbot-modal{
+    height:auto;
+    max-height:80vh;
   }
+}
 }
