@@ -1,7 +1,7 @@
 {
   "name": "on-guard",
   "version": "1.0.0",
-  "description": "Static site with chatbot widget",
+  "description": "Static site for Ops Online Support",
   "scripts": {
     "test": "echo \"No test specified\" && exit 0"
   },
