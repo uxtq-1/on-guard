@@ -47,24 +47,6 @@ Form submissions are optionally sent to a Cloudflare Worker. The script `js/page
 
 When configured, the form’s data is sent via `POST` to the Worker which should handle the message (for example by sending an email or storing the data). Leaving the value unset disables submissions.
 
-## Configuring the Chatbot Widget
-
-The chatbot scripts (`mychatbot/chatbot-modal.js` and `chatbot-modal/chatbot-interface.js`) expect two global variables to be defined:
-
-- `CHATBOT_WORKER_URL` – Base URL of the Cloudflare Worker handling bot alerts and message verification.
-- `RECAPTCHA_SITE_KEY` – Google reCAPTCHA v3 site key used to validate messages.
-
-Add these variables before loading the chatbot scripts:
-
-```html
-<script>
-  window.CHATBOT_WORKER_URL = 'https://example-worker.yourdomain.com';
-  window.RECAPTCHA_SITE_KEY = 'your-site-key';
-</script>
-<script type="module" src="mychatbot/chatbot-modal.js" defer></script>
-```
-
-If either value is omitted, the chatbot will operate without server validation and will log a warning to the console.
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
