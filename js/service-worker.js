@@ -16,7 +16,7 @@ const urlsToCache = [
   // Modal-specific CSS
   '/css/modals/contact_us_modal.css',
   '/css/modals/join_us_modal.css',
-  '/mychatbot/chatbot-modal.css',
+
 
   // Core JS
   '/js/utils/rootPath.js',
@@ -26,12 +26,12 @@ const urlsToCache = [
   // Page logic
   '/js/pages/contact_us.js',
   '/js/pages/join_us.js',
-  '/mychatbot/chatbot-modal.js',
+
 
   // Modal HTML Fragments
   '/html/modals/contact_us_modal.html',
-  '/html/modals/join_us_modal.html',
-  '/mychatbot/chatbot-modal.html'
+  '/html/modals/join_us_modal.html'
+
 ];
 
 // Install: Pre-cache critical shell

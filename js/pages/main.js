@@ -2,7 +2,7 @@
 
 import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
-import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js'; // Corrected path
+// import { initializeChatbotModal, notifyChatbotLanguageChange } from '../../mychatbot/chatbot-modal.js'; // Corrected path
 import { updateDynamicContentLanguage } from '../language_toggle/language-toggle.js';
 import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
 window.updateDynamicContentLanguage = updateDynamicContentLanguage;
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalMap = {
     'contact-modal': { file: 'contact_us_modal.html', id: 'contact-modal' },
     'join-us-modal': { file: 'join_us_modal.html', id: 'join-us-modal' },
-    'chatbot-modal': { file: 'mychatbot/chatbot-modal.html', id: 'chatbot-modal', isFullPath: true },
+    // 'chatbot-modal': { file: 'mychatbot/chatbot-modal.html', id: 'chatbot-modal', isFullPath: true },
     'business-operations-service-modal': { file: 'business_operations_modal.html', id: 'business-operations-modal' },
     'contact-center-service-modal': { file: 'contact_center_modal.html', id: 'contact-center-modal' },
     'it-support-service-modal': { file: 'it_support_modal.html', id: 'it-support-modal' },
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (modalKey === 'contact-modal') initializeContactModal(modalElement);
       if (modalKey === 'join-us-modal') initializeJoinUsModal(modalElement);
-      if (modalKey === 'chatbot-modal') initializeChatbotModal(modalElement);
+      // if (modalKey === 'chatbot-modal') initializeChatbotModal(modalElement);
 
       if (typeof updateDynamicContentLanguage === 'function') {
         updateDynamicContentLanguage(modalElement);
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const theme = body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     themeButtons.forEach(btn => updateThemeButton(btn, theme, lang));
     dispatchSafeEvent('language-change', { lang });
-    notifyChatbotLanguageChange(lang);
+    // notifyChatbotLanguageChange(lang);
     if (typeof window.updateDynamicContentLanguage === 'function') {
       window.updateDynamicContentLanguage(document);
     }
