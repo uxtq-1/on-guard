@@ -61,3 +61,4 @@ body[data-theme="dark"] #chatbot-modal .modal-footer {
      /* Its own max-width: 500px will still apply if screen 80% is larger than 500px */
   }
 }
+}
