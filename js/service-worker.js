@@ -10,7 +10,6 @@ const urlsToCache = [
   // Core CSS
   '/css/base/global.css',
   '/css/base/small-screens.css',
-  '/mychatbot/chatbot-fixed-widget.css',
 
   // Modal-specific CSS
   '/css/modals/contact_us_modal.css',
