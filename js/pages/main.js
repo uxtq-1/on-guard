@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   async function loadModal(modalKey, triggerButtonId) {
+    // DEBUG log removed as per plan
     const mapEntry = modalMap[modalKey];
     if (!mapEntry) {
       console.error(`Modal key "${modalKey}" not found in modalMap.`);
@@ -365,26 +366,33 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let modalElement = document.getElementById(mapEntry.id);
+        // Use the placeholderId to find if a specific instance for this modalKey already exists
+        const placeholderId = `placeholder-for-${mapEntry.id}-${modalKey}`;
+        const placeholderElement = document.getElementById(placeholderId);
+        let modalInSpecificPlaceholder = null;
 
-        if (modalElement && modalElement.classList.contains('active')) {
-          console.log(`Modal ${mapEntry.id} is active, calling closeModalUtility.`);
-          closeModalUtility(modalElement, button); // Pass button as the trigger
+        if (placeholderElement) {
+          modalInSpecificPlaceholder = placeholderElement.querySelector(`#${mapEntry.id}`);
+        }
+
+        // If a specific instance for this modalKey is found and is active, close it.
+        if (modalInSpecificPlaceholder && modalInSpecificPlaceholder.classList.contains('active')) {
+          console.log(`Modal ${mapEntry.id} (for ${modalKey}) is active in its placeholder, calling closeModalUtility.`);
+          closeModalUtility(modalInSpecificPlaceholder, button);
         } else {
-          console.log(`Modal ${mapEntry.id} is not active or not loaded. Attempting to load/show.`);
-          if (!modalElement) {
-            modalElement = await loadModal(modalKey, button.id);
-          } else {
-            // Modal exists but is not active, ensure triggerId is set
-            modalElement.dataset.triggerId = button.id;
-            // Ensure handlers are attached if it was already in DOM but hidden
-            attachModalHandlers(modalElement);
-          }
+          // If not active or not loaded for this specific modalKey, then load/show it.
+          // loadModal is responsible for either creating a new modal instance in its placeholder
+          // or re-using/updating an existing one if found in its correct placeholder.
+          console.log(`Modal ${mapEntry.id} (for ${modalKey}) is not active or its specific instance not found/loaded. Attempting to load/show.`);
 
-          if (modalElement) {
-            console.log(`Showing modal ${mapEntry.id}.`);
-            modalElement.classList.add('active');
-            modalElement.setAttribute('aria-hidden', 'false');
+          // Always call loadModal to ensure the correct content is loaded for the specific modalKey.
+          // loadModal will handle the logic of creating a new instance or updating an existing one within the correct placeholder.
+          const modalToShow = await loadModal(modalKey, button.id);
+
+          if (modalToShow) {
+            console.log(`Showing modal ${modalToShow.id} (for ${modalKey}).`); // Log the actual ID shown
+            modalToShow.classList.add('active');
+            modalToShow.setAttribute('aria-hidden', 'false');
             // attachModalHandlers should have been called by loadModal or above
             // It's important that attachModalHandlers also sets up focus trap or initial focus.
             // For now, direct focus setting:
