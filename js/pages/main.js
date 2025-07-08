@@ -397,13 +397,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // It's important that attachModalHandlers also sets up focus trap or initial focus.
             // For now, direct focus setting:
             setTimeout(() => {
-              const focusable = modalElement.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
+              const focusable = modalToShow.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
               if (focusable) {
                 focusable.focus();
               } else {
                  // Fallback focus to the modal itself if no focusable children found
-                 modalElement.setAttribute('tabindex', '-1'); // Make modal focusable
-                 modalElement.focus();
+                 modalToShow.setAttribute('tabindex', '-1'); // Make modal focusable
+                 modalToShow.focus();
               }
             }, 100);
           } else {
