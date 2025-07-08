@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   async function loadModal(modalKey, triggerButtonId) {
+    console.log(`[DEBUG] Entering loadModal for modalKey: ${modalKey}, triggerButtonId: ${triggerButtonId}`);
     const mapEntry = modalMap[modalKey];
     if (!mapEntry) {
       console.error(`Modal key "${modalKey}" not found in modalMap.`);
