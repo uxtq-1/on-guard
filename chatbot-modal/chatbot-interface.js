@@ -3,6 +3,10 @@
 import { sanitizeInput } from '../js/core/sanitize-input.js';
 import { updateDynamicContentLanguage } from '../js/language_toggle/language-toggle.js';
 
+// Configuration values expected to be set by the host page
+const CHATBOT_WORKER_URL = window.CHATBOT_WORKER_URL || '';
+const RECAPTCHA_SITE_KEY = window.RECAPTCHA_SITE_KEY || '';
+
 function applyTheme(theme) {
   if (theme) document.body.setAttribute('data-theme', theme);
 }
@@ -327,7 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cloudflare Worker: Notify and block if honeypot triggered
   async function alertWorkerOfBotActivity(detail = "widget honeypot") {
     try {
-      await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/widget-bot-alert', {
+      if (!CHATBOT_WORKER_URL) throw new Error('CHATBOT_WORKER_URL not set');
+      await fetch(`${CHATBOT_WORKER_URL}/widget-bot-alert`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -414,7 +419,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Google reCAPTCHA v3 (active, required before POST)
     let recaptchaToken = '';
     try {
-      recaptchaToken = await grecaptcha.execute('YOUR_SITE_KEY', { action: 'chatbot_message' });
+      if (!RECAPTCHA_SITE_KEY) throw new Error('RECAPTCHA_SITE_KEY not set');
+      recaptchaToken = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'chatbot_message' });
     } catch (err) {
       addMessage(t('recaptchaFail'), 'bot');
       return;
@@ -438,7 +444,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // POST to Cloudflare Worker (chatbot message check)
     try {
-      const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/chatbot_message_check', {
+      if (!CHATBOT_WORKER_URL) throw new Error('CHATBOT_WORKER_URL not set');
+      const response = await fetch(`${CHATBOT_WORKER_URL}/chatbot_message_check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
