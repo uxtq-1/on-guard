@@ -1,6 +1,6 @@
 // js/chatbot_creation/chatbot.js
 // Triple-guarded: honeypot, Cloudflare Worker, reCAPTCHA v3
-import { sanitizeInput } from '../utils/sanitize.js';
+import { sanitizeInput } from '../core/sanitize-input.js';
 
 function applyTheme(theme) {
   if (theme) document.body.setAttribute('data-theme', theme);
@@ -75,9 +75,24 @@ function applyI18n() {
 function setLanguage(lang) {
   if (!lang) return;
   currentLang = lang;
-  document.documentElement.lang = lang;
+  document.documentElement.lang = lang; // Ensure this is set
   applyI18n();
 }
+window.setLanguage = setLanguage; // Expose globally
+
+// Modify applyTheme to also handle body class for dark mode consistency
+function applyTheme(theme) {
+  if (theme) {
+    document.body.setAttribute('data-theme', theme);
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }
+}
+window.applyTheme = applyTheme; // Expose globally
+
 
 window.addEventListener('message', (event) => {
   if (event.origin !== window.location.origin) return;
@@ -90,14 +105,15 @@ window.addEventListener('message', (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  try {
-    const parentTheme = window.parent.document.body.getAttribute('data-theme');
-    applyTheme(parentTheme || 'light');
-    const parentLang = window.parent.document.documentElement.getAttribute('lang');
-    if (parentLang) setLanguage(parentLang);
-  } catch (err) {
-    console.warn('Unable to sync theme with parent on load.', err);
-  }
+  // Initialize theme and language from the current document
+  // This makes it compatible with modal usage where parent might not be relevant
+  // or when directly embedded.
+  const initialTheme = document.body.getAttribute('data-theme') || (document.body.classList.contains('dark') ? 'dark' : 'light');
+  applyTheme(initialTheme);
+
+  const initialLang = document.documentElement.lang || 'en';
+  // setLanguage(initialLang); // Call setLanguage to trigger i18n application
+
   form = document.getElementById('chat-form');
   input = document.getElementById('chat-input');
   log = document.getElementById('chat-log');

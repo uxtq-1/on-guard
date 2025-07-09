@@ -1,74 +1,118 @@
 <!-- Ops AI Chattia Modal -->
 <div id="ai-chatbot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="aiChatbotTitle" aria-hidden="true" tabindex="-1">
   <div class="modal-content" role="document">
-    <style>
-    /* ---------- COLOR SYSTEM ---------- */
-    :root{
-      --clr-primary:#00c4ff;
-      --clr-accent :#ff3bdb;
-      --clr-accent-dark:#e000be;
-      --clr-bg  :#ffffff;
-      --clr-bg-dark:#121212;
-      --clr-tx  :#333333;
-      --clr-tx-dark:#f0f0f0;
-    }
-    body.dark{--clr-bg:var(--clr-bg-dark);--clr-tx:var(--clr-tx-dark)}
-    #ai-chatbot-modal .modal-content{padding:0;overflow:hidden}
-    #chatbot-container{width:300px;height:540px;background:#251541;border:2px solid var(--clr-accent);border-radius:18px;box-shadow:0 8px 32px #0006;display:flex;flex-direction:column;overflow:hidden}
-    #chatbot-header{display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--clr-primary) 0%,var(--clr-accent) 100%);color:#fff;font-weight:600;font-size:1.1rem;padding:.75rem 1rem}
-    #chatbot-header .ctrl{cursor:pointer;font-size:.75rem;font-weight:500;user-select:none;opacity:.85}
-    #chatbot-header .ctrl:hover{opacity:1}
-    #chat-log{flex:1;overflow-y:auto;padding:1rem;background:#1b0e2d;color:#eee;font-size:.94rem}
-    .chat-msg{margin:.5rem 0;max-width:90%}
-    .user{margin-left:auto;background:var(--clr-primary);color:#000;padding:.5rem .7rem;border-radius:14px 14px 0 14px}
-    .bot {margin-right:auto;background:#321b53;color:#fff;padding:.5rem .7rem;border-radius:14px 14px 14px 0}
-    #chatbot-form-container{background:#220f3a;border-top:1px solid var(--clr-accent);padding:.55rem .7rem}
-    #chatbot-input-row{display:flex;gap:.6rem}
-    #chatbot-input{flex:1;background:transparent;border:none;color:#fff;font-size:.95rem;padding:.55rem .6rem}
-    #chatbot-send{display:flex;align-items:center;gap:6px;background:var(--clr-accent);border:none;color:#fff;font-weight:600;padding:.5rem .9rem;border-radius:8px;cursor:pointer;transition:.3s}
-    #chatbot-send i{transition:transform .3s}
-    #chatbot-send:hover i{transform:rotate(-45deg)}
-    #chatbot-send:disabled{background:#555;cursor:not-allowed}
-    .human-check{color:#ddd;font-size:.85rem;display:flex;align-items:center;margin-top:.3rem}
-    .human-check input{margin-right:.4rem}
-    @media(max-width:480px){#chatbot-container{height:75vh;width:90%}}
-    </style>
+    <link rel="stylesheet" href="../../css/modals/chatbot_modal.css">
+    <!-- IMPORTANT: The page using this modal MUST load the Google reCAPTCHA API script in its <head> -->
+    <!-- e.g., <script src="https://www.google.com/recaptcha/api.js?render=YOUR_RECAPTCHA_SITE_KEY" async defer></script> -->
+
     <div id="chatbot-container" role="dialog" aria-modal="true">
       <div id="chatbot-header">
-        <span id="title" data-en="Ops AI Chattia" data-es="Ops AI Chattia">Ops AI Chattia</span>
+        <span id="aiChatbotTitle" data-en="Ops AI Chattia" data-es="Ops AI Chattia">Ops AI Chattia</span>
         <div>
-          <span id="langCtrl" class="ctrl">ES</span>
+          <span id="langCtrl" class="ctrl" aria-label="Switch language" data-en-label="Switch language" data-es-label="Cambiar idioma">ES</span>
           &nbsp;|&nbsp;
-          <span id="themeCtrl" class="ctrl">Dark</span>
+          <span id="themeCtrl" class="ctrl" aria-label="Toggle theme" data-en-label="Toggle theme" data-es-label="Alternar tema">Dark</span>
         </div>
-        <button class="close-modal" data-close aria-label="Close"
+        <button class="close-modal" data-close aria-label="Close Chatbot"
                 data-en-label="Close Chatbot" data-es-label="Cerrar Chatbot">
           &times;
         </button>
       </div>
       <div id="chat-log" aria-live="polite"></div>
       <div id="chatbot-form-container">
-        <form id="chatbot-input-row" autocomplete="off">
-          <input id="chatbot-input" type="text" placeholder="Type your message..." required maxlength="256" data-en-ph="Type your message..." data-es-ph="Escriba su mensaje...">
-          <button id="chatbot-send" type="submit" disabled aria-label="Send">
+        <form id="chat-form" autocomplete="off" aria-label="Chatbot form">
+          <input type="text" id="chat-input"
+            placeholder="Type your message..."
+            data-en-placeholder="Type your message..."
+            data-es-placeholder="Escriba su mensaje..."
+            aria-label="Chat message input"
+            data-en-label="Chat message input"
+            data-es-label="Entrada de mensaje de chat"
+            required maxlength="256">
+          <input type="text" name="chatbot-honeypot" class="ops-chatbot-honeypot-field" tabindex="-1" aria-hidden="true" style="display:none;">
+          <button id="chatbot-send" type="submit" aria-label="Send Message" data-en-label="Send Message" data-es-label="Enviar Mensaje">
             <i class="fas fa-paper-plane"></i>
           </button>
         </form>
-        <label class="human-check">
-          <input type="checkbox" id="human-check">
-          <span id="human-label" data-en="I am human" data-es="Soy humano">I am human</span>
-        </label>
+        <div class="human-check"> <!-- Changed from label to div to accommodate chatbot.js structure a bit more easily if needed later -->
+          <input type="checkbox" id="human-verification-checkbox" name="human-verification" required />
+          <label for="human-verification-checkbox" class="recaptcha-label" aria-label="I am human" data-en-label="I am human" data-es-label="Soy humano">
+            <span id="human-label" class="recaptcha-text" data-en="I am human" data-es="Soy humano">I am human</span>
+          </label>
+        </div>
       </div>
     </div>
     <script>
-    const qs=s=>document.querySelector(s),qsa=s=>[...document.querySelectorAll(s)];
-    const langCtrl=qs('#langCtrl'),transNodes=qsa('[data-en]'),phNodes=qsa('[data-en-ph]'),humanLab=qs('#human-label');
-    langCtrl.onclick=()=>{const toES=langCtrl.textContent==='ES';document.documentElement.lang=toES?'es':'en';langCtrl.textContent=toES?'EN':'ES';transNodes.forEach(n=>n.textContent=toES?n.dataset.es:n.dataset.en);phNodes.forEach(n=>n.placeholder=toES?n.dataset.esPh:n.dataset.enPh);humanLab.textContent=toES?humanLab.dataset.es:humanLab.dataset.en;};
-    const themeCtrl=qs('#themeCtrl');themeCtrl.onclick=()=>{const dark=themeCtrl.textContent==='Dark';document.body.classList.toggle('dark',dark);themeCtrl.textContent=dark?'Light':'Dark';};
-    const log=qs('#chat-log'),form=qs('#chatbot-input-row'),input=qs('#chatbot-input'),send=qs('#chatbot-send'),guard=qs('#human-check');
-    guard.onchange=()=>send.disabled=!guard.checked;
-    function addMsg(t,c){const d=document.createElement('div');d.className='chat-msg '+c;d.textContent=t;log.appendChild(d);log.scrollTop=log.scrollHeight;}
-    form.onsubmit=async e=>{e.preventDefault();if(!guard.checked)return;const msg=input.value.trim();if(!msg)return;addMsg(msg,'user');input.value='';send.disabled=true;addMsg('…','bot');try{const r=await fetch('https://your-cloudflare-worker.example.com/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});const d=await r.json();log.lastChild.textContent=d.reply||'No reply.';}catch{log.lastChild.textContent='Error: Can\u2019t reach AI.';}send.disabled=false;};
+      // Configuration must be provided by the page loading this modal,
+      // or fallback to placeholders if this modal is used in a standalone way for testing.
+      window.CHATBOT_CONFIG = window.CHATBOT_CONFIG || {
+        workerUrl: 'YOUR_CLOUDFLARE_WORKER_URL_PLACEHOLDER', // Replace with your actual Cloudflare Worker URL
+        recaptchaSiteKey: 'YOUR_RECAPTCHA_SITE_KEY_PLACEHOLDER' // Replace with your actual Google reCAPTCHA v3 Site Key
+      };
+
+      // Temporary: For local language/theme controls until chatbot.js is fully adapted
+      // These will be integrated into or replaced by chatbot.js logic
+      const localLangCtrl = document.getElementById('langCtrl');
+      const localThemeCtrl = document.getElementById('themeCtrl');
+      const localTitle = document.getElementById('aiChatbotTitle');
+      const localChatInput = document.getElementById('chat-input');
+      const localHumanLabel = document.getElementById('human-label');
+      const localCloseBtn = document.querySelector('.close-modal');
+      // Add other elements that have data-en/es attributes if needed for standalone modal usage
+
+      if (localLangCtrl) {
+        localLangCtrl.onclick = () => {
+          const toES = localLangCtrl.textContent === 'ES';
+          const currentLang = toES ? 'es' : 'en';
+          document.documentElement.lang = currentLang;
+          localLangCtrl.textContent = toES ? 'EN' : 'ES';
+
+          // Update texts based on new language
+          document.querySelectorAll('[data-en]').forEach(el => {
+            if (el.dataset[currentLang]) el.textContent = el.dataset[currentLang];
+          });
+          document.querySelectorAll('[data-en-placeholder]').forEach(el => {
+            if (el.dataset[currentLang + 'Placeholder']) el.placeholder = el.dataset[currentLang + 'Placeholder'];
+          });
+           document.querySelectorAll('[data-en-label]').forEach(el => {
+            if (el.dataset[currentLang + 'Label']) el.setAttribute('aria-label', el.dataset[currentLang + 'Label']);
+          });
+
+          // Propagate to chatbot.js if it's loaded and has a global handler
+          if (window.setLanguage) { // Assuming setLanguage is exposed globally by chatbot.js
+             window.setLanguage(currentLang);
+          } else if (window.postMessage) { // Fallback for iframe-like scenarios, though less relevant here
+            window.postMessage({ type: 'language-change', lang: currentLang }, window.location.origin);
+          }
+        };
+      }
+
+      if (localThemeCtrl) {
+        localThemeCtrl.onclick = () => {
+          const dark = localThemeCtrl.textContent === 'Dark';
+          document.body.classList.toggle('dark', dark);
+          document.body.setAttribute('data-theme', dark ? 'dark' : 'light');
+          localThemeCtrl.textContent = dark ? 'Light' : 'Dark';
+          // Propagate to chatbot.js if it's loaded
+          if (window.applyTheme) { // Assuming applyTheme is exposed globally
+            window.applyTheme(dark ? 'dark' : 'light');
+          } else if (window.postMessage) {
+             window.postMessage({ type: 'theme-change', theme: dark ? 'dark' : 'light' }, window.location.origin);
+          }
+        };
+      }
+      // Initialize language and theme based on current settings if any
+      if (document.documentElement.lang === 'es') {
+        if (localLangCtrl) localLangCtrl.click(); // Simulate a click to set initial state (hacky)
+        if (localLangCtrl) localLangCtrl.click(); // Needs a double toggle if default is ES
+      }
+      if (document.body.classList.contains('dark')) {
+         if (localThemeCtrl) localThemeCtrl.click(); // Simulate
+         if (localThemeCtrl) localThemeCtrl.click();
+      }
+
+
     </script>
+    <script src="../../js/chatbot_creation/chatbot.js" defer></script>
   </div>
 </div>
