@@ -23,6 +23,14 @@ body[data-theme="dark"] #business-operations-modal .modal-content {
   margin-bottom: 1rem;
 }
 
+#business-operations-modal .modal-body p:not(:first-child) {
+  margin-left: 1rem;
+}
+
+#business-operations-modal .modal-body ul {
+  margin-left: 5px;
+}
+
 #business-operations-modal .modal-body p:last-child {
   margin-bottom: 0;
 }

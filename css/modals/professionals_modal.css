@@ -44,6 +44,14 @@
   margin-bottom: 1rem;
 }
 
+#professionals-modal .modal-body p:not(:first-child) {
+  margin-left: 1rem;
+}
+
+#professionals-modal .modal-body ul {
+  margin-left: 5px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   #professionals-modal .modal-content {
