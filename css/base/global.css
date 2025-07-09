@@ -187,13 +187,6 @@ body[data-theme="dark"] .toggle-container button {
   margin-top: 1rem;
   color: var(--text-current);
 }
-.hero-image {
-  width: 100%;
-  max-width: 800px;
-  height: auto;
-  margin-top: 2rem;
-  border-radius: 10px;
-}
 
 /* Services Section */
 .services {
@@ -417,8 +410,7 @@ a:focus, button:focus, input:focus, textarea:focus, select:focus, [tabindex]:foc
 /* Hide Mobile Nav on Desktop */
 @media screen and (min-width: 769px) {
   .mobile-nav,
-  #mobile-services-menu,
-  .mobile-menu-toggle-btn {
+  #mobile-services-menu {
     display: none !important;
   }
 }

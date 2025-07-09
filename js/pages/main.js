@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('js/service-worker.js')
       .then(reg => {
-        console.log('[SW] Registration successful:', reg.scope);
+        // console.log('[SW] Registration successful:', reg.scope);
       })
       .catch(err => {
         console.error('[SW] Registration failed:', err);
       });
   } else {
-    console.log('[SW] Service workers are not supported in this browser.');
+    // console.log('[SW] Service workers are not supported in this browser.');
   }
   const body = document.body;
   const html = document.documentElement;
@@ -26,8 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'business-operations-service-modal': { file: 'business_operations_modal.html', id: 'business-operations-modal' },
     'contact-center-service-modal': { file: 'contact_center_modal.html', id: 'contact-center-modal' },
     'it-support-service-modal': { file: 'it_support_modal.html', id: 'it-support-modal' },
-    'professionals-service-modal': { file: 'professionals_modal.html', id: 'professionals-modal' },
-    'generic-service-modal': { file: 'generic_service_modal.html', id: 'generic-service-modal' }
+    'professionals-service-modal': { file: 'professionals_modal.html', id: 'professionals-modal' }
   };
 
   async function loadModal(modalKey, triggerButtonId) {
@@ -39,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let modalElement = document.getElementById(mapEntry.id);
     if (modalElement) {
-      console.log(`Modal "${mapEntry.id}" already exists in DOM.`);
+      // console.log(`Modal "${mapEntry.id}" already exists in DOM.`);
       if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
       // Ensure handlers are attached, attachModalHandlers should be idempotent
       attachModalHandlers(modalElement);
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      console.log(`Fetching modal HTML from: ${filePath}`);
+      // console.log(`Fetching modal HTML from: ${filePath}`);
       const resp = await fetch(filePath);
       if (!resp.ok) {
         console.error(`Failed to fetch modal HTML for "${modalKey}" from ${filePath}. Status: ${resp.status}`);
@@ -73,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
       }
 
-      console.log(`Modal "${mapEntry.id}" loaded successfully.`);
+      // console.log(`Modal "${mapEntry.id}" loaded successfully.`);
       if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
 
       if (modalKey === 'contact-modal') initializeContactModal(modalElement);
@@ -251,18 +250,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-
-  const mobileServicesToggle = document.getElementById('mobile-services-toggle');
-  const mobileServicesMenu = document.getElementById('mobile-services-menu');
-  if (mobileServicesToggle && mobileServicesMenu) {
-    setFocusableChildren(mobileServicesMenu, mobileServicesMenu.classList.contains('active'));
-    mobileServicesToggle.addEventListener('click', () => {
-      const isExpanded = mobileServicesMenu.classList.toggle('active');
-      mobileServicesToggle.setAttribute('aria-expanded', String(isExpanded));
-      mobileServicesMenu.setAttribute('aria-hidden', String(!isExpanded));
-      setFocusableChildren(mobileServicesMenu, isExpanded);
-    });
-  }
+  // const mobileServicesToggle = document.getElementById('mobile-services-toggle'); // Part of old mobile_nav.html
+  // const mobileServicesMenu = document.getElementById('mobile-services-menu'); // Part of old mobile_nav.html
+  // if (mobileServicesToggle && mobileServicesMenu) {
+    // setFocusableChildren(mobileServicesMenu, mobileServicesMenu.classList.contains('active'));
+    // mobileServicesToggle.addEventListener('click', () => {
+      // const isExpanded = mobileServicesMenu.classList.toggle('active');
+      // mobileServicesToggle.setAttribute('aria-expanded', String(isExpanded));
+      // mobileServicesMenu.setAttribute('aria-hidden', String(!isExpanded));
+      // setFocusableChildren(mobileServicesMenu, isExpanded);
+    // });
+  // }
 
   const menuOpenBtn = document.getElementById('menu-open');
   const menuCloseBtn = document.getElementById('menu-close');
@@ -312,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       button.addEventListener('click', async () => {
-        console.log(`Modal trigger clicked for: ${modalKey}, button ID: ${button.id}`);
+        // console.log(`Modal trigger clicked for: ${modalKey}, button ID: ${button.id}`);
         const mapEntry = modalMap[modalKey];
         if (!mapEntry) {
             console.error(`No modalMap entry for modalKey: ${modalKey}`);
@@ -322,10 +320,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let modalElement = document.getElementById(mapEntry.id);
 
         if (modalElement && modalElement.classList.contains('active')) {
-          console.log(`Modal ${mapEntry.id} is active, calling closeModalUtility.`);
+          // console.log(`Modal ${mapEntry.id} is active, calling closeModalUtility.`);
           closeModalUtility(modalElement, button); // Pass button as the trigger
         } else {
-          console.log(`Modal ${mapEntry.id} is not active or not loaded. Attempting to load/show.`);
+          // console.log(`Modal ${mapEntry.id} is not active or not loaded. Attempting to load/show.`);
           if (!modalElement) {
             modalElement = await loadModal(modalKey, button.id);
           } else {
@@ -336,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           if (modalElement) {
-            console.log(`Showing modal ${mapEntry.id}.`);
+            // console.log(`Showing modal ${mapEntry.id}.`);
             modalElement.classList.add('active');
             modalElement.setAttribute('aria-hidden', 'false');
             // attachModalHandlers should have been called by loadModal or above
