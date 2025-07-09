@@ -1,0 +1,65 @@
+/* ---------- COLOR SYSTEM ---------- */
+:root{
+  --clr-primary:#00c4ff;
+  --clr-accent :#ff3bdb;
+  --clr-accent-dark:#e000be;
+  --clr-bg  :#ffffff;
+  --clr-bg-dark:#121212;
+  --clr-tx  :#333333;
+  --clr-tx-dark:#f0f0f0;
+}
+body.dark{--clr-bg:var(--clr-bg-dark);--clr-tx:var(--clr-tx-dark)}
+#ai-chatbot-modal .modal-content{padding:0;overflow:hidden}
+#chatbot-container{width:300px;height:540px;background:#251541;border:2px solid var(--clr-accent);border-radius:18px;box-shadow:0 8px 32px #0006;display:flex;flex-direction:column;overflow:hidden}
+#chatbot-header{display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--clr-primary) 0%,var(--clr-accent) 100%);color:#fff;font-weight:600;font-size:1.1rem;padding:.75rem 1rem}
+#chatbot-header .ctrl{cursor:pointer;font-size:.75rem;font-weight:500;user-select:none;opacity:.85}
+#chatbot-header .ctrl:hover{opacity:1}
+#chat-log{flex:1;overflow-y:auto;padding:1rem;background:#1b0e2d;color:#eee;font-size:.94rem}
+.chat-msg{margin:.5rem 0;max-width:90%}
+.user{margin-left:auto;background:var(--clr-primary);color:#000;padding:.5rem .7rem;border-radius:14px 14px 0 14px}
+.bot {margin-right:auto;background:#321b53;color:#fff;padding:.5rem .7rem;border-radius:14px 14px 14px 0}
+#chatbot-form-container{background:#220f3a;border-top:1px solid var(--clr-accent);padding:.55rem .7rem}
+#chat-form{display:flex;gap:.6rem} /* Changed from #chatbot-input-row */
+#chat-input{flex:1;background:transparent;border:none;color:#fff;font-size:.95rem;padding:.55rem .6rem} /* Changed from #chatbot-input */
+#chatbot-send{display:flex;align-items:center;gap:6px;background:var(--clr-accent);border:none;color:#fff;font-weight:600;padding:.5rem .9rem;border-radius:8px;cursor:pointer;transition:.3s}
+#chatbot-send i{transition:transform .3s}
+#chatbot-send:hover i{transform:rotate(-45deg)}
+#chatbot-send:disabled{background:#555;cursor:not-allowed}
+.human-check{color:#ddd;font-size:.85rem;display:flex;align-items:center;margin-top:.3rem}
+.human-check input{margin-right:.4rem} /* This is for #human-verification-checkbox */
+@media(max-width:480px){#chatbot-container{height:75vh;width:90%}}
+
+/* Styles potentially from chatbot-ui.css or chatbot-container.css if needed, scoped */
+/* Example: #ai-chatbot-modal .message {} */
+/* For now, primarily porting the modal's own styles. chatbot.js adds .user-message and .bot-message */
+/* Let's ensure the classes added by chatbot.js are styled if they differ from modal's .user & .bot */
+
+#ai-chatbot-modal .message { /* Generic message style if needed */
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 15px;
+  max-width: 80%;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+#ai-chatbot-modal .user-message { /* Added by chatbot.js */
+  background-color: var(--clr-primary); /* Aligning with modal's .user */
+  color: #000;
+  margin-left: auto;
+  border-radius: 14px 14px 0 14px; /* From modal's .user */
+  padding: .5rem .7rem; /* From modal's .user */
+}
+
+#ai-chatbot-modal .bot-message { /* Added by chatbot.js */
+  background-color: #321b53; /* Aligning with modal's .bot */
+  color: #fff;
+  margin-right: auto;
+  border-radius: 14px 14px 14px 0; /* From modal's .bot */
+  padding: .5rem .7rem; /* From modal's .bot */
+}
+
+/* Honeypot should be hidden */
+.ops-chatbot-honeypot-field {
+  display: none !important;
+}
