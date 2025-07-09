@@ -1,313 +1,573 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ops Online Support offers cutting-edge remote business operations, contact center solutions, IT support, and professional staffing.">
-  <meta name="keywords" content="remote business operations, contact center, IT support, professional staffing, online support, OPS">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), midi=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), payment=()">
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com https://www.gstatic.com https://www.google.com https://www.recaptcha.net;
-    style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
-    font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
-    connect-src 'self' https://firebase.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://www.google-analytics.com;
-    img-src 'self' data:;
-    frame-src 'self' https://www.google.com https://www.recaptcha.net;
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    manifest-src 'self';
-    upgrade-insecure-requests;
-    block-all-mixed-content;
-  ">
-  <link rel="canonical" href="https://www.opsonlinesupport.com/index.html" />
-  <title data-en="Ops Online Support - Remote Business & IT Solutions" data-es="Ops Online Soporte - Soluciones Empresariales y de IT Remotas">Ops Online Support - Remote Business & IT Solutions</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OPS AI Chatbot & FAB Modal Stack</title>
+<!-- Using the newer Font Awesome version from the first script -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.0/css/all.css">
 
-  <!-- Base Styles -->
-  <link rel="stylesheet" href="css/base/global.css">
-  <link rel="stylesheet" href="css/base/small-screens.css">
+<style>
+:root {
+  --clr-primary: #00c4ff;
+  --clr-primary-dark: #0096c0;
+  --clr-accent: #ff3bdb;
+  --clr-accent-dark: #e000be;
+  --clr-bg: #fff;
+  --clr-bg-dark: #121212;
+  --clr-tx: #222;
+  --clr-tx-dark: #f0f0f0;
+  --clr-chat-gradient: linear-gradient(135deg, #00c4ff 0%, #ff3bdb 100%);
+  --clr-fab-gradient: linear-gradient(135deg, #00c4ff, #ff3bdb);
+  --clr-fab-gradient-dark: linear-gradient(135deg, #ff3bdb, #00c4ff);
+  --clr-modal-bg: #f6fafd;
+  --clr-modal-bg-dark: #181926;
+  --clr-border: #00c4ff33;
+  --fab-size: 56px;
+}
 
-  <!-- Modals -->
-  <link rel="stylesheet" href="css/modals/contact_us_modal.css">
-  <link rel="stylesheet" href="css/modals/join_us_modal.css">
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-tx);
+  transition: background .3s, color .3s;
+}
+body.dark {
+  --clr-bg: var(--clr-bg-dark);
+  --clr-tx: var(--clr-tx-dark);
+  --clr-modal-bg: var(--clr-modal-bg-dark);
+  --clr-border: #ff3bdb33;
+}
+
+/*************  FAB STACK  *************/
+.fab-stack {
+  position: fixed; bottom: 20px; right: 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  z-index: 5000;
+}
+.fab-btn {
+  width: var(--fab-size); height: var(--fab-size);
+  border: none; border-radius: 50%;
+  background: var(--clr-fab-gradient);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem; cursor: pointer;
+  box-shadow: 0 4px 18px #00c4ff55, 0 1.5px 9px #0002;
+  position: relative;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.fab-btn:hover, .fab-btn:focus {
+  background: var(--clr-fab-gradient-dark);
+  box-shadow: 0 6px 22px #ff3bdb77, 0 2px 12px #0002;
+  outline: none;
+}
+.fab-btn[title]::after {
+  content: attr(title);
+  position: absolute; right: 70px;
+  background: #333b; color: #fff;
+  padding: 4px 10px; border-radius: 6px;
+  font-size: .75rem; white-space: nowrap; display: none;
+}
+.fab-btn:hover::after { display: block; }
+
+/*************  MOBILE NAV  *************/
+.mobile-nav {
+  position: fixed; bottom: 20px; left: 10px; right: 90px;
+  display: flex; flex-direction: row-reverse; gap: 7px;
+  padding: .44rem .8rem; border-radius: 28px;
+  background: var(--clr-modal-bg);
+  box-shadow: 0 4px 18px #00c4ff33;
+  z-index: 3000;
+  transform: scaleX(0); transform-origin: right; transition: transform .3s;
+  align-items: center; min-width: 220px; max-width: calc(100vw - 100px);
+  overflow-x: auto;
+  border: 1.5px solid var(--clr-border);
+}
+.mobile-nav.active { transform: scaleX(1); }
+.mobile-nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  background: none; border: none; cursor: pointer;
+  text-decoration: none; color: var(--clr-tx);
+  font-size: .78rem; padding: 0.18rem 0.35rem; border-radius: 14px;
+  transition: background 0.17s, color 0.16s;
+  min-width: 45px;
+}
+.mobile-nav-item i { font-size: 1.23rem; }
+.mobile-nav-item:active,
+.mobile-nav-item:focus {
+  background: var(--clr-chat-gradient);
+  color: #fff;
+  outline: none;
+}
+#mobile-language-toggle, #mobile-theme-toggle {
+  background: #eaf7fa;
+  color: var(--clr-accent-dark);
+  font-weight: 500;
+  border-radius: 16px;
+  margin: 0 1px;
+  padding: 0.33em 1.05em;
+  min-width: 38px; min-height: 30px; font-size: .91em;
+  box-shadow: 0 2px 8px #00c4ff15;
+  border: none;
+  transition: background 0.16s, color 0.18s;
+}
+body.dark #mobile-language-toggle, body.dark #mobile-theme-toggle {
+    background: var(--clr-modal-bg-dark);
+    color: var(--clr-primary);
+}
+#mobile-language-toggle.active,
+#mobile-theme-toggle.active {
+  background: var(--clr-chat-gradient);
+  color: #fff;
+  box-shadow: 0 3px 16px #ff3bdb33;
+}
+
+/* Service Menu Popup */
+.mobile-services-menu {
+  position: fixed; bottom: 90px; right: 20px; left: unset;
+  background: var(--clr-modal-bg);
+  border: 1.5px solid var(--clr-primary);
+  border-radius: 14px;
+  padding: 1rem 1.15rem; max-height: 54vh; overflow-y: auto;
+  display: none; z-index: 2000;
+  box-shadow: 0 8px 24px #00c4ff22, 0 1.5px 6px #ff3bdb17;
+  animation: popUp .19s cubic-bezier(.7,1.7,.3,.87);
+}
+@keyframes popUp { from{ opacity:0; transform:translateY(38px) scale(.98); } to{ opacity:1; transform:none; } }
+.mobile-services-menu.active { display: block; }
+.mobile-services-menu a {
+  display: block; margin-bottom: 12px;
+  text-decoration: none; color: var(--clr-primary-dark);
+  font-size: 1.01rem; font-weight: 500;
+  padding: 0.35em 0.18em; border-radius: 9px;
+  transition: background 0.14s, color 0.13s;
+}
+.mobile-services-menu a:hover {
+  background: var(--clr-chat-gradient); color: #fff;
+}
+
+/* Visibility for mobile nav, services menu, and FABs */
+@media(min-width:769px){
+  .mobile-nav, .mobile-services-menu, .fab-stack {
+    display:none !important;
+  }
+}
+
+/*************  MODAL FOUNDATION  *************/
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,.63);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 1rem; z-index: 4000;
+}
+.modal-overlay.active { display: flex; }
+
+.modal-content { /* General style for non-chatbot modals */
+  background: var(--clr-modal-bg);
+  border-radius: 13px;
+  width: 93%; max-width: 820px; max-height: 84vh;
+  overflow-y: auto; padding: 1.6rem 1.5rem 1.2rem 1.5rem;
+  box-shadow: 0 0 24px #00c4ff22, 0 1.5px 8px #ff3bdb17;
+  color: var(--clr-tx);
+  border: 2.5px solid var(--clr-primary);
+  position: relative;
+}
+.modal-header, .modal-footer {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;
+}
+.close-modal {
+  font-size: 1.6rem; background: none; border: none; cursor: pointer; color: inherit;
+  transition: color .18s;
+}
+.close-modal:hover { color: var(--clr-primary);}
+
+/*************  SHARED INPUT STYLES *************/
+input,textarea,select {
+  width: 100%; padding: .6rem; margin-top: .2rem;
+  border-radius: 6px; border: 1.5px solid var(--clr-primary);
+  font-size: 1rem; background: var(--clr-bg); color: var(--clr-tx);
+  transition: border 0.15s, background 0.16s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--clr-accent);
+  outline: none;
+  background: #f2fbff;
+}
+body.dark input, body.dark textarea, body.dark select {
+  background: #141420; border-color: var(--clr-accent-dark); color: #f3eaff;
+}
+body.dark input:focus, body.dark textarea:focus, body.dark select:focus {
+  background: #19192a; border-color: var(--clr-primary);
+}
+
+/*************  JOIN MODAL & CONTACT MODAL STYLES (simplified for brevity) *************/
+.form-pairs{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem 2rem}
+@media(max-width:800px){.form-pairs{grid-template-columns:1fr}}
+.form-section{border:1.3px solid #b4f2ff;padding:1rem;border-radius:8px;background:#f9f9ff;display:flex;flex-direction:column;gap:.6rem}
+body.dark .form-section { background: #181926; border-color: var(--clr-primary);}
+.form-row{display:flex;flex-wrap:wrap;gap:1rem}
+.form-cell{flex:1 1 48%;display:flex;flex-direction:column}
+@media(max-width:600px){.form-cell{flex:1 1 100%}}
 
 
-  <link rel="stylesheet" href="css/modals/business_operations_modal.css">
-  <link rel="stylesheet" href="css/modals/contact_center_modal.css">
-  <link rel="stylesheet" href="css/modals/it_support_modal.css">
-  <link rel="stylesheet" href="css/modals/professionals_modal.css">
+/*************  CHATBOT Specific Styles *************/
+/* This overlay will host the fixed-positioned chatbot container */
+#chatbotModal.modal-overlay.active {
+    /* Make overlay transparent so fixed chatbot shows through correctly */
+    background: transparent;
+    /* Don't center its direct child (#chatbot-container) if it's position:fixed */
+    align-items: initial;
+    justify-content: initial;
+    pointer-events: none; /* Overlay itself should not catch clicks */
+}
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha384-blOohCVdhjmtROpu8+CfTnUWham9nkX7P7OZQMst+RUnhtoY/9qemFAkIKOYxDI3" crossorigin="anonymous">
+#chatbotModal #chatbot-container {
+  width:300px; height:540px;
+  background:#251541;
+  border:2px solid var(--clr-accent);
+  border-radius:18px;
+  box-shadow:0 8px 32px #0006;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  position: fixed;
+  bottom: 35px;
+  right: calc(20px + var(--fab-size) + 3px); /* 20px (FAB right) + 56px (FAB width) + 3px (offset) */
+  z-index: 4001;
+  pointer-events: auto; /* Chatbot itself should be interactive */
+}
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="assets/icons/icon-192x192.png" type="image/png">
+#chatbotModal #chatbot-header{
+  display:flex;justify-content:space-between;align-items:center;gap:.5rem;
+  background:linear-gradient(135deg,var(--clr-primary) 0%,var(--clr-accent) 100%);
+  color:#fff;font-weight:600;font-size:1.1rem;padding:.75rem 1rem
+}
+#chatbotModal #chatbot-header .ctrl{cursor:pointer;font-size:.75rem;font-weight:500;user-select:none;opacity:.85}
+#chatbotModal #chatbot-header .ctrl:hover{opacity:1}
+
+#chatbotModal #chat-log{
+  flex:1;overflow-y:auto;padding:1rem;background:#1b0e2d;color:#eee;font-size:.94rem
+}
+#chatbotModal .chat-msg{margin:.5rem 0;max-width:90%}
+#chatbotModal .user{margin-left:auto;background:var(--clr-primary);color:#000;padding:.5rem .7rem;border-radius:14px 14px 0 14px}
+#chatbotModal .bot {margin-right:auto;background:#321b53;color:#fff;padding:.5rem .7rem;border-radius:14px 14px 14px 0}
+
+#chatbotModal #chatbot-form-container{background:#220f3a;border-top:1px solid var(--clr-accent);padding:.55rem .7rem}
+#chatbotModal #chatbot-input-row-form{display:flex;gap:.6rem} /* ID changed in HTML */
+#chatbotModal #chatbot-input-field{ /* ID changed in HTML */
+    flex:1;background:transparent;border:none;color:#fff;font-size:.95rem;padding:.55rem .6rem;
+    width: auto; margin-top: 0; border-radius:0; /* Reset shared */
+}
+#chatbotModal #chatbot-send-button{ /* ID changed in HTML */
+  display:flex;align-items:center;gap:6px;background:var(--clr-accent);border:none;color:#fff;
+  font-weight:600;padding:.5rem .9rem;border-radius:8px;cursor:pointer;transition:.3s;
+  width: auto; margin-top: 0; /* Reset shared */
+}
+#chatbotModal #chatbot-send-button i{transition:transform .3s}
+#chatbotModal #chatbot-send-button:hover i{transform:rotate(-45deg)}
+#chatbotModal #chatbot-send-button:disabled{background:#555;cursor:not-allowed}
+
+#chatbotModal .human-check{color:#ddd;font-size:.85rem;display:flex;align-items:center;margin-top:.3rem}
+#chatbotModal #human-check-box{ /* ID changed in HTML */
+    margin-right:.4rem;
+    width: auto; padding:0; margin-top:0; border-radius:0; border:none; background:transparent; /* Reset shared */
+}
+
+@media(max-width:480px){
+  #chatbotModal #chatbot-container{
+    width: calc(100vw - 20px);
+    right: 10px;
+    left: 10px;
+    bottom: 10px;
+    height: calc(100vh - 70px); /* Adjusted to avoid mobile nav menu (usually ~50-60px high) */
+  }
+}
+body.dark #chatbotModal #chatbot-container {
+  border-color: var(--clr-accent-dark);
+}
+</style>
 </head>
-
 <body>
-  <header>
-    <nav class="desktop-nav">
-      <ul>
-        <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-        <li><a role="button" data-modal="business-operations-service-modal">Business Operations</a></li>
-        <li><a role="button" data-modal="contact-center-service-modal">Contact Center</a></li>
-        <li><a role="button" data-modal="it-support-service-modal">IT Support</a></li>
-        <li><a role="button" data-modal="professionals-service-modal">Professionals</a></li>
-      </ul>
-    </nav>
-    <div class="header-controls">
-      <div class="toggle-container">
-        <button id="theme-toggle-desktop"
-                class="theme-toggle-btn"
-                title="Toggle Theme"
-                aria-label="Toggle Theme"
-                data-en-label-dark="Switch to Dark Theme"
-                data-es-label-dark="Cambiar a Tema Oscuro"
-                data-en-label-light="Switch to Light Theme"
-                data-es-label-light="Cambiar a Tema Claro"
-                data-en-dark="Dark"
-                data-es-dark="Oscuro"
-                data-en-light="Light"
-                data-es-light="Claro">Light</button>
 
-        <button id="language-toggle-desktop"
-                class="lang-toggle-btn"
-                title="Switch Language"
-                aria-label="Switch Language"
-                data-en-label="Switch to Spanish"
-                data-es-label="Cambiar a Inglés">EN</button>
+<!-- ===== FAB STACK ===== -->
+<div class="fab-stack">
+  <button class="fab-btn" data-modal="joinModal"    title="Join Us"><i class="fas fa-user-plus"></i></button>
+  <button class="fab-btn" data-modal="contactModal" title="Contact"><i class="fas fa-envelope"></i></button>
+  <button class="fab-btn" data-modal="chatbotModal" title="Chatbot"><i class="fas fa-comment"></i></button>
+  <button class="fab-btn" id="menuToggle"           title="Menu"><i class="fas fa-bars"></i></button>
+</div>
+
+<!-- ===== MOBILE NAV ===== -->
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#" class="mobile-nav-item" title="Home"><i class="fas fa-home"></i><span data-en="Home" data-es="Inicio">Home</span></a>
+  <button class="mobile-nav-item" id="mobile-services-toggle" aria-expanded="false" aria-controls="mobile-services-menu" title="Services">
+    <i class="fas fa-cogs"></i><span data-en="Services" data-es="Servicios">Services</span>
+  </button>
+  <button class="mobile-nav-item" id="mobile-language-toggle" title="Switch Language" data-en-label="Switch to Spanish" data-es-label="Cambiar a Inglés">EN</button>
+  <button class="mobile-nav-item" id="mobile-theme-toggle" title="Toggle Theme">Light</button>
+  <button class="mobile-nav-item" data-modal="chatbotModal" title="Chat"><i class="fas fa-comment-alt"></i><span data-en="Chat" data-es="Chat">Chat</span></button>
+</nav>
+
+<!-- ===== SERVICES POP-UP ===== -->
+<div class="mobile-services-menu" id="mobile-services-menu" aria-hidden="true">
+  <a href="#" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a>
+  <a href="#" data-en="Contact Center"      data-es="Centro de Contacto">Contact Center</a>
+  <a href="#" data-en="IT Support"          data-es="Soporte IT">IT Support</a>
+  <a href="#" data-en="Professionals"       data-es="Profesionales">Professionals</a>
+</div>
+
+<!-- ===== JOIN MODAL ===== -->
+<div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true" aria-labelledby="joinTitle">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="joinTitle" data-en="Join Us" data-es="Únase">Join Us</h2>
+      <button class="close-modal" data-close>&times;</button>
+    </div>
+    <form id="joinForm" autocomplete="off">
+      <div class="form-pairs">
+        <div class="form-section"><h2>Section 1</h2><div class="inputs"><input type="text"></div></div>
       </div>
-      <button id="menu-open" class="header-menu-trigger" aria-label="Open Menu"
-              data-en-label="Open Menu" data-es-label="Abrir Menú"
-              data-en-title="Open Menu" data-es-title="Abrir Menú">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-
-    <!-- Floating Action Button (FAB) Toggle -->
-    <button id="horizontalNavFab"
-            class="fab-toggle horiz-nav-fab"
-            aria-label="Toggle Navigation Menu"
-            data-en-label="Toggle Navigation Menu"
-            data-es-label="Alternar Menú de Navegación"
-            aria-expanded="false"
-            aria-controls="horizontalMobileNav">
-      <i class="fas fa-bars" aria-hidden="true"></i>
-    </button>
-
-    <!-- Horizontal FAB Navigation Menu -->
-    <nav id="horizontalMobileNav"
-         class="mobile-nav-horizontal"
-         aria-hidden="true"
-         role="navigation">
-
-      <a href="index.html"
-         class="horiz-nav-item"
-         aria-label="Home"
-         data-en-text="Home"
-         data-es-text="Inicio">
-        <i class="fas fa-home" aria-hidden="true"></i>
-        <span data-en="Home" data-es="Inicio">Home</span>
-      </a>
-
-      <button id="horizontalServicesToggle"
-              class="horiz-nav-item"
-              aria-expanded="false"
-              aria-controls="horizontalServicesMenu"
-              data-en-text="Services"
-              data-es-text="Servicios">
-        <i class="fas fa-cogs" aria-hidden="true"></i>
-        <span data-en="Services" data-es="Servicios">Services</span>
-      </button>
-
-      <button id="horizontalContactUsLauncher"
-              class="horiz-nav-item"
-              data-modal="contact-modal"
-              aria-label="Contact Us"
-              data-en-label="Contact Us"
-              data-es-label="Contáctenos"
-              data-en-text="Contact"
-              data-es-text="Contacto">
-        <i class="fas fa-envelope" aria-hidden="true"></i>
-        <span data-en="Contact" data-es="Contacto">Contact</span>
-      </button>
-
-      <button id="horizontalJoinUsLauncher"
-              class="horiz-nav-item"
-              data-modal="join-us-modal"
-              aria-label="Join Us"
-              data-en-label="Join Us"
-              data-es-label="Únete"
-              data-en-text="Join Us"
-              data-es-text="Únete">
-        <i class="fas fa-user-plus" aria-hidden="true"></i>
-        <span data-en="Join Us" data-es="Únete">Join Us</span>
-      </button>
-
-      <button id="fabLanguageToggle"
-              class="horiz-nav-item lang-toggle-btn"
-              aria-label="Switch Language"
-              title="Switch Language"
-              data-en-label="Switch to Spanish"
-              data-es-label="Cambiar a Inglés">
-        <i class="fas fa-globe" aria-hidden="true"></i>
-        <span data-en="EN" data-es="ES">EN</span>
-      </button>
-
-      <button id="fabThemeToggle"
-              class="horiz-nav-item theme-toggle-btn"
-              aria-label="Toggle Theme"
-              title="Toggle Theme"
-              data-en-label-dark="Switch to Dark Theme"
-              data-es-label-dark="Cambiar a Tema Oscuro"
-              data-en-label-light="Switch to Light Theme"
-              data-es-label-light="Cambiar a Tema Claro"
-              data-en-dark="Dark"
-              data-es-dark="Oscuro"
-              data-en-light="Light"
-              data-es-light="Claro">
-        <i class="fas fa-lightbulb" aria-hidden="true"></i>
-        <span data-en="Light" data-es="Claro">Light</span>
-      </button>
-    </nav>
-
-    <!-- Horizontal Services Submenu -->
-    <div id="horizontalServicesMenu"
-         class="mobile-services-menu horizontal-variant"
-         aria-hidden="true"
-         role="menu">
-
-      <ul>
-        <li>
-          <a role="menuitem"
-             href="#"
-             data-modal="business-operations-service-modal"
-             class="horiz-service-item"
-             data-en="Business Operations"
-             data-es="Operaciones Empresariales">
-            Business Operations
-          </a>
-        </li>
-        <li>
-          <a role="menuitem"
-             href="#"
-             data-modal="contact-center-service-modal"
-             class="horiz-service-item"
-             data-en="Contact Center"
-             data-es="Centro de Contacto">
-            Contact Center
-          </a>
-        </li>
-        <li>
-          <a role="menuitem"
-             href="#"
-             data-modal="it-support-service-modal"
-             class="horiz-service-item"
-             data-en="IT Support"
-             data-es="Soporte IT">
-            IT Support
-          </a>
-        </li>
-        <li>
-          <a role="menuitem"
-             href="#"
-             data-modal="professionals-service-modal"
-             class="horiz-service-item"
-             data-en="Professionals"
-             data-es="Profesionales">
-            Professionals
-          </a>
-        </li>
-      </ul>
-    </div>
-  </header>
-
-  <aside id="rightSideMenu" class="right-side-menu" role="navigation">
-    <div class="right-side-menu-header">
-      <h2 class="sr-only" data-en="Main Menu" data-es="Menú Principal">Main Menu</h2>
-      <button id="menu-close" aria-label="Close Menu"
-              data-en-label="Close Menu" data-es-label="Cerrar Menú"
-              data-en-title="Close Menu" data-es-title="Cerrar Menú">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div class="right-side-menu-body">
-      <nav class="right-side-menu-nav">
-        <ul>
-          <li><a href="index.html" data-en="Home" data-es="Inicio">Home</a></li>
-          <li class="services-trigger">
-            <button aria-expanded="false" aria-controls="servicesSubMenu">
-              <span data-en="Services" data-es="Servicios">Services</span>
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <ul id="servicesSubMenu" class="sub-menu">
-              <li><a role="button" data-modal="business-operations-service-modal" data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</a></li>
-              <li><a role="button" data-modal="contact-center-service-modal" data-en="Contact Center" data-es="Centro de Contacto">Contact Center</a></li>
-              <li><a role="button" data-modal="it-support-service-modal" data-en="IT Support" data-es="Soporte IT">IT Support</a></li>
-              <li><a role="button" data-modal="professionals-service-modal" data-en="Professionals" data-es="Profesionales">Professionals</a></li>
-            </ul>
-          </li>
-          <li><a href="html/about.html" data-en="About Us" data-es="Sobre Nosotros">About Us</a></li>
-          <li><a href="html/careers.html" data-en="Careers" data-es="Carreras">Careers</a></li>
-          <li><a href="html/blog.html" data-en="Blog" data-es="Blog">Blog</a></li>
-        </ul>
-      </nav>
-    </div>
-  </aside>
-
-  <section class="hero">
-    <h2 data-en="Welcome to Ops Online Support" data-es="Bienvenido a Ops Online Support">Welcome to Ops Online Support</h2>
-    <p data-en="Empowering remote solutions with cutting-edge strategies." data-es="Potenciando soluciones remotas con estrategias de vanguardia.">Empowering remote solutions with cutting-edge strategies.</p>
-  </section>
-
-  <section id="services-preview" class="services">
-    <div class="service-item">
-      <h3 data-en="Business Operations" data-es="Operaciones Empresariales">Business Operations</h3>
-      <p data-en="Discover how we optimize your business processes." data-es="Descubra cómo optimizamos sus procesos empresariales.">Discover how we optimize your business processes.</p>
-      <button class="btn" data-modal="business-operations-service-modal" data-en="Learn More" data-es="Más Información">Learn More</button>
-    </div>
-    <div class="service-item">
-      <h3 data-en="Contact Center" data-es="Centro de Contacto">Contact Center</h3>
-      <p data-en="Enhance customer interactions with our contact solutions." data-es="Mejore las interacciones con clientes con nuestras soluciones de contacto.">Enhance customer interactions with our contact solutions.</p>
-      <button class="btn" data-modal="contact-center-service-modal" data-en="Learn More" data-es="Más Información">Learn More</button>
-    </div>
-    <div class="service-item">
-      <h3 data-en="IT Support" data-es="Soporte IT">IT Support</h3>
-      <p data-en="Ensure seamless IT operations with our expert support." data-es="Garantice operaciones de TI sin problemas con nuestro soporte experto.">Ensure seamless IT operations with our expert support.</p>
-      <button class="btn" data-modal="it-support-service-modal" data-en="Learn More" data-es="Más Información">Learn More</button>
-    </div>
-    <div class="service-item">
-      <h3 data-en="Professionals" data-es="Profesionales">Professionals</h3>
-      <p data-en="Access top-tier professionals for your business needs." data-es="Acceda a profesionales de primer nivel para las necesidades de su negocio.">Access top-tier professionals for your business needs.</p>
-      <button class="btn" data-modal="professionals-service-modal" data-en="Learn More" data-es="Más Información">Learn More</button>
-    </div>
-  </section>
-
-  <footer>
-    <p data-en="&copy; 2025 Ops Online Support. All rights reserved." data-es="&copy; 2025 Ops Online Support. Todos los derechos reservados.">&copy; 2025 Ops Online Support. All rights reserved.</p>
-    <button id="footer-contact-us-button" class="btn" data-modal="contact-modal" data-en="Contact Us" data-es="Contáctenos">Contact Us</button>
-  </footer>
-
-  <div class="floating-icons">
-    <button class="floating-icon" data-modal="join-us-modal" aria-label="Join Us" data-en-label="Join Us" data-es-label="Únete"><i class="fas fa-user-plus"></i></button>
-    <button class="floating-icon" data-modal="contact-modal" aria-label="Contact Us" data-en-label="Contact Us" data-es-label="Contáctenos"><i class="fas fa-envelope-open-text"></i></button>
-    <button class="floating-icon" data-modal="ai-chatbot-modal" aria-label="Ops AI Chattia" data-en-label="Ops AI Chattia" data-es-label="Ops AI Chattia"><i class="fas fa-robot"></i></button>
-
+      <div class="modal-footer"><button type="submit" class="fab-btn" style="width:auto;padding:10px 20px;" data-en="Submit" data-es="Enviar">Submit</button></div>
+    </form>
   </div>
+</div>
 
-  <!-- Modal Placeholders -->
-  <div id="contact-modal-placeholder"></div>
-  <div id="join-us-modal-placeholder"></div>
-  <div id="ai-chatbot-modal-placeholder"></div>
+<!-- ===== CONTACT MODAL ===== -->
+<div class="modal-overlay" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="contactTitle" data-en="Contact Us" data-es="Contáctenos">Contact Us</h2>
+      <button class="close-modal" data-close>&times;</button>
+    </div>
+    <form id="contactForm">
+      <div class="form-row">
+        <div class="form-cell"><label for="ct-name" data-en="Name" data-es="Nombre">Name</label><input id="ct-name" name="name" type="text" required placeholder="Enter your name" data-en-ph="Enter your name" data-es-ph="Ingrese su nombre"></div>
+        <div class="form-cell"><label for="ct-email" data-en="Email" data-es="Correo Electrónico">Email</label><input id="ct-email" name="email" type="email" required placeholder="Enter your email" data-en-ph="Enter your email" data-es-ph="Ingrese su correo"></div>
+      </div>
+      <div class="modal-footer"><button type="submit" class="fab-btn" style="width:auto;padding:10px 20px;" data-en="Send" data-es="Enviar">Send</button></div>
+    </form>
+  </div>
+</div>
 
-  <!-- Main Scripts -->
-  <script type="module" src="js/pages/main.js" defer></script>
-  <script type="module" src="js/pages/contact_us.js" defer></script>
-  <script type="module" src="js/pages/join_us.js" defer></script>
+<!-- ===== CHATBOT MODAL (Overlay Wrapper) ===== -->
+<div class="modal-overlay" id="chatbotModal" role="dialog" aria-modal="false" aria-labelledby="chatbotDialogTitle">
+  <!-- Chatbot itself, positioned fixed -->
+  <div id="chatbot-container" role="dialog" aria-labelledby="chatbotDialogTitle">
+    <div id="chatbot-header">
+      <span id="chatbotDialogTitle" data-en="OPS AI Chatbot" data-es="Chatbot OPS AI">OPS AI Chatbot</span>
+      <div>
+        <span id="langCtrl" class="ctrl">ES</span>
+        &nbsp;|&nbsp;
+        <span id="themeCtrl" class="ctrl">Dark</span>
+      </div>
+    </div>
+    <div id="chat-log" aria-live="polite"></div>
+    <div id="chatbot-form-container">
+      <form id="chatbot-input-row-form" autocomplete="off">
+        <input id="chatbot-input-field" type="text" placeholder="Type your message..." required maxlength="256"
+               data-en-ph="Type your message..." data-es-ph="Escriba su mensaje...">
+        <button id="chatbot-send-button" type="submit" aria-label="Send">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+      <label class="human-check">
+        <input type="checkbox" id="human-check-box">
+        <span id="human-label" data-en="I am human" data-es="Soy humano">I am human</span>
+      </label>
+    </div>
+  </div>
+</div>
 
+<script>
+const qs = (sel, ctx = document) => ctx.querySelector(sel);
+const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+
+/* ---------- Modal open/close ---------- */
+qsa('[data-modal]').forEach(btn => {
+    btn.onclick = () => {
+        const modalId = btn.dataset.modal;
+        const modal = qs('#' + modalId);
+        if (modal) {
+            modal.classList.add('active');
+            if (modalId === 'chatbotModal') {
+                qs('#chatbot-input-field').focus();
+            }
+        }
+    };
+});
+
+qsa('.close-modal').forEach(btn => { // For Join/Contact modals
+    btn.onclick = () => btn.closest('.modal-overlay:not(#chatbotModal)').classList.remove('active');
+});
+
+// Close regular modals by clicking overlay or pressing Escape
+window.addEventListener('click', e => {
+    qsa('.modal-overlay.active').forEach(m => {
+        if (e.target === m && m.id !== 'chatbotModal') { // Exclude chatbotModal from this specific overlay click
+            m.classList.remove('active');
+        }
+    });
+});
+
+window.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        qsa('.modal-overlay.active').forEach(m => {
+            // Chatbot closes via its own UI or a dedicated close button if added later
+            // For now, Esc will also close the chatbot's transparent overlay trigger
+            m.classList.remove('active');
+        });
+    }
+});
+
+
+/* ---------- Mobile nav + Page Toggles ---------- */
+const menuToggle = qs('#menuToggle');
+if (menuToggle) menuToggle.onclick = () => qs('#mobileNav').classList.toggle('active');
+
+const mobileServicesToggle = qs('#mobile-services-toggle');
+if (mobileServicesToggle) {
+    mobileServicesToggle.onclick = () => {
+        const isActive = qs('#mobile-services-menu').classList.toggle('active');
+        mobileServicesToggle.setAttribute('aria-expanded', isActive);
+    };
+}
+
+const mobileLangToggle = qs('#mobile-language-toggle');
+const chatLangCtrl = qs('#chatbotModal #langCtrl'); // Chatbot's own lang toggle
+
+function applyLanguage(targetLang) {
+    document.documentElement.lang = targetLang;
+    // Page elements
+    qsa('[data-en]:not(#chatbot-container [data-en])').forEach(el => el.textContent = el.dataset[targetLang]);
+    qsa('[data-es]:not(#chatbot-container [data-es])').forEach(el => el.textContent = el.dataset[targetLang]); // Ensure ES is also keyed if primary
+    qsa('[data-en-ph]:not(#chatbot-container [data-en-ph])').forEach(el => el.placeholder = el.dataset[targetLang + 'Ph']);
+    qsa('[data-es-ph]:not(#chatbot-container [data-es-ph])').forEach(el => el.placeholder = el.dataset[targetLang + 'Ph']);
+
+
+    if (mobileLangToggle) {
+        mobileLangToggle.textContent = targetLang === 'es' ? 'EN' : 'ES';
+        mobileLangToggle.title = targetLang === 'es' ? mobileLangToggle.dataset.enLabel : mobileLangToggle.dataset.esLabel;
+    }
+
+    // Chatbot internal elements
+    if (chatLangCtrl) {
+        chatLangCtrl.textContent = targetLang === 'es' ? 'EN' : 'ES';
+        qs('#chatbotDialogTitle', chatbotContainer).textContent = qs('#chatbotDialogTitle', chatbotContainer).dataset[targetLang];
+        qs('#chatbot-input-field', chatbotContainer).placeholder = qs('#chatbot-input-field', chatbotContainer).dataset[targetLang + 'Ph'];
+        qs('#human-label', chatbotContainer).textContent = qs('#human-label', chatbotContainer).dataset[targetLang];
+    }
+}
+
+if (mobileLangToggle) {
+    mobileLangToggle.onclick = () => {
+        const currentDisplayLang = mobileLangToggle.textContent; // e.g., shows "ES", means current lang is EN
+        applyLanguage(currentDisplayLang === 'ES' ? 'es' : 'en');
+    };
+}
+if (chatLangCtrl) {
+    chatLangCtrl.onclick = () => {
+        const currentDisplayLang = chatLangCtrl.textContent; // e.g., shows "ES", means current lang is EN
+        applyLanguage(currentDisplayLang === 'ES' ? 'es' : 'en');
+    };
+}
+
+const mobileThemeToggle = qs('#mobile-theme-toggle');
+const chatThemeCtrl = qs('#chatbotModal #themeCtrl'); // Chatbot's own theme toggle
+
+function applyTheme(isDark) {
+    document.body.classList.toggle('dark', isDark);
+    if (mobileThemeToggle) mobileThemeToggle.textContent = isDark ? 'Dark' : 'Light';
+    if (chatThemeCtrl) chatThemeCtrl.textContent = isDark ? 'Light' : 'Dark'; // Chatbot shows opposite to switch
+}
+
+if (mobileThemeToggle) {
+    mobileThemeToggle.onclick = () => {
+        applyTheme(!document.body.classList.contains('dark'));
+    };
+}
+if (chatThemeCtrl) {
+    chatThemeCtrl.onclick = () => {
+        applyTheme(!document.body.classList.contains('dark'));
+    };
+}
+
+/* ---------- Chatbot Logic ---------- */
+const chatbotContainer = qs('#chatbotModal #chatbot-container');
+if (chatbotContainer) {
+    const chatLog = qs('#chat-log', chatbotContainer);
+    const chatForm = qs('#chatbot-input-row-form', chatbotContainer);
+    const chatInput = qs('#chatbot-input-field', chatbotContainer);
+    const chatSendBtn = qs('#chatbot-send-button', chatbotContainer);
+    const humanCheck = qs('#human-check-box', chatbotContainer);
+
+    if (humanCheck) {
+        chatSendBtn.disabled = !humanCheck.checked; // Initial state
+        humanCheck.onchange = () => chatSendBtn.disabled = !humanCheck.checked;
+    } else {
+        chatSendBtn.disabled = false; // No human check, enable by default
+    }
+
+    function addChatMsg(txt, cls) {
+        const div = document.createElement('div');
+        div.className = 'chat-msg ' + cls;
+        div.textContent = txt;
+        chatLog.appendChild(div);
+        chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    if (chatForm) {
+        chatForm.onsubmit = async e => {
+            e.preventDefault();
+            if (humanCheck && !humanCheck.checked) return;
+
+            const msg = chatInput.value.trim();
+            if (!msg) return;
+            addChatMsg(msg, 'user');
+            chatInput.value = '';
+
+            // Re-disable send button if human check is present and required for each message
+            // if (humanCheck) chatSendBtn.disabled = true;
+
+            addChatMsg('…', 'bot'); // Bot thinking indicator
+
+            try {
+                // Simulate API call
+                setTimeout(() => {
+                    const botReplies = [
+                        "Interesting point about: " + msg,
+                        "I understand you're asking about: " + msg,
+                        "Let me think about: " + msg
+                    ];
+                    const randomReply = botReplies[Math.floor(Math.random() * botReplies.length)];
+                    if (chatLog.lastChild && chatLog.lastChild.classList.contains('bot')) {
+                        chatLog.lastChild.textContent = randomReply;
+                    }
+                }, 1000);
+            } catch (err) {
+                console.error("Chatbot fetch error:", err);
+                if (chatLog.lastChild && chatLog.lastChild.classList.contains('bot')) {
+                    chatLog.lastChild.textContent = 'Error: Can’t reach AI.';
+                }
+            }
+        };
+    }
+}
+
+/* ---------- Initial Page Setup ---------- */
+// Set initial theme based on body class or preference
+const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+const initialDark = document.body.classList.contains('dark') || (prefersDark && !document.body.classList.contains('light-explicitly-set')); // Example logic
+applyTheme(initialDark);
+
+// Set initial language based on HTML lang attribute or browser preference
+const initialHtmlLang = document.documentElement.lang || navigator.language.split('-')[0] || 'en';
+applyLanguage(initialHtmlLang === 'es' ? 'es' : 'en');
+
+// Join/Contact form stubs (simplified)
+qs('#joinForm')?.addEventListener('submit', e => { e.preventDefault(); alert('Join form submitted!'); qs('#joinModal').classList.remove('active'); });
+qs('#contactForm')?.addEventListener('submit', e => { e.preventDefault(); alert('Contact form submitted!'); qs('#contactModal').classList.remove('active'); });
+
+</script>
 </body>
 </html>
