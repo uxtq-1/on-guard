@@ -22,6 +22,14 @@ body[data-theme="dark"] #contact-center-modal .modal-content {
   box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
 }
 
+#contact-center-modal .modal-body p:not(:first-child) {
+  margin-left: 1rem;
+}
+
+#contact-center-modal .modal-body ul {
+  margin-left: 5px;
+}
+
 /* === Responsive for Mobile Devices === */
 @media (max-width: 768px) {
   #contact-center-modal .modal-content {

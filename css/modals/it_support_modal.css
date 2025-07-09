@@ -2,3 +2,11 @@
 #it-support-modal .modal-content {
   max-width: 600px;
 }
+
+#it-support-modal .modal-body p:not(:first-child) {
+  margin-left: 1rem;
+}
+
+#it-support-modal .modal-body ul {
+  margin-left: 5px;
+}

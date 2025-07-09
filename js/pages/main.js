@@ -310,7 +310,8 @@ document.addEventListener('DOMContentLoaded', () => {
         button.id = `modal-trigger-${modalKey}-${Math.random().toString(36).substr(2, 9)}`;
       }
 
-      button.addEventListener('click', async () => {
+      button.addEventListener('click', async (e) => {
+        if (button.tagName.toLowerCase() === 'a') e.preventDefault();
         try {
           // console.log(`Modal trigger clicked for: ${modalKey}, button ID: ${button.id}`);
           const mapEntry = modalMap[modalKey];
