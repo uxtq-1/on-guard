@@ -56,8 +56,8 @@
     justify-content: center; /* Center icon horizontally */
     align-items: center; /* Center icon vertically */
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 45px;
+    right: 45px;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -78,8 +78,8 @@
 
   #horizontalMobileNav { /* This is .mobile-nav in the example */
     position: fixed;
-    bottom: 20px;
-    right: 90px; /* To the left of the FAB */
+    bottom: 45px;
+    right: 115px; /* To the left of the FAB (60px width + 45px margin + 10px spacing) */
     display: flex;
     flex-direction: row-reverse; /* Items added to the left */
     gap: 6px; /* Space between items - Further reduced */
@@ -162,8 +162,8 @@
   /* Horizontal Services Submenu specific styles for mobile */
   #horizontalServicesMenu { /* This is .mobile-services-menu in the example */
     position: fixed;
-    bottom: calc(20px + var(--horizontal-nav-estimated-height, 60px) + 10px);
-    right: 20px; /* Aligned with the FAB, from example */
+    bottom: calc(45px + var(--horizontal-nav-estimated-height, 60px) + 10px);
+    right: 45px; /* Aligned with the FAB */
     background: var(--bg-current, #fff); /* Use theme variable, fallback to white */
     border: 1px solid var(--border-color-current, #ccc); /* From example */
     padding: 1rem; /* From example */
@@ -177,8 +177,8 @@
 
   /* Offset floating action buttons to avoid overlap with the FAB toggle */
   .floating-icons {
-    bottom: calc(20px + var(--horizontal-nav-estimated-height, 60px) + 10px);
-    right: 20px;
+    bottom: calc(45px + var(--horizontal-nav-estimated-height, 60px) + 10px);
+    right: 45px;
   }
 
   #horizontalServicesMenu.active {
