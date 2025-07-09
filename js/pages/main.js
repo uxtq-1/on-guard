@@ -47,14 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const filePath = mapEntry.isFullPath ? mapEntry.file : `html/modals/${mapEntry.file}`;
-    let placeholder = document.getElementById(`${modalKey}-placeholder`); // Use modalKey for placeholder ID
+    const placeholderId = `${modalKey}-placeholder`;
+    let placeholder = document.getElementById(placeholderId);
     if (!placeholder) {
       placeholder = document.createElement('div');
       placeholder.id = placeholderId;
       document.body.appendChild(placeholder);
     }
-
-    const modalStructureFilePath = `html/modals/${mapEntry.file}`;
     try {
       // console.log(`Fetching modal HTML from: ${filePath}`);
       const resp = await fetch(filePath);
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Could not load content for ${modalKey}.</p>`;
         return null;
       }
-      const modalHTML = await respStructure.text();
+      const modalHTML = await resp.text();
       placeholder.innerHTML = modalHTML;
       modalElement = placeholder.querySelector(`#${mapEntry.id}`); // Search again within the placeholder after injecting HTML
       if (!modalElement) {
