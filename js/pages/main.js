@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modalStructureFilePath = `html/modals/${mapEntry.file}`;
     try {
-     // console.log(`Fetching modal HTML from: ${filePath}`);
+      // console.log(`Fetching modal HTML from: ${filePath}`);
       const resp = await fetch(filePath);
       if (!resp.ok) {
         console.error(`Failed to fetch modal HTML for "${modalKey}" from ${filePath}. Status: ${resp.status}`);
@@ -70,8 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error(`Modal element with ID "${mapEntry.id}" not found in fetched HTML for "${modalKey}" (loaded into ${placeholderId}). Check structure of ${mapEntry.file}.`);
         return null;
       }
-
-
       // console.log(`Modal "${mapEntry.id}" loaded successfully.`);
       if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
 
@@ -251,6 +249,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // const mobileServicesToggle = document.getElementById('mobile-services-toggle'); // Part of old mobile_nav.html
+  // const mobileServicesMenu = document.getElementById('mobile-services-menu'); // Part of old mobile_nav.html
+  // if (mobileServicesToggle && mobileServicesMenu) {
+    // setFocusableChildren(mobileServicesMenu, mobileServicesMenu.classList.contains('active'));
+    // mobileServicesToggle.addEventListener('click', () => {
+      // const isExpanded = mobileServicesMenu.classList.toggle('active');
+      // mobileServicesToggle.setAttribute('aria-expanded', String(isExpanded));
+      // mobileServicesMenu.setAttribute('aria-hidden', String(!isExpanded));
+      // setFocusableChildren(mobileServicesMenu, isExpanded);
+    // });
+  // }
+
   const menuOpenBtn = document.getElementById('menu-open');
   const menuCloseBtn = document.getElementById('menu-close');
   const rightSideMenu = document.getElementById('rightSideMenu');
@@ -299,52 +309,54 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       button.addEventListener('click', async () => {
-        // console.log(`Modal trigger clicked for: ${modalKey}, button ID: ${button.id}`);
-        const mapEntry = modalMap[modalKey];
-        if (!mapEntry) {
-            console.error(`No modalMap entry for modalKey: ${modalKey}`);
-            return;
-        }
-
-        // Use the placeholderId to find if a specific instance for this modalKey already exists
-        const placeholderId = `placeholder-for-${mapEntry.id}-${modalKey}`;
-        const placeholderElement = document.getElementById(placeholderId);
-        let modalInSpecificPlaceholder = null;
-
-        if (modalElement && modalElement.classList.contains('active')) {
-          // console.log(`Modal ${mapEntry.id} is active, calling closeModalUtility.`);
-          closeModalUtility(modalElement, button); // Pass button as the trigger
-        } else {
-          // console.log(`Modal ${mapEntry.id} is not active or not loaded. Attempting to load/show.`);
-          if (!modalElement) {
-            modalElement = await loadModal(modalKey, button.id);
-          } else {
-            // Modal exists but is not active, ensure triggerId is set
-            modalElement.dataset.triggerId = button.id;
-            // Ensure handlers are attached if it was already in DOM but hidden
-            attachModalHandlers(modalElement);
+        try {
+          // console.log(`Modal trigger clicked for: ${modalKey}, button ID: ${button.id}`);
+          const mapEntry = modalMap[modalKey];
+          if (!mapEntry) {
+              console.error(`No modalMap entry for modalKey: ${modalKey}`);
+              return;
           }
 
-          if (modalElement) {
-            // console.log(`Showing modal ${mapEntry.id}.`);
-            modalElement.classList.add('active');
-            modalElement.setAttribute('aria-hidden', 'false');
-            // attachModalHandlers should have been called by loadModal or above
-            // It's important that attachModalHandlers also sets up focus trap or initial focus.
-            // For now, direct focus setting:
-            setTimeout(() => {
-              const focusable = modalToShow.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
-              if (focusable) {
-                focusable.focus();
-              } else {
-                 // Fallback focus to the modal itself if no focusable children found
-                 modalToShow.setAttribute('tabindex', '-1'); // Make modal focusable
-                 modalToShow.focus();
-              }
-            }, 100);
+          let modalElement = document.getElementById(mapEntry.id);
+
+          if (modalElement && modalElement.classList.contains('active')) {
+            // console.log(`Modal ${mapEntry.id} is active, calling closeModalUtility.`);
+            closeModalUtility(modalElement, button); // Pass button as the trigger
+
           } else {
-            console.error(`Modal with key ${modalKey} (ID: ${mapEntry.id}) could not be found or loaded.`);
+            // console.log(`Modal ${mapEntry.id} is not active or not loaded. Attempting to load/show.`);
+            if (!modalElement) {
+              modalElement = await loadModal(modalKey, button.id);
+            } else {
+              // Modal exists but is not active, ensure triggerId is set
+              modalElement.dataset.triggerId = button.id;
+              // Ensure handlers are attached if it was already in DOM but hidden
+              attachModalHandlers(modalElement);
+            }
+
+            if (modalElement) {
+              // console.log(`Showing modal ${mapEntry.id}.`);
+              modalElement.classList.add('active');
+              modalElement.setAttribute('aria-hidden', 'false');
+              // attachModalHandlers should have been called by loadModal or above
+              // It's important that attachModalHandlers also sets up focus trap or initial focus.
+              // For now, direct focus setting:
+              setTimeout(() => {
+                const focusable = modalElement.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
+                if (focusable) {
+                  focusable.focus();
+                } else {
+                   // Fallback focus to the modal itself if no focusable children found
+                   modalElement.setAttribute('tabindex', '-1'); // Make modal focusable
+                   modalElement.focus();
+                }
+              }, 100);
+            } else {
+              console.error(`Modal with key ${modalKey} (ID: ${mapEntry.id}) could not be found or loaded.`);
+            }
           }
+        } catch (e) {
+          console.error("Error in modal click handler for modalKey:", modalKey, "button ID:", button.id, e);
         }
       });
     });

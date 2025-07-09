@@ -47,7 +47,7 @@
     --mobile-nav-bottom-offset: env(safe-area-inset-bottom, 0px);
     --mobile-nav-vertical-padding: 0.5rem;
     --mobile-nav-estimated-height: 64px;
-    --horizontal-nav-estimated-height: 60px;
+
   }
 
   /* Styles for Horizontal FAB Navigation based on user example */
