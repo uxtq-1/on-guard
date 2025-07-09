@@ -10,13 +10,15 @@
   }
 
   .modal-content {
-    width: 100%;
-    max-width: 100%;
-    height: 100%;
-    max-height: 100vh;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
+    width: 80%;
+    max-width: 80%;
+    height: auto; /* Adjust height automatically based on content */
+    max-height: 80vh; /* Limit maximum height to 80% of viewport height */
+    border-radius: 10px; /* Restore some border radius for aesthetics */
+    border: 1px solid var(--border-color-current, #ccc); /* Add a subtle border */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Restore a subtle shadow */
+    margin: auto; /* Center the modal on the screen */
+    overflow-y: auto; /* Allow content to scroll if it exceeds max-height */
   }
 
   .modal-overlay.active {
@@ -41,169 +43,199 @@
     margin-bottom: 1rem;
   }
 
-  #generic-service-modal .service-modal-body-content {
-    padding: 0.5rem;
-  }
-
-  #generic-service-modal .service-modal-body-content h1 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-    color: var(--primary-color);
-  }
-
-  body[data-theme="dark"] #generic-service-modal .service-modal-body-content h1 {
-    color: var(--link-color-current);
-  }
-
-  #generic-service-modal .service-modal-body-content p {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
-  }
-
   :root {
     --mobile-nav-bottom-offset: env(safe-area-inset-bottom, 0px);
     --mobile-nav-vertical-padding: 0.5rem;
     --mobile-nav-estimated-height: 64px;
+
   }
 
-  .mobile-nav {
-    display: flex !important;
-    justify-content: space-evenly;
-    align-items: center;
+  /* Styles for Horizontal FAB Navigation based on user example */
+  #horizontalNavFab { /* This is the .fab-toggle in the example */
+    display: flex; /* Changed from block to flex for centering icon */
+    justify-content: center; /* Center icon horizontally */
+    align-items: center; /* Center icon vertically */
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    border-top: 1px solid var(--border-color-current);
-    padding-top: var(--mobile-nav-vertical-padding);
-    padding-bottom: calc(var(--mobile-nav-vertical-padding) + var(--mobile-nav-bottom-offset));
-    padding-left: 1.15rem;
-    padding-right: 1.15rem;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    z-index: 3000;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #007bff; /* Matching example blue */
+    color: #fff; /* Matching example white text */
+    font-size: 1.5rem; /* Icon size from example */
+    z-index: 4000; /* From example */
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* From example */
+    border: none; /* From example */
   }
 
-  .mobile-nav-item {
+  body[data-theme="dark"] #horizontalNavFab {
+    background-color: var(--primary-color); /* Use existing dark theme variable or a new one */
+    color: var(--button-text-current);
+    /* Potentially adjust shadow for dark theme if needed */
+  }
+
+  #horizontalMobileNav { /* This is .mobile-nav in the example */
+    position: fixed;
+    bottom: 20px;
+    right: 90px; /* To the left of the FAB */
+    display: flex;
+    flex-direction: row-reverse; /* Items added to the left */
+    gap: 6px; /* Space between items - Further reduced */
+    background: var(--bg-current, #fff); /* Use theme variable, fallback to white */
+    padding: 0.5rem 1rem; /* Padding from example */
+    border-radius: 30px; /* Rounded ends from example */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* From example */
+    z-index: 3999; /* Ensure above modal overlays */
+    transform: scaleX(0);
+    transform-origin: right; /* Expand from the right */
+    transition: transform 0.3s ease;
+    overflow: hidden; /* Prevents content spill during animation */
+  }
+
+  #horizontalMobileNav.active {
+  transform: scaleX(1) !important;
+  visibility: visible !important; /* Added for robustness */
+  opacity: 1 !important; /* Added for robustness */
+  }
+
+  .horiz-nav-item { /* This is .mobile-nav-item in the example */
     display: flex;
     flex-direction: column;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -ms-flex-align: center;
     align-items: center;
     text-decoration: none;
-    color: #333;
-    font-size: 0.8rem;
+    color: var(--text-current, #333); /* Use theme variable */
     background: none;
     border: none;
+    font-size: 0.6rem; /* Further reduced font size for text */
     cursor: pointer;
-    padding: 0.2rem;
+    padding: 0; /* Override global.css padding */
+    width: auto; /* Fit content */
+    min-width: initial; /* Override global.css min-width: 60px */
     text-align: center;
-    line-height: 1.2;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    -ms-flex-preferred-size: 0px;
-    flex-basis: 0;
+    flex-shrink: 0; /* Prevent items from shrinking if container is too small */
   }
 
-  .mobile-nav-item span {
-    font-size: 0.75rem;
-    margin-top: 3px;
-    display: block;
+  .horiz-nav-item i {
+    font-size: 1.0rem; /* Further reduced icon size */
+    margin-bottom: 1px; /* Reduced space between icon and text */
+    margin-right: 0; /* Remove previous margin */
+    width: auto;
   }
 
-  .mobile-nav-item i {
-    font-size: 1.5rem;
-    margin-bottom: 2px;
-  }
-
-  .mobile-nav-toggles {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .mobile-nav-toggles button {
-    padding: 0.2rem;
-    font-size: 0.75rem;
+  .horiz-nav-item span {
+    display: block; /* Ensure span takes its own line if not already */
     line-height: 1.2;
   }
 
-  .mobile-nav-item.active-page-link {
-    color: var(--accent-color);
+  .horiz-nav-item:hover,
+  .horiz-nav-item:focus {
+    background-color: transparent; /* Example doesn't show hover on items themselves */
+    color: var(--primary-color); /* Optional: change color on hover/focus */
+  }
+  .horiz-nav-item:hover i,
+  .horiz-nav-item:focus i {
+    color: var(--primary-color); /* Optional: change icon color on hover/focus */
   }
 
-  .mobile-nav-item.active-page-link i,
-  .mobile-nav-item.active-page-link span {
-    color: var(--accent-color);
+
+  body[data-theme="dark"] #horizontalMobileNav {
+    background: var(--bg-dark, #222); /* Dark theme bg from example */
+    color: var(--text-color-dark-theme, #eee);
+    border-color: var(--border-color-dark, #444); /* If border is added */
   }
 
-  #mobile-services-menu {
+  body[data-theme="dark"] .horiz-nav-item {
+    color: var(--text-color-dark-theme, #eee); /* Dark theme text from example */
+  }
+  body[data-theme="dark"] .horiz-nav-item:hover,
+  body[data-theme="dark"] .horiz-nav-item:focus {
+    color: var(--link-color-dark-theme); /* Optional: dark theme hover color */
+  }
+  body[data-theme="dark"] .horiz-nav-item:hover i,
+  body[data-theme="dark"] .horiz-nav-item:focus i {
+    color: var(--link-color-dark-theme); /* Optional: dark theme icon hover color */
+  }
+
+
+  /* Horizontal Services Submenu specific styles for mobile */
+  #horizontalServicesMenu { /* This is .mobile-services-menu in the example */
     position: fixed;
-    bottom: calc(var(--mobile-nav-estimated-height) + var(--mobile-nav-bottom-offset));
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    border-top: 1px solid var(--border-color-current);
-    padding: 1rem;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 2999;
-    transform: translateY(100%);
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    opacity: 0;
-    visibility: hidden;
-    box-sizing: border-box;
-    max-height: 50vh;
-    overflow-y: auto;
+    bottom: calc(20px + var(--horizontal-nav-estimated-height, 60px) + 10px);
+    right: 20px; /* Aligned with the FAB, from example */
+    background: var(--bg-current, #fff); /* Use theme variable, fallback to white */
+    border: 1px solid var(--border-color-current, #ccc); /* From example */
+    padding: 1rem; /* From example */
+    display: none; /* Hidden by default, JS toggles .active */
+    z-index: 3998; /* Just below the horizontal nav */
+    border-radius: 10px; /* From example */
+    max-height: 50%; /* From example */
+    overflow-y: auto; /* From example */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15); /* Adjusted shadow */
   }
 
-  #mobile-services-menu.active {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
+  /* Offset floating action buttons to avoid overlap with the FAB toggle */
+  .floating-icons {
+    bottom: calc(20px + var(--horizontal-nav-estimated-height, 60px) + 10px);
+    right: 20px;
   }
 
-  body.mobile-nav-active {
-    padding-bottom: calc(var(--mobile-nav-estimated-height) + var(--mobile-nav-bottom-offset));
+  #horizontalServicesMenu.active {
+  display: block !important;
+  visibility: visible !important; /* Added for robustness */
+  opacity: 1 !important; /* Added for robustness */
   }
 
-  body[data-theme="dark"] .mobile-nav {
-    background-color: #222;
-    border-top-color: #444;
+  #horizontalServicesMenu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
-  body[data-theme="dark"] .mobile-nav-item {
-    color: #eee;
+  #horizontalServicesMenu li {
+    margin-bottom: 10px; /* From example */
   }
 
-  body[data-theme="dark"] #mobile-services-menu {
-    background-color: #222;
-    border-top-color: #444;
+  #horizontalServicesMenu .horiz-service-item { /* This is .mobile-services-menu a in example */
+    text-decoration: none;
+    color: var(--text-current, #333);
+    font-size: 1rem; /* From example */
+    display: block; /* Make link fill li */
+    padding: 0.25rem 0.5rem; /* Add some padding */
+    border-radius: 4px;
   }
 
-  body[data-theme="dark"] #mobile-services-menu ul li a {
-    color: #eee;
+  #horizontalServicesMenu .horiz-service-item:hover,
+  #horizontalServicesMenu .horiz-service-item:focus {
+    background-color: rgba(0,0,0,0.05); /* Subtle hover */
+    color: var(--primary-color);
   }
 
-  body[data-theme="dark"] #mobile-services-menu ul li {
-    border-bottom-color: #444;
+  body[data-theme="dark"] #horizontalServicesMenu {
+    background: var(--bg-dark, #222); /* Dark theme bg from example */
+    color: var(--text-color-dark-theme, #eee);
+    border-color: var(--border-color-dark, #444); /* Dark theme border from example */
   }
 
-  body[data-theme="dark"] #mobile-services-menu ul li a:hover {
-    background-color: #333;
+  body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item {
+    color: var(--text-color-dark-theme, #eee); /* Dark theme text from example */
+  }
+
+  body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item:hover,
+  body[data-theme="dark"] #horizontalServicesMenu .horiz-service-item:focus {
+    background-color: rgba(255,255,255,0.1);
+    color: var(--link-color-dark-theme);
   }
 }
 
 @media screen and (min-width: 769px) {
-  .mobile-nav,
-  #mobile-services-menu {
+  #horizontalNavFab, /* Hide FAB toggle on larger screens */
+  #horizontalMobileNav, /* Hide FAB menu on larger screens */
+  #horizontalServicesMenu /* Hide FAB submenu on larger screens */ {
     display: none !important;
   }
 
-  body.mobile-nav-active {
-    padding-bottom: 0;
-  }
+  /* body.mobile-nav-active was part of the old system */
+  /* No padding-bottom adjustment needed if .mobile-nav is gone */
 }

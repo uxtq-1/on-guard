@@ -1,7 +1,8 @@
 // js/contact_us.js
 // Handles multilingual, secure contact form submission with modal management
 
-import { sanitizeInput } from '../utils/sanitize.js';
+import { sanitizeInput } from '../core/sanitize-input.js';
+import { attachModalHandlers, closeModal } from '../utils/modal.js';
 
 const I18N = {
     en: {
@@ -43,13 +44,8 @@ function initializeContactModal(modalElement) {
     const contactForm = modalElement.querySelector('#contact-form');
     if (!contactForm) return console.error('#contact-form not found.');
 
-    // Close modal on backdrop click or close button
-    modalElement.querySelectorAll('[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => modalElement.classList.remove('active'));
-    });
-    modalElement.addEventListener('click', e => {
-        if (e.target === modalElement) modalElement.classList.remove('active');
-    });
+    // Enable closing via buttons, overlay click and Escape key
+    attachModalHandlers(modalElement);
 
     const submitBtn = contactForm.querySelector('button[type="submit"]');
 
@@ -118,7 +114,7 @@ function initializeContactModal(modalElement) {
 
             alert(t('success'));
             contactForm.reset();
-            modalElement.classList.remove('active');
+            closeModal(modalElement);
         } catch (err) {
             console.error('Submit error:', err);
             alert(t('error', { err: err.message }));

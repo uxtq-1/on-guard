@@ -6,31 +6,32 @@ const urlsToCache = [
   '/index.html',
   '/offline.html',
   '/manifest.json',
+  '/assets/icons/icon-192x192.png',
+  '/assets/icons/icon-512x512.png',
 
   // Core CSS
   '/css/base/global.css',
   '/css/base/small-screens.css',
-  '/css/base/iframe-chat-wrapper.css',
 
   // Modal-specific CSS
   '/css/modals/contact_us_modal.css',
   '/css/modals/join_us_modal.css',
-  '/css/modals/chatbot_modal.css',
+
 
   // Core JS
   '/js/utils/rootPath.js',
-  '/js/utils/sanitize.js',
+  '/js/core/sanitize-input.js',
   '/js/pages/main.js',
 
   // Page logic
   '/js/pages/contact_us.js',
   '/js/pages/join_us.js',
-  '/js/pages/chatbot.js',
+
 
   // Modal HTML Fragments
   '/html/modals/contact_us_modal.html',
-  '/html/modals/join_us_modal.html',
-  '/html/modals/chatbot_modal.html'
+  '/html/modals/join_us_modal.html'
+
 ];
 
 // Install: Pre-cache critical shell
