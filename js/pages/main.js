@@ -47,7 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return modalElement;
     }
 
-    const filePath = mapEntry.isFullPath ? mapEntry.file : `html/modals/${mapEntry.file}`;
+    const filePath = mapEntry.isFullPath
+      ? mapEntry.file
+      : new URL(`../../html/modals/${mapEntry.file}`, import.meta.url).pathname;
     const placeholderId = `${modalKey}-placeholder`;
     let placeholder = document.getElementById(placeholderId);
     if (!placeholder) {
