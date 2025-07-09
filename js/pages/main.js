@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'business-operations-service-modal': { file: 'business_operations_modal.html', id: 'business-operations-modal' },
     'contact-center-service-modal': { file: 'contact_center_modal.html', id: 'contact-center-modal' },
     'it-support-service-modal': { file: 'it_support_modal.html', id: 'it-support-modal' },
-    'professionals-service-modal': { file: 'professionals_modal.html', id: 'professionals-modal' }
+    'professionals-service-modal': { file: 'professionals_modal.html', id: 'professionals-modal' },
+    'ai-chatbot-modal': { file: 'chatbot_modal.html', id: 'ai-chatbot-modal' }
   };
 
   async function loadModal(modalKey, triggerButtonId) {
