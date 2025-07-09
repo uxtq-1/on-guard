@@ -1,6 +1,22 @@
 /* Modal styles specific to the IT Support modal */
 #it-support-modal .modal-content {
-  max-width: 600px;
+  max-width: 600px; /* Standard */
+  width: 90%; /* Standard from Professionals */
+  margin: 0 auto; /* Standard for centering */
+  background-color: var(--bg-current, #fff); /* Standard */
+  color: var(--text-current, #333); /* Standard */
+  border-radius: 12px; /* Standard from Business Operations & Professionals */
+  padding: 1.5rem; /* Standard from Business Operations & Professionals */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Standard from Business Operations */
+  /* transition: all 0.3s ease; */ /* Optional: Add if smooth transition is desired */
+  /* overflow-y: auto; */ /* Optional: Add if content might exceed max-height */
+  /* max-height: 90vh; */ /* Optional: Consistent with Professionals if scrolling is anticipated */
+}
+
+body[data-theme="dark"] #it-support-modal .modal-content {
+  background-color: #2a2a2a; /* Align with business_operations_modal.css */
+  color: #eee; /* Standard dark mode text color */
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.05); /* Align with business_operations_modal.css */
 }
 
 #it-support-modal .modal-body p:not(:first-child) {
@@ -9,4 +25,20 @@
 
 #it-support-modal .modal-body ul {
   margin-left: 5px;
+}
+
+/* Responsive design considerations (optional, if not covered by global small-screen styles) */
+@media (max-width: 768px) {
+  #it-support-modal .modal-content {
+    /* width: 100%; */ /* Let global small-screen styles apply */
+    /* max-width: 100%; */ /* Let global small-screen styles apply */
+    /* height: 100%; */ /* Let global small-screen styles apply */
+    /* max-height: 100vh; */ /* Let global small-screen styles apply (e.g., 80vh) */
+    /* border-radius: 0; */ /* Let global small-screen styles apply */
+    /* padding: 1rem; */ /* Adjust if specific padding is needed, else global applies */
+  }
+
+  #it-support-modal .modal-body p {
+    /* font-size: 1rem; */ /* Example: if specific font size for small screens is needed */
+  }
 }

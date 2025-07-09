@@ -2,24 +2,25 @@
 
 /* === Contact Center Modal Container === */
 #contact-center-modal .modal-content {
-  max-width: 600px;
-  width: 95%;
-  height: auto;
-  margin: 0 auto;
-  background-color: var(--bg-current, #fff);
-  color: var(--text-current, #333);
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transition: all 0.3s ease;
+  max-width: 600px; /* Standard */
+  width: 90%; /* Standard from Professionals */
+  height: auto; /* Keep existing */
+  margin: 0 auto; /* Standard from Business Operations & Contact Center */
+  background-color: var(--bg-current, #fff); /* Keep existing */
+  color: var(--text-current, #333); /* Keep existing */
+  border-radius: 12px; /* Standard from Business Operations & Professionals */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Standard from Business Operations */
+  padding: 1.5rem; /* Standard from Business Operations & Professionals */
+  display: flex; /* Keep existing */
+  flex-direction: column; /* Keep existing */
+  overflow: hidden; /* Keep existing */
+  transition: all 0.3s ease; /* Keep existing */
 }
 
 body[data-theme="dark"] #contact-center-modal .modal-content {
-  background-color: #222;
-  color: #eee;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
+  background-color: #2a2a2a; /* Align with business_operations_modal.css */
+  color: #eee; /* Keep existing */
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.05); /* Align with business_operations_modal.css */
 }
 
 #contact-center-modal .modal-body p:not(:first-child) {
@@ -37,10 +38,14 @@ body[data-theme="dark"] #contact-center-modal .modal-content {
     /* max-width: 100%; */ /* Let global small-screen styles apply */
     /* height: 100%; */ /* Let global small-screen styles apply */
     /* max-height: 100vh; */ /* Let global small-screen styles apply (80vh) */
-    border-radius: 0; /* This can remain if desired */
-    padding: 0; /* This can remain if desired, but base provides padding */
-    border: none; /* This can remain if desired */
-    box-shadow: none; /* This can remain if desired */
+    border-radius: 0; /* This can remain if desired for a specific look */
+    /* padding: 1rem; */ /* Let global small-screen styles apply, or be specific if needed */
+    /* border: none; */ /* Let global small-screen styles apply */
+    /* box-shadow: none; */ /* Let global small-screen styles apply */
   }
+  /* Example of keeping specific padding if needed for this modal, otherwise remove if global is fine */
+  /* #contact-center-modal .modal-content {
+    padding: 1rem;
+  } */
 }
 
