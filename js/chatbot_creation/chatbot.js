@@ -116,8 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cloudflare Worker: Notify and block if honeypot triggered
   async function alertWorkerOfBotActivity(detail = "widget honeypot") {
+    const workerBaseUrl = window.CHATBOT_CONFIG?.workerUrl || 'YOUR_CLOUDFLARE_WORKER_URL_PLACEHOLDER';
+    if (workerBaseUrl === 'YOUR_CLOUDFLARE_WORKER_URL_PLACEHOLDER') {
+      console.warn('Cloudflare Worker URL not configured. Bot activity alerts will not be sent.');
+      // Optionally, you could disable chat or show a message if the worker URL isn't set.
+      // For now, it just logs a warning.
+    }
     try {
-      await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/widget-bot-alert', {
+      await fetch(`${workerBaseUrl}/widget-bot-alert`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -197,9 +203,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Google reCAPTCHA v3 (active, required before POST)
     let recaptchaToken = '';
+    const recaptchaSiteKey = window.CHATBOT_CONFIG?.recaptchaSiteKey || 'YOUR_RECAPTCHA_SITE_KEY_PLACEHOLDER';
+    if (recaptchaSiteKey === 'YOUR_RECAPTCHA_SITE_KEY_PLACEHOLDER') {
+      console.error('reCAPTCHA Site Key not configured. Chatbot will not function correctly.');
+      addMessage('Configuration error. Please contact support.', 'bot');
+      // Optionally lock down chat if key is missing
+      // lockDownChat('Configuration error.');
+      return;
+    }
+
     try {
-      recaptchaToken = await grecaptcha.execute('YOUR_SITE_KEY', { action: 'chatbot_message' });
+      recaptchaToken = await grecaptcha.execute(recaptchaSiteKey, { action: 'chatbot_message' });
     } catch (err) {
+      console.error('reCAPTCHA execution error:', err);
       addMessage(t('recaptchaFail'), 'bot');
       return;
     }
@@ -221,8 +237,15 @@ document.addEventListener('DOMContentLoaded', () => {
     input.value = '';
 
     // POST to Cloudflare Worker (chatbot message check)
+    const workerBaseUrl = window.CHATBOT_CONFIG?.workerUrl || 'YOUR_CLOUDFLARE_WORKER_URL_PLACEHOLDER';
+    if (workerBaseUrl === 'YOUR_CLOUDFLARE_WORKER_URL_PLACEHOLDER') {
+      console.error('Cloudflare Worker URL not configured. Cannot send message.');
+      addMessage('Chat service is temporarily unavailable.', 'bot');
+      return;
+    }
+
     try {
-      const response = await fetch('https://YOUR_CLOUDFLARE_WORKER_URL/chatbot_message_check', {
+      const response = await fetch(`${workerBaseUrl}/chatbot_message_check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -231,33 +254,19 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       });
       const result = await response.json();
-      if (!result.success) {
+      if (result.success && result.message) {
+        addMessage(result.message, 'bot'); // Display LLM response
+      } else {
         addMessage(result.message || t('messageBlocked'), 'bot');
-        return;
       }
     } catch (err) {
+      console.error('Error fetching from Cloudflare Worker:', err);
       addMessage(t('serverError'), 'bot');
       return;
     }
-
-    // Simulated bot reply (replace with your logic)
-    getSimulatedBotReply(userInput);
   });
 
-  function getSimulatedBotReply(userInput) {
-    const lowerInput = userInput.toLowerCase();
-    let botResponse = t('defaultReply');
-    if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
-      botResponse = t('hello');
-    } else if (lowerInput.includes('help')) {
-      botResponse = t('help');
-    } else if (lowerInput.includes('price') || lowerInput.includes('pricing')) {
-      botResponse = t('pricing');
-    } else if (lowerInput.includes('bye')) {
-      botResponse = t('bye');
-    }
-    setTimeout(() => addMessage(botResponse, 'bot'), 700);
-  }
+  // Removed getSimulatedBotReply function as its logic is now replaced by the worker call.
 
   setTimeout(() => {
     // The user requested literal strings including the [data=...] parts.
