@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     // console.log('[SW] Service workers are not supported in this browser.');
   }
+  
   const body = document.body;
   const html = document.documentElement;
-
   const modalMap = {
     'contact-modal': { file: 'contact_us_modal.html', id: 'contact-modal' },
     'join-us-modal': { file: 'join_us_modal.html', id: 'join-us-modal' },
@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   async function loadModal(modalKey, triggerButtonId) {
+    // DEBUG log removed as per plan
     const mapEntry = modalMap[modalKey];
     if (!mapEntry) {
       console.error(`Modal key "${modalKey}" not found in modalMap.`);
@@ -49,43 +50,43 @@ document.addEventListener('DOMContentLoaded', () => {
     let placeholder = document.getElementById(`${modalKey}-placeholder`); // Use modalKey for placeholder ID
     if (!placeholder) {
       placeholder = document.createElement('div');
-      // It's better to use mapEntry.id for the placeholder if it's unique and consistent
-      // For now, using modalKey as per original, but this could be a point of failure if IDs don't match expectations.
-      placeholder.id = `${modalKey}-placeholder`;
+      placeholder.id = placeholderId;
       document.body.appendChild(placeholder);
     }
 
+    const modalStructureFilePath = `html/modals/${mapEntry.file}`;
     try {
-      // console.log(`Fetching modal HTML from: ${filePath}`);
+     // console.log(`Fetching modal HTML from: ${filePath}`);
       const resp = await fetch(filePath);
       if (!resp.ok) {
         console.error(`Failed to fetch modal HTML for "${modalKey}" from ${filePath}. Status: ${resp.status}`);
         placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Could not load content for ${modalKey}.</p>`;
         return null;
       }
-      const modalHTML = await resp.text();
-      placeholder.innerHTML = modalHTML; // Inject the HTML
-
-      modalElement = document.getElementById(mapEntry.id); // Get the actual modal element by its ID
+      const modalHTML = await respStructure.text();
+      placeholder.innerHTML = modalHTML;
+      modalElement = placeholder.querySelector(`#${mapEntry.id}`); // Search again within the placeholder after injecting HTML
       if (!modalElement) {
-        console.error(`Modal element with ID "${mapEntry.id}" not found in fetched HTML for "${modalKey}". Check the modal HTML file.`);
+        console.error(`Modal element with ID "${mapEntry.id}" not found in fetched HTML for "${modalKey}" (loaded into ${placeholderId}). Check structure of ${mapEntry.file}.`);
         return null;
       }
+
 
       // console.log(`Modal "${mapEntry.id}" loaded successfully.`);
       if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
 
       if (modalKey === 'contact-modal') initializeContactModal(modalElement);
       if (modalKey === 'join-us-modal') initializeJoinUsModal(modalElement);
+
       if (typeof updateDynamicContentLanguage === 'function') {
         updateDynamicContentLanguage(modalElement);
       }
 
-      attachModalHandlers(modalElement); // Attach generic modal handlers (close button, overlay click)
+      attachModalHandlers(modalElement);
       return modalElement;
     } catch (err) {
-      console.error(`Error loading modal "${modalKey}":`, err);
-      placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Exception while loading ${modalKey}.</p>`;
+      console.error(`Error loading modal "${modalKey}" into ${placeholderId}:`, err);
+      if(placeholder) placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Exception while loading ${modalKey}.</p>`;
       return null;
     }
   }
@@ -250,18 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // const mobileServicesToggle = document.getElementById('mobile-services-toggle'); // Part of old mobile_nav.html
-  // const mobileServicesMenu = document.getElementById('mobile-services-menu'); // Part of old mobile_nav.html
-  // if (mobileServicesToggle && mobileServicesMenu) {
-    // setFocusableChildren(mobileServicesMenu, mobileServicesMenu.classList.contains('active'));
-    // mobileServicesToggle.addEventListener('click', () => {
-      // const isExpanded = mobileServicesMenu.classList.toggle('active');
-      // mobileServicesToggle.setAttribute('aria-expanded', String(isExpanded));
-      // mobileServicesMenu.setAttribute('aria-hidden', String(!isExpanded));
-      // setFocusableChildren(mobileServicesMenu, isExpanded);
-    // });
-  // }
-
   const menuOpenBtn = document.getElementById('menu-open');
   const menuCloseBtn = document.getElementById('menu-close');
   const rightSideMenu = document.getElementById('rightSideMenu');
@@ -317,7 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let modalElement = document.getElementById(mapEntry.id);
+        // Use the placeholderId to find if a specific instance for this modalKey already exists
+        const placeholderId = `placeholder-for-${mapEntry.id}-${modalKey}`;
+        const placeholderElement = document.getElementById(placeholderId);
+        let modalInSpecificPlaceholder = null;
 
         if (modalElement && modalElement.classList.contains('active')) {
           // console.log(`Modal ${mapEntry.id} is active, calling closeModalUtility.`);
@@ -341,13 +333,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // It's important that attachModalHandlers also sets up focus trap or initial focus.
             // For now, direct focus setting:
             setTimeout(() => {
-              const focusable = modalElement.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
+              const focusable = modalToShow.querySelector('input, textarea, button, [href], select, details, [tabindex]:not([tabindex="-1"])');
               if (focusable) {
                 focusable.focus();
               } else {
                  // Fallback focus to the modal itself if no focusable children found
-                 modalElement.setAttribute('tabindex', '-1'); // Make modal focusable
-                 modalElement.focus();
+                 modalToShow.setAttribute('tabindex', '-1'); // Make modal focusable
+                 modalToShow.focus();
               }
             }, 100);
           } else {
@@ -362,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const savedTheme = localStorage.getItem('theme');
   applyTheme(savedTheme || (body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'));
-
   const savedLang = localStorage.getItem('language');
   applyLanguage(savedLang || (html.getAttribute('lang') === 'es' ? 'es' : 'en'));
 });

@@ -47,6 +47,7 @@
     --mobile-nav-bottom-offset: env(safe-area-inset-bottom, 0px);
     --mobile-nav-vertical-padding: 0.5rem;
     --mobile-nav-estimated-height: 64px;
+    --horizontal-nav-estimated-height: 60px;
   }
 
   /* Styles for Horizontal FAB Navigation based on user example */
@@ -86,7 +87,7 @@
     padding: 0.5rem 1rem; /* Padding from example */
     border-radius: 30px; /* Rounded ends from example */
     box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* From example */
-    z-index: 3000; /* From example */
+    z-index: 3999; /* Ensure above modal overlays */
     transform: scaleX(0);
     transform-origin: right; /* Expand from the right */
     transition: transform 0.3s ease;
@@ -161,13 +162,13 @@
   /* Horizontal Services Submenu specific styles for mobile */
   #horizontalServicesMenu { /* This is .mobile-services-menu in the example */
     position: fixed;
-    bottom: 90px; /* Above the FAB and main nav, from example */
+    bottom: calc(20px + var(--horizontal-nav-estimated-height, 60px) + 10px);
     right: 20px; /* Aligned with the FAB, from example */
     background: var(--bg-current, #fff); /* Use theme variable, fallback to white */
     border: 1px solid var(--border-color-current, #ccc); /* From example */
     padding: 1rem; /* From example */
     display: none; /* Hidden by default, JS toggles .active */
-    z-index: 2000; /* From example */
+    z-index: 3998; /* Just below the horizontal nav */
     border-radius: 10px; /* From example */
     max-height: 50%; /* From example */
     overflow-y: auto; /* From example */
