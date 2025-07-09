@@ -9,24 +9,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('js/service-worker.js')
       .then(reg => {
-        console.log('[SW] Registration successful:', reg.scope);
+        // console.log('[SW] Registration successful:', reg.scope);
       })
       .catch(err => {
         console.error('[SW] Registration failed:', err);
       });
   } else {
-    console.log('[SW] Service workers are not supported in this browser.');
+    // console.log('[SW] Service workers are not supported in this browser.');
   }
+  
   const body = document.body;
   const html = document.documentElement;
-
   const modalMap = {
     'contact-modal': { file: 'contact_us_modal.html', id: 'contact-modal' },
     'join-us-modal': { file: 'join_us_modal.html', id: 'join-us-modal' },
-    'business-operations-service-modal': { file: 'generic_service_modal.html', id: 'generic-service-modal', contentFile: 'business_operations_content.html', titleKey: 'Business Operations', titleEsKey: 'Operaciones Empresariales' },
-    'contact-center-service-modal': { file: 'generic_service_modal.html', id: 'generic-service-modal', contentFile: 'contact_center_content.html', titleKey: 'Contact Center', titleEsKey: 'Centro de Contacto' },
-    'it-support-service-modal': { file: 'generic_service_modal.html', id: 'generic-service-modal', contentFile: 'it_support_content.html', titleKey: 'IT Support', titleEsKey: 'Soporte IT' },
-    'professionals-service-modal': { file: 'generic_service_modal.html', id: 'generic-service-modal', contentFile: 'professionals_content.html', titleKey: 'Professionals', titleEsKey: 'Profesionales' },
+    'business-operations-service-modal': { file: 'business_operations_modal.html', id: 'business-operations-modal' },
+    'contact-center-service-modal': { file: 'contact_center_modal.html', id: 'contact-center-modal' },
+    'it-support-service-modal': { file: 'it_support_modal.html', id: 'it-support-modal' },
+    'professionals-service-modal': { file: 'professionals_modal.html', id: 'professionals-modal' }
   };
 
   async function loadModal(modalKey, triggerButtonId) {
@@ -37,89 +37,42 @@ document.addEventListener('DOMContentLoaded', () => {
       return null;
     }
 
-    // Unique placeholder ID for each modal trigger ensures that if a generic modal is used by multiple triggers,
-    // they don't interfere with each other's content if they are all added to the DOM.
-    const placeholderId = `placeholder-for-${mapEntry.id}-${modalKey}`;
-    let placeholder = document.getElementById(placeholderId);
-    let modalElement;
+    let modalElement = document.getElementById(mapEntry.id);
+    if (modalElement) {
+      // console.log(`Modal "${mapEntry.id}" already exists in DOM.`);
+      if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
+      // Ensure handlers are attached, attachModalHandlers should be idempotent
+      attachModalHandlers(modalElement);
+      return modalElement;
+    }
 
-    // If placeholder exists, try to find the modal element within it.
-    if (placeholder) {
-      modalElement = placeholder.querySelector(`#${mapEntry.id}`); // Search within the placeholder
-      if (modalElement) {
-        console.log(`Modal "${mapEntry.id}" (for ${modalKey}) already exists in its placeholder ${placeholderId}.`);
-        if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
-        attachModalHandlers(modalElement); // Ensure handlers are (re)attached
-
-        // If it's a generic service modal, its content might need to be refreshed or language updated.
-        if (mapEntry.contentFile) {
-            // Assuming title and content are already there, just ensure language is current.
-            // If content could change dynamically beyond language, it would need re-fetching here.
-            if (typeof updateDynamicContentLanguage === 'function') {
-                updateDynamicContentLanguage(modalElement);
-            }
-        }
-        return modalElement;
-      } else {
-        console.warn(`Placeholder ${placeholderId} found but no modal element # ${mapEntry.id} within it. Will attempt to reload into this placeholder.`);
-        // Placeholder exists but no modal, clear it to ensure clean load.
-        placeholder.innerHTML = '';
-      }
-    } else {
-      // Create placeholder if it doesn't exist
+    const filePath = mapEntry.isFullPath ? mapEntry.file : `html/modals/${mapEntry.file}`;
+    let placeholder = document.getElementById(`${modalKey}-placeholder`); // Use modalKey for placeholder ID
+    if (!placeholder) {
       placeholder = document.createElement('div');
       placeholder.id = placeholderId;
       document.body.appendChild(placeholder);
     }
 
     const modalStructureFilePath = `html/modals/${mapEntry.file}`;
-
     try {
-      console.log(`Fetching modal structure from: ${modalStructureFilePath} for modalKey ${modalKey} into placeholder ${placeholderId}`);
-      const respStructure = await fetch(modalStructureFilePath);
-      if (!respStructure.ok) {
-        console.error(`Failed to fetch modal structure for "${modalKey}" from ${modalStructureFilePath}. Status: ${respStructure.status}`);
-        placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Could not load structure for ${modalKey}.</p>`;
+     // console.log(`Fetching modal HTML from: ${filePath}`);
+      const resp = await fetch(filePath);
+      if (!resp.ok) {
+        console.error(`Failed to fetch modal HTML for "${modalKey}" from ${filePath}. Status: ${resp.status}`);
+        placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Could not load content for ${modalKey}.</p>`;
         return null;
       }
       const modalHTML = await respStructure.text();
       placeholder.innerHTML = modalHTML;
-
       modalElement = placeholder.querySelector(`#${mapEntry.id}`); // Search again within the placeholder after injecting HTML
-
       if (!modalElement) {
         console.error(`Modal element with ID "${mapEntry.id}" not found in fetched HTML for "${modalKey}" (loaded into ${placeholderId}). Check structure of ${mapEntry.file}.`);
         return null;
       }
 
-      if (mapEntry.contentFile) {
-        const contentFilePath = `html/partials/services/${mapEntry.contentFile}`;
-        console.log(`Fetching service content from: ${contentFilePath} for modalKey ${modalKey}`);
-        const respContent = await fetch(contentFilePath);
-        const bodyContentEl = modalElement.querySelector('.service-modal-body-content'); // Get this once
 
-        if (!bodyContentEl) {
-            console.error(`Could not find '.service-modal-body-content' in the modal structure from ${mapEntry.file}. Cannot load content.`);
-        } else if (!respContent.ok) {
-          console.error(`Failed to fetch service content for "${modalKey}" from ${contentFilePath}. Status: ${respContent.status}`);
-          bodyContentEl.innerHTML = `<p style="color:red;">Error loading content.</p>`;
-        } else {
-          const serviceContentHTML = await respContent.text();
-          bodyContentEl.innerHTML = serviceContentHTML;
-        }
-
-        const titleElement = modalElement.querySelector('#service-modal-title');
-        if (titleElement) {
-          titleElement.textContent = mapEntry.titleKey;
-          titleElement.dataset.en = mapEntry.titleKey;
-          if(mapEntry.titleEsKey) titleElement.dataset.es = mapEntry.titleEsKey;
-          else titleElement.dataset.es = mapEntry.titleKey; // Fallback for Spanish title
-        } else {
-          console.error(`Could not find '#service-modal-title' in the modal structure from ${mapEntry.file}.`);
-        }
-      }
-
-      console.log(`Modal "${mapEntry.id}" for ${modalKey} loaded and configured successfully into ${placeholderId}.`);
+      // console.log(`Modal "${mapEntry.id}" loaded successfully.`);
       if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
 
       if (modalKey === 'contact-modal') initializeContactModal(modalElement);
@@ -298,19 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-
-  const mobileServicesToggle = document.getElementById('mobile-services-toggle');
-  const mobileServicesMenu = document.getElementById('mobile-services-menu');
-  if (mobileServicesToggle && mobileServicesMenu) {
-    setFocusableChildren(mobileServicesMenu, mobileServicesMenu.classList.contains('active'));
-    mobileServicesToggle.addEventListener('click', () => {
-      const isExpanded = mobileServicesMenu.classList.toggle('active');
-      mobileServicesToggle.setAttribute('aria-expanded', String(isExpanded));
-      mobileServicesMenu.setAttribute('aria-hidden', String(!isExpanded));
-      setFocusableChildren(mobileServicesMenu, isExpanded);
-    });
-  }
-
   const menuOpenBtn = document.getElementById('menu-open');
   const menuCloseBtn = document.getElementById('menu-close');
   const rightSideMenu = document.getElementById('rightSideMenu');
@@ -359,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       button.addEventListener('click', async () => {
-        console.log(`Modal trigger clicked for: ${modalKey}, button ID: ${button.id}`);
+        // console.log(`Modal trigger clicked for: ${modalKey}, button ID: ${button.id}`);
         const mapEntry = modalMap[modalKey];
         if (!mapEntry) {
             console.error(`No modalMap entry for modalKey: ${modalKey}`);
@@ -371,28 +311,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const placeholderElement = document.getElementById(placeholderId);
         let modalInSpecificPlaceholder = null;
 
-        if (placeholderElement) {
-          modalInSpecificPlaceholder = placeholderElement.querySelector(`#${mapEntry.id}`);
-        }
-
-        // If a specific instance for this modalKey is found and is active, close it.
-        if (modalInSpecificPlaceholder && modalInSpecificPlaceholder.classList.contains('active')) {
-          console.log(`Modal ${mapEntry.id} (for ${modalKey}) is active in its placeholder, calling closeModalUtility.`);
-          closeModalUtility(modalInSpecificPlaceholder, button);
+        if (modalElement && modalElement.classList.contains('active')) {
+          // console.log(`Modal ${mapEntry.id} is active, calling closeModalUtility.`);
+          closeModalUtility(modalElement, button); // Pass button as the trigger
         } else {
-          // If not active or not loaded for this specific modalKey, then load/show it.
-          // loadModal is responsible for either creating a new modal instance in its placeholder
-          // or re-using/updating an existing one if found in its correct placeholder.
-          console.log(`Modal ${mapEntry.id} (for ${modalKey}) is not active or its specific instance not found/loaded. Attempting to load/show.`);
+          // console.log(`Modal ${mapEntry.id} is not active or not loaded. Attempting to load/show.`);
+          if (!modalElement) {
+            modalElement = await loadModal(modalKey, button.id);
+          } else {
+            // Modal exists but is not active, ensure triggerId is set
+            modalElement.dataset.triggerId = button.id;
+            // Ensure handlers are attached if it was already in DOM but hidden
+            attachModalHandlers(modalElement);
+          }
 
-          // Always call loadModal to ensure the correct content is loaded for the specific modalKey.
-          // loadModal will handle the logic of creating a new instance or updating an existing one within the correct placeholder.
-          const modalToShow = await loadModal(modalKey, button.id);
-
-          if (modalToShow) {
-            console.log(`Showing modal ${modalToShow.id} (for ${modalKey}).`); // Log the actual ID shown
-            modalToShow.classList.add('active');
-            modalToShow.setAttribute('aria-hidden', 'false');
+          if (modalElement) {
+            // console.log(`Showing modal ${mapEntry.id}.`);
+            modalElement.classList.add('active');
+            modalElement.setAttribute('aria-hidden', 'false');
             // attachModalHandlers should have been called by loadModal or above
             // It's important that attachModalHandlers also sets up focus trap or initial focus.
             // For now, direct focus setting:
@@ -418,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const savedTheme = localStorage.getItem('theme');
   applyTheme(savedTheme || (body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'));
-
   const savedLang = localStorage.getItem('language');
   applyLanguage(savedLang || (html.getAttribute('lang') === 'es' ? 'es' : 'en'));
 });

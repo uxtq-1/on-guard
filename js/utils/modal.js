@@ -60,21 +60,3 @@ export function attachModalHandlers(modal) {
     escapeHandlerAttached = true;
   }
 }
-
-// Optional: Function to detach all handlers if a modal is removed from DOM or reinitialized
-export function detachModalHandlers(modal) {
-  if (!modal || modal.dataset.handlersAttached !== 'true') return;
-
-  // Example: removing a specific click handler if stored
-  // if (modal._clickHandler) {
-  //   modal.removeEventListener('click', modal._clickHandler);
-  //   delete modal._clickHandler; // Clean up stored reference
-  // }
-  // For simplicity, if not storing specific handlers, this function might be less critical
-  // or would need to re-query for buttons/elements to remove listeners from.
-
-  modal.dataset.handlersAttached = 'false'; // Reset marker
-
-  // Note: Global escape key handler is not removed per-modal to avoid issues
-  // if other modals are still active. It's generally kept for the lifetime of the page.
-}
