@@ -12,7 +12,10 @@ The site is a traditional front-end project with HTML, CSS and JavaScript and is
   - `base/` &ndash; global styles and responsive overrides.
   - `modals/` &ndash; styles for the individual modals such as `contact_us_modal.css`.
 - `js/` &ndash; JavaScript files:
+  - `core/` &ndash; core functionalities like input sanitization.
+  - `language_toggle/` &ndash; language switching logic.
   - `pages/` &ndash; logic for each page, e.g. `contact_us.js` for the contact form.
+  - `utils/` &ndash; utility scripts like modal handling.
   - `service-worker.js` &ndash; PWA service worker.
 - `manifest.json` &ndash; web app manifest for PWA support.
 
