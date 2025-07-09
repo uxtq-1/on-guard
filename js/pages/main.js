@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const themeButtons = document.querySelectorAll('#fabThemeToggle, #theme-toggle-desktop, #theme-toggle-mobile, #mobile-theme-toggle');
-  const languageButtons = document.querySelectorAll('#fabLanguageToggle, #language-toggle-desktop, #mobile-language-toggle');
+  const themeButtons = document.querySelectorAll('#fabThemeToggle, #theme-toggle-desktop');
+  const languageButtons = document.querySelectorAll('#fabLanguageToggle, #language-toggle-desktop');
 
   function updateThemeButton(btn, theme, lang) {
     if (!btn) return;

@@ -19,7 +19,6 @@ const urlsToCache = [
 
 
   // Core JS
-  '/js/utils/rootPath.js',
   '/js/core/sanitize-input.js',
   '/js/pages/main.js',
 
