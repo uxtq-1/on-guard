@@ -100,7 +100,7 @@ export default {
           const llmRequestBody = {
             model: "gpt-3.5-turbo", // Or your desired model
             messages: [
-              { role: "system", content: "You are Chattia, a helpful AI assistant." },
+              { role: "system", content: "You are Ops AI Chattia, a helpful AI assistant." },
               { role: "user", content: message }
             ],
             // max_tokens: 150, // Optional: Adjust as needed
