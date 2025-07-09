@@ -19,7 +19,7 @@ const I18N = {
     help: 'I can help with general questions. For specific account issues, an agent will assist you. What do you need help with?',
     pricing: 'Please see our pricing on the main website or contact sales.',
     bye: 'Goodbye! Have a great day.',
-    intro: "Hello I'm Chattia",
+    intro: "Hi, I'm Chattia",
     verifyBottom: 'At the bottom; please verify you are human'
   },
   es: {
@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.documentElement.lang === 'es') {
       addMessage("[data=es Hola, soy Chattia]", 'bot');
     } else {
-      addMessage("[data=en Hello I'm Chattia]", 'bot');
+      addMessage("[data=en Hi, I'm Chattia]", 'bot');
     }
     addMessage("[data=en data=es At the bottom; please verify you are human]", 'bot');
   }, 500);
