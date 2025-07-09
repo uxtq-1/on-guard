@@ -175,6 +175,12 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.15); /* Adjusted shadow */
   }
 
+  /* Offset floating action buttons to avoid overlap with the FAB toggle */
+  .floating-icons {
+    bottom: calc(20px + var(--horizontal-nav-estimated-height, 60px) + 10px);
+    right: 20px;
+  }
+
   #horizontalServicesMenu.active {
   display: block !important;
   visibility: visible !important; /* Added for robustness */
