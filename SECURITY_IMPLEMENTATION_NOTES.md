@@ -16,14 +16,15 @@ This document summarizes the security enhancements implemented in the Ops Online
 
 CSP has been implemented via `<meta http-equiv="Content-Security-Policy" ...>` tags in all user-facing HTML files:
 
-*   **Main Pages (`index.html`, `about.html`, etc.)**:
+*   **Main Pages (`index.html` specifically, other pages have a stricter CSP)**:
     *   `default-src 'self'`: Restricts loading of resources to the same origin by default.
-*   `script-src 'self' https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com https://www.recaptcha.net;`: Allows scripts from self, Font Awesome, and Google (for reCAPTCHA).
-*   `style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com;`: Allows stylesheets from self, Font Awesome, and Google Fonts.
+    *   `script-src 'self' https://cdnjs.cloudflare.com https://www.google.com https://www.gstatic.com https://www.recaptcha.net;`: Allows scripts from self, Font Awesome, and Google (for reCAPTCHA).
+    *   `style-src 'self' https://cdnjs.cloudflare.com https://fonts.googleapis.com;`: Allows stylesheets from self, Font Awesome, and Google Fonts.
     *   `img-src 'self' data:`: Allows images from self and data URIs.
     *   `font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;`: Allows fonts from self, Font Awesome, and Google Fonts.
-    *   `connect-src 'self' https://your-worker.example.com https://firebase.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://www.google-analytics.com;`: Allows connections to self (for fetching partials), the contact form worker, and Google services. **Note:** `https://your-worker.example.com` should be replaced.
+    *   `connect-src 'self' https://firebase.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://www.google-analytics.com;`: Allows connections to self (for fetching partials) and Google services. For the contact form worker, the administrator must add its specific URL here.
     *   `frame-src 'self' https://www.google.com https://www.recaptcha.net;`: Allows iframes from self (if any are used by non-chatbot features) and Google for reCAPTCHA.
+*   **Other pages (`about.html`, `blog.html`, etc.)** generally use a stricter CSP, e.g., `connect-src 'self';`.
 
 *   **Offline Page (`offline.html`)**:
     *   `default-src 'self'`: Restricts loading of resources to the same origin.
@@ -36,7 +37,9 @@ CSP has been implemented via `<meta http-equiv="Content-Security-Policy" ...>` t
 
 *   CORS is primarily a server-side/hosting configuration concern for a static site.
 *   The Font Awesome CDN and Google reCAPTCHA services are expected to have appropriate CORS headers.
-*   **Action Required**: Configure the Cloudflare Worker (`https://your-worker.example.com`) with CORS headers such as `Access-Control-Allow-Origin: https://www.opsonlinesupport.com` and `Access-Control-Allow-Methods: POST` so that the contact form can send requests securely.
+*   **Action Required for Contact Form**: If a Cloudflare Worker is used for the contact form:
+    1.  The site administrator must add the specific worker URL to the `connect-src` directive of the Content Security Policy in `index.html`. The placeholder `https://your-worker.example.com` has been removed.
+    2.  The Cloudflare Worker itself must be configured with appropriate CORS headers, such as `Access-Control-Allow-Origin: https://www.opsonlinesupport.com` (or the site's actual domain) and `Access-Control-Allow-Methods: POST`, to allow secure requests from the website.
 
 ## 4. PCI DSS, NIST 800, CISA Alignment (Client-Side Best Practices)
 
