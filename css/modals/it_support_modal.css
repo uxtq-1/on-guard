@@ -30,12 +30,6 @@ body[data-theme="dark"] #it-support-modal .modal-content {
 /* Responsive design considerations (optional, if not covered by global small-screen styles) */
 @media (max-width: 768px) {
   #it-support-modal .modal-content {
-    /* width: 100%; */ /* Let global small-screen styles apply */
-    /* max-width: 100%; */ /* Let global small-screen styles apply */
-    /* height: 100%; */ /* Let global small-screen styles apply */
-    /* max-height: 100vh; */ /* Let global small-screen styles apply (e.g., 80vh) */
-    /* border-radius: 0; */ /* Let global small-screen styles apply */
-    /* padding: 1rem; */ /* Adjust if specific padding is needed, else global applies */
   }
 
   #it-support-modal .modal-body p {

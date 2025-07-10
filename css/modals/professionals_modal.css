@@ -55,14 +55,6 @@
 /* Responsive design */
 @media (max-width: 768px) {
   #professionals-modal .modal-content {
-    /* width: 100%; */ /* Let global small-screen styles apply */
-    /* max-width: 100%; */ /* Let global small-screen styles apply */
-    /* height: 100%; */ /* Let global small-screen styles apply */
-    /* max-height: 100vh; */ /* Let global small-screen styles apply (80vh) */
-    /* padding: 0; */ /* Base small-screen styles handle padding */
-    /* border-radius: 0; */ /* Base small-screen styles handle border-radius */
-    /* box-shadow: none; */ /* Base small-screen styles handle box-shadow */
-    /* border: none; */ /* Base small-screen styles handle border */
   }
 
   #professionals-modal .modal-body {

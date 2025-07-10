@@ -34,14 +34,7 @@ body[data-theme="dark"] #contact-center-modal .modal-content {
 /* === Responsive for Mobile Devices === */
 @media (max-width: 768px) {
   #contact-center-modal .modal-content {
-    /* width: 100%; */ /* Let global small-screen styles apply */
-    /* max-width: 100%; */ /* Let global small-screen styles apply */
-    /* height: 100%; */ /* Let global small-screen styles apply */
-    /* max-height: 100vh; */ /* Let global small-screen styles apply (80vh) */
     border-radius: 0; /* This can remain if desired for a specific look */
-    /* padding: 1rem; */ /* Let global small-screen styles apply, or be specific if needed */
-    /* border: none; */ /* Let global small-screen styles apply */
-    /* box-shadow: none; */ /* Let global small-screen styles apply */
   }
   /* Example of keeping specific padding if needed for this modal, otherwise remove if global is fine */
   /* #contact-center-modal .modal-content {
