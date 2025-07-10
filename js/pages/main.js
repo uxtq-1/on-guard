@@ -299,18 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // const mobileServicesToggle = document.getElementById('mobile-services-toggle'); // Part of old mobile_nav.html
-  // const mobileServicesMenu = document.getElementById('mobile-services-menu'); // Part of old mobile_nav.html
-  // if (mobileServicesToggle && mobileServicesMenu) {
-    // setFocusableChildren(mobileServicesMenu, mobileServicesMenu.classList.contains('active'));
-    // mobileServicesToggle.addEventListener('click', () => {
-      // const isExpanded = mobileServicesMenu.classList.toggle('active');
-      // mobileServicesToggle.setAttribute('aria-expanded', String(isExpanded));
-      // mobileServicesMenu.setAttribute('aria-hidden', String(!isExpanded));
-      // setFocusableChildren(mobileServicesMenu, isExpanded);
-    // });
-  // }
-
   const menuOpenBtn = document.getElementById('menu-open');
   const menuCloseBtn = document.getElementById('menu-close');
   const rightSideMenu = document.getElementById('rightSideMenu');

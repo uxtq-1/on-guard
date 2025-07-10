@@ -73,16 +73,6 @@ textarea {
 
 /* === Responsive for Mobile Devices === */
 @media (max-width: 768px) {
-  .modal-content { /* This rule might be too general if this file is loaded after small-screens.css */
-    /* width: 100%; */ /* Let global small-screen styles apply */
-    /* max-width: 100%; */ /* Let global small-screen styles apply */
-    /* height: 100%; */ /* Let global small-screen styles apply */
-    /* max-height: 100vh; */ /* Let global small-screen styles apply (80vh) */
-    /* padding: 0; */ /* Base small-screen styles handle padding if this is removed */
-    /* border-radius: 0; */ /* Base small-screen styles handle border-radius */
-    /* box-shadow: none; */ /* Base small-screen styles handle box-shadow */
-    /* border: none; */ /* Base small-screen styles handle border */
-  }
   /* Specific adjustments for contact_us_modal can remain if they don't conflict with sizing */
   #contact-modal .modal-body { /* Scoping to the specific modal ID is safer */
     padding: 1rem;

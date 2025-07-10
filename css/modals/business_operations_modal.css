@@ -37,9 +37,6 @@ body[data-theme="dark"] #business-operations-modal .modal-content {
 
 @media (max-width: 768px) {
   #business-operations-modal .modal-content {
-    /* width: 100%; */ /* Let global small-screen styles apply */
-    /* max-width: 100%; */ /* Let global small-screen styles apply */
-    /* height: 100%; */ /* Let global small-screen styles apply */
     border-radius: 0; /* This can remain if desired for a specific look */
     padding: 1rem; /* This can remain */
   }
