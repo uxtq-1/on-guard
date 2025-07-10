@@ -3,8 +3,16 @@
   "version": "1.0.0",
   "description": "Static site for Ops Online Support",
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "test": "jest"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "babel-jest": "^30.0.4",
+    "jest": "^30.0.4",
+    "parcel": "^2.15.4"
+  }
 }
-

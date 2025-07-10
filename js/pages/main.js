@@ -3,7 +3,7 @@
 import { initializeContactModal } from './contact_us.js';
 import { initializeJoinUsModal } from './join_us.js';
 import { updateDynamicContentLanguage } from '../language_toggle/language-toggle.js';
-import { attachModalHandlers, closeModal as closeModalUtility } from '../utils/modal.js'; // Import closeModalUtility
+import { attachModalHandlers, closeModal as closeModalUtility, createModalElement } from '../utils/modal.js'; // Import closeModalUtility and createModalElement
 window.updateDynamicContentLanguage = updateDynamicContentLanguage;
 document.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
@@ -23,7 +23,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalMap = {
     'contact-modal': { file: 'contact_us_modal.html', id: 'contact-modal' },
     'join-us-modal': { file: 'join_us_modal.html', id: 'join-us-modal' },
-    'business-operations-service-modal': { file: 'business_operations_modal.html', id: 'business-operations-modal' },
+    'business-operations-service-modal': {
+      id: 'business-operations-modal',
+      generator: () => {
+        const bodyHtml = `
+          <p data-en="Detailed content about our Business Operations services. We help streamline your processes, improve efficiency, and drive growth through strategic operational support."
+             data-es="Contenido detallado sobre nuestros servicios de Operaciones Empresariales. Ayudamos a optimizar sus procesos, mejorar la eficiencia e impulsar el crecimiento mediante el apoyo operativo estratégico.">
+            Detailed content about our Business Operations services. We help streamline your processes, improve efficiency, and drive growth through strategic operational support.
+          </p>
+          <p data-en="Key areas include process optimization, supply chain management, and quality assurance."
+             data-es="Las áreas clave incluyen la optimización de procesos, la gestión de la cadena de suministro y el aseguramiento de la calidad.">
+            Key areas include process optimization, supply chain management, and quality assurance.
+          </p>
+          <ul aria-label="Business Operations Services Highlights" data-en-label="Business Operations Services Highlights" data-es-label="Destacados de Servicios de Operaciones Empresariales">
+            <li data-en="Workflow digitization and automation" data-es="Digitalización y automatización del flujo de trabajo">Workflow digitization and automation</li>
+            <li data-en="Logistics and inventory efficiency strategies" data-es="Estrategias de eficiencia logística e inventario">Logistics and inventory efficiency strategies</li>
+            <li data-en="Risk and compliance frameworks (NIST, ISO, CISA-aligned)" data-es="Marcos de riesgo y cumplimiento (alineados a NIST, ISO, CISA)">Risk and compliance frameworks (NIST, ISO, CISA-aligned)</li>
+            <li data-en="Performance metrics dashboards and insights" data-es="Cuadros de métricas de rendimiento y análisis">Performance metrics dashboards and insights</li>
+            <li data-en="Remote team process coaching &amp; Lean Ops" data-es="Capacitación remota y operaciones Lean">Remote team process coaching &amp; Lean Ops</li>
+          </ul>`;
+        const footerHtml = `<button class="ai-chatbot-launch-btn" data-modal="ai-chatbot-modal" data-en="Ask AI" data-es="Preguntar AI">Ask AI</button>`;
+        return createModalElement(
+          'business-operations-modal',
+          'Business Operations',
+          'Operaciones Empresariales',
+          bodyHtml,
+          footerHtml
+        );
+      }
+    },
     'contact-center-service-modal': { file: 'contact_center_modal.html', id: 'contact-center-modal' },
     'it-support-service-modal': { file: 'it_support_modal.html', id: 'it-support-modal' },
     'professionals-service-modal': { file: 'professionals_modal.html', id: 'professionals-modal' },
@@ -47,35 +75,55 @@ document.addEventListener('DOMContentLoaded', () => {
       return modalElement;
     }
 
-    const filePath = mapEntry.isFullPath
-      ? mapEntry.file
-      : new URL(`../../html/modals/${mapEntry.file}`, import.meta.url).pathname;
-    const placeholderId = `${modalKey}-placeholder`;
-    let placeholder = document.getElementById(placeholderId);
-    if (!placeholder) {
-      placeholder = document.createElement('div');
-      placeholder.id = placeholderId;
-      document.body.appendChild(placeholder);
-    }
-    try {
-      // console.log(`Fetching modal HTML from: ${filePath}`);
-      const resp = await fetch(filePath);
-      if (!resp.ok) {
-        console.error(`Failed to fetch modal HTML for "${modalKey}" from ${filePath}. Status: ${resp.status}`);
-        placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Could not load content for ${modalKey}.</p>`;
-        return null;
-      }
-      const modalHTML = await resp.text();
-      placeholder.innerHTML = modalHTML;
-      modalElement = placeholder.querySelector(`#${mapEntry.id}`); // Search again within the placeholder after injecting HTML
-      if (!modalElement) {
-        console.error(`Modal element with ID "${mapEntry.id}" not found in fetched HTML for "${modalKey}" (loaded into ${placeholderId}). Check structure of ${mapEntry.file}.`);
-        return null;
-      }
-      // console.log(`Modal "${mapEntry.id}" loaded successfully.`);
+    // If a generator function exists for the modal, use it
+    if (mapEntry.generator) {
+      modalElement = mapEntry.generator();
       if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
+      document.body.appendChild(modalElement); // Add the generated modal to the DOM
+      // No placeholder needed for generated modals as they are created and appended directly
+    } else {
+      // Fallback to fetching HTML file if no generator
+      const filePath = mapEntry.isFullPath
+        ? mapEntry.file
+        : new URL(`../../html/modals/${mapEntry.file}`, import.meta.url).pathname;
+      const placeholderId = `${modalKey}-placeholder`;
+      let placeholder = document.getElementById(placeholderId);
+      if (!placeholder) {
+        placeholder = document.createElement('div');
+        placeholder.id = placeholderId;
+        document.body.appendChild(placeholder);
+      }
+      try {
+        const resp = await fetch(filePath);
+        if (!resp.ok) {
+          console.error(`Failed to fetch modal HTML for "${modalKey}" from ${filePath}. Status: ${resp.status}`);
+          placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Could not load content for ${modalKey}.</p>`;
+          return null;
+        }
+        const modalHTML = await resp.text();
+        placeholder.innerHTML = modalHTML;
+        modalElement = placeholder.querySelector(`#${mapEntry.id}`);
+        if (!modalElement) {
+          console.error(`Modal element with ID "${mapEntry.id}" not found in fetched HTML for "${modalKey}" (loaded into ${placeholderId}). Check structure of ${mapEntry.file}.`);
+          return null;
+        }
+        if (triggerButtonId) modalElement.dataset.triggerId = triggerButtonId;
+      } catch (err) {
+        console.error(`Error loading modal "${modalKey}" into ${placeholderId}:`, err);
+        if(placeholder) placeholder.innerHTML = `<p style="color:red; padding:1em;">Error: Exception while loading ${modalKey}.</p>`;
+        return null;
+      }
+    }
 
-      if (modalKey === 'contact-modal') initializeContactModal(modalElement);
+    // Common post-load/generation logic
+    if (!modalElement) { // Should be redundant if generator/fetch logic is correct, but as a safeguard
+      console.error(`Modal element for "${modalKey}" could not be created or found.`);
+      return null;
+    }
+    // console.log(`Modal "${mapEntry.id}" loaded/generated successfully.`);
+
+    // Initialize specific modals
+    if (modalKey === 'contact-modal') initializeContactModal(modalElement);
       if (modalKey === 'join-us-modal') initializeJoinUsModal(modalElement);
 
       if (typeof updateDynamicContentLanguage === 'function') {
